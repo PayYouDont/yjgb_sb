@@ -7,17 +7,18 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.gospell.chitong.rdcenter.broadcast.test.dao.UserInfoMapper;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class YjgbSbApplicationTests {
+public class ApplicationTests {
 
 	@Resource
-	private UserInfoMapper dao;
+	private EmergencyinfoMapper dao;
+	
 	@Test
 	public void contextLoads() {
-		System.out.println(dao.selectByPrimaryKey((long) 1));
+		System.out.println(dao.selectByPrimaryKey(1));
 	}
 
 }

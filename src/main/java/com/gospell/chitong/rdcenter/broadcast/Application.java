@@ -8,9 +8,9 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @SpringBootApplication
 @ServletComponentScan
 @MapperScan("com.gospell.chitong.rdcenter.broadcast.*.dao")
-public class YjgbSbApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(YjgbSbApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
