@@ -18,15 +18,15 @@
     <result column="displayMethod_id" jdbcType="INTEGER" property="displaymethodId" />
     <result column="displayLanguage_id" jdbcType="INTEGER" property="displaylanguageId" />
     <result column="emergencyLocation_id" jdbcType="INTEGER" property="emergencylocationId" />
-    <result column="modifyby" jdbcType="VARCHAR" property="modifyby" />
-    <result column="modify" jdbcType="TIMESTAMP" property="modify" />
-    <result column="createby" jdbcType="VARCHAR" property="createby" />
-    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="unitName" jdbcType="VARCHAR" property="unitname" />
     <result column="EBM_ID" jdbcType="INTEGER" property="ebmId" />
     <result column="areaCode" jdbcType="VARCHAR" property="areacode" />
-    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
     <result column="addressCodeName" jdbcType="VARCHAR" property="addresscodename" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo">
@@ -35,8 +35,8 @@
   <sql id="Base_Column_List">
     id, emergencyName, emergencyCode, start_time, end_time, sound, duration, addressCode, 
     program_id, programDescription, infoSource_id, accidentLevel_id, accidentType_id, 
-    displayMethod_id, displayLanguage_id, emergencyLocation_id, modifyby, modify, createby, 
-    createdate, status, unitName, EBM_ID, areaCode, flag, addressCodeName
+    displayMethod_id, displayLanguage_id, emergencyLocation_id, update_by, update_time, 
+    create_by, create_time, status, unitName, EBM_ID, areaCode, flag, addressCodeName
   </sql>
   <sql id="Blob_Column_List">
     content
@@ -62,8 +62,8 @@
       addressCode, program_id, programDescription, 
       infoSource_id, accidentLevel_id, accidentType_id, 
       displayMethod_id, displayLanguage_id, emergencyLocation_id, 
-      modifyby, modify, createby, 
-      createdate, status, unitName, 
+      update_by, update_time, create_by, 
+      create_time, status, unitName, 
       EBM_ID, areaCode, flag, 
       addressCodeName, content)
     values (#{emergencyname,jdbcType=VARCHAR}, #{emergencycode,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
@@ -71,9 +71,9 @@
       #{addresscode,jdbcType=VARCHAR}, #{programId,jdbcType=INTEGER}, #{programdescription,jdbcType=VARCHAR}, 
       #{infosourceId,jdbcType=INTEGER}, #{accidentlevelId,jdbcType=INTEGER}, #{accidenttypeId,jdbcType=INTEGER}, 
       #{displaymethodId,jdbcType=INTEGER}, #{displaylanguageId,jdbcType=INTEGER}, #{emergencylocationId,jdbcType=INTEGER}, 
-      #{modifyby,jdbcType=VARCHAR}, #{modify,jdbcType=TIMESTAMP}, #{createby,jdbcType=VARCHAR}, 
-      #{createdate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{unitname,jdbcType=VARCHAR}, 
-      #{ebmId,jdbcType=INTEGER}, #{areacode,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{unitname,jdbcType=VARCHAR}, 
+      #{ebmId,jdbcType=INTEGER}, #{areacode,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, 
       #{addresscodename,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo">
@@ -127,17 +127,17 @@
       <if test="emergencylocationId != null">
         emergencyLocation_id,
       </if>
-      <if test="modifyby != null">
-        modifyby,
+      <if test="updateBy != null">
+        update_by,
       </if>
-      <if test="modify != null">
-        modify,
+      <if test="updateTime != null">
+        update_time,
       </if>
-      <if test="createby != null">
-        createby,
+      <if test="createBy != null">
+        create_by,
       </if>
-      <if test="createdate != null">
-        createdate,
+      <if test="createTime != null">
+        create_time,
       </if>
       <if test="status != null">
         status,
@@ -207,17 +207,17 @@
       <if test="emergencylocationId != null">
         #{emergencylocationId,jdbcType=INTEGER},
       </if>
-      <if test="modifyby != null">
-        #{modifyby,jdbcType=VARCHAR},
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
       </if>
-      <if test="modify != null">
-        #{modify,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createby != null">
-        #{createby,jdbcType=VARCHAR},
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createdate != null">
-        #{createdate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -232,7 +232,7 @@
         #{areacode,jdbcType=VARCHAR},
       </if>
       <if test="flag != null">
-        #{flag,jdbcType=VARCHAR},
+        #{flag,jdbcType=INTEGER},
       </if>
       <if test="addresscodename != null">
         #{addresscodename,jdbcType=VARCHAR},
@@ -290,17 +290,17 @@
       <if test="emergencylocationId != null">
         emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER},
       </if>
-      <if test="modifyby != null">
-        modifyby = #{modifyby,jdbcType=VARCHAR},
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
       </if>
-      <if test="modify != null">
-        modify = #{modify,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createby != null">
-        createby = #{createby,jdbcType=VARCHAR},
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createdate != null">
-        createdate = #{createdate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
@@ -315,7 +315,7 @@
         areaCode = #{areacode,jdbcType=VARCHAR},
       </if>
       <if test="flag != null">
-        flag = #{flag,jdbcType=VARCHAR},
+        flag = #{flag,jdbcType=INTEGER},
       </if>
       <if test="addresscodename != null">
         addressCodeName = #{addresscodename,jdbcType=VARCHAR},
@@ -343,15 +343,15 @@
       displayMethod_id = #{displaymethodId,jdbcType=INTEGER},
       displayLanguage_id = #{displaylanguageId,jdbcType=INTEGER},
       emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER},
-      modifyby = #{modifyby,jdbcType=VARCHAR},
-      modify = #{modify,jdbcType=TIMESTAMP},
-      createby = #{createby,jdbcType=VARCHAR},
-      createdate = #{createdate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER},
       unitName = #{unitname,jdbcType=VARCHAR},
       EBM_ID = #{ebmId,jdbcType=INTEGER},
       areaCode = #{areacode,jdbcType=VARCHAR},
-      flag = #{flag,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
       addressCodeName = #{addresscodename,jdbcType=VARCHAR},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -373,15 +373,15 @@
       displayMethod_id = #{displaymethodId,jdbcType=INTEGER},
       displayLanguage_id = #{displaylanguageId,jdbcType=INTEGER},
       emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER},
-      modifyby = #{modifyby,jdbcType=VARCHAR},
-      modify = #{modify,jdbcType=TIMESTAMP},
-      createby = #{createby,jdbcType=VARCHAR},
-      createdate = #{createdate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER},
       unitName = #{unitname,jdbcType=VARCHAR},
       EBM_ID = #{ebmId,jdbcType=INTEGER},
       areaCode = #{areacode,jdbcType=VARCHAR},
-      flag = #{flag,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
       addressCodeName = #{addresscodename,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
