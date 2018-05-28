@@ -11,10 +11,14 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMa
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidentlevelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidenttypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicetypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DisplaymethodMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.MenuMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.RoleMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserMapper;
 
 @RunWith(SpringRunner.class)
@@ -86,5 +90,33 @@ public class DaoTests {
 	@Test
 	public void test9() {
 		System.out.println(userdao.selectByPrimaryKey(1));
+	}
+	@Resource
+	private RoleMapper roledao;
+	
+	@Test
+	public void test10() {
+		System.out.println(roledao.selectByPrimaryKey(1));
+	}
+	@Resource
+	private MenuMapper menudao;
+	
+	@Test
+	public void test11() {
+		System.out.println(menudao.selectByPrimaryKey(1));
+	}
+	@Resource
+	private UserLogMapper userlogdao;
+	
+	@Test
+	public void test12() {
+		System.out.println(userlogdao.selectByPrimaryKey(1));
+	}
+	@Resource
+	private DeviceLogMapper devicelogdao;
+	
+	@Test
+	public void test13() {
+		System.out.println(devicelogdao.selectByPrimaryKey(1));
 	}
 }

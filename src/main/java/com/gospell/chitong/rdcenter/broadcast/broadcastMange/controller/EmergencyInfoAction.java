@@ -3,6 +3,7 @@ package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -17,9 +18,18 @@ public class EmergencyInfoAction {
 	private EmergencyInfoService service;
 	
 	@RequestMapping("/test")
-	@ResponseBody
+	//@ResponseBody
 	public String test() {
+		//Emergencyinfo info = service.selectByPrimaryKey(1);
+		return "test/test";
+	}
+	
+	@RequestMapping("/test2")
+	//@ResponseBody
+	public String test2(Model model) {
 		Emergencyinfo info = service.selectByPrimaryKey(1);
-		return info.toString();
+		model.addAttribute("info",info);
+		System.out.println(info);
+		return "test/test";
 	}
 }
