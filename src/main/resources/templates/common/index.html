@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!--easyui控件css -->
+<link  id="easyuiTheme" rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<script src="/easyui/changeTheme.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/common.js/index.js"></script>
+<style type="text/css">
+	a:FOCUS{outline:none;}
+	.userDiv{height:50px;float:right;cursor:pointer;padding-left:5px;padding-right:5px;}		
+	.userDiv:HOVER{border-left:1px solid rgb(4,64,98);background-color: red;}			
+	.userFont{color:white;font-size:14px;line-height:50px;height:50px;}
+	
+	.childMenu{height:25px;padding-left:40px;cursor: pointer;}
+	.childMenu:HOVER{background-color:green; }
+	.childMenuFont{line-height:25px;height:25px;font-size:12px;font-weight:bold;color:#50abe4;}
+</style>
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'north',border:false" style="height:50px;background:#B3DFDA;">
+		
+		<!-- <input id="unit_json" type="hidden" value='<%=request.getSession().getAttribute("unit_json")%>'>
+		<input id="server_ip" type="hidden" value="${server.server_ip}">
+		<input id="server_port" type="hidden" value="${server.server_port}"> -->
+		
+		<div  style="float: left;height:100%;"> 
+			<img alt="logo" style="margin-top:2px;" th:src="${server.broadcastLogo}">
+  		</div>
+  		<div  style="float: left;height:100%;"> 
+			<font id="myunitName" th:text="${server.broadcastName}" style="height:50px; line-height:48px; font-size:20px;color:white;font-weight:bold;"></font>
+  		</div>
+  		<!-- 登录后获取用户名称 -->
+  		<div  style="padding:10px;float:right;height:30px;">
+			<a th:text="${user.name}" id="btn-edit" href="#" class="easyui-menubutton" style="min-width: 150px;"
+				data-options="menu:'#mm1',iconCls:'icon-extenduser',menuAlign:'right'">
+			</a>
+		</div>
+		
+		 <div id="mm1" style="width:150px;" data-options="onClick:menuHandler">
+			<div data-options="iconCls:'icon-edit',name:'edit'">修改信息</div>
+			<div data-options="iconCls:'icon-key',name:'password'">修改密码</div>
+			<div data-options="iconCls:'icon-tip'">
+				<span>主题应用</span>   
+		        <div style="width:150px;">   
+		            <div id="default" onclick="changeTheme(this.id)"><b>默认</b></div>
+					<div id="black"   onclick="changeTheme(this.id)">黑色</div>
+					<div id="gray"    onclick="changeTheme(this.id)">灰色</div>
+					<div id="metro-blue"    onclick="changeTheme(this.id)">metro蓝色</div>
+					<div id="metro-gray"    onclick="changeTheme(this.id)">metro灰色</div>
+					<div id="metro-green"   onclick="changeTheme(this.id)">metro绿色</div>
+					<div id="metro-orange"  onclick="changeTheme(this.id)">metro橘色</div>
+					<div id="metro-red"     onclick="changeTheme(this.id)">metro红色</div>    
+		        </div> 
+			</div>
+			<div data-options="iconCls:'icon-exit',name:'exit'">退出系统</div>
+		</div>
+	</div>
+	<!-- 左边部分 -->
+	<div data-options="region:'west',split:true,title:'导航菜单'" style="width:200px;">
+		<div class="easyui-accordion" data-options="fit:true,border:false">
+			<!-- <c:forEach items="${requestScope.tabMenus}" var="tab">
+			 <div name="${tab.menuCaptionEn}"  title="${tab.text}"
+			 	id="${tab.id}" data-options="iconCls:'${tab.menuImage}'">
+			 	<c:forEach items="${tab.children}" var="childtab">
+			 	   <div class="childMenu"  	onclick="goPage(this);"
+			 	   	id ="${childtab.url}" 
+			 	   	iconCls='${childtab.menuImage}'>
+			 	   		<font class="childMenuFont">${childtab.text}</font>
+			 	   </div>
+				</c:forEach>
+			 </div>
+  		 	</c:forEach> -->
+		</div>
+	</div>
+	<!-- 中间部分 -->
+	<div data-options="region:'center'"
+		title="欢迎">
+		<div id="tab-tools">
+			<a href="#" class="easyui-linkbutton easyui-tooltip" plain="true" 
+			iconCls="icon-area"  onclick="goHome();" title="实时监控"></a>
+			<a href="#" class="easyui-linkbutton easyui-tooltip" plain="true" 
+			iconCls="icon-reload" onclick="reloadTab();" title="刷新"></a>
+			<a href="#" class="easyui-linkbutton easyui-tooltip" plain="true" 
+			iconCls="icon-cancel" onclick="closeTab();" title="关闭"></a>
+		</div>
+		
+		<div  id="myEasyui-tabs" class="easyui-tabs" style="width:100%;height:100%;"
+			data-options="border:false,tools:'#tab-tools',toolPosition:'right'">
+			<div title="实时监控" style="padding:3px;"
+				data-options="iconCls:'icon-area',closable:true">
+				<!-- <iframe id="content_iframe" src="../deviceInfoAction/goBroatcastMonitorPage" 
+			  			width="100%"  height="100%" scrolling="auto" allowtransparency="no"
+			  	 		frameborder="0" >
+				</iframe> -->
+			</div>
+		</div>
+	</div>
+	<!-- 修改用户基础信息窗口 -->
+	<div id="editInfo" class="easyui-window" title="用户基础信息修改"
+		data-options="iconCls:'icon-extenduser',shadow:false,modal:true,closed:true"
+		style="width:400px;height:300px;padding:5px;">
+		<div class="easyui-layout" data-options="fit:true" style="padding: 10px">
+			<form id="info_form" data-options="novalidate:true,fit:true">
+				<div>
+					<label for="userName" >用户姓名:&nbsp;&nbsp;</label>
+				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" type="text"  data-options="required:true"
+				      	id="userName" name="userName" value='${session.loginUser.userName}' >
+				</div><br>
+				
+			    <div>
+					<label for="phoneNum" >联系方式:&nbsp;&nbsp;</label>
+					<input class="easyui-textbox" type="text" style="width:180px;" data-options="validType:'phoneNum',required:true"
+							id="phoneNum" name="phoneNum" value="${session.loginUser.phoneNum}">
+			    </div><br>
+			    <div>
+					<label for="userSex" >用户性别:&nbsp;&nbsp;</label>
+					<span id="userSex" class="easyui-radio">
+		                <input type="radio" name="userSex" value="1"/>
+		                <input type="radio" name="userSex" value="0"/>
+		            </span>
+			    </div><br>
+			    
+			    
+			    <input id="edit_info_id" name="id" type="hidden" value="${session.loginUser.id}"/>
+			    <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+					<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="mysave();" style="width:80px">保存</a>
+					<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeModal();" style="width:80px">取消</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- 修改账号密码 -->
+	<div id="editPassword" class="easyui-window" title="修改账户密码"
+		data-options="iconCls:'icon-key',shadow:false,modal:true,closed:true"
+		style="width:400px;height:300px;padding:5px;">
+		<div class="easyui-layout" data-options="fit:true" style="padding:10px;">
+			<form id="password_form" data-options="novalidate:true,fit:true">
+				<div>
+					<label for="oldpassword" >&emsp;&emsp;旧密码:&nbsp;&nbsp;</label>
+				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="validType:'pass',required:true"
+				      	id="oldpassword" type="password" name="oldpassword" value='' >
+				</div><br>
+				
+				<div>
+					<label for="newpassword" >&emsp;&emsp;新密码:&nbsp;&nbsp;</label>
+				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="validType:'pass',required:true"
+				      	id="newpassword" type="password" name="newpassword" value='' >
+				</div><br>
+				
+				<div>
+					<label for="repnewpassword" >重复新密码:&nbsp;&nbsp;</label>
+				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="required:true" validType="equals['#newpassword']"
+				      	id="repnewpassword" type="password" name="repnewpassword" value='' >
+				</div><br>
+				
+				<input id="edit_password_id" name="id" type="hidden" value="${session.loginUser.id}"/>
+			    <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+					<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="changePWD();" style="width:80px">保存</a>
+					<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeModal();" style="width:80px">取消</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div align="center" data-options="region:'south',border:false" 
+		style="height:25px;background:#A9FACD;">
+		系统版本:<font th:text="${server.server_version}"  style="height:25px;line-height:25px;"></font>
+	</div>
+</body>
+</html>
