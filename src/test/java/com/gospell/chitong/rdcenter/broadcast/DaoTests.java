@@ -20,6 +20,8 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.MenuMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.RoleMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.User;
+import com.gospell.chitong.rdcenter.broadcast.util.MD5Util;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -89,7 +91,17 @@ public class DaoTests {
 	
 	@Test
 	public void test9() {
-		System.out.println(userdao.selectByPrimaryKey(1));
+		System.out.println(userdao.findByName("admin"));
+	}
+	@Test
+	public void insert() {
+		User user = new User();
+		user.setName("admin");
+		user.setPassword("123456");
+		user.setPassword(MD5Util.encrypt(user.getName(), user.getPassword()));
+		int i = userdao.insertSelective(user);
+		String msg = i>0?"添加成功":"添加失败";
+		System.out.println(msg);
 	}
 	@Resource
 	private RoleMapper roledao;

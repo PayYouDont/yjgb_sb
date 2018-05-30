@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>应急广播综合管理平台登录</title>
+<!--easyui控件css -->
+<link rel="stylesheet" type="text/css" href="/css/common/index.css">
+<link  rel="stylesheet" type="text/css"
+	href="/easyui/themes/black/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js" ></script>
+<script src="/easyui/changeTheme.js" ></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js" ></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js" ></script>
+<script src="/js/login/login.js" ></script>
+<style type="text/css">
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color: #50abe4;
+}
+
+a:focus {
+	outline: none;
+}
+
+.tooltipFont {
+	font-weight:;
+	color: red;
+}
+
+.myfont {
+	
+}
+</style>
+</head>
+<body id="body">
+
+	<div id="win" class="easyui-window" title="应急广播综合管理系统"
+		style="width: 380px; height: 220px"
+		data-options="iconCls:'icon-save',draggable:false,resizable:false,minimizable:false,maximizable:false,collapsible:false,closable:false">
+
+
+		<div id="tt" class="easyui-tabs" fit="true" border="false">
+			<div title="应急播发系统"
+				style="padding-left: 10px; padding-right: 10px; padding-top: 0px; padding-buttom: 0px; display: none;">
+				<form id="dataForm1" class="easyui-form" method="post">
+					<table class="tab" cellpadding="1" cellspacing="5">
+						<tr>
+							<td colspan="2"><font class="tooltipFont">&nbsp;</font></td>
+						</tr>
+						<tr>
+							<td style="text-align: right;"><font class="myfont">登录用户</font></td>
+							<td><input id="userNameForm1" name="name" value="admin"
+								class="easyui-textbox" style="width: 170px;"
+								missingMessage="请输入用户名" data-options="required:true"></td>
+						</tr>
+						<tr>
+							<td style="text-align: right;"><font class="myfont">登录密码</font></td>
+							<td><input id="userPasswordForm1" name="password"
+								value="123456" type="password" class="easyui-textbox"
+								style="width: 170px;" missingMessage="请输入用户密码"
+								data-options="required:true"></td>
+						</tr>
+					</table>
+				</form>
+				<div align="right"
+					style="padding: 10px; background-color:; margin-right: 45px;">
+					<a id="btn1" href="javascript:void(0);" class="easyui-linkbutton"
+						onclick="login1();" data-options="iconCls:'icon-ok'">登录</a> <a
+						id="btn2" href="javascript:void(0);" class="easyui-linkbutton"
+						onclick="myClearForm();" data-options="iconCls:'icon-reload'">重置</a>
+				</div>
+			</div>
+
+			<div title="综合网络管理系统" data-options=""
+				style="padding-left: 10px; padding-right: 10px; padding-top: 0px; padding-buttom: 0px; display: none;">
+				<form id="dataForm2" class="easyui-form" method="post">
+					<table class="tab" cellpadding="1" cellspacing="5">
+						<tr>
+							<td colspan="2"><font class="tooltipFont">&nbsp;</font></td>
+						</tr>
+						<tr>
+							<td style="text-align: right;"><font class="myfont">登录用户</font></td>
+							<td><input id="userNameForm2" name="userName" value="admin"
+								class="easyui-textbox" style="width: 170px;"
+								missingMessage="请输入用户名" data-options="required:true"></td>
+						</tr>
+						<tr>
+							<td style="text-align: right;"><font class="myfont">登录密码</font></td>
+							<td><input id="userPasswordForm2" name="userPassword"
+								value="123456" type="password" class="easyui-textbox"
+								style="width: 170px;" missingMessage="请输入用户密码"
+								data-options="required:true"></td>
+						</tr>
+					</table>
+				</form>
+				<div align="right"
+					style="padding: 10px; background-color:; margin-right: 45px;">
+					<a id="btn1" href="javascript:void(0);" class="easyui-linkbutton"
+						onclick="login2();" data-options="iconCls:'icon-ok'">登录</a> <a
+						id="btn2" href="javascript:void(0);" class="easyui-linkbutton"
+						onclick="myClearForm();" data-options="iconCls:'icon-reload'">重置</a>
+				</div>
+			</div>
+
+
+			<div title="应急广播监控平台" data-options=""
+				style="padding-left: 10px; padding-right: 10px; padding-top: 0px; padding-buttom: 0px; display: none;">
+				<form id="dataForm3" class="easyui-form" method="post">
+					<table class="tab" cellpadding="1" cellspacing="5">
+						<tr>
+							<td colspan="2"><font class="tooltipFont">&nbsp;</font></td>
+						</tr>
+						<tr>
+							<td style="text-align: right;"><font class="myfont">登录用户</font></td>
+							<td><input id="userNameForm3" name="userName" value="admin"
+								class="easyui-textbox" style="width: 170px;"
+								missingMessage="请输入用户名" data-options="required:true"></td>
+						</tr>
+						<tr>
+							<td style="text-align: right;"><font class="myfont">登录密码</font></td>
+							<td><input id="userPasswordForm3" name="userPassword"
+								value="123456" type="password" class="easyui-textbox"
+								style="width: 170px;" missingMessage="请输入用户密码"
+								data-options="required:true"></td>
+						</tr>
+					</table>
+				</form>
+				<div align="right"
+					style="padding: 10px; background-color:; margin-right: 45px;">
+					<a id="btn1" href="javascript:void(0);" class="easyui-linkbutton"
+						onclick="login();" data-options="iconCls:'icon-ok'">登录</a> <a
+						id="btn2" href="javascript:void(0);" class="easyui-linkbutton"
+						onclick="myClearForm();" data-options="iconCls:'icon-reload'">重置</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

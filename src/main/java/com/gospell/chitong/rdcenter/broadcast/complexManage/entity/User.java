@@ -3,6 +3,9 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.jboss.logging.FormatWith;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 /**
@@ -59,12 +62,13 @@ public class User implements Serializable {
     private Integer roleId;
 
     /**
-     * 创建人
+     * 创建时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")//页面写入数据库时格式化
     private Date createTime;
 
     /**
-     * 修改时间
+     * 创建人
      */
     private String createBy;
 

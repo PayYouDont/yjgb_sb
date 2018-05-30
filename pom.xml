@@ -62,11 +62,21 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		<!-- shiro -->
-		<!-- <dependency> 
-			<groupId>org.apache.shiro</groupId> 
-			<artifactId>shiro-spring-boot-starter</artifactId> 
-			<version>1.4.0</version> 
-		</dependency> -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+		<dependency>
+            <groupId>com.github.theborakompanioni</groupId>
+            <artifactId>thymeleaf-extras-shiro</artifactId>
+            <version>1.2.1</version>
+        </dependency>
 		<!-- 简化代码 -->
 		<dependency>
 		  <groupId>org.projectlombok</groupId>
@@ -89,6 +99,11 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>
