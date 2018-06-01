@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="menuCaptionHint" jdbcType="VARCHAR" property="menucaptionhint" />
+    <result column="menuCaptionEn" jdbcType="VARCHAR" property="menucaptionen" />
+    <result column="menuSystem" jdbcType="VARCHAR" property="menusystem" />
+    <result column="menuImage" jdbcType="VARCHAR" property="menuimage" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, text, pid, number, url, menuCaptionHint, menuCaptionEn, menuSystem, menuImage
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into menu (text, pid, number, 
+      url, menuCaptionHint, menuCaptionEn, 
+      menuSystem, menuImage)
+    values (#{text,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, 
+      #{url,jdbcType=VARCHAR}, #{menucaptionhint,jdbcType=VARCHAR}, #{menucaptionen,jdbcType=VARCHAR}, 
+      #{menusystem,jdbcType=VARCHAR}, #{menuimage,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="text != null">
+        text,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="menucaptionhint != null">
+        menuCaptionHint,
+      </if>
+      <if test="menucaptionen != null">
+        menuCaptionEn,
+      </if>
+      <if test="menusystem != null">
+        menuSystem,
+      </if>
+      <if test="menuimage != null">
+        menuImage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="text != null">
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="menucaptionhint != null">
+        #{menucaptionhint,jdbcType=VARCHAR},
+      </if>
+      <if test="menucaptionen != null">
+        #{menucaptionen,jdbcType=VARCHAR},
+      </if>
+      <if test="menusystem != null">
+        #{menusystem,jdbcType=VARCHAR},
+      </if>
+      <if test="menuimage != null">
+        #{menuimage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu">
+    update menu
+    <set>
+      <if test="text != null">
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="menucaptionhint != null">
+        menuCaptionHint = #{menucaptionhint,jdbcType=VARCHAR},
+      </if>
+      <if test="menucaptionen != null">
+        menuCaptionEn = #{menucaptionen,jdbcType=VARCHAR},
+      </if>
+      <if test="menusystem != null">
+        menuSystem = #{menusystem,jdbcType=VARCHAR},
+      </if>
+      <if test="menuimage != null">
+        menuImage = #{menuimage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu">
+    update menu
+    set text = #{text,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      number = #{number,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      menuCaptionHint = #{menucaptionhint,jdbcType=VARCHAR},
+      menuCaptionEn = #{menucaptionen,jdbcType=VARCHAR},
+      menuSystem = #{menusystem,jdbcType=VARCHAR},
+      menuImage = #{menuimage,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <select id="findByText" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where text = #{text,jdbcType=VARCHAR}
+  </select>
+</mapper>

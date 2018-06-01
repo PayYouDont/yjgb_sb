@@ -1,5 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -8,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidentlevelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidenttypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMapper;
@@ -20,8 +24,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.MenuMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.RoleMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.User;
-import com.gospell.chitong.rdcenter.broadcast.util.MD5Util;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,7 +41,15 @@ public class DaoTests {
 	
 	@Test
 	public void test1() {
-		System.out.println(emergencyinfodao.selectByPrimaryKey(1));
+		//System.out.println(emergencyinfodao.selectByPrimaryKey(1));
+		Page page = new Page();
+		page.setAreaCode("44");
+		page.setPageSize(10);
+		page.setCurrentPage(1);
+		page.setSortStr("id");
+		page.setOrder("DESC");
+		List<Emergencyinfo> list = emergencyinfodao.queryByPage(page);
+		System.out.println(list);
 	}
 	@Test
 	public void test2() {
@@ -93,7 +104,7 @@ public class DaoTests {
 	public void test9() {
 		System.out.println(userdao.findByName("admin"));
 	}
-	@Test
+	/*@Test
 	public void insert() {
 		User user = new User();
 		user.setName("admin");
@@ -102,7 +113,7 @@ public class DaoTests {
 		int i = userdao.insertSelective(user);
 		String msg = i>0?"添加成功":"添加失败";
 		System.out.println(msg);
-	}
+	}*/
 	@Resource
 	private RoleMapper roledao;
 	
@@ -115,7 +126,18 @@ public class DaoTests {
 	
 	@Test
 	public void test11() {
-		System.out.println(menudao.selectByPrimaryKey(1));
+		//System.out.println(menudao.selectByPrimaryKey(1));
+		//List<Menu> list = menudao.findByPid(6);
+		List<Menu> list = menudao.findByText("应急播发管理系统");
+		//Logger logger = LoggerFactory.getLogger(this.getClass());
+		System.out.println(list);
+		/*Menu menu = new Menu();
+		menu.setText("test");
+		menu.setPid(6);
+		menu.setMenucaptionen("测试");
+		int i = menudao.insertSelective(menu);
+		String msg = i>0?"添加成功":"添加失败";
+		System.out.println(msg);*/
 	}
 	@Resource
 	private UserLogMapper userlogdao;

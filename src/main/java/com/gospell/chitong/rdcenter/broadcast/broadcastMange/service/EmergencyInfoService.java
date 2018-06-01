@@ -1,5 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service;
 
+import java.util.List;
+
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 
 public interface EmergencyInfoService {
@@ -16,4 +18,6 @@ public interface EmergencyInfoService {
     int updateByPrimaryKeyWithBLOBs(Emergencyinfo record);
 
     int updateByPrimaryKey(Emergencyinfo record);
+    
+    List<Emergencyinfo> queryByCode(String areaCode);
 }

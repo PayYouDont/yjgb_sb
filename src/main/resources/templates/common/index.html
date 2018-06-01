@@ -17,6 +17,9 @@
 <script src="/easyui/jquery.easyui.min.js"></script>
 <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script src="/js/common/index.js"></script>
+<script type="text/javascript">
+	var nvaMenuType = '[[${nvaMenuType}]]';
+</script>
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false" style="height:50px;background:#B3DFDA;">
@@ -54,29 +57,18 @@
 					<div id="metro-red"     onclick="changeTheme(this.id)">metro红色</div>    
 		        </div> 
 			</div>
-			<div data-options="iconCls:'icon-exit',name:'exit'">退出系统</div>
+			<div data-options="iconCls:'icon-exit',name:'logout'">退出系统</div>
 		</div>
 	</div>
 	<!-- 左边部分 -->
-	<div data-options="region:'west',split:true,title:'导航菜单'" style="width:200px;">
+	<div id="test" data-options="region:'west',split:true,title:'导航菜单'" style="width:200px;">
 		<div class="easyui-accordion" data-options="fit:true,border:false">
-			<!-- <c:forEach items="${requestScope.tabMenus}" var="tab">
-			 <div name="${tab.menuCaptionEn}"  title="${tab.text}"
-			 	id="${tab.id}" data-options="iconCls:'${tab.menuImage}'">
-			 	<c:forEach items="${tab.children}" var="childtab">
-			 	   <div class="childMenu"  	onclick="goPage(this);"
-			 	   	id ="${childtab.url}" 
-			 	   	iconCls='${childtab.menuImage}'>
-			 	   		<font class="childMenuFont">${childtab.text}</font>
-			 	   </div>
-				</c:forEach>
-			 </div>
-  		 	</c:forEach> -->
+			
 		</div>
 	</div>
 	<!-- 中间部分 -->
-	<div data-options="region:'center'"
-		title="欢迎">
+	<div data-options="region:'center'" 
+		th:title="'欢迎 &nbsp;'+${user.name}+'[角色名]&nbsp;&emsp;管理区域:'+${user.areaCodeName}">
 		<div id="tab-tools">
 			<a href="#" class="easyui-linkbutton easyui-tooltip" plain="true" 
 			iconCls="icon-area"  onclick="goHome();" title="实时监控"></a>
@@ -90,10 +82,10 @@
 			data-options="border:false,tools:'#tab-tools',toolPosition:'right'">
 			<div title="实时监控" style="padding:3px;"
 				data-options="iconCls:'icon-area',closable:true">
-				<!-- <iframe id="content_iframe" src="../deviceInfoAction/goBroatcastMonitorPage" 
+				<iframe id="content_iframe" src="../deviceInfoAction/goBroatcastMonitorPage" 
 			  			width="100%"  height="100%" scrolling="auto" allowtransparency="no"
 			  	 		frameborder="0" >
-				</iframe> -->
+				</iframe>
 			</div>
 		</div>
 	</div>
@@ -106,24 +98,24 @@
 				<div>
 					<label for="userName" >用户姓名:&nbsp;&nbsp;</label>
 				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" type="text"  data-options="required:true"
-				      	id="userName" name="userName" value='${session.loginUser.userName}' >
+				      	id="name" name="name" th:value="${user.name}">
 				</div><br>
 				
 			    <div>
 					<label for="phoneNum" >联系方式:&nbsp;&nbsp;</label>
 					<input class="easyui-textbox" type="text" style="width:180px;" data-options="validType:'phoneNum',required:true"
-							id="phoneNum" name="phoneNum" value="${session.loginUser.phoneNum}">
+							id="phone" name="phone" th:value="${user.phone}">
 			    </div><br>
 			    <div>
 					<label for="userSex" >用户性别:&nbsp;&nbsp;</label>
-					<span id="userSex" class="easyui-radio">
-		                <input type="radio" name="userSex" value="1"/>
-		                <input type="radio" name="userSex" value="0"/>
+					<span id="sex" class="easyui-radio">
+		                <input type="radio" name="sex" value="1" th:checked="${user.sex == 1}" />男
+		                <input type="radio" name="sex" value="0" th:checked="${user.sex == 0}" />女
 		            </span>
 			    </div><br>
 			    
 			    
-			    <input id="edit_info_id" name="id" type="hidden" value="${session.loginUser.id}"/>
+			    <input id="edit_info_id" name="id" type="hidden" th:value="${user.id}"/>
 			    <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
 					<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="mysave();" style="width:80px">保存</a>
 					<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeModal();" style="width:80px">取消</a>
@@ -140,22 +132,21 @@
 				<div>
 					<label for="oldpassword" >&emsp;&emsp;旧密码:&nbsp;&nbsp;</label>
 				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="validType:'pass',required:true"
-				      	id="oldpassword" type="password" name="oldpassword" value='' >
+				      	id="oldpassword" type="password" name="oldPwd" value='' >
 				</div><br>
 				
 				<div>
 					<label for="newpassword" >&emsp;&emsp;新密码:&nbsp;&nbsp;</label>
 				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="validType:'pass',required:true"
-				      	id="newpassword" type="password" name="newpassword" value='' >
+				      	id="newpassword" type="password" name="newPwd" value='' >
 				</div><br>
 				
 				<div>
 					<label for="repnewpassword" >重复新密码:&nbsp;&nbsp;</label>
-				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="required:true" validType="equals['#newpassword']"
-				      	id="repnewpassword" type="password" name="repnewpassword" value='' >
+				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="required:true" validType="equals['#newpassword']" type="password">
 				</div><br>
 				
-				<input id="edit_password_id" name="id" type="hidden" value="${session.loginUser.id}"/>
+				<input id="edit_password_id" name="userId" type="hidden" th:value="${user.id}"/>
 			    <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
 					<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="changePWD();" style="width:80px">保存</a>
 					<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeModal();" style="width:80px">取消</a>

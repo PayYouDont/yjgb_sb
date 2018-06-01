@@ -40,17 +40,16 @@ public class ShrioConfig {
 		//filterChainDefinitionMap.put("/docs/**", "anon");
 		//filterChainDefinitionMap.put("/upload/**", "anon");
 		//filterChainDefinitionMap.put("/files/**", "anon");
-		filterChainDefinitionMap.put("/logout", "logout");
-		//filterChainDefinitionMap.put("/", "anon");
+		filterChainDefinitionMap.put("/", "authc");
 		//filterChainDefinitionMap.put("/static/**", "anon");// 静态资源不拦截
 		filterChainDefinitionMap.put("/**", "authc");
 		// 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
 		shiroFilterFactoryBean.setLoginUrl("/userAction/login");
 		// 登录成功后要跳转的链接
-		shiroFilterFactoryBean.setSuccessUrl("/userAction/index");
+		//shiroFilterFactoryBean.setSuccessUrl("/userAction/index");
 
 		//未授权界面;
-		shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+		shiroFilterFactoryBean.setUnauthorizedUrl("/userAction/403");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}

@@ -21,7 +21,7 @@ function login1(){
 			$.messager.progress('close');
 			data = JSON.parse(data);
 			if (data.success){
-				window.location.href="../userAction/index";
+				window.location.href="../emergencyInfoAction/index";
 			}else{
 				console.log(data)
 				$("font[class='tooltipFont']").html(data.data);

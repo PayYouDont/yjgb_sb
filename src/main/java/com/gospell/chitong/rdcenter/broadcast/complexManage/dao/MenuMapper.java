@@ -1,5 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
 
 public interface MenuMapper {
@@ -14,4 +18,8 @@ public interface MenuMapper {
     int updateByPrimaryKeySelective(Menu record);
 
     int updateByPrimaryKey(Menu record);
+    
+    List<Menu> findByPid(@Param("pid")Integer pid);
+    
+    List<Menu> findByText(@Param("text")String text);
 }

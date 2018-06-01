@@ -1,5 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.Impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -16,20 +18,20 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService{
 	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = dao.deleteByPrimaryKey(id);
+		return i;
 	}
 
 	@Override
 	public int insert(Emergencyinfo record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = dao.insert(record);
+		return i;
 	}
 
 	@Override
 	public int insertSelective(Emergencyinfo record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = dao.insertSelective(record);
+		return i;
 	}
 
 	@Override
@@ -40,21 +42,25 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService{
 
 	@Override
 	public int updateByPrimaryKeySelective(Emergencyinfo record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = dao.updateByPrimaryKeySelective(record);
+		return i;
 	}
 
 	@Override
 	public int updateByPrimaryKeyWithBLOBs(Emergencyinfo record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = dao.updateByPrimaryKeyWithBLOBs(record);
+		return i;
 	}
 
 	@Override
 	public int updateByPrimaryKey(Emergencyinfo record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = dao.updateByPrimaryKey(record);
+		return i;
 	}
-
+	
+	public List<Emergencyinfo> queryByCode(String areaCode){
+		
+		return null;
+	}
 	
 }

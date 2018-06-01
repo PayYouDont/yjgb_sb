@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title th:text="${emerType}"></title>
+<!--easyui控件css -->
+<link rel="stylesheet" type="text/css" href="/css/common/index.css">
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--日历控件引入 -->
+<script src="/js/core/WdatePicker.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/changeTheme.js"></script>
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/broadcast/emer_list.js"></script>
+<style type="text/css">
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+a:FOCUS {
+	outline: none;
+}
+</style>
+<script type="text/javascript">
+	var emerType = '[[${emerType}]]';
+</script>
+<body>
+	<div class="easyui-layout mange">
+		<div id="MyBtnDiv" style="height:26px;padding-left:5px;">
+			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="add();">增加</a>
+		  	<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="remove();">删除</a>
+	  		<font style="height:30px;line-height: 30px;">&emsp;&emsp;搜索:</font>
+			<input class="easyui-searchbox" id="searchValue" name="searchValue" value='' 
+				data-options="prompt:'请输入用信息名称',searcher:doSearch" 
+				style="width:180px;height:23px;">
+		</div>
+		
+		<div  data-options="region:'center'" title="信息列表"  iconCls="icon-extendlist" fit="true">
+			<table id="mainTab" class="easyui-datagrid"  data-options="fit:true"
+				toolbar="#MyBtnDiv" border="false" >
+			</table>
+		</div>
+	</div>
+</body>
+</html>

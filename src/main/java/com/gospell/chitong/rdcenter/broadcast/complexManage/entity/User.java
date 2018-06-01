@@ -3,7 +3,6 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.jboss.logging.FormatWith;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -42,7 +41,7 @@ public class User implements Serializable {
     private String phone;
 
     /**
-     * 用户区域编号
+     * 用户管理区域编号
      */
     private String areaCode;
 
@@ -52,7 +51,7 @@ public class User implements Serializable {
     private String areaCodeLevel;
 
     /**
-     * 用户区域名称
+     * 管理区域名称
      */
     private String areaCodeName;
 

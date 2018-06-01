@@ -1,3 +1,75 @@
+
+$(function(){
+	getNvaMenuDetail();
+	
+})
+function getNvaMenuDetail(){
+	if(nvaMenuType){
+		$.ajax({
+			url:"../nvaMenuAction/emerNvaDetail",
+			type:"post",
+			data:{nvaMenuType:nvaMenuType},
+			dataType:"json",
+			success:function(json){
+				if(json.success){
+					var menus = json.data;
+					for(var i=0;i<menus.length;i++){
+						var menu = menus[i];
+						var id = menu.id;
+						var text = menu.text;
+						var menuCaptionEn = menu.menucaptionen;
+						var menuImage = menu.menuimage;
+						$(".easyui-accordion").accordion("add",{
+							title: text,
+							id:id,
+							iconCls:menuImage,
+							name:menuCaptionEn,
+							selected: i==0?true:false
+						})
+					}
+					//获取第一个菜单子菜单
+					getChildMenu(0,menus[0].id);
+					//绑定选中事件
+					$(".easyui-accordion").accordion({
+						onSelect:function(title,index){
+							var id = $(this).accordion("getSelected")[0].id;
+							getChildMenu(index,id);
+						}
+					});
+					
+				}
+			}
+		});
+	}
+}
+//获取选中菜单的子菜单
+function getChildMenu(index,id){
+	var p = $(".easyui-accordion").accordion('getPanel',index);
+	$.ajax({
+		url:"../nvaMenuAction/getMenuByPid",
+		type:"post",
+		data:{pid:id},
+		dataType:"json",
+		success:function(json){
+			if(json.success){
+				var html = "";
+				var menus = json.data;
+				for(var i=0;i<menus.length;i++){
+					var menu = menus[i];
+					var url = menu.url;
+					var text = menu.text;
+					var menuCaptionEn = menu.menucaptionen;
+					var menuImage = menu.menuimage;
+					html += '<div class="childMenu" onclick="goPage(this);" id ="'+url+'" iconCls=\''+menuImage+'\'>'+
+					 	   		'<font class="childMenuFont">'+text+'</font>'+
+					 	    '</div>';
+				}
+				$(p).html(html);
+			}
+		}
+	});
+}
+/******************************************************/
 //菜单跳转页面
 function goPage(a){
 	var menuName=$(a).children().html();
@@ -79,17 +151,17 @@ function refreshTabData(title, refreshGridFunc){
 
 
 
-//获取unitsession
+/*//获取unitsession
 function getUnitMessage(){
 	var unitjson=$("#unit_json").val();
 	console.log(unitjson);
 	return unitjson;
-}
+}*/
 
-//改变子页面资源(主要是暴露给子页面js)
+/*//改变子页面资源(主要是暴露给子页面js)
 function mainIframeUrl(url){
 	$("#mainIframe").attr("src",url);	
-}
+}*/
 
 
 
@@ -112,11 +184,10 @@ function updateUserPassword(){
  * 首页menuHandler
  */
 function menuHandler(item){
-	console.log(item);
-	if(item.name == "exit"){
+	if(item.name == "logout"){
 		$.messager.confirm("提示","确定要退出吗？",function(result){
 			if(result){
-				window.location = "../userAction/exit";
+				window.location = "../userAction/logout";
 			}
 		});
 	}else if(item.name == "edit"){
@@ -133,25 +204,25 @@ function menuHandler(item){
  * 关闭修改信息模态框
  */
 function closeModal(){
-	$("#editInfo").window("close");
+	$(".easyui-window").window("close");
 }
 
 function mysave(){
 	$("#info_form").form('submit',{
-		url:"../userAction/updateUserBaseInfo",
+		url:"../userAction/updateUser",
 		onSubmit:function(){
 			var isValid = $(this).form("validate");
 			return isValid;
 		},
 		success:function(data){
-			if(data == "ok"){
+			data = JSON.parse(data);
+			console.log(data)
+			if(data.success){
 				$.messager.alert("系统提示","用户信息修改成功，请重新登录！","info",function(){
-					window.location.href="../userAction/exit";
+					window.location.href="../userAction/logout";
 				});
-			}else if(data == "NameExist"){
-				$.messager.alert("系统提示","用户名已存在！","info");
-			}else if(data == "SuperAdmin"){
-				$.messager.alert("系统提示","超级管理员无法修改","info");
+			}else{
+				$.messager.alert("系统提示",data.data);
 			}
 		},
 		error:function(data){
@@ -164,24 +235,32 @@ function mysave(){
 
 function changePWD(){
 	$("#password_form").form('submit',{
-		url:'../userAction/changePasswordForNormalUser',
+		url:'../userAction/resetPwd',
 		onSubmit:function(){
 			var isValid = $(this).form("validate");
 			return isValid;
 		},
 		success:function(data){
-			if(data == "ok"){
+			data = JSON.parse(data);
+			if(data.success){
 				$.messager.alert("系统提示","密码修改成功，请使用新密码重新登录！","info",function(){
-					window.location.href="../userAction/exit";
+					window.location.href="../userAction/logout";
 				});
-			}else if(data == "pwdWrong"){
-				$.messager.alert("系统提示","旧密码错误","info");
 			}else{
-				$.messager.alert("系统提示","修改失败","info");
+				$.messager.alert("错误",data.data);
 			}
 		},
 		error:function(data){
-			$.messager.alert("系统提示","服务器内部错误！","error");
+			$.messager.alert("系统提示","网络异常！","error");
 		}
 	})
 }
+//检查密码和重新输入密码是相同的。
+$.extend($.fn.validatebox.defaults.rules, {
+ equals: {
+		validator: function(value,param){
+			return value == $(param[0]).val();
+		},
+		message: '两次输入内容不一致'
+ }
+});
