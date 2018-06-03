@@ -75,4 +75,10 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService{
 		int total = dao.queryBroadcastingEmerTotal(page);
 		return total;
 	}
+
+	@Override
+	public Integer queryEmerTotal(Page page) {
+		int total = dao.queryEmerTotal(page);
+		return total;
+	}
 }

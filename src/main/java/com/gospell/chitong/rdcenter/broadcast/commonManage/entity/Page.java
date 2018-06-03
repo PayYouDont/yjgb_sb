@@ -23,7 +23,7 @@ public class Page {
 	private String order;
 	//搜索内容
 	private String search = "";
-
+	
 	public int getBegin() {
 		// 在mapper.xml使用begin属性时，对其进行计算
 		begin = (pageIndex - 1) * pageSize;

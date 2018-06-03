@@ -22,7 +22,9 @@ public interface EmergencyinfoMapper {
     
     List<Emergencyinfo> queryEmer(Page page);
     
+    Integer queryEmerTotal(Page page);
+    
     List<Emergencyinfo> queryBroadcastingEmer(Page page);
     
-    int queryBroadcastingEmerTotal(Page page);
+    Integer queryBroadcastingEmerTotal(Page page);
 }

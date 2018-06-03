@@ -45,8 +45,9 @@ public class DaoTests {
 		Page page = new Page();
 		page.setAreaCode("445103000000");
 		page.setPageSize(10);
-		page.setPageIndex(1);
-		List<Emergencyinfo> list = emergencyinfodao.queryBroadcastingEmer(page);
+		page.setPageIndex(2);
+		//List<Emergencyinfo> list = emergencyinfodao.queryEmer(page);
+		Integer list = emergencyinfodao.queryEmerTotal(page);
 		System.out.println(list);
 	}
 	@Test

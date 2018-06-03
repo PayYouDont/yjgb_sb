@@ -22,28 +22,28 @@ $(document).ready(function(){
 			idField:'id',
 			frozenColumns:[[
                 {field:'id',title:'预案id',width:150,checkbox:true},
-		        {field:'emergencyName',title:'名称',width:150,align:'center'}, 
+		        {field:'emergencyname',title:'名称',width:150,align:'center'}, 
 		        {field:'status',title:'状态',width:150,align:'center',formatter:statusFormatter}, 
 			]],
 		    columns:[[
-		        {field:'start_time',title:'开始时间',width:150,align:'center'},
-		        {field:'end_time',title:'结束时间',width:150,align:'center'},
+		        {field:'startTime',title:'开始时间',width:150,align:'center'},
+		        {field:'endTime',title:'结束时间',width:150,align:'center'},
 				{field:'duration',title:'持续时间',width:150,align:'center',formatter:durationFun},     
-				{field:'dispalyText',title:'播发信息',width:150,align:'left',halign:'center'},
-		        {field:'programDescription',title:'输入资源',width:150,align:'center'},
+				{field:'content',title:'播发信息',width:150,align:'left',halign:'center'},
+		        {field:'programdescription',title:'输入资源',width:150,align:'center'},
 		        {field:'infoSourceName',title:'输出资源',width:150,align:'center'}, 
 		        {field:'accidentTypeName',title:'事件类型',width:150,align:'center'}, 
 			    {field:'accidentLevelName',title:'事件等级',width:150,align:'center'},
 		        {field:'displayMethodName',title:'展示方式',width:150,align:'center'}, 
 		        {field:'displayLanguageName',title:'展示语言',width:150,align:'center'},
-		        {field:'end_time',title:'结束时间',width:150,align:'center'},
+		        {field:'endTime',title:'结束时间',width:150,align:'center'},
 		        {field:'sound',title:'播发音量',width:150,align:'center',formatter:soundFun},
-		        {field:'emergencyCode',title:'信息编码',width:150,align:'center'},
+		        {field:'emergencycode',title:'信息编码',width:150,align:'center'},
 		        {field:'EBM_ID',title:'播发编码',width:150,align:'center'},
 		        {field:'addressCodeName',title:'覆盖范围',width:150,align:'center'}, 
 
-		        {field:'usercreated',title:'创建用户',width:150,align:'center',sortable:"true"},
-		        {field:'createdTime',title:'创建时间',width:150,align:'center',sortable:"true"},
+		        {field:'createBy',title:'创建用户',width:150,align:'center',sortable:"true"},
+		        {field:'createTime',title:'创建时间',width:150,align:'center',sortable:"true"},
 		    ]]    
 		});
 });

@@ -1,6 +1,5 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -65,9 +64,12 @@ public class EmergencyInfoAction extends BaseAction{
 	 */
 	@RequestMapping("/queryEmer")
 	@ResponseBody
-	public HashMap<String,Object> queryEmer(Page page){
+	public String queryEmer(Page page){
+		page.setAreaCode(getUser().getAreaCode());
+		page.setOrder("crate_time");
 		List<Emergencyinfo> list = service.queryEmer(page);
-		return JsonWrapper.successWrapper(list);
+		Integer total = service.queryEmerTotal(page);
+		return JsonWrapper.wrapperPage(list,total);
 	}
 	/**
 	 * @Title: queryEmer 

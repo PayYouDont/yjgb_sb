@@ -22,6 +22,8 @@ public interface EmergencyInfoService {
     
     List<Emergencyinfo> queryEmer(Page page);
     
+    Integer queryEmerTotal(Page page);
+    
     List<Emergencyinfo> queryBroadcastingEmer(Page page);
     
     int queryBroadcastingEmerTotal(Page page);

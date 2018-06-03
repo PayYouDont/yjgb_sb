@@ -391,7 +391,13 @@
     ,
     <include refid="Blob_Column_List" />
     from emergencyinfo
-    where areaCode like #{areaCode,jdbcType=VARCHAR} '%' order by #{sortStr} ASC limit #{begin},#{pageSize}
+    where areaCode like #{areaCode,jdbcType=VARCHAR} '%' order by #{sortStr} DESC limit #{begin},#{pageSize}
+  </select>
+   <select id="queryEmerTotal" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page" resultType="java.lang.Integer">
+    select 
+    count(id)
+    from emergencyinfo
+    where areaCode like #{areaCode,jdbcType=VARCHAR} '%' order by #{sortStr}
   </select>
   <select id="queryBroadcastingEmer" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page" resultMap="ResultMapWithBLOBs">
     select 
