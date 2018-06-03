@@ -151,17 +151,16 @@ function refreshTabData(title, refreshGridFunc){
 
 
 
-/*//获取unitsession
+//获取unitsession
 function getUnitMessage(){
 	var unitjson=$("#unit_json").val();
-	console.log(unitjson);
 	return unitjson;
-}*/
+}
 
-/*//改变子页面资源(主要是暴露给子页面js)
+//改变子页面资源(主要是暴露给子页面js)
 function mainIframeUrl(url){
 	$("#mainIframe").attr("src",url);	
-}*/
+}
 
 
 

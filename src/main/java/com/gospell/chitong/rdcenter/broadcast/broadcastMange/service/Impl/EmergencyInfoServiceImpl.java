@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 
 @Service
 public class EmergencyInfoServiceImpl implements EmergencyInfoService{
@@ -58,9 +59,20 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService{
 		return i;
 	}
 	
-	public List<Emergencyinfo> queryByCode(String areaCode){
-		
-		return null;
+	public List<Emergencyinfo> queryEmer(Page page){
+		List<Emergencyinfo> list = dao.queryEmer(page);
+		return list;
 	}
-	
+
+	@Override
+	public List<Emergencyinfo> queryBroadcastingEmer(Page page) {
+		List<Emergencyinfo> list = dao.queryBroadcastingEmer(page);
+		return list;
+	}
+
+	@Override
+	public int queryBroadcastingEmerTotal(Page page) {
+		int total = dao.queryBroadcastingEmerTotal(page);
+		return total;
+	}
 }

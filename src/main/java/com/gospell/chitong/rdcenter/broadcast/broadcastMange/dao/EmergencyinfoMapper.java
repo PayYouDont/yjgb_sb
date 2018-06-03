@@ -20,5 +20,9 @@ public interface EmergencyinfoMapper {
 
     int updateByPrimaryKey(Emergencyinfo record);
     
-    List<Emergencyinfo> queryByPage(Page page);
+    List<Emergencyinfo> queryEmer(Page page);
+    
+    List<Emergencyinfo> queryBroadcastingEmer(Page page);
+    
+    int queryBroadcastingEmerTotal(Page page);
 }

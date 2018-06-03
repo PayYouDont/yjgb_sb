@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>实时播控</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>实时监控</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<link type="text/css" rel="stylesheet" href="/css/common/map.css">
+<script src="/js/core/jquery.min.js"></script>
+<script src="/easyui/changeTheme.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<!-- 百度地图 -->
+<script type="text/javascript"
+	src="http://api.map.baidu.com/api?v=2.0&ak=53oVIOgmSIejwV7EfphPgTynOZbIiVYu"></script>
+<script src="/js/common/commonUtil.js"></script>
+<script src="/js/common/map.js"></script>
 </head>
-<body>
+<body id="body" class="easyui-layout">
 
+	<div data-options="region:'center',title:''"
+		style="padding: 0px; background: #eee;">
+		<input id="map_json" type="hidden" value=''> <input
+			id="connect" type="hidden" value="">
+		<button type="button" style="display: none;" onclick="">模拟测试websocket</button>
+		<div id="main_map"
+			style="width: calc(100% - 0px); height: calc(100% - 0px);"></div>
+	</div>
+	<div data-options="region:'east',title:'应急信息列表',split:true,iconCls:'icon-reload'" 
+		style="width: 350px;">
+		<div id="MyBtnDiv" style="height: auto;">
+			<div id="" style="height: 25px; padding: 1px 5px 3px 5px;">
+				<font style="height: 25px; line-height: 27px;">&nbsp;&nbsp;搜索:</font>
+				<input class="easyui-searchbox" id="searchValue" name="searchValue"
+					value='' data-options="prompt:'请输入应急信息名称',searcher:doSearch"
+					style="width: 180px; height: 23px;">
+			</div>
+		</div>
+		<table id="mainTab" class="easyui-datagrid" toolbar="#MyBtnDiv" border="false" data-options="fit:true">
+		</table>
+	</div>
+	<script type="text/javascript">
+		//定义全局变量
+		var map = new BMap.Map("main_map");
+	</script>
 </body>
 </html>

@@ -385,12 +385,33 @@
       addressCodeName = #{addresscodename,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-   <select id="queryByPage" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page" resultMap="ResultMapWithBLOBs">
+  <select id="queryEmer" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from emergencyinfo
-    where areaCode like #{areaCode,jdbcType=VARCHAR} '%' order by #{sortStr} #{order} limit #{begin},#{pageSize}
+    where areaCode like #{areaCode,jdbcType=VARCHAR} '%' order by #{sortStr} ASC limit #{begin},#{pageSize}
+  </select>
+  <select id="queryBroadcastingEmer" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from emergencyinfo
+    where areaCode like #{areaCode,jdbcType=VARCHAR} '%'
+    and emergencyName like '%' #{search,jdbcType=VARCHAR} '%'
+    and status = 6 
+    and flag = 1
+    limit #{begin},#{pageSize}
+  </select>
+  <select id="queryBroadcastingEmerTotal" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page"  resultType="java.lang.Integer">
+    select 
+    count(id)
+    from emergencyinfo
+    where areaCode like #{areaCode,jdbcType=VARCHAR} '%'
+    and emergencyName like '%' #{search,jdbcType=VARCHAR} '%'
+    and status = 6 
+    and flag = 1
   </select>
 </mapper>

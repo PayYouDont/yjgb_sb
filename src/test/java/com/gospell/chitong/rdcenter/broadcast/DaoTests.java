@@ -43,12 +43,10 @@ public class DaoTests {
 	public void test1() {
 		//System.out.println(emergencyinfodao.selectByPrimaryKey(1));
 		Page page = new Page();
-		page.setAreaCode("44");
+		page.setAreaCode("445103000000");
 		page.setPageSize(10);
-		page.setCurrentPage(1);
-		page.setSortStr("id");
-		page.setOrder("DESC");
-		List<Emergencyinfo> list = emergencyinfodao.queryByPage(page);
+		page.setPageIndex(1);
+		List<Emergencyinfo> list = emergencyinfodao.queryBroadcastingEmer(page);
 		System.out.println(list);
 	}
 	@Test

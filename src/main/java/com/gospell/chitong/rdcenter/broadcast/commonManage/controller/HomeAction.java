@@ -12,4 +12,8 @@ public class HomeAction extends BaseAction{
 		return "login/login";
 	}
 	
+	@RequestMapping("loadMap")
+	public String loadMap() {
+		return "common/map";
+	}
 }
