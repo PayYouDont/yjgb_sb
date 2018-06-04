@@ -24,7 +24,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="unitName" jdbcType="VARCHAR" property="unitname" />
-    <result column="EBM_ID" jdbcType="INTEGER" property="ebmId" />
+    <result column="EBM_ID" jdbcType="VARCHAR" property="ebmId" />
     <result column="areaCode" jdbcType="VARCHAR" property="areacode" />
     <result column="flag" jdbcType="INTEGER" property="flag" />
     <result column="addressCodeName" jdbcType="VARCHAR" property="addresscodename" />
@@ -309,7 +309,7 @@
         unitName = #{unitname,jdbcType=VARCHAR},
       </if>
       <if test="ebmId != null">
-        EBM_ID = #{ebmId,jdbcType=INTEGER},
+        EBM_ID = #{ebmId,jdbcType=VARCHAR},
       </if>
       <if test="areacode != null">
         areaCode = #{areacode,jdbcType=VARCHAR},
@@ -349,7 +349,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER},
       unitName = #{unitname,jdbcType=VARCHAR},
-      EBM_ID = #{ebmId,jdbcType=INTEGER},
+      EBM_ID = #{ebmId,jdbcType=VARCHAR},
       areaCode = #{areacode,jdbcType=VARCHAR},
       flag = #{flag,jdbcType=INTEGER},
       addressCodeName = #{addresscodename,jdbcType=VARCHAR},
@@ -379,7 +379,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER},
       unitName = #{unitname,jdbcType=VARCHAR},
-      EBM_ID = #{ebmId,jdbcType=INTEGER},
+      EBM_ID = #{ebmId,jdbcType=VARCHAR},
       areaCode = #{areacode,jdbcType=VARCHAR},
       flag = #{flag,jdbcType=INTEGER},
       addressCodeName = #{addresscodename,jdbcType=VARCHAR}

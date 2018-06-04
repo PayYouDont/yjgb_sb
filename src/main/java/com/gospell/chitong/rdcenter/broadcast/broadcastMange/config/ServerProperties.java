@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.UnitJosn;
+
 import lombok.Data;
+import net.sf.json.JSONObject;
 
 @Configuration
 @ConfigurationProperties(prefix = "server")
@@ -47,4 +50,15 @@ public class ServerProperties {
 	private String AreaLongitude;
 	// 平台管辖区域中心坐标纬度
 	private String AreaLatitude;
+	
+	public String getLocation() {
+		UnitJosn unitjson = new UnitJosn();
+		unitjson.setName(UnitName);
+		unitjson.setCode(AreaCode);
+		unitjson.setLongitude(AreaLongitude);
+		unitjson.setLatitude(AreaLatitude);
+		unitjson.setLevel(AreaLevel);
+		String json = JSONObject.fromObject(unitjson).toString();  
+		return json;
+	}
 }

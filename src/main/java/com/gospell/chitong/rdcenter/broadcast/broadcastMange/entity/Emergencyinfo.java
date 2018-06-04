@@ -111,7 +111,7 @@ public class Emergencyinfo implements Serializable {
 	 */
 	private String unitname;
 
-	private Integer ebmId;
+	private String ebmId;
 
 	private String areacode;
 
