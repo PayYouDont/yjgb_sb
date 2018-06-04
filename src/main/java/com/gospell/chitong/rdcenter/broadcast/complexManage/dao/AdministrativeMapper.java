@@ -14,4 +14,6 @@ public interface AdministrativeMapper {
     int updateByPrimaryKeySelective(Administrative record);
 
     int updateByPrimaryKey(Administrative record);
+    
+    
 }

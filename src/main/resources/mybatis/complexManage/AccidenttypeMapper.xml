@@ -125,4 +125,10 @@
       updata_by = #{updataBy,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from accidenttype
+    where id = #{accidenttypeId,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title th:text="${emerType}"></title>
+<!--easyui控件css -->
+<link rel="stylesheet" type="text/css" href="/css/common/index.css">
+<link  id="easyuiTheme" rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/broadcast/emerReview_list.js"></script>
+<style type="text/css">
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+a:FOCUS {
+	outline: none;
+}
+</style>
+<script type="text/javascript">
+	var emerType = '[[${emerType}]]';
+</script>
+<body class="easyui-layout">
+
+
+	<div id="MyBtnDiv" style="height:30px;padding:1px 5px 3px 5px;">
+		<div style="float:left">
+			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add"
+				onclick="review();">审核</a>
+		</div>
+
+		<div style="float:left; margin-left: 50px; line-height: 30px;">
+			<font>审核类型:</font> 
+			<select id="type_select" class="easyui-combobox"
+				name="typeId" style="width:100px;" data-options="required:true,editable:false,height:24">
+				<option value="1" selected="selected">应急信息</option>
+				<option value="2">应急预案</option>
+			</select>
+		</div>
+
+
+	</div>
+
+
+	<div data-options="region:'center'" title="待审核信息列表"
+		iconCls="icon-extendlist" fit="true">
+		<table id="mainTab" class="easyui-datagrid" data-options="fit:true"
+			toolbar="#MyBtnDiv" border="false">
+		</table>
+	</div>
+
+	<div id="set_time_dialog" class="easyui-dialog" title="设置预案播发时间"
+		style="width:400px;height:200px;"
+		data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true">
+		<div id="" style="margin-top: 30px;margin-left: 30px;">
+			<font>&emsp;&emsp;信息名称：</font> <input
+				class="easyui-textbox easyui-validatebox" name="emerName"
+				id="emer_name" value=""
+				data-options="required:true,showSeconds:true," style="width:143px">
+		</div>
+
+		<div id="" style="margin-top: 15px;margin-left: 30px;">
+			<font>开始播发时间：</font> <input
+				class="easyui-datetimebox easyui-validatebox" name="starttime"
+				id="start_time" value=""
+				data-options="required:true,showSeconds:true,editable:false"
+				style="width:143px">
+		</div>
+
+	</div>
+
+</body>
+</html>

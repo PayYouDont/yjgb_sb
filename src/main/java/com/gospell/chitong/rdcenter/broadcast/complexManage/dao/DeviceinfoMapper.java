@@ -1,5 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 
 public interface DeviceinfoMapper {
@@ -14,4 +17,8 @@ public interface DeviceinfoMapper {
     int updateByPrimaryKeySelective(Deviceinfo record);
 
     int updateByPrimaryKey(Deviceinfo record);
+    
+    List<Deviceinfo> list(Map<String,Object> map);
+	
+	int count(Map<String,Object> map);
 }

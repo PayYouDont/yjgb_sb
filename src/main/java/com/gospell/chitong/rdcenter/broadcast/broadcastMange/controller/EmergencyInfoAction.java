@@ -1,5 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,11 +27,11 @@ public class EmergencyInfoAction extends BaseAction{
 	private EmergencyInfoService service;
 	
 	@Resource
-	private ServerProperties server;
+	private ServerProperties serverProperties;
 	
 	@GetMapping("/index")  
     public String page(Model model) throws Exception{  
-		model.addAttribute("server",server);
+		model.addAttribute("server",serverProperties);
 		model.addAttribute("user",getUser());
 		model.addAttribute("nvaMenuType","应急播发管理系统");
         return "common/index";  
@@ -45,7 +46,7 @@ public class EmergencyInfoAction extends BaseAction{
 	@GetMapping("/goEmerReview") 
 	public String goEmerReview(Model model) {
 		model.addAttribute("emerType", "信息审核");
-		return "broadcast/emer_list";
+		return "broadcast/emerReview_list";
 	}
 	//信息播发
 	@GetMapping("/goEmerBroadCast") 
@@ -65,9 +66,12 @@ public class EmergencyInfoAction extends BaseAction{
 	 */
 	@RequestMapping("/queryEmer")
 	@ResponseBody
-	public String queryEmer(Page page){
+	public HashMap<String,Object> queryEmer(Page page){
 		Map<String,Object> map = page.getMap();
-		map.put("areaCode", getUser().getAreaCode());
+		map.put("areacode",getUser().getAreaCode());
+		map.put("flag", 1);
+		map.put("sort", "start_time");
+		map.put("order", "DESC");
 		List<Emergencyinfo> list = service.queryPage(map);
 		int count = service.countPage(map);
 		return JsonWrapper.wrapperPage(list,count);
@@ -83,11 +87,24 @@ public class EmergencyInfoAction extends BaseAction{
 	 */
 	@RequestMapping("/queryBroadcastingEmer")
 	@ResponseBody
-	public String queryBroadcastingEmer(Page page){
+	public HashMap<String,Object> queryBroadcastingEmer(Page page){
 		Map<String,Object> map = page.getMap();
-		map.put("areaCode", getUser().getAreaCode());
+		map.put("areacode", getUser().getAreaCode());
 		//设置状态为已播发(status=6)
 		map.put("status", 6);
+		List<Emergencyinfo> list = service.queryPage(map);
+		int count = service.countPage(map);
+		return JsonWrapper.wrapperPage(list,count);
+	}
+	@RequestMapping("/queryReviewList")
+	@ResponseBody
+	public HashMap<String,Object> queryReviewList(Page page){
+		Map<String,Object> map = page.getMap();
+		map.put("areacode", getUser().getAreaCode());
+		map.put("status",2);
+		map.put("flag",1);
+		map.put("sort", "id");
+		map.put("order", "ASC");
 		List<Emergencyinfo> list = service.queryPage(map);
 		int count = service.countPage(map);
 		return JsonWrapper.wrapperPage(list,count);

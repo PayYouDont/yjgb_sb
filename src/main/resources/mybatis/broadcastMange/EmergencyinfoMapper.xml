@@ -51,6 +51,26 @@
 		<result column="flag" jdbcType="INTEGER" property="flag" />
 		<result column="addressCodeName" jdbcType="VARCHAR"
 			property="addresscodename" />
+		<!-- 关联查询accidentType -->
+		<association property="accidentType" column="accidentType_id" 
+		javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidenttype"	
+		select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidenttypeMapper.selectById"/>
+		<!-- 关联查询accidentLevel -->
+		<association property="accidentLevel" column="accidentLevel_id" 
+		javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidentlevel"	
+		select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidentlevelMapper.selectById"/>
+		<!-- 关联查询infoSource -->
+		<association property="infoSource" column="infoSource_id" 
+		javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource"	
+		select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.InfosourceMapper.selectById"/>
+		<!-- 关联查询displayMethod -->
+		<association property="displayMethod" column="displayMethod_id" 
+		javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaymethod"	
+		select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DisplaymethodMapper.selectById"/>
+		<!-- 关联查询displaylanguageId -->
+		<association property="displayLanguage" column="displayLanguage_id" 
+		javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaylanguage"	
+		select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DisplaylanguageMapper.selectById"/>
 	</resultMap>
 	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
 		type="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo">

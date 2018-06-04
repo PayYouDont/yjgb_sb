@@ -31,16 +31,36 @@ $(document).ready(function(){
 				{field:'duration',title:'持续时间',width:150,align:'center',formatter:durationFun},     
 				{field:'content',title:'播发信息',width:150,align:'left',halign:'center'},
 		        {field:'programdescription',title:'输入资源',width:150,align:'center'},
-		        {field:'infoSourceName',title:'输出资源',width:150,align:'center'}, 
-		        {field:'accidentTypeName',title:'事件类型',width:150,align:'center'}, 
-			    {field:'accidentLevelName',title:'事件等级',width:150,align:'center'},
-		        {field:'displayMethodName',title:'展示方式',width:150,align:'center'}, 
-		        {field:'displayLanguageName',title:'展示语言',width:150,align:'center'},
+		        {field:'infoSourceName',title:'输出资源',width:150,align:'center',
+		        	formatter: function(value,row,index){
+		        		return row.infoSource.infoSourceName
+		        	}
+		        }, 
+		        {field:'accidentType',title:'事件类型',width:150,align:'center',
+		        	formatter: function(value,row,index){
+		        		return row.accidentType.name
+		        	}
+		        }, 
+			    {field:'accidentLevel',title:'事件等级',width:150,align:'center',
+			    	formatter: function(value,row,index){
+		        		return row.accidentLevel.level
+		        	}
+			    },
+		        {field:'displayMethodName',title:'展示方式',width:150,align:'center',
+			    	formatter: function(value,row,index){
+		        		return row.displayMethod.method
+		        	}
+		        },
+		        {field:'displayLanguageName',title:'展示语言',width:150,align:'center',
+				    	formatter: function(value,row,index){
+			        		return row.displayLanguage.language
+			        	}
+		        },
 		        {field:'endTime',title:'结束时间',width:150,align:'center'},
 		        {field:'sound',title:'播发音量',width:150,align:'center',formatter:soundFun},
 		        {field:'emergencycode',title:'信息编码',width:150,align:'center'},
-		        {field:'EBM_ID',title:'播发编码',width:150,align:'center'},
-		        {field:'addressCodeName',title:'覆盖范围',width:150,align:'center'}, 
+		        {field:'ebmId',title:'播发编码',width:150,align:'center'},
+		        {field:'addresscodename',title:'覆盖范围',width:150,align:'center'}, 
 
 		        {field:'createBy',title:'创建用户',width:150,align:'center',sortable:"true"},
 		        {field:'createTime',title:'创建时间',width:150,align:'center',sortable:"true"},

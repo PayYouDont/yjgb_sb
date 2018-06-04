@@ -125,4 +125,10 @@
       update_by = #{updateBy,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from displaymethod
+    where id = #{displaymethodId,jdbcType=INTEGER}
+  </select>
 </mapper>

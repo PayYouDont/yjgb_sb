@@ -3,6 +3,13 @@ package com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidentlevel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidenttype;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaylanguage;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaymethod;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource;
+
 import lombok.Data;
 
 /**
@@ -30,11 +37,13 @@ public class Emergencyinfo implements Serializable {
 	/**
 	 * 发送时间
 	 */
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")  
 	private Date startTime;
 
 	/**
 	 * 结束时间
 	 */
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")  
 	private Date endTime;
 
 	/**
@@ -79,7 +88,17 @@ public class Emergencyinfo implements Serializable {
 	private Integer displaylanguageId;
 
 	private Integer emergencylocationId;
+	
+	private Accidenttype accidentType;//事件等级类型（多对一）
 
+	private Accidentlevel accidentLevel;//事件等级对象（多对一）
+	
+	private Infosource infoSource;//输入资源对象（多对一）
+	
+	private Displaymethod displayMethod;//展示方式  （多对一）
+	
+	private Displaylanguage displayLanguage;//展示语言  （多对一）
+	
 	/**
 	 * 修改人
 	 */
@@ -88,6 +107,7 @@ public class Emergencyinfo implements Serializable {
 	/**
 	 * 修改时间
 	 */
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")  
 	private Date updateTime;
 
 	/**
@@ -98,6 +118,7 @@ public class Emergencyinfo implements Serializable {
 	/**
 	 * 创建时间
 	 */
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")  
 	private Date createTime;
 
 	/**

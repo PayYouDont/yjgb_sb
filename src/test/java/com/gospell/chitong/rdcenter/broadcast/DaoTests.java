@@ -25,6 +25,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.MenuMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.RoleMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
 
 @RunWith(SpringRunner.class)
@@ -49,9 +50,13 @@ public class DaoTests {
 		map.put("sort", "id");
 		map.put("areaCode", "445103000000");
 		List<Emergencyinfo> list = emergencyinfodao.list(map);
-		int count =  emergencyinfodao.count(map);
+		int count=0;
+		for(Emergencyinfo e:list) {
+			count++;
+			System.out.println(e.getDisplayLanguage());
+		}
 		System.out.println(count);
-		System.out.println(list);
+		//System.out.println(list);
 	}
 	@Test
 	public void test2() {
@@ -60,7 +65,10 @@ public class DaoTests {
 	
 	@Test
 	public void test3() {
-		System.out.println(deviceinfodao.selectByPrimaryKey(1));
+		Page page = new Page();
+		Map<String,Object> map = page.getMap();
+		List<Deviceinfo> list = deviceinfodao.list(map);
+		System.out.println(list);
 	}
 	
 	@Resource

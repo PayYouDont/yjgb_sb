@@ -3,8 +3,6 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 public class JsonWrapper {
 
 	public static HashMap<String, Object> successWrapper(Object pojo) {
@@ -81,16 +79,10 @@ public class JsonWrapper {
 		return wrapper;
 	}
 	  //转换为Jquery easyUI适配的Json数组
-    public static <T> String wrapperPage(List <T> list,int total){
-    	ObjectMapper m = new ObjectMapper();
-    	String jsonArrayString = null;
-    	Object [] rows = list.toArray();
-    	PageJson pageJson = new PageJson(total, rows);
-    	try {
-    		jsonArrayString = m.writeValueAsString(pageJson);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return jsonArrayString;
+    public static HashMap<String,Object> wrapperPage(List<?> list,int total){
+    	HashMap<String, Object> wrapper = new HashMap<String, Object>();
+		wrapper.put("total",total);
+		wrapper.put("rows", list);
+    	return wrapper;
     }
 }
