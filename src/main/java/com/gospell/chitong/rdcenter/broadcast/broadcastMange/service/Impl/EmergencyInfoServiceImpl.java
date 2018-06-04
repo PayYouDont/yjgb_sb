@@ -1,6 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.Impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,76 +10,49 @@ import org.springframework.stereotype.Service;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 
 @Service
 public class EmergencyInfoServiceImpl implements EmergencyInfoService{
 
 	@Resource
 	private EmergencyinfoMapper dao;
-	
+
 	@Override
-	public int deleteByPrimaryKey(Integer id) {
+	public int deleteById(Integer id) throws Exception {
 		int i = dao.deleteByPrimaryKey(id);
 		return i;
 	}
 
 	@Override
-	public int insert(Emergencyinfo record) {
-		int i = dao.insert(record);
+	public int save(Emergencyinfo emer) throws Exception {
+		int i = -1;
+		if(emer.getId()!=null) {
+			i = dao.updateByPrimaryKeySelective(emer);
+		}else {
+			i = dao.insert(emer);
+		}
 		return i;
 	}
 
 	@Override
-	public int insertSelective(Emergencyinfo record) {
-		int i = dao.insertSelective(record);
-		return i;
+	public Emergencyinfo selectById(Integer id) {
+		Emergencyinfo emer = dao.selectByPrimaryKey(id);
+		return emer;
 	}
 
 	@Override
-	public Emergencyinfo selectByPrimaryKey(Integer id) {
-		Emergencyinfo emergencyinfo = dao.selectByPrimaryKey(id);
-		return emergencyinfo;
+	public List<Emergencyinfo> queryPage(Map<String, Object> map) {
+		List<Emergencyinfo> list = dao.list(map);
+		return list;
 	}
 
 	@Override
-	public int updateByPrimaryKeySelective(Emergencyinfo record) {
-		int i = dao.updateByPrimaryKeySelective(record);
+	public int countPage(Map<String, Object> map) {
+		int i = dao.count(map);
 		return i;
 	}
 
-	@Override
-	public int updateByPrimaryKeyWithBLOBs(Emergencyinfo record) {
-		int i = dao.updateByPrimaryKeyWithBLOBs(record);
-		return i;
-	}
 
-	@Override
-	public int updateByPrimaryKey(Emergencyinfo record) {
-		int i = dao.updateByPrimaryKey(record);
-		return i;
-	}
+
 	
-	public List<Emergencyinfo> queryEmer(Page page){
-		List<Emergencyinfo> list = dao.queryEmer(page);
-		return list;
-	}
-
-	@Override
-	public List<Emergencyinfo> queryBroadcastingEmer(Page page) {
-		List<Emergencyinfo> list = dao.queryBroadcastingEmer(page);
-		return list;
-	}
-
-	@Override
-	public int queryBroadcastingEmerTotal(Page page) {
-		int total = dao.queryBroadcastingEmerTotal(page);
-		return total;
-	}
-
-	@Override
-	public Integer queryEmerTotal(Page page) {
-		int total = dao.queryEmerTotal(page);
-		return total;
-	}
 }

@@ -1,31 +1,18 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 
 public interface EmergencyInfoService {
-	int deleteByPrimaryKey(Integer id);
+	int deleteById(Integer id) throws Exception;
 
-    int insert(Emergencyinfo record);
+    int save(Emergencyinfo record) throws Exception;
 
-    int insertSelective(Emergencyinfo record);
-
-    Emergencyinfo selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Emergencyinfo record);
-
-    int updateByPrimaryKeyWithBLOBs(Emergencyinfo record);
-
-    int updateByPrimaryKey(Emergencyinfo record);
+    Emergencyinfo selectById(Integer id);
     
-    List<Emergencyinfo> queryEmer(Page page);
+    List<Emergencyinfo> queryPage(Map<String,Object> map);
     
-    Integer queryEmerTotal(Page page);
-    
-    List<Emergencyinfo> queryBroadcastingEmer(Page page);
-    
-    int queryBroadcastingEmerTotal(Page page);
-    
+    int countPage(Map<String,Object> map);
 }

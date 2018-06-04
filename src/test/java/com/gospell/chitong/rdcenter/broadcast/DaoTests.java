@@ -1,6 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -41,13 +42,15 @@ public class DaoTests {
 	
 	@Test
 	public void test1() {
-		//System.out.println(emergencyinfodao.selectByPrimaryKey(1));
 		Page page = new Page();
-		page.setAreaCode("445103000000");
-		page.setPageSize(10);
-		page.setPageIndex(2);
-		//List<Emergencyinfo> list = emergencyinfodao.queryEmer(page);
-		Integer list = emergencyinfodao.queryEmerTotal(page);
+		Map<String,Object> map = page.getMap();
+		map.put("status", 6);
+		map.put("order", "ASC");
+		map.put("sort", "id");
+		map.put("areaCode", "445103000000");
+		List<Emergencyinfo> list = emergencyinfodao.list(map);
+		int count =  emergencyinfodao.count(map);
+		System.out.println(count);
 		System.out.println(list);
 	}
 	@Test

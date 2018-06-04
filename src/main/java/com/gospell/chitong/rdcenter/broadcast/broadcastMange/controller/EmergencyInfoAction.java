@@ -1,6 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -65,11 +66,11 @@ public class EmergencyInfoAction extends BaseAction{
 	@RequestMapping("/queryEmer")
 	@ResponseBody
 	public String queryEmer(Page page){
-		page.setAreaCode(getUser().getAreaCode());
-		page.setOrder("crate_time");
-		List<Emergencyinfo> list = service.queryEmer(page);
-		Integer total = service.queryEmerTotal(page);
-		return JsonWrapper.wrapperPage(list,total);
+		Map<String,Object> map = page.getMap();
+		map.put("areaCode", getUser().getAreaCode());
+		List<Emergencyinfo> list = service.queryPage(map);
+		int count = service.countPage(map);
+		return JsonWrapper.wrapperPage(list,count);
 	}
 	/**
 	 * @Title: queryEmer 
@@ -83,10 +84,12 @@ public class EmergencyInfoAction extends BaseAction{
 	@RequestMapping("/queryBroadcastingEmer")
 	@ResponseBody
 	public String queryBroadcastingEmer(Page page){
-		page.setAreaCode(getUser().getAreaCode());
-		List<Emergencyinfo> list = service.queryBroadcastingEmer(page);
-		int total = service.queryBroadcastingEmerTotal(page);
-		String listStr = JsonWrapper.wrapperPage(list,total);
-		return listStr;
+		Map<String,Object> map = page.getMap();
+		map.put("areaCode", getUser().getAreaCode());
+		//设置状态为已播发(status=6)
+		map.put("status", 6);
+		List<Emergencyinfo> list = service.queryPage(map);
+		int count = service.countPage(map);
+		return JsonWrapper.wrapperPage(list,count);
 	}
 }

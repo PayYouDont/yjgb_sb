@@ -1,9 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 
 public interface EmergencyinfoMapper {
     int deleteByPrimaryKey(Integer id);
@@ -20,11 +20,7 @@ public interface EmergencyinfoMapper {
 
     int updateByPrimaryKey(Emergencyinfo record);
     
-    List<Emergencyinfo> queryEmer(Page page);
+    List<Emergencyinfo> list(Map<String,Object> map);
     
-    Integer queryEmerTotal(Page page);
-    
-    List<Emergencyinfo> queryBroadcastingEmer(Page page);
-    
-    Integer queryBroadcastingEmerTotal(Page page);
+    int count(Map<String,Object> map);
 }
