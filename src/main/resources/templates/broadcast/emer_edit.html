@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title th:text="${emerType}"></title>
+<!--easyui控件css -->
+<link rel="stylesheet" type="text/css" href="/css/common/index.css">
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/common/uiTree.js"></script>
+<script src="/js/broadcast/emer_edit.js"></script>
+<script type="text/javascript">
+	var type = '[[${type}]]'
+</script>
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'center',title:'信息编辑'" iconCls="icon-edit">
+		<div id="cc" class="easyui-layout" fit="true">
+			<div region='west' split="true" title='覆盖区域' border="true"
+				iconCls='icon-reload' style="width: 250px;">
+				<ul id="treeDemo"></ul>
+			</div>
+
+			<form id="dataForm" class="easyui-form" method="post">
+				<div data-options="region:'center',title:'基础信息',split:true">
+					<input id="emerPlanId" name="id" th:value="${emer.id}"
+						placeholder="id" type="hidden"/> 
+					<input id="programId"
+						name="programId" th:value="${emer.programId}" placeholder="programId"
+						type="hidden"/>
+					<input id="addressCode" name="addresscode"
+						th:value="${emer.addresscode}" placeholder="addressCode"
+						type="hidden"/>
+
+					<table class="tab" cellpadding="1" cellspacing="10">
+						<tr>
+							<td style="text-align: right; width: 100px;">信息名称</td>
+							<td><input id="emergencyName" name="emergencyname"
+								th:value="${emer.emergencyname}" class="easyui-textbox"
+								required="true"></td>
+							<td style="text-align: right; width: 100px;">播发音量</td>
+							<td><input id="sound" th:value="${emer.sound}" name="sound"
+								class="easyui-numberspinner" required="true"
+								missingMessage="请输入1到100任意数字" invalidMessage="请输入1到100任意数字"
+								data-options="min:0,max:100,editable:true,suffix:'%'"></td>
+						</tr>
+
+
+						<tr th:if="${type}==add">
+							<td style="text-align: right; width: 100px;">开始时间</td>
+							<td>
+								<input class="easyui-datetimebox" name="startTime"
+								id="starttime" th:value="${emer.startTime}" 
+								data-options="required:true,showSeconds:true,editable:false"
+								style="width: 143px"/>
+							</td>
+							<td style="text-align: right; width: 100px;"></td>
+							<td></td>
+						</tr>
+
+
+
+						<tr>
+							<td style="text-align: right;">播发时长</td>
+							<td><input id="duration" name="duration"
+								th:value="${emer.duration}" class="easyui-numberspinner"
+								required="required" missingMessage="请输入任意数字(单位：分钟)"
+								invalidMessage="请输入任意数字(单位：分钟)"
+								data-options="min:1,editable:true,suffix:'分钟'"></td>
+							<td style="text-align: right;">播发方式</td>
+							<td>
+								<select
+									data-options="validType:'selectValueRequired[\'#displayMethod\']'"
+									class="easyui-combobox easyui-validatebox" editable="false"
+									required="true" id="displayMethod" name="displaymethodId"
+									style="width: 143px;">
+									<option th:each="displayMethod,dmStat:${displayMethodList}"
+									th:text="${displayMethod.method}" th:value="${displayMethod.id}"/>
+								</select>
+							</td>
+						</tr>
+
+						<tr>
+							<td style="text-align: right; width: auto;">输出资源</td>
+							<td><select
+								data-options="validType:'selectValueRequired[\'#infoSource\']'"
+								class="easyui-combobox easyui-validatebox" editable="false"
+								required="true" id="infoSource" name="infosourceId"
+								style="width: 143px;">
+								<option th:each="infoSource,infoStat:${infoSourceList}"
+								th:text="${infoSource.infoSourceName}" 
+								th:checked="${infoSource.id}==${emer.infosourceId}"
+								th:value="${infoSource.id}"/>
+							</select></td>
+							<td style="text-align: right;">事件类型</td>
+							<td><select
+								data-options="validType:'selectValueRequired[\'#accidentType\']'"
+								class="easyui-combobox easyui-validatebox" editable="false"
+								id="accidentType" name="accidenttypeId" style="width: 143px;">
+								<option th:each="type,typeStat:${accidentTypeList}"
+								th:text="${type.name}" 
+								th:checked="${type.id}==${emer.accidenttypeId}"
+								th:value="${type.id}"/>
+							</select></td>
+
+						</tr>
+
+
+						<tr>
+							<td style="text-align: right;">播发语言</td>
+							<td><select
+								data-options="validType:'selectValueRequired[\'#dispalyLanguage\']'"
+								class="easyui-combobox easyui-validatebox" editable="false"
+								required="true" id="dispalyLanguage" name="displaylanguageId"
+								style="width: 143px;">
+								<option th:each="dl,dlStat:${displayLanguageList}"
+								th:text="${dl.language}" 
+								th:checked="${dl.id}==${emer.displaylanguageId}"
+								th:value="${dl.id}"/>
+							</select></td>
+							<td style="text-align: right;">事件等级</td>
+							<td><select
+								data-options="validType:'selectValueRequired[\'#accidentLevel\']'"
+								class="easyui-combobox easyui-validatebox" editable="false"
+								id="accidentLevel" name="accidentlevelId" style="width: 143px;">
+								<option th:each="al,alStat:${accidentLevelList}"
+								th:text="${al.level}" 
+								th:checked="${al.id}==${emer.accidentlevelId}"
+								th:value="${al.id}"/>
+							</select></td>
+						</tr>
+
+
+						<tr>
+							<td style="text-align: right;">输入资源</td>
+							<td colspan="3">
+								<input class="" placeholder="请点击获取数据"
+								readOnly="true" onclick="queryInnChannel();"
+								id="programDescription" name="programdescription"
+								th:value="${emer.programdescription}"
+								style="border-radius: 5px; border: 1px solid rgb(149, 183, 241); height: 20px; width: 415px;">
+							</td>
+						</tr>
+
+
+						<tr>
+							<td style="text-align: right;">发布信息</td>
+							<td colspan="3"><input class="easyui-textbox"
+								data-options="multiline:true" id="dispalyText"
+								name="content" th:value="${emer.content}"
+								style="width: 420px; height: 150px"></td>	
+						</tr>
+						<tr>
+							<td>
+								<input type="hidden" name="status" th:value="${emer.status}"/>
+								<input type="hidden" name="flag" th:value="${emer.flag}"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</form>
+		</div>
+
+	</div>
+
+
+	<div data-options="region:'south'"
+		style="text-align: right; padding: 5px;">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-back'"
+			href="javascript:void(0)" onclick="goback();" style="width: 80px;">返回</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+			href="javascript:void(0)" onclick="mysave();" style="width: 80px">保存</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
+			href="javascript:void(0)" onclick="formClear();" style="width: 80px">重置</a>
+	</div>
+</body>
+</html>

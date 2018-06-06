@@ -1,5 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaylanguage;
 
 public interface DisplaylanguageMapper {
@@ -14,4 +17,8 @@ public interface DisplaylanguageMapper {
     int updateByPrimaryKeySelective(Displaylanguage record);
 
     int updateByPrimaryKey(Displaylanguage record);
+    
+    List<Displaylanguage> list(Map<String,Object> map);
+    
+    int count(Map<String,Object> map);
 }

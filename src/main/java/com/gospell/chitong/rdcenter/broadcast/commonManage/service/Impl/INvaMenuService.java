@@ -28,14 +28,14 @@ public class INvaMenuService implements NvaMenuService{
 	public List<Menu> getNvaMenuByType(String type) throws Exception {
 		//获取导航菜单主类型
 		List<Menu> list = menuDao.findByText(type);
-		Menu menuType = list.get(0);
-		//菜单数据
-		List<Menu> menus = null;
-		if(menuType!=null) {
-			Integer pid = menuType.getId();
-			//获取主类型子菜单
-			menus = menuDao.findByPid(pid);
+		if(list.size()==0) {
+			return null;
 		}
+		//菜单数据
+		Menu menuType = list.get(0);
+		Integer pid = menuType.getId();
+		//获取主类型子菜单
+		List<Menu> menus = menuDao.findByPid(pid);
 		SortUtil.MenuListSort(menus);
 		return menus;
 	}

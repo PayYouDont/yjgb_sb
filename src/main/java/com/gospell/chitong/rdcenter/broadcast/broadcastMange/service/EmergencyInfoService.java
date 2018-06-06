@@ -15,4 +15,8 @@ public interface EmergencyInfoService {
     List<Emergencyinfo> queryPage(Map<String,Object> map);
     
     int countPage(Map<String,Object> map);
+    
+    String review(Emergencyinfo info) throws Exception;
+    
+    int deleteByIds(Integer[] ids) throws Exception;
 }

@@ -1,140 +1,242 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelMapper">
-  <resultMap id="BaseResultMap" type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="devModel" jdbcType="VARCHAR" property="devmodel" />
-    <result column="devModelDescription" jdbcType="VARCHAR" property="devmodeldescription" />
-    <result column="deviceType_id" jdbcType="INTEGER" property="devicetypeId" />
-    <result column="devModelCode" jdbcType="VARCHAR" property="devmodelcode" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, devModel, devModelDescription, deviceType_id, devModelCode, create_time, create_by, 
-    update_time, update_by
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from devicemodel
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from devicemodel
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into devicemodel (devModel, devModelDescription, deviceType_id, 
-      devModelCode, create_time, create_by, 
-      update_time, update_by)
-    values (#{devmodel,jdbcType=VARCHAR}, #{devmodeldescription,jdbcType=VARCHAR}, #{devicetypeId,jdbcType=INTEGER}, 
-      #{devmodelcode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into devicemodel
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="devmodel != null">
-        devModel,
-      </if>
-      <if test="devmodeldescription != null">
-        devModelDescription,
-      </if>
-      <if test="devicetypeId != null">
-        deviceType_id,
-      </if>
-      <if test="devmodelcode != null">
-        devModelCode,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="createBy != null">
-        create_by,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="updateBy != null">
-        update_by,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="devmodel != null">
-        #{devmodel,jdbcType=VARCHAR},
-      </if>
-      <if test="devmodeldescription != null">
-        #{devmodeldescription,jdbcType=VARCHAR},
-      </if>
-      <if test="devicetypeId != null">
-        #{devicetypeId,jdbcType=INTEGER},
-      </if>
-      <if test="devmodelcode != null">
-        #{devmodelcode,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null">
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null">
-        #{updateBy,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
-    update devicemodel
-    <set>
-      <if test="devmodel != null">
-        devModel = #{devmodel,jdbcType=VARCHAR},
-      </if>
-      <if test="devmodeldescription != null">
-        devModelDescription = #{devmodeldescription,jdbcType=VARCHAR},
-      </if>
-      <if test="devicetypeId != null">
-        deviceType_id = #{devicetypeId,jdbcType=INTEGER},
-      </if>
-      <if test="devmodelcode != null">
-        devModelCode = #{devmodelcode,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null">
-        update_by = #{updateBy,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
-    update devicemodel
-    set devModel = #{devmodel,jdbcType=VARCHAR},
-      devModelDescription = #{devmodeldescription,jdbcType=VARCHAR},
-      deviceType_id = #{devicetypeId,jdbcType=INTEGER},
-      devModelCode = #{devmodelcode,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="devModel" jdbcType="VARCHAR"
+			property="devmodel" />
+		<result column="devModelDescription" jdbcType="VARCHAR"
+			property="devmodeldescription" />
+		<result column="deviceType_id" jdbcType="INTEGER"
+			property="devicetypeId" />
+		<result column="devModelCode" jdbcType="VARCHAR"
+			property="devmodelcode" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="create_by" jdbcType="VARCHAR"
+			property="createBy" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+		<result column="update_by" jdbcType="VARCHAR"
+			property="updateBy" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, devModel, devModelDescription, deviceType_id, devModelCode,
+		create_time, create_by,
+		update_time, update_by
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from devicemodel
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from devicemodel
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into devicemodel (devModel, devModelDescription, deviceType_id,
+		devModelCode, create_time, create_by,
+		update_time, update_by)
+		values (#{devmodel,jdbcType=VARCHAR},
+		#{devmodeldescription,jdbcType=VARCHAR},
+		#{devicetypeId,jdbcType=INTEGER},
+		#{devmodelcode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into devicemodel
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="devmodel != null">
+				devModel,
+			</if>
+			<if test="devmodeldescription != null">
+				devModelDescription,
+			</if>
+			<if test="devicetypeId != null">
+				deviceType_id,
+			</if>
+			<if test="devmodelcode != null">
+				devModelCode,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="devmodel != null">
+				#{devmodel,jdbcType=VARCHAR},
+			</if>
+			<if test="devmodeldescription != null">
+				#{devmodeldescription,jdbcType=VARCHAR},
+			</if>
+			<if test="devicetypeId != null">
+				#{devicetypeId,jdbcType=INTEGER},
+			</if>
+			<if test="devmodelcode != null">
+				#{devmodelcode,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
+		update devicemodel
+		<set>
+			<if test="devmodel != null">
+				devModel = #{devmodel,jdbcType=VARCHAR},
+			</if>
+			<if test="devmodeldescription != null">
+				devModelDescription = #{devmodeldescription,jdbcType=VARCHAR},
+			</if>
+			<if test="devicetypeId != null">
+				deviceType_id = #{devicetypeId,jdbcType=INTEGER},
+			</if>
+			<if test="devmodelcode != null">
+				devModelCode = #{devmodelcode,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel">
+		update devicemodel
+		set devModel = #{devmodel,jdbcType=VARCHAR},
+		devModelDescription = #{devmodeldescription,jdbcType=VARCHAR},
+		deviceType_id = #{devicetypeId,jdbcType=INTEGER},
+		devModelCode = #{devmodelcode,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		create_by = #{createBy,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		update_by = #{updateBy,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectById" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from devicemodel
+		where id = #{devicemodelId,jdbcType=INTEGER}
+	</select>
+	<select id="list" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from devicemodel
+		<where>
+			<if test="devmodel != null">
+				and devModel = #{devmodel,jdbcType=VARCHAR}
+			</if>
+			<if test="devmodeldescription != null">
+				and devModelDescription = #{devmodeldescription,jdbcType=VARCHAR}
+			</if>
+			<if test="devicetypeId != null">
+				and deviceType_id = #{devicetypeId,jdbcType=INTEGER}
+			</if>
+			<if test="devmodelcode != null">
+				and devModelCode = #{devmodelcode,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+				and create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				and update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+				and update_by = #{updateBy,jdbcType=VARCHAR}
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select
+		<include refid="Base_Column_List" />
+		from devicemodel
+		<where>
+			<if test="devmodel != null">
+				and devModel = #{devmodel,jdbcType=VARCHAR}
+			</if>
+			<if test="devmodeldescription != null">
+				and devModelDescription = #{devmodeldescription,jdbcType=VARCHAR}
+			</if>
+			<if test="devicetypeId != null">
+				and deviceType_id = #{devicetypeId,jdbcType=INTEGER}
+			</if>
+			<if test="devmodelcode != null">
+				and devModelCode = #{devmodelcode,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+				and create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				and update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+				and update_by = #{updateBy,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
 </mapper>

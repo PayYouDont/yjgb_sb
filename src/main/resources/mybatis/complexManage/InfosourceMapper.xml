@@ -1,135 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.InfosourceMapper">
-  <resultMap id="BaseResultMap" type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="audio_pid" jdbcType="VARCHAR" property="audioPid" />
-    <result column="info_source_code" jdbcType="VARCHAR" property="infoSourceCode" />
-    <result column="info_source_name" jdbcType="VARCHAR" property="infoSourceName" />
-    <result column="ip" jdbcType="VARCHAR" property="ip" />
-    <result column="port" jdbcType="INTEGER" property="port" />
-    <result column="service_id" jdbcType="VARCHAR" property="serviceId" />
-    <result column="video_pid" jdbcType="VARCHAR" property="videoPid" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, audio_pid, info_source_code, info_source_name, ip, port, service_id, video_pid
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from infosource
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from infosource
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into infosource (audio_pid, info_source_code, info_source_name, 
-      ip, port, service_id, 
-      video_pid)
-    values (#{audioPid,jdbcType=VARCHAR}, #{infoSourceCode,jdbcType=VARCHAR}, #{infoSourceName,jdbcType=VARCHAR}, 
-      #{ip,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER}, #{serviceId,jdbcType=VARCHAR}, 
-      #{videoPid,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into infosource
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="audioPid != null">
-        audio_pid,
-      </if>
-      <if test="infoSourceCode != null">
-        info_source_code,
-      </if>
-      <if test="infoSourceName != null">
-        info_source_name,
-      </if>
-      <if test="ip != null">
-        ip,
-      </if>
-      <if test="port != null">
-        port,
-      </if>
-      <if test="serviceId != null">
-        service_id,
-      </if>
-      <if test="videoPid != null">
-        video_pid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="audioPid != null">
-        #{audioPid,jdbcType=VARCHAR},
-      </if>
-      <if test="infoSourceCode != null">
-        #{infoSourceCode,jdbcType=VARCHAR},
-      </if>
-      <if test="infoSourceName != null">
-        #{infoSourceName,jdbcType=VARCHAR},
-      </if>
-      <if test="ip != null">
-        #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="port != null">
-        #{port,jdbcType=INTEGER},
-      </if>
-      <if test="serviceId != null">
-        #{serviceId,jdbcType=VARCHAR},
-      </if>
-      <if test="videoPid != null">
-        #{videoPid,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
-    update infosource
-    <set>
-      <if test="audioPid != null">
-        audio_pid = #{audioPid,jdbcType=VARCHAR},
-      </if>
-      <if test="infoSourceCode != null">
-        info_source_code = #{infoSourceCode,jdbcType=VARCHAR},
-      </if>
-      <if test="infoSourceName != null">
-        info_source_name = #{infoSourceName,jdbcType=VARCHAR},
-      </if>
-      <if test="ip != null">
-        ip = #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="port != null">
-        port = #{port,jdbcType=INTEGER},
-      </if>
-      <if test="serviceId != null">
-        service_id = #{serviceId,jdbcType=VARCHAR},
-      </if>
-      <if test="videoPid != null">
-        video_pid = #{videoPid,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
-    update infosource
-    set audio_pid = #{audioPid,jdbcType=VARCHAR},
-      info_source_code = #{infoSourceCode,jdbcType=VARCHAR},
-      info_source_name = #{infoSourceName,jdbcType=VARCHAR},
-      ip = #{ip,jdbcType=VARCHAR},
-      port = #{port,jdbcType=INTEGER},
-      service_id = #{serviceId,jdbcType=VARCHAR},
-      video_pid = #{videoPid,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  
-  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from infosource
-    where id = #{infosourceId,jdbcType=INTEGER}
-  </select>
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.InfosourceMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="audio_pid" jdbcType="VARCHAR"
+			property="audioPid" />
+		<result column="info_source_code" jdbcType="VARCHAR"
+			property="infoSourceCode" />
+		<result column="info_source_name" jdbcType="VARCHAR"
+			property="infoSourceName" />
+		<result column="ip" jdbcType="VARCHAR" property="ip" />
+		<result column="port" jdbcType="INTEGER" property="port" />
+		<result column="service_id" jdbcType="VARCHAR"
+			property="serviceId" />
+		<result column="video_pid" jdbcType="VARCHAR"
+			property="videoPid" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, audio_pid, info_source_code, info_source_name, ip, port, service_id,
+		video_pid
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from infosource
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from infosource
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into infosource (audio_pid, info_source_code, info_source_name,
+		ip, port, service_id,
+		video_pid)
+		values (#{audioPid,jdbcType=VARCHAR}, #{infoSourceCode,jdbcType=VARCHAR},
+		#{infoSourceName,jdbcType=VARCHAR},
+		#{ip,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER}, #{serviceId,jdbcType=VARCHAR},
+		#{videoPid,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into infosource
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="audioPid != null">
+				audio_pid,
+			</if>
+			<if test="infoSourceCode != null">
+				info_source_code,
+			</if>
+			<if test="infoSourceName != null">
+				info_source_name,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="port != null">
+				port,
+			</if>
+			<if test="serviceId != null">
+				service_id,
+			</if>
+			<if test="videoPid != null">
+				video_pid,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="audioPid != null">
+				#{audioPid,jdbcType=VARCHAR},
+			</if>
+			<if test="infoSourceCode != null">
+				#{infoSourceCode,jdbcType=VARCHAR},
+			</if>
+			<if test="infoSourceName != null">
+				#{infoSourceName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="port != null">
+				#{port,jdbcType=INTEGER},
+			</if>
+			<if test="serviceId != null">
+				#{serviceId,jdbcType=VARCHAR},
+			</if>
+			<if test="videoPid != null">
+				#{videoPid,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
+		update infosource
+		<set>
+			<if test="audioPid != null">
+				audio_pid = #{audioPid,jdbcType=VARCHAR},
+			</if>
+			<if test="infoSourceCode != null">
+				info_source_code = #{infoSourceCode,jdbcType=VARCHAR},
+			</if>
+			<if test="infoSourceName != null">
+				info_source_name = #{infoSourceName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				ip = #{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="port != null">
+				port = #{port,jdbcType=INTEGER},
+			</if>
+			<if test="serviceId != null">
+				service_id = #{serviceId,jdbcType=VARCHAR},
+			</if>
+			<if test="videoPid != null">
+				video_pid = #{videoPid,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource">
+		update infosource
+		set audio_pid = #{audioPid,jdbcType=VARCHAR},
+		info_source_code = #{infoSourceCode,jdbcType=VARCHAR},
+		info_source_name = #{infoSourceName,jdbcType=VARCHAR},
+		ip = #{ip,jdbcType=VARCHAR},
+		port = #{port,jdbcType=INTEGER},
+		service_id = #{serviceId,jdbcType=VARCHAR},
+		video_pid = #{videoPid,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectById" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from infosource
+		where id = #{infosourceId,jdbcType=INTEGER}
+	</select>
+	<select id="list" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from infosource
+		<where>
+			<if test="audioPid != null">
+				and audio_pid = #{audioPid,jdbcType=VARCHAR}
+			</if>
+			<if test="infoSourceCode != null">
+				and info_source_code = #{infoSourceCode,jdbcType=VARCHAR}
+			</if>
+			<if test="infoSourceName != null">
+				and info_source_name = #{infoSourceName,jdbcType=VARCHAR}
+			</if>
+			<if test="ip != null">
+				and ip = #{ip,jdbcType=VARCHAR}
+			</if>
+			<if test="port != null">
+				and port = #{port,jdbcType=INTEGER}
+			</if>
+			<if test="serviceId != null">
+				and service_id = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="videoPid != null">
+				and video_pid = #{videoPid,jdbcType=VARCHAR}
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select
+		<include refid="Base_Column_List" />
+		from infosource
+		<where>
+			<if test="audioPid != null">
+				and audio_pid = #{audioPid,jdbcType=VARCHAR}
+			</if>
+			<if test="infoSourceCode != null">
+				and info_source_code = #{infoSourceCode,jdbcType=VARCHAR}
+			</if>
+			<if test="infoSourceName != null">
+				and info_source_name = #{infoSourceName,jdbcType=VARCHAR}
+			</if>
+			<if test="ip != null">
+				and ip = #{ip,jdbcType=VARCHAR}
+			</if>
+			<if test="port != null">
+				and port = #{port,jdbcType=INTEGER}
+			</if>
+			<if test="serviceId != null">
+				and service_id = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="videoPid != null">
+				and video_pid = #{videoPid,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
 </mapper>

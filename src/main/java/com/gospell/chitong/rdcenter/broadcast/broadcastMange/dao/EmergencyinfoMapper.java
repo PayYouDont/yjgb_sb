@@ -23,4 +23,6 @@ public interface EmergencyinfoMapper {
     List<Emergencyinfo> list(Map<String,Object> map);
     
     int count(Map<String,Object> map);
+    
+    List<Emergencyinfo> getByStartTime(Map<String,Object> map);
 }

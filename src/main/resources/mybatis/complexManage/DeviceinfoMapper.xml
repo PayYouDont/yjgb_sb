@@ -37,6 +37,10 @@
 			property="updateBy" />
 		<result column="parentPath" jdbcType="VARCHAR"
 			property="parentpath" />
+		<!-- 关联查询deviceModel -->
+		<association property="deviceModel" column="deviceModel_id" 
+		javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidenttype"	
+		select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelMapper.selectById"/>	
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, devName, devDsn, devCode, devHexcode, devAddressCode, devAddress,

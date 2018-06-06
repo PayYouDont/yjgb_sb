@@ -1,5 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.Impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,46 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService{
 		return i;
 	}
 
+	
+	public String review(Emergencyinfo info) {
+		Integer id = info.getId();
+		String emergencyName = info.getEmergencyname();
+		Date startTime = info.getStartTime();
+		info = selectById(id);
+		Integer flag = info.getFlag();
+		if(flag==0) {//预案信息
+			if(startTime==null) {
+				new RuntimeException("开始时间不能为空");
+			}else {
+				info.setStartTime(startTime);
+				long endTimeMillion = startTime.getTime() + Long.valueOf(info.getDuration())*60*1000;
+				Date endTime = new Date(endTimeMillion);
+				info.setEndTime(endTime);
+				info.setEmergencyname(emergencyName);
+				// 将id置空，存入数据库，预案保留
+				info.setId(null);
+				info.setStatus(5);//待发送
+				info.setFlag(1);
+			}
+		}else {
+			// 审核的是正常的应急消息
+			info.setStatus(5);//待发送
+		}
+		try {
+			save(info);
+			return "审核成功";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
 
-
+	@Override
+	public int deleteByIds(Integer[] ids) throws Exception {
+		int result = 0;
+		for(int i=0;i<ids.length;i++) {
+			result += dao.deleteByPrimaryKey(ids[i]);
+		}
+		return result;
+	}
 	
 }

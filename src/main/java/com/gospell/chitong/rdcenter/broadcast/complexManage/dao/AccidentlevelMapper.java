@@ -1,5 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidentlevel;
 
 public interface AccidentlevelMapper {
@@ -14,4 +17,8 @@ public interface AccidentlevelMapper {
     int updateByPrimaryKeySelective(Accidentlevel record);
 
     int updateByPrimaryKey(Accidentlevel record);
+    
+    List<Accidentlevel> list(Map<String,Object> map);
+    
+    int count(Map<String,Object> map);
 }

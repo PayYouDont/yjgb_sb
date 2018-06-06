@@ -1,5 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,9 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.MenuMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.RoleMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
 
 @RunWith(SpringRunner.class)
@@ -68,7 +71,9 @@ public class DaoTests {
 		Page page = new Page();
 		Map<String,Object> map = page.getMap();
 		List<Deviceinfo> list = deviceinfodao.list(map);
-		System.out.println(list);
+		for (Deviceinfo info : list) {
+			System.out.println(info.getDeviceModel());
+		}
 	}
 	
 	@Resource
@@ -76,7 +81,8 @@ public class DaoTests {
 	
 	@Test
 	public void test4() {
-		System.out.println(devicemodeldao.selectByPrimaryKey(1));
+		List<Devicemodel> list = devicemodeldao.list(new HashMap<>());
+		System.out.println(list);
 	}
 	@Resource
 	private DevicetypeMapper devicetypedao;
@@ -138,7 +144,7 @@ public class DaoTests {
 	public void test11() {
 		//System.out.println(menudao.selectByPrimaryKey(1));
 		//List<Menu> list = menudao.findByPid(6);
-		List<Menu> list = menudao.findByText("应急播发管理系统");
+		List<Menu> list = menudao.findByText("综合网络管理系统");
 		//Logger logger = LoggerFactory.getLogger(this.getClass());
 		System.out.println(list);
 		/*Menu menu = new Menu();
@@ -163,4 +169,17 @@ public class DaoTests {
 	public void test13() {
 		System.out.println(devicelogdao.selectByPrimaryKey(1));
 	}
+	@Resource
+	private AdministrativeMapper asdao;
+	@Test
+	public void test14() {
+		Map<String,Object> map = new HashMap<String, Object>();
+		//map.put("codeLike","445103100");
+		List<Administrative> list = asdao.list(map);
+		for(Administrative a:list) {
+			System.out.println(a.getCode());
+		}
+	}
+	
+	
 }

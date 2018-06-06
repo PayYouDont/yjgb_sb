@@ -1,5 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaymethod;
 
 public interface DisplaymethodMapper {
@@ -14,4 +17,8 @@ public interface DisplaymethodMapper {
     int updateByPrimaryKeySelective(Displaymethod record);
 
     int updateByPrimaryKey(Displaymethod record);
+    
+    List<Displaymethod> list(Map<String,Object> map);
+    
+    int count(Map<String,Object> map);
 }

@@ -1,5 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource;
 
 public interface InfosourceMapper {
@@ -14,4 +17,8 @@ public interface InfosourceMapper {
     int updateByPrimaryKeySelective(Infosource record);
 
     int updateByPrimaryKey(Infosource record);
+    
+    List<Infosource> list(Map<String,Object> map);
+    
+    int count(Map<String,Object> map);
 }

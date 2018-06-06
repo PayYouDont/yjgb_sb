@@ -33,17 +33,17 @@ $(document).ready(function(){
 		        {field:'programdescription',title:'输入资源',width:150,align:'center'},
 		        {field:'infoSourceName',title:'输出资源',width:150,align:'center',
 		        	formatter: function(value,row,index){
-		        		return row.infoSource.infoSourceName
+		        		return row.infoSource.infoSourceName;
 		        	}
 		        }, 
 		        {field:'accidentType',title:'事件类型',width:150,align:'center',
 		        	formatter: function(value,row,index){
-		        		return row.accidentType.name
+		        		return row.accidentType.name;
 		        	}
 		        }, 
 			    {field:'accidentLevel',title:'事件等级',width:150,align:'center',
 			    	formatter: function(value,row,index){
-		        		return row.accidentLevel.level
+		        		return row.accidentLevel.level;
 		        	}
 			    },
 		        {field:'displayMethodName',title:'展示方式',width:150,align:'center',
@@ -53,7 +53,7 @@ $(document).ready(function(){
 		        },
 		        {field:'displayLanguageName',title:'展示语言',width:150,align:'center',
 				    	formatter: function(value,row,index){
-			        		return row.displayLanguage.language
+			        		return row.displayLanguage.language;
 			        	}
 		        },
 		        {field:'endTime',title:'结束时间',width:150,align:'center'},
@@ -130,9 +130,9 @@ function refreshPage(){
 
 
 
-//删除
+//增加
 function add(){
-	window.location.href="../emergencyInfoAction/makeEmerUI"
+	window.location.href="../emergencyInfoAction/addEmer?type=add"
 }
 
 
@@ -149,9 +149,6 @@ function remove(){
 		$.messager.alert('选择提示','请选择一条信息！','info');
 		return;
 	}
-	
-	console.log(checkedData);
-	
 	$.messager.confirm('删除提示', '删除后无法恢复,请谨慎操作！', function(r){
 		if (r){
 			var arr = new Array(checkedData.length);
@@ -162,7 +159,6 @@ function remove(){
 				}
 				arr[i] = checkedData[i].id;
 			}
-			console.log(arr);
 			deleteData(arr);
 		}
 	});
@@ -172,19 +168,21 @@ function remove(){
 function deleteData(ids){
 	$.ajax({
 	    type: "post",
-	    data: {deleteIds:ids},
-	    //contentType: "application/json",
-	    url: "../emergencyInfoAction/emerRemove",
+	    data: {ids:ids},
+	    url: "../emergencyInfoAction/deleteEmer",
 	    traditional:true,
-	    success: function (data) {
-			if(data=="ok"){$.messager.alert('删除提示','删除成功！','info',function(){refreshPage();});}
+	    dataType:"json",
+	    success: function (json) {
+			if(json.success){
+				$.messager.alert('删除提示','删除成功！','info',
+					function(){
+						refreshPage();
+				});
+			}
 			else {$.messager.alert('删除提示','删除失败！','error');}
 	    },
-//	    complete: function () {//完成响应
-//	        $("#submit").removeAttr("disabled");
-//	    },
-	    error: function (data) {
-	    	$.messager.alert('系统提示','异常：'+data,'error')
+	    error: function (json) {
+	    	$.messager.alert('系统提示','异常：'+json.data,'error')
 	    }
 	});
 }

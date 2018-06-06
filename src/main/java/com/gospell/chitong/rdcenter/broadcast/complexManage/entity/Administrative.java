@@ -1,7 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -11,6 +13,9 @@ import lombok.Data;
  */
 @Data
 public class Administrative implements Serializable {
+	
+    private static final long serialVersionUID = 1L;
+    
     private Integer id;
 
     /**
@@ -55,6 +60,9 @@ public class Administrative implements Serializable {
     private Date updateTime;
 
     private String updateBy;
-
-    private static final long serialVersionUID = 1L;
+    
+    //用于生成树
+	private List<Administrative> children=new ArrayList<>();
+	
+	private String state;
 }

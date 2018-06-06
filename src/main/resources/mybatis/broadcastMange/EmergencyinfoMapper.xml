@@ -630,4 +630,13 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="getByStartTime" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from emergencyinfo
+		where start_time between #{firstDate,jdbcType=TIMESTAMP} and #{lastDate,jdbcType=TIMESTAMP}
+	</select>
 </mapper>

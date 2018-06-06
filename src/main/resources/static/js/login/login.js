@@ -23,7 +23,6 @@ function login1(){
 			if (data.success){
 				window.location.href="../emergencyInfoAction/index";
 			}else{
-				console.log(data)
 				$("font[class='tooltipFont']").html(data.data);
 			}
 		}
@@ -44,12 +43,11 @@ function login2(){
 		},
 		success: function(data){
 			$.messager.progress('close');
-			if (data=="ok"){
-				window.location.href="../menuAction/goBackStageManagement";
-			}else if(data=="errorUserNull"){
-				$("font[class='tooltipFont']").html("登录提示：查无此用户！");
-			}else if(data=="errorUserPassword"){
-				$("font[class='tooltipFont']").html("登录提示：密码错误！");
+			data = JSON.parse(data);
+			if (data.success){
+				window.location.href="../menuAction/index";
+			}else{
+				$("font[class='tooltipFont']").html(data.data);
 			}
 		}
 	});

@@ -1,5 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 
 public interface AdministrativeMapper {
@@ -15,5 +18,7 @@ public interface AdministrativeMapper {
 
     int updateByPrimaryKey(Administrative record);
     
+    List<Administrative> list(Map<String,Object> map);
     
+    int count(Map<String,Object> map);
 }

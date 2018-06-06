@@ -116,16 +116,12 @@ function review(){
 		return;
 	}
 	var v_id=checkedData[0].id;
-	console.log(checkedData);
-
 	var v_flag=checkedData[0].flag;
 	// 预案->设置播发时间
 	if(v_flag=="0"){
 		// 预案->设置播发时间
 		var nowTime = new Date().Format("yyyy-MM-dd HH:mm:ss");
-		console.log(nowTime);
-		
-		var v_name = checkedData[0].emergencyName + '(' + nowTime+')';
+		var v_name = checkedData[0].emergencyname + '(' + nowTime+')';
 		$("#emer_name").textbox("setValue",v_name);
 		$("#start_time").datetimebox("setValue",nowTime);
 		$('#set_time_dialog').dialog({
@@ -138,8 +134,8 @@ function review(){
 				handler: function () {
 					v_name = $("#emer_name").val();
 					v_time = $("#start_time").val();
-					$.post("../emergencyInfoAction/review",{id:v_id, starttime:v_time, emerName:v_name},function(data){
-						if(data=="ok"){
+					$.post("../emergencyInfoAction/review",{id:v_id, startTime:v_time, emergencyname:v_name},function(json){
+						if(json.success){
 							$.messager.alert('系统提示','审核成功！','info',function(){
 								$('#set_time_dialog').dialog("close");
 								refreshMyData();
@@ -164,8 +160,8 @@ function review(){
 	}else{
 		$.messager.confirm('审核提示', '是否通过审核？', function(r){
 			if (r){
-				$.post("../emergencyInfoAction/review",{id:v_id},function(data){
-					if(data=="ok"){
+				$.post("../emergencyInfoAction/review",{id:v_id},function(json){
+					if(json.success){
 						$.messager.alert('系统提示','审核成功！','info',function(){
 							refreshMyData();
 							window.parent.refreshTabData("信息播发",window.top.reload_broadcast_list);
