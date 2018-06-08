@@ -51,6 +51,8 @@ public class ServerProperties {
 	// 平台管辖区域中心坐标纬度
 	private String AreaLatitude;
 	
+	private String heartPakgePath;
+	
 	public String getLocation() {
 		UnitJosn unitjson = new UnitJosn();
 		unitjson.setName(UnitName);

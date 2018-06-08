@@ -71,9 +71,6 @@ a:FOCUS {
 						<option th:each="deviceModel,devStat:${deviceModelList}"
 								th:text="${deviceModel.devmodel}" 
 								th:value="${deviceModel.id}"/>
-							<!-- <s:iterator value="#request.deviceModelList" var="deviceModel">
-								<option value="${deviceModel.id}">${deviceModel.devModel}</option>
-							</s:iterator> -->
 					</select></td>
 				</tr>
 			</table>

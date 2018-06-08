@@ -1,6 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity;
 
-import java.io.Serializable;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.BaseEntity;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @author 
  */
 @Data
-public class Menu implements Serializable {
+public class Menu extends BaseEntity<Menu> {
     private Integer id;
 
     /**
@@ -51,6 +51,6 @@ public class Menu implements Serializable {
      * 默认图片
      */
     private String menuimage;
-
+    
     private static final long serialVersionUID = 1L;
 }

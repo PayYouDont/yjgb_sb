@@ -9,7 +9,6 @@ $(document).ready(function(){
 	    	
 	    },
 	    onClick:function(node){
-	    	console.log(node);
 	    	// ====>限制只能注册到最低级
 //	    	if(node.idLevel != "5"){
 //	    		$.messager.alert("提示","请选择最低一级区域注册","info");
@@ -32,7 +31,7 @@ $(document).ready(function(){
 		panelWidth:400,
 		panelHeight:200,
 		onShowPanel:function(){
-			$('#coordinateMapIframe').attr('src','../common/commonPage/coordinate/coordinate.jsp');
+			$('#coordinateMapIframe').attr('src','/deviceInfoAction/goMap');
 		},
 	});
 	$('#coordinateMap').appendTo($('#coordinate').combo('panel'));

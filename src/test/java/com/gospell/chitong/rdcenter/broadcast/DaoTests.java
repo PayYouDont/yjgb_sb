@@ -20,6 +20,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMa
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelparamMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicetypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DisplaymethodMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.MenuMapper;
@@ -29,6 +30,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodelparam;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
 
 @RunWith(SpringRunner.class)
@@ -144,7 +146,7 @@ public class DaoTests {
 	public void test11() {
 		//System.out.println(menudao.selectByPrimaryKey(1));
 		//List<Menu> list = menudao.findByPid(6);
-		List<Menu> list = menudao.findByText("综合网络管理系统");
+		List<Menu> list = menudao.findByPid(null);
 		//Logger logger = LoggerFactory.getLogger(this.getClass());
 		System.out.println(list);
 		/*Menu menu = new Menu();
@@ -180,6 +182,15 @@ public class DaoTests {
 			System.out.println(a.getCode());
 		}
 	}
+	@Resource
+	private DevicemodelparamMapper dmpdao;
 	
+	@Test
+	public void test15() {
+		Map<String,Object> map = new HashMap<String, Object>();
+		//map.put("codeLike","445103100");
+		List<Devicemodelparam> list = dmpdao.list(map);
+		System.out.println(list);
+	}
 	
 }

@@ -289,7 +289,6 @@ public class EmergencyInfoAction extends BaseAction{
 	@ResponseBody
 	public HashMap<String,Object> save(Emergencyinfo info){
 		try {
-			info.setCreateBy(getUserName());
 			Date startTime = info.getStartTime();
 			if(startTime!=null) {
 				long end = info.getStartTime().getTime()+new Integer(info.getDuration())*60*1000;

@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AdministrativeService;
 
@@ -33,5 +34,12 @@ public class ServiceTest {
 	public void test2() {
 		String str = acservice.getChinese("445103115203");
 		System.out.println(str);
+	}
+	
+	@Resource
+	NodeService nodeservice;
+	@Test
+	public void test3() {
+		
 	}
 }

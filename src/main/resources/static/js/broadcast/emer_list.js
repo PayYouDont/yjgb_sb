@@ -186,10 +186,3 @@ function deleteData(ids){
 	    }
 	});
 }
-
-
-
-
-
-
-

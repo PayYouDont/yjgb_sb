@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceinfoService;
+import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 @Service
 public class IDeviceinfoService implements DeviceinfoService{
@@ -21,8 +22,10 @@ public class IDeviceinfoService implements DeviceinfoService{
 	@Override
 	public int save(Deviceinfo deviceinfo) throws Exception {
 		if(deviceinfo.getId()!=null) {
+			deviceinfo.setUpdateBy(ShiroUtils.getUser().getName());
 			return dao.updateByPrimaryKeySelective(deviceinfo);
 		}
+		deviceinfo.setCreateBy(ShiroUtils.getUser().getName());
 		return dao.insertSelective(deviceinfo);
 	}
 

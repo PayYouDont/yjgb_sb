@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>坐标</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!-- 百度地图 -->
+<script type="text/javascript"
+	src="http://api.map.baidu.com/api?v=2.0&ak=53oVIOgmSIejwV7EfphPgTynOZbIiVYu"></script>
+<!--加载鼠标绘制工具-->
+<script type="text/javascript"
+	src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<link rel="stylesheet"
+	href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+
+<script src="/js/common/coordinate.js"></script>
+
+<style type="text/css">
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+/* 去除地图logo */
+.BMap_cpyCtrl {
+	display: none;
+}
+
+.anchorBL {
+	display: none;
+}
+</style>
+</head>
+<body>
+	<input id="unitData" type="hidden"
+		th:value="${unit_json}">
+	<div id="allmap"
+		style="height: 100%; width: 100%; background-color: green;"></div>
+
+
+
+
+	<script type="text/javascript">
+
+		var v_unitData= $.parseJSON($("#unitData").val()); 
+	
+	
+ 		var latitude=v_unitData.latitude;
+		var longitude=v_unitData.longitude;
+		
+		console.log(latitude);
+		console.log(longitude);
+
+		var dataMap = new HashMap();
+		var markerMap = new HashMap();
+		var polylines = [];
+		var currAnimationMaker = null;
+		var leftZoomCtrl;
+	    var mapOptions = {mapType: BMAP_NORMAL_MAP};
+			
+		//地图初始化
+		var map = new BMap.Map('allmap', mapOptions);
+		var point=new BMap.Point(latitude,longitude);
+		map.centerAndZoom(new BMap.Point(longitude,latitude),13); //中心点平台坐标
+		map.enableScrollWheelZoom(); //允许滚动缩放
+		map.setMapStyle({style:"light"});//修改地图默认风格
+	
+
+		//实例化鼠标绘制工具
+	    var drawingManager = new BMapLib.DrawingManager(map, {
+	        isOpen: false, //是否开启绘制模式
+	        enableDrawingTool: true, //是否显示工具栏
+	        drawingToolOptions: {
+	            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+	            offset: new BMap.Size(5, 5), //偏离值
+	            drawingModes:[BMAP_DRAWING_MARKER]
+	        }
+	    }); 
+	
+	
+		var marker = null;
+	    var markercomplete = function(e){
+	    	map.removeOverlay(marker);
+	        marker = e;
+	        //把坐标传入父级页面
+	        parent.window.setLatLng(e.getPosition().lng,e.getPosition().lat);
+	        drawingManager.setDrawingMode("hander");
+	    };
+
+
+
+
+
+	 	//添加绘画监听事件
+	    drawingManager.addEventListener('markercomplete', markercomplete);
+	    
+		function resetCenter(lng, lat, devDsn) {
+			map.setCenter(new BMap.Point(lng, lat));
+			objectAnimation(markerMap.get(devDsn));
+		}
+		
+		function objectAnimation(target){
+		    if (currAnimationMaker) {
+				currAnimationMaker.setAnimation(null);
+			}
+			currAnimationMaker = target;
+			currAnimationMaker.setAnimation(BMAP_ANIMATION_BOUNCE);
+		}
+		
+		
+		// 经纬度定位
+// 		function searchByStationPoint(v_lng,v_lat) {
+			//map.clearOverlays();//清空原来的所有标注
+// 			map.removeOverlay(marker);
+// 			map.centerAndZoom(new BMap.Point(v_lng, v_lat),8);
+// 			var point = new BMap.Point(v_lng, v_lat)
+// 			marker = new BMap.Marker(point);  // 创建标注，为要查询的地址对应的经纬度
+// 			map.addOverlay(marker);
+// 		}
+		
+//		//==============================================BEGIN=======================================================
+// 		var myIcon_green = new BMap.Icon('images/green_sprite.png', new BMap.Size(50, 50));
+// 		var myIcon_red = new BMap.Icon('images/red_sprite.png', new BMap.Size(50, 50));
+// 		var myIcon_grey = new BMap.Icon('images/grey_sprite.png', new BMap.Size(50, 50));
+// 		var markers = [];
+// 		var pt = null;
+// 		var marker;
+// 		var markerClusterer = null;
+// 		dataMap.clear();
+		
+// 		var mySquare = new SquareOverlay(map.getCenter(), 0,0, "#61b0e9");
+// 		map.addOverlay(mySquare);
+// 		mySquare.hide();
+ 		
+
+	
+		
+
+	
+	
+</script>
+</body>
+</html>

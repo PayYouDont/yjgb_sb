@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>增加参数</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/complex/deviceParam_edit.js"></script>
+<style type="text/css">
+a:FOCUS {
+	outline: none;
+}
+</style>
+</head>
+<body class="easyui-layout">
+
+	<form id="dataForm" class="easyui-form" method="post">
+		<div data-options="region:'center'" style="padding: 10px;">
+			<input id="deviceModelParamId" name="id" type="hidden"
+				th:value="${deviceModelParam.id}">
+			<table class="tab" cellpadding="2" style="width: calc(100% - 2px);">
+				<tr>
+					<td style="text-align: center;">参数名称</td>
+					<td><input class="easyui-textbox" style="width: 200px;"
+						id="paramName" name="paramName"
+						th:value="${deviceModelParam.paramName}" data-options="required:true">
+					</td>
+				</tr>
+
+				<tr>
+					<td style="text-align: center;">参数变量</td>
+					<td><input class="easyui-textbox" style="width: 200px;"
+						id="paramVariable" name="paramVariable"
+						th:value='${deviceModelParam.paramVariable}'
+						data-options="required:true"></td>
+				</tr>
+
+
+				<tr>
+					<td style="text-align: center;">参数范围</td>
+					<td><select id="paramFormCheck" class="easyui-combobox"
+						name="paramFormCheck" style="width: 200px;" panelHeight="150">
+							<option value="number"
+							th:selected="${deviceModelParam.paramFormCheck}=='number'"
+							th:text="数字类型"/>
+							 <option value="phoneNum"
+							th:selected="${deviceModelParam.paramFormCheck}=='phoneNum'"
+							th:text="电话号码"
+							/>
+						    <option value="code" 
+							th:selected="${deviceModelParam.paramFormCheck}=='code'"
+							th:text="数字"
+							/>
+						    <option value="oneToHundred" 
+							th:selected="${deviceModelParam.paramFormCheck}=='oneToHundred'"
+							th:text="1到100的任意正数字"
+							/>
+							<option value="IP" 
+							th:selected="${deviceModelParam.paramFormCheck}=='IP'"
+							th:text="'IP(例如：192.168.3.155)'"
+							/>
+							<option value="Port" 
+							th:selected="${deviceModelParam.paramFormCheck}=='Port'"
+							th:text="'端口格式(例如：8080)'"
+							/>
+					</select></td>
+				</tr>
+			</table>
+		</div>
+	</form>
+
+
+	<div data-options="region:'south',border:false"
+		style="text-align: right; padding: 5px 0 0;">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+			href="javascript:void(0)" onclick="mysave();" style="width: 80px">保存</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
+			href="javascript:void(0)" onclick="closeParentModal();"
+			style="width: 80px">关闭</a>
+	</div>
+
+
+
+</body>
+</html>

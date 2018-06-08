@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 @Service
 public class EmergencyInfoServiceImpl implements EmergencyInfoService{
@@ -28,8 +29,10 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService{
 	public int save(Emergencyinfo emer) throws Exception {
 		int i = -1;
 		if(emer.getId()!=null) {
+			emer.setCreateBy(ShiroUtils.getUser().getName());
 			i = dao.updateByPrimaryKeySelective(emer);
 		}else {
+			emer.setUpdateBy(ShiroUtils.getUser().getName());
 			i = dao.insert(emer);
 		}
 		return i;

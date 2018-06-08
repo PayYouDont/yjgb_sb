@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>菜单编辑</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/complex/menu_edit.js"></script>
+<body class="easyui-layout">
+
+	<div data-options="region:'center'">
+		<form id="dataForm" class="easyui-form" method="post">
+			<input id="menuId" type="hidden" name="id" th:value='${menu.id}'>
+
+			<table class="tab" cellpadding="1" cellspacing="5"
+				style="width: calc(100% - 2px); margin-top: 10px;">
+				<tr>
+					<td style="text-align: center;">菜单名称</td>
+					<td><input class="easyui-textbox" id="text" name="text"
+						th:value='${menu.text}' data-options="required:true"></td>
+					<td style="text-align: center;">父级菜单</td>
+					<td><input id="pid" name="pid" th:value="${menu.pid}"></td>
+				</tr>
+
+
+				<tr>
+					<td style="text-align: center;">顺序编号</td>
+					<td><input class="easyui-numberspinner" id="number"
+						name="number" th:value='${menu.number}'
+						data-options="required:true,min:1,precision:0"
+						missingMessage="根据编号顺序大小进行菜单排序"></td>
+					<td style="text-align: center;">菜单图标</td>
+					<td><input id="menuImage" name="menuimage"
+						th:value='${menu.menuimage}' placeholder="icon-man" class="easyui-textbox"
+						data-options="required:true"></td>
+
+				</tr>
+
+				
+				<tr>
+					<td style="text-align: center;">英文名称</td>
+					<td><input class="easyui-textbox" id="menuCaptionEn"
+						name="menucaptionen" th:value='${menu.menucaptionen}'
+						data-options="required:true"></td>
+
+					<td style="text-align: center;">连接地址</td>
+					<td><input id="url" name="url" th:value='${menu.url}'
+						class="easyui-textbox" data-options=""></td>
+				</tr>
+
+				<tr>
+					<td style="text-align: center;">菜单说明</td>
+					<td><input id="menuCaptionHint" name="menucaptionhint"
+						th:value='${menu.menucaptionhint}' class="easyui-textbox"
+						data-options="multiline:true"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<div data-options="region:'south',border:false"
+		style="text-align: right; padding: 5px 0 0;">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+			href="javascript:void(0)" onclick="mysave();" style="width: 80px">保存</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
+			href="javascript:void(0)" onclick="closeParentModal();"
+			style="width: 80px">关闭</a>
+	</div>
+
+
+</body>
+</html>

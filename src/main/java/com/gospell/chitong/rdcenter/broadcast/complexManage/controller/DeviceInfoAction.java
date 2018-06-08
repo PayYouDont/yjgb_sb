@@ -44,6 +44,12 @@ public class DeviceInfoAction extends BaseAction{
 		return "complex/device_regist";
 	}
 	
+	@GetMapping("/goMap")
+	public String goMap(Model model) {
+		model.addAttribute("unit_json", serverProperties.getLocation());
+		return "common/coordinate";
+	}
+	
 	@RequestMapping("/findByCodes")
 	@ResponseBody
 	public HashMap<String,Object> findByCodes(String code){

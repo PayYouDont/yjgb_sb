@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.NodeMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="link_status" jdbcType="INTEGER"
+			property="linkStatus" />
+		<result column="node_status" jdbcType="INTEGER"
+			property="nodeStatus" />
+		<result column="src_ebrid" jdbcType="VARCHAR"
+			property="srcEbrid" />
+		<result column="dest_ebrid" jdbcType="VARCHAR"
+			property="destEbrid" />
+		<result column="create_by" jdbcType="VARCHAR"
+			property="createBy" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_by" jdbcType="VARCHAR"
+			property="updateBy" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+		<result column="ebd_id" jdbcType="VARCHAR" property="ebdId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, url, link_status, node_status, src_ebrid, dest_ebrid,
+		create_by, create_time,
+		update_by, update_time, ebd_id
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from node
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from node
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into node (name, url, link_status,
+		node_status, src_ebrid, dest_ebrid,
+		create_by, create_time, update_by,
+		update_time, ebd_id)
+		values (#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+		#{linkStatus,jdbcType=INTEGER},
+		#{nodeStatus,jdbcType=INTEGER}, #{srcEbrid,jdbcType=VARCHAR}, #{destEbrid,jdbcType=VARCHAR},
+		#{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{updateBy,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP}, #{ebdId,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into node
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				name,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="linkStatus != null">
+				link_status,
+			</if>
+			<if test="nodeStatus != null">
+				node_status,
+			</if>
+			<if test="srcEbrid != null">
+				src_ebrid,
+			</if>
+			<if test="destEbrid != null">
+				dest_ebrid,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="ebdId != null">
+				ebd_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="linkStatus != null">
+				#{linkStatus,jdbcType=INTEGER},
+			</if>
+			<if test="nodeStatus != null">
+				#{nodeStatus,jdbcType=INTEGER},
+			</if>
+			<if test="srcEbrid != null">
+				#{srcEbrid,jdbcType=VARCHAR},
+			</if>
+			<if test="destEbrid != null">
+				#{destEbrid,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ebdId != null">
+				#{ebdId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node">
+		update node
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="linkStatus != null">
+				link_status = #{linkStatus,jdbcType=INTEGER},
+			</if>
+			<if test="nodeStatus != null">
+				node_status = #{nodeStatus,jdbcType=INTEGER},
+			</if>
+			<if test="srcEbrid != null">
+				src_ebrid = #{srcEbrid,jdbcType=VARCHAR},
+			</if>
+			<if test="destEbrid != null">
+				dest_ebrid = #{destEbrid,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ebdId != null">
+				ebd_id = #{ebdId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node">
+		update node
+		set name = #{name,jdbcType=VARCHAR},
+		url = #{url,jdbcType=VARCHAR},
+		link_status = #{linkStatus,jdbcType=INTEGER},
+		node_status = #{nodeStatus,jdbcType=INTEGER},
+		src_ebrid = #{srcEbrid,jdbcType=VARCHAR},
+		dest_ebrid = #{destEbrid,jdbcType=VARCHAR},
+		create_by = #{createBy,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_by = #{updateBy,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		ebd_id = #{ebdId,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="list" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from node
+		<where>
+			<if test="name != null">
+				and name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="url != null">
+				and url = #{url,jdbcType=VARCHAR}
+			</if>
+			<if test="linkStatus != null">
+				and link_status = #{linkStatus,jdbcType=INTEGER}
+			</if>
+			<if test="nodeStatus != null">
+				and node_status = #{nodeStatus,jdbcType=INTEGER}
+			</if>
+			<if test="srcEbrid != null">
+				and src_ebrid = #{srcEbrid,jdbcType=VARCHAR}
+			</if>
+			<if test="destEbrid != null">
+				and dest_ebrid = #{destEbrid,jdbcType=VARCHAR}
+			</if>
+			<if test="createBy != null">
+				and create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+				and update_by = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				and update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="ebdId != null">
+				and ebd_id = #{ebdId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from node
+		<where>
+			<if test="name != null">
+				and name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="url != null">
+				and url = #{url,jdbcType=VARCHAR}
+			</if>
+			<if test="linkStatus != null">
+				and link_status = #{linkStatus,jdbcType=INTEGER}
+			</if>
+			<if test="nodeStatus != null">
+				and node_status = #{nodeStatus,jdbcType=INTEGER}
+			</if>
+			<if test="srcEbrid != null">
+				and src_ebrid = #{srcEbrid,jdbcType=VARCHAR}
+			</if>
+			<if test="destEbrid != null">
+				and dest_ebrid = #{destEbrid,jdbcType=VARCHAR}
+			</if>
+			<if test="createBy != null">
+				and create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+				and update_by = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				and update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="ebdId != null">
+				and ebd_id = #{ebdId,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+</mapper>

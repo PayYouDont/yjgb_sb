@@ -8,7 +8,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DateFormatBean {
+public class DateFormatConfig {
 	/**
 	 * @Title: addNewConvert 
 	 * @Description: TODO(处理前端传入时间无法转换成date问题) 

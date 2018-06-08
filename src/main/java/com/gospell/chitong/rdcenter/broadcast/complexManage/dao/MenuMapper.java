@@ -1,6 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -22,4 +23,6 @@ public interface MenuMapper {
     List<Menu> findByPid(@Param("pid")Integer pid);
     
     List<Menu> findByText(@Param("text")String text);
+    
+    List<Menu> list(Map<String,Object> map);
 }
