@@ -116,7 +116,7 @@ public class EmergencyInfoAction extends BaseAction{
 	@GetMapping("/goEmerBroadCast") 
 	public String goEmerBroadCast(Model model) {
 		model.addAttribute("emerType", "信息播发");
-		return "broadcast/emer_list";
+		return "broadcast/broadcast_list";
 	}
 	
 	@GetMapping("/goEmerPlan")
@@ -327,5 +327,19 @@ public class EmergencyInfoAction extends BaseAction{
 			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
+	}
+	
+	@RequestMapping("/queryBroadCastList")
+	@ResponseBody
+	public HashMap<String,Object> queryBroadCastList(Page page){
+		Map<String,Object> map = page.getMap();
+		map.put("areacode", getUser().getAreaCode());
+		map.put("status",5);
+		map.put("orStatus",6);
+		map.put("sort", "status");
+		map.put("order", "ASC");
+		List<Emergencyinfo> list = service.queryPage(map);
+		int total = service.countPage(map);
+		return JsonWrapper.wrapperPage(list, total);
 	}
 }

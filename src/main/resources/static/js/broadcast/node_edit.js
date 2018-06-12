@@ -29,7 +29,7 @@ function closeParentModal(){
 			if (data.success){
 				$.messager.alert('系统提示', '保存成功!','info',function(){
 					window.parent.closeMyModal();
-					window.parent.refreshPage();
+					window.parent. location.reload();
 				});
 			}else{
 				$.messager.progress('close');

@@ -2,12 +2,16 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -16,6 +20,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
@@ -125,7 +131,9 @@ public class HttpClientUtil {
 
         // 创建post方式请求对象
         HttpPost httpPost = new HttpPost(url);
-
+      //设置超时
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(2000).setConnectTimeout(10000).build();
+        httpPost.setConfig(requestConfig);
         // 设置参数到请求对象中
         StringEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
         stringEntity.setContentEncoding("utf-8");
@@ -158,15 +166,20 @@ public class HttpClientUtil {
 	 * @author peiyongdong
 	 * @date 2018年6月7日 下午4:11:23
 	 */
-	public String sendGetData(String url, String encoding) throws ClientProtocolException, IOException {
+	public static String sendGetData(String url,String param) throws ClientProtocolException, IOException {
         String result = "";
 
         // 创建httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
+       
+        List<NameValuePair> list = new ArrayList<NameValuePair>();
+        list.add(new BasicNameValuePair("param1", param));
+        @SuppressWarnings("deprecation")
+		String getParams = EntityUtils.toString(new UrlEncodedFormEntity(list, HTTP.UTF_8));
         // 创建get方式请求对象
-        HttpGet httpGet = new HttpGet(url);
-        httpGet.addHeader("Content-type", "application/json");
+        HttpGet httpGet = new HttpGet(url + "?" + getParams);     
+        //httpGet.addHeader("Content-type", "application/json");
         // 通过请求对象获取响应对象
         CloseableHttpResponse response = httpClient.execute(httpGet);
 

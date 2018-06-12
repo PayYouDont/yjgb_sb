@@ -35,7 +35,7 @@ a:FOCUS {
 
 				<tr>
 					<td style="text-align: center; width: 80px;">设备序列</td>
-					<td><input class="easyui-textbox" id="devDsn" name="devDsn"
+					<td><input class="easyui-textbox" id="devDsn" name="devdsn"
 						th:value="${device.devdsn}"
 						data-options="required:true,readonly:'true'" style="width: 200px;" />
 					</td>
@@ -43,14 +43,14 @@ a:FOCUS {
 
 				<tr>
 					<td style="text-align: center; width: 80px;">设备名称</td>
-					<td><input class="easyui-textbox" id="devName" name="devName"
+					<td><input class="easyui-textbox" id="devname" name="devname"
 						data-options="required:true" style="width: 200px;"></td>
 				</tr>
 
 
 				<tr>
 					<td style="text-align: center;">注册地址</td>
-					<td><input id="devAddressCode" name="devAddressCode"
+					<td><input id="devAddressCode" name="devaddresscode"
 						data-options="required:true" style="width: 200px;"> <input
 						type="hidden" id="devAddress" name="devAddress"></td>
 				</tr>
@@ -67,7 +67,7 @@ a:FOCUS {
 					<td><select class="easyui-combobox easyui-validatebox"
 						panelHeight="150"
 						data-options="validType:'selectValueRequired[\'#deviceModelId\']'"
-						name="deviceModelId" id="deviceModelId" style="width: 200px;">
+						name="devicemodelId" id="deviceModelId" style="width: 200px;">
 						<option th:each="deviceModel,devStat:${deviceModelList}"
 								th:text="${deviceModel.devmodel}" 
 								th:value="${deviceModel.id}"/>

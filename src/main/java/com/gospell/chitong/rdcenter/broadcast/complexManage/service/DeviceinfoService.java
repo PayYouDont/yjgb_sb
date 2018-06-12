@@ -13,9 +13,9 @@ public interface DeviceinfoService {
 	
 	Deviceinfo findById(Integer id);
 	
-	List<Deviceinfo> queryPage(Map<String,Object> map);
+	List<Deviceinfo> list(Map<String,Object> map);
 	
 	int queryCount(Map<String,Object> map);
 	
-	List<Deviceinfo> findByCodes(String code);
+	List<String> findByCodes(String code);
 }

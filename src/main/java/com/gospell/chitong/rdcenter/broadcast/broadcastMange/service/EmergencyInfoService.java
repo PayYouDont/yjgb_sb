@@ -19,4 +19,6 @@ public interface EmergencyInfoService {
     String review(Emergencyinfo info) throws Exception;
     
     int deleteByIds(Integer[] ids) throws Exception;
+    
+    String getEmerJson(Emergencyinfo emer) throws Exception;
 }

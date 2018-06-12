@@ -6,17 +6,18 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceParamValService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceinfoService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DevicemodelService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
@@ -30,9 +31,26 @@ public class DeviceInfoAction extends BaseAction{
 	@Resource
 	private DevicemodelService dmService;
 	
+	@Resource
+	private DeviceParamValService dpvService;
+	
 	@GetMapping("/toDevList")
 	public String toDevList() {
 		return "complex/device_list";
+	}
+	
+	@GetMapping("/updateParam")
+	public String updateParam(Model model,Integer id) {
+		Deviceinfo info = service.findById(id);
+		Map<String,Object> map = new HashMap<>();
+		map.put("deviceInfoId", info.getId());
+		List<DeviceParamVal> params = dpvService.list(map);
+		for (DeviceParamVal deviceParamVal : params) {
+			deviceParamVal.setDeviceInfo(null);
+		}
+		model.addAttribute("params", params);
+		model.addAttribute("deviceInfo", info);
+		return "complex/device_param";
 	}
 	
 	@GetMapping("/goDeviceRegister")
@@ -50,14 +68,11 @@ public class DeviceInfoAction extends BaseAction{
 		return "common/coordinate";
 	}
 	
-	@RequestMapping("/findByCodes")
+	@PostMapping("/findByCodes")
 	@ResponseBody
 	public HashMap<String,Object> findByCodes(String code){
-		if(StringUtils.isEmpty(code)) {
-			return JsonWrapper.failureWrapper();
-		}
-		//未完待续
-		return null;
+		List<String> list = service.findByCodes(code);
+		return JsonWrapper.successWrapper(list);
 	}
 	@RequestMapping("/queryList")
 	@ResponseBody
@@ -65,9 +80,10 @@ public class DeviceInfoAction extends BaseAction{
 		Map<String,Object> map = page.getMap();
 		map.put("sort","id");
 		map.put("order", "ASC");
-		List<Deviceinfo> list = service.queryPage(map);
+		List<Deviceinfo> list = service.list(map);
 		int total = service.queryCount(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
+	
 	
 }

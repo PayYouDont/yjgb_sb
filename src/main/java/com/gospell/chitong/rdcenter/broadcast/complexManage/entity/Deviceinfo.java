@@ -52,11 +52,13 @@ public class Deviceinfo implements Serializable {
     /**
      * 纬度
      */
+    @Setter
     private String lat;
 
     /**
      * 经度
      */
+    @Setter
     private String lng;
 
     /**
@@ -104,6 +106,8 @@ public class Deviceinfo implements Serializable {
     private String parentpath;
     
     /***********不存数据库的属性*****************/
+    //坐标
+    private String coordinate;
     
     @Setter
 	private String onregister;//是否注册
@@ -129,5 +133,21 @@ public class Deviceinfo implements Serializable {
     }
     public String getOnwarning() {
     	return getStatus().substring(4,5);
+    }
+    //获取纬度
+    public String getLat() {
+    	String coordinate = getCoordinate();
+    	if(coordinate!=null&&!"".equals(coordinate)&&coordinate.indexOf(",")!=-1) {
+        	this.lat = getCoordinate().split(",")[1];
+    	}
+    	return this.lat;
+    }
+    //获取精度
+    public String getLng() {
+    	String coordinate = getCoordinate();
+    	if(coordinate!=null&&!"".equals(coordinate)&&coordinate.indexOf(",")!=-1) {
+        	this.lng = getCoordinate().split(",")[0];
+    	}
+    	return this.lng;
     }
 }

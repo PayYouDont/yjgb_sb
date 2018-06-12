@@ -18,4 +18,6 @@ public interface NodeService {
     List<Node> list(Map<String,Object> map);
     
     int count(Map<String,Object> map);
+    
+    String checkNodesToJsonStr(List<Node> nodes);
 }

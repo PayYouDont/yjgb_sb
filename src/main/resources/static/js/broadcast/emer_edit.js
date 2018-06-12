@@ -33,7 +33,10 @@ $(document).ready(function(){
 
 //1获取输入资源
 function queryInnChannel(){
-	$.post("../backCommunicationAction/getProgrameJson",function(data){
+	$.post("../backCommunicationAction/getProgrameJson",function(json){
+		var data = json.data;
+		data = JSON.parse(data);
+		console.log(data);
 		if(data==""||typeof(data)=="undefined"||data==null){
 			$.messager.progress('close');
 			$('#programDescription').tooltip("update",$('<div>获取输入资源失败</div>'));

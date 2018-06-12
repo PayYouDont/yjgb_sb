@@ -438,4 +438,11 @@
 			</if>
 		</where>
 	</select>
+	<select id="selectById"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from deviceinfo
+		where id = #{deviceInfoId,jdbcType=INTEGER}
+	</select>
 </mapper>

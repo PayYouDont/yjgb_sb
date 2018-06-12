@@ -516,6 +516,9 @@
 			<if test="status != null">
 				and status = #{status,jdbcType=INTEGER}
 			</if>
+			<if test="orStatus != null">
+				or status = #{orStatus,jdbcType=INTEGER}
+			</if>
 			<if test="unitname != null">
 				and unitName = #{unitname,jdbcType=VARCHAR}
 			</if>
@@ -609,6 +612,9 @@
 			</if>
 			<if test="status != null">
 				and status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="orStatus != null">
+				or status = #{orStatus,jdbcType=INTEGER}
 			</if>
 			<if test="unitname != null">
 				and unitName = #{unitname,jdbcType=VARCHAR}

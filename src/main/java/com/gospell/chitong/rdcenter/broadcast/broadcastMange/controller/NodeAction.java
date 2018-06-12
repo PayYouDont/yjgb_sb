@@ -1,7 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -16,6 +19,7 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 @Controller
@@ -24,7 +28,6 @@ public class NodeAction extends BaseAction{
 
 	@Resource
 	private NodeService service;
-	
 	@GetMapping("/toList")
 	public String toList() {
 		return "broadcast/node_list";
@@ -45,7 +48,8 @@ public class NodeAction extends BaseAction{
 	@PostMapping("/queryNode")
 	@ResponseBody
 	public HashMap<String,Object> queryNode(Page page){
-		List<Node> list = service.list(page.getMap());
+		Map<String,Object> map = page.getMap();
+		List<Node> list = service.list(map);
 		int total = service.count(page.getMap());
 		return JsonWrapper.wrapperPage(list, total);
 	}
@@ -71,4 +75,18 @@ public class NodeAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	
+	@RequestMapping("/checkNode")
+	@ResponseBody
+	public HashMap<String,Object> checkNode(@RequestBody List<Node> nodes){		
+		try {
+			String jsonStr = service.checkNodesToJsonStr(nodes);
+			WebScoketServer.sendInfo(jsonStr);
+			return JsonWrapper.successWrapper(10000);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return JsonWrapper.failureWrapper();
+		}
+	}
+	
 }

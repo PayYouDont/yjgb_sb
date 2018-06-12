@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceParamValMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="device_info_id" jdbcType="INTEGER"
+			property="deviceInfoId" />
+		<result column="param_name" jdbcType="VARCHAR"
+			property="paramName" />
+		<result column="param_variable" jdbcType="VARCHAR"
+			property="paramVariable" />
+		<result column="val" jdbcType="VARCHAR" property="val" />
+		<result column="param_form_check" jdbcType="VARCHAR"
+			property="paramFormCheck" />
+		<!-- 关联查询accidentType -->
+		<association property="deviceInfo" column="device_info_id"
+			javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo"
+			select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceinfoMapper.selectById" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, device_info_id, param_name, param_variable, val, param_form_check
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from device_param_val
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from device_param_val
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into device_param_val (device_info_id, param_name,
+		param_variable,
+		val, param_form_check)
+		values (#{deviceInfoId,jdbcType=INTEGER}, #{paramName,jdbcType=VARCHAR},
+		#{paramVariable,jdbcType=VARCHAR},
+		#{val,jdbcType=VARCHAR}, #{paramFormCheck,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into device_param_val
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="deviceInfoId != null">
+				device_info_id,
+			</if>
+			<if test="paramName != null">
+				param_name,
+			</if>
+			<if test="paramVariable != null">
+				param_variable,
+			</if>
+			<if test="val != null">
+				val,
+			</if>
+			<if test="paramFormCheck != null">
+				param_form_check,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="deviceInfoId != null">
+				#{deviceInfoId,jdbcType=INTEGER},
+			</if>
+			<if test="paramName != null">
+				#{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="paramVariable != null">
+				#{paramVariable,jdbcType=VARCHAR},
+			</if>
+			<if test="val != null">
+				#{val,jdbcType=VARCHAR},
+			</if>
+			<if test="paramFormCheck != null">
+				#{paramFormCheck,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal">
+		update device_param_val
+		<set>
+			<if test="deviceInfoId != null">
+				device_info_id = #{deviceInfoId,jdbcType=INTEGER},
+			</if>
+			<if test="paramName != null">
+				param_name = #{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="paramVariable != null">
+				param_variable = #{paramVariable,jdbcType=VARCHAR},
+			</if>
+			<if test="val != null">
+				val = #{val,jdbcType=VARCHAR},
+			</if>
+			<if test="paramFormCheck != null">
+				param_form_check = #{paramFormCheck,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal">
+		update device_param_val
+		set device_info_id = #{deviceInfoId,jdbcType=INTEGER},
+		param_name = #{paramName,jdbcType=VARCHAR},
+		param_variable = #{paramVariable,jdbcType=VARCHAR},
+		val = #{val,jdbcType=VARCHAR},
+		param_form_check = #{paramFormCheck,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="list" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from device_param_val
+		<where>
+			<if test="deviceInfoId != null">
+				and device_info_id = #{deviceInfoId,jdbcType=INTEGER}
+			</if>
+			<if test="paramName != null">
+				and param_name = #{paramName,jdbcType=VARCHAR}
+			</if>
+			<if test="paramVariable != null">
+				and param_variable = #{paramVariable,jdbcType=VARCHAR}
+			</if>
+			<if test="val != null">
+				and val = #{val,jdbcType=VARCHAR}
+			</if>
+			<if test="paramFormCheck != null">
+				and param_form_check = #{paramFormCheck,jdbcType=VARCHAR}
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from device_param_val
+		<where>
+			<if test="deviceInfoId != null">
+				and device_info_id = #{deviceInfoId,jdbcType=INTEGER}
+			</if>
+			<if test="paramName != null">
+				and param_name = #{paramName,jdbcType=VARCHAR}
+			</if>
+			<if test="paramVariable != null">
+				and param_variable = #{paramVariable,jdbcType=VARCHAR}
+			</if>
+			<if test="val != null">
+				and val = #{val,jdbcType=VARCHAR}
+			</if>
+			<if test="paramFormCheck != null">
+				and param_form_check = #{paramFormCheck,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+</mapper>

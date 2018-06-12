@@ -77,7 +77,7 @@ function baseSave(){
  	var v_devAddress = $('#devAddressCode').combotree('getText');
  	$("#devAddress").val(v_devAddress);
 	 
-	 
+	//var data =  $('#dataForm').serializeArray();
 	$('#dataForm').form('submit',{
 		url:'../backCommunicationAction/baseSave',
 		onSubmit:function(){
@@ -87,9 +87,11 @@ function baseSave(){
 			}
 			return isValid;	
 		},
-		success: function(data){
+		success: function(json){
 			$.messager.progress('close');	// hide progress bar while submit successfully
-			if (data=="ok"){
+			var data = JSON.parse(json);
+			console.log(data)
+			if (data.success){
 				$.messager.alert('系统提示', '注册成功!','info',function(){
 					window.parent.closeMyModal();
 					window.parent.refreshPage();

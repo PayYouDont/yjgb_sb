@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title th:text="${emerType}"></title>
+<!--easyui控件css -->
+<link rel="stylesheet" type="text/css" href="/css/common/index.css">
+<link  id="easyuiTheme" rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<!-- 百度地图 -->
+<script type="text/javascript"
+	src="http://api.map.baidu.com/api?v=2.0&ak=53oVIOgmSIejwV7EfphPgTynOZbIiVYu"></script>
+<script src="/js/common/commonUtil.js"></script>
+<script src="/js/broadcast/broadcast_list.js"></script>
+
+<style type="text/css">
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+a:FOCUS {
+	outline: none;
+}
+/* 去除地图logo */
+.BMap_cpyCtrl {
+	display: none;
+}
+
+.anchorBL {
+	display: none;
+}
+/* 去除a标签点击后的边线 */
+a:focus {
+	outline: none;
+}
+
+.font1 {
+	font-weight: bold;
+	font-family: cursive;
+}
+
+.font2 {
+	font-family: cursive;
+}
+</style>
+<script type="text/javascript">
+	var emerType = '[[${emerType}]]';
+</script>
+</head>
+<body class="easyui-layout">
+
+	<div data-options="region:'center',title:''" border="false">
+		<div id="myLayOut2" class="easyui-layout" fit="true">   
+		    <div data-options="region:'east',iconCls:'',title:'信息名称：',split:true,collapsed:true" 
+		    	style="width:270px;padding:5px;height: 800px;">
+		    	<div style="width:250px;height: calc(100% - 80px);overflow:auto;">
+		    		<table style="">
+			    		<tr><td class="font1">信息编码 :&nbsp;</td><td class="font2" id="emergencyCode"></td></tr>
+			    		<tr><td class="font1">发送编码:&nbsp;</td><td class="font2" id="EBM_ID"></td></tr>
+			    		<tr><td class="font1">开始时间:&nbsp;</td><td class="font2" id="start_time"></td></tr>
+			    		<tr><td class="font1">结束时间:&nbsp;</td><td class="font2" id="end_time"></td></tr>
+			    		<tr><td class="font1">持续时间:&nbsp;</td><td class="font2" id="duration"></td></tr>
+			    		<tr><td class="font1">播发音量:&nbsp;</td><td class="font2" id="sound"></td></tr>
+			    		<tr><td class="font1">输入资源:&nbsp;</td><td class="font2" id="programDescription"></td></tr>
+			    		<tr><td class="font1">输出资源:&nbsp;</td><td class="font2" id="infoSourceName"></td></tr>
+			    		<tr><td class="font1">事件类型:&nbsp;</td><td class="font2" id="accidentTypeName"></td></tr>
+			    		<tr><td class="font1">事件等级:&nbsp;</td><td class="font2" id="accidentLevelName"></td></tr>
+			    		<tr><td class="font1">播发方式:&nbsp;</td><td class="font2" id="displayMethodName"></td></tr>
+			    		<tr><td class="font1">播发语言:&nbsp;</td><td class="font2" id="displayLanguageName"></td></tr>
+			    		<tr><td class="font1">覆盖范围:&nbsp;</td>
+			    			<td ><div class="font2" id="addressCode" style="width:150px; height:auto;"></div></td>
+			    		</tr>
+			    		<tr><td class="font1">播发信息:&nbsp;</td>
+			    			<td ><div class="font2" id="dispalyText" style="width:150px; height:auto;"></div></td>
+			    		</tr>
+			    	</table>
+		    	</div>
+		    	<div id="ctrl_btn_div" style="width:212px;height:30px;padding:10px;position:absolute;bottom:10px;text-align: center;">
+		   		</div>
+		    </div>   
+		    <div data-options="region:'center',title:'覆盖地图'" >
+					<input id="connect" type="hidden" value="">
+					<button type="button" style="display:none;" onclick="reFreshMapAndList();">模拟测试websocket</button>
+					<div id="main_map" style="width:calc(100% - 0px);height:calc(100% - 0px);"></div>
+			</div>
+		    
+		       
+		   	<!-- <div data-options="region:'south',title:'',split:true" style="height:50px;padding:10px;">
+		   		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="send();">信息发送</a>
+		   		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="stopSend();">停止发送</a>
+		   	</div>   --> 
+		</div> 
+    </div>   
+
+
+
+ 	<div data-options="region:'east',title:'应急信息',split:true" 
+ 		style="width:280px;ba">
+		<table id="mainTab" class="easyui-datagrid" border="false" fit="true">
+		</table>
+    </div>  
+
+	
+	<!-- 地图信息窗口内容 3-->
+	<div id="mapWindowContent" style="display:none ;background-color: white;">
+		<div style="height:auto;min-height:135px;max-height:200px; width:220px;border:1px solid rgb(61,91,129);
+			padding-left:3px;padding-right:3px;border-radius:2px;overflow-y:auto;">
+		
+			<div style="height:25px;border-bottom:1px solid rgb(61,91,129);">
+				<i class="fa fa-volume-up" style="color:rgb(0,136,204);line-height:25px;height:25px;font-size:16px;"></i>
+				<font  id="windowDevName"style="line-height:25px;height:25px;color:rgb(0,136,204);
+					font-size:14px;font-weight: bold;font-family: cursive;">设备一
+				</font>
+			</div>
+		
+			<div style="width:calc(100% - 2px);margin-top:5px;">
+				<font id="windowDevId"style="font-size:14px;font-family: cursive;display: none;"></font>
+				<font style="font-size:14px;font-family: cursive;">序列：</font>
+				<font id="windowDevDsn"style="font-size:14px;font-family: cursive;"></font><br>
+				<font style="font-size:14px;font-family: cursive;">状态：</font>
+				<font id="windowDevStatus"style="font-size:14px;font-family: cursive;">报警</font><br>
+				<font style="font-size:14px;font-family: cursive;">情况： </font>
+				<font id="windowDevStatusScript"style="font-size:14px;font-family: cursive;"></font><br>
+				<font style="font-size:14px;font-family: cursive;">地址：</font>
+				<font id="windowDevAddress"style="font-size:14px;font-family: cursive;"></font><br>
+				<a style="cursor:pointer;float:right;" href="#" onclick="getDevDetail();">
+				  <font style="font-size:14px;font-weight: bold;font-family: cursive;">更多...</font>
+				</a>
+			</div>
+			
+		</div>
+   </div>
+	<script type="text/javascript">
+		 //定义全局变量
+		var map = new BMap.Map("main_map"); // 创建Map实例
+	</script>
+
+</body>
+</html>

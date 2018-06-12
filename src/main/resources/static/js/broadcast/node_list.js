@@ -1,3 +1,4 @@
+var rate = 1000;//心跳默认间隔，启动后由后台配置文件控制
 $(document).ready(function(){
 	$('#mainTab').datagrid({   
 			onBeforeLoad : function(param){  
@@ -27,7 +28,7 @@ $(document).ready(function(){
 			]],
 		    columns:[[//ebdId
 		    	{field:'url',title:'ip地址',width:150,align:'left',halign:'center'},
-		    	{field:'linkStatus',title:'节点链接状态',width:150,align:'center',formatter:linkStatusFormatter},     
+		    	{field:'linkStatus',title:'节点连接状态',width:150,align:'center',formatter:linkStatusFormatter},     
 		        {field:'srcEbrid',title:'发送方EBRID',width:150,align:'center'},
 		        {field:'destEbrid',title:'接收方EBRID',width:150,align:'center'},
 		        {field:'ebdId',title:'节点ebdId',width:150,align:'center'},
@@ -35,7 +36,15 @@ $(document).ready(function(){
 		        {field:'createTime',title:'创建时间',width:150,align:'center',sortable:"true"},
 		        {field:'updateBy',title:'修改人',width:150,align:'center',sortable:"true"},
 		        {field:'updateTime',title:'修改时间',width:150,align:'center',sortable:"true"},
-		    ]]
+		    ]],
+		    onLoadSuccess:function(data){
+		    	console.log("加载成功")
+		    	if(isconn){
+		    		var id = setTimeout(() => {
+			    		checkNode(data);
+					}, rate);
+		    	}
+		    }
 		});
 });
 
@@ -54,7 +63,7 @@ function linkStatusFormatter(value,rowData,rowIndex){
 	}else if(value==-2){
 		return '<font style="color: #FF9800;">连接超时</font>';
 	}else if(value==null){
-		return '<font style="color: #FF9800;">启用后测试</font>';
+		return '<font style="color: #FF9800;">连接中...</font>';
 	}else{
 		return '<font style="color:red;">连接失败!错误代码:'+value+'</font>';
 	}
@@ -160,9 +169,60 @@ function deleteData(ids){
 	});
 }
 
+/**********************WebScoket开始****************************/
+var socket;
+//是否连接
+var isconn;
+$(function(){
+	if(typeof(WebSocket) == "undefined") {  
+	    console.log("您的浏览器不支持WebSocket");  
+	}else{  
+	    console.log("您的浏览器支持WebSocket");  
+	}
+})
+socket = new WebSocket("ws://localhost:8090/webscoket"); 
+//打开事件  
+socket.onopen = function() {  
+	isconn = true;
+};  
+//获得消息事件  
+socket.onmessage = function(msg) { 
+	var data = msg.data;
+	if(data=="连接成功"){
+		return;
+	}
+	var nodes = JSON.parse(msg.data)
+    $('#mainTab').datagrid("loadData",nodes)
+};  
+//关闭事件  
+socket.onclose = function() {  
+    //console.log("Socket已关闭");  
+	isconn = false;
+};  
+//发生了错误事件  
+socket.onerror = function() {  
+   // alert("Socket发生了错误"); 
+	isconn = false;
+}  
+$(window).unload(function(){  
+      socket.close();
+      isconn = false;
+});  
 
-
-
-
-
-
+/***************************WebScoket完毕************************************/
+function checkNode(data){
+	var nodes = data.rows;
+	$.ajax({
+	    type: "post",
+	    url: "../nodeAction/checkNode",
+	    data:JSON.stringify(nodes),
+	    contentType:"application/json",
+	    traditional:true,
+	    dataType:"json",
+	    success: function (json) {
+	    	if(json.success){
+	    		rate = json.data;
+	    	}
+	    }
+	});
+}

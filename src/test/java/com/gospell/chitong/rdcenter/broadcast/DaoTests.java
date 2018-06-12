@@ -18,6 +18,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidentlevelMap
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidenttypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceLogMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceParamValMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelparamMapper;
@@ -28,6 +29,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.RoleMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.UserMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodelparam;
@@ -192,5 +194,13 @@ public class DaoTests {
 		List<Devicemodelparam> list = dmpdao.list(map);
 		System.out.println(list);
 	}
-	
+	@Resource
+	private DeviceParamValMapper dpvDao;
+	@Test
+	public void test16() {
+		Map<String,Object> map = new HashMap<String, Object>();
+		//map.put("codeLike","445103100");
+		List<DeviceParamVal> list = dpvDao.list(map);
+		System.out.println(list);
+	}
 }
