@@ -3,6 +3,8 @@ package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 
 public interface NodeService {
@@ -20,4 +22,8 @@ public interface NodeService {
     int count(Map<String,Object> map);
     
     String checkNodesToJsonStr(List<Node> nodes);
+    
+    List<Node> checkNodes(List<Node> nodes);
+    
+    void receiveTar(HttpServletRequest request) throws Exception;
 }

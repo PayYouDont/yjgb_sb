@@ -1,5 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.Impl;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Resource;
@@ -18,48 +20,6 @@ public class IUserService implements UserService{
 	private UserMapper dao;
 	
 	@Override
-	public int deleteByPrimaryKey(Integer id) {
-		int i = dao.deleteByPrimaryKey(id);
-		return i;
-	}
-
-	@Override
-	public int insert(User record) throws Exception{
-		int i = dao.insert(record);
-		return i;
-	}
-
-	@Override
-	public int insertSelective(User record) throws Exception{
-		int i = dao.insertSelective(record);
-		return i;
-	}
-
-	@Override
-	public User selectByPrimaryKey(Integer id) {
-		User user = dao.selectByPrimaryKey(id);
-		return user;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(User record) throws Exception{
-		int i = dao.updateByPrimaryKeySelective(record);
-		return i;
-	}
-
-	@Override
-	public int updateByPrimaryKey(User record) throws Exception{
-		int i = dao.updateByPrimaryKey(record);
-		return i;
-	}
-
-	@Override
-	public User findByName(String name) {
-		User user = dao.findByName(name);
-		return user;
-	}
-
-	@Override
 	public int resetPwd(UserVO userVO, User user) throws Exception {
 		if(Objects.equals(userVO.getUserId(),user.getId())) {
 			if(Objects.equals(MD5Util.encrypt(user.getName(),userVO.getOldPwd()),user.getPassword())) {
@@ -73,11 +33,45 @@ public class IUserService implements UserService{
 		}
 	}
 
+
 	@Override
-	public int updateUser(User user) throws Exception {
-		//User sessionUser = ShiroUtils.getUser();
-		
-		return 0;
+	public int deleteById(Integer id) throws Exception {
+		return dao.deleteByPrimaryKey(id);
+	}
+
+
+
+	@Override
+	public User selectById(Integer id) {
+		return dao.selectByPrimaryKey(id);
+	}
+
+
+
+	@Override
+	public User findByName(String name) {
+		return dao.findByName(name);
+	}
+
+
+
+	@Override
+	public int save(User user) throws Exception{
+		return user.getId() != null ? dao.updateByPrimaryKeySelective(user) : dao.insertSelective(user);
+	}
+
+
+
+	@Override
+	public List<User> list(Map<String, Object> map) {
+		return dao.list(map);
+	}
+
+
+
+	@Override
+	public int count(Map<String, Object> map) {
+		return dao.count(map);
 	}
 
 }

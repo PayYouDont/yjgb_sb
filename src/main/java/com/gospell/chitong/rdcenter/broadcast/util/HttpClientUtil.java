@@ -1,12 +1,16 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -23,11 +27,15 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 
 public class HttpClientUtil {
 
+	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util");
+	
 	public static Integer checkNode(Node node) throws ClientProtocolException, IOException{
 		String url = node.getUrl();
 		if(url.indexOf("http:")==-1) {
@@ -47,14 +55,17 @@ public class HttpClientUtil {
         // 执行请求操作，并拿到结果（同步阻塞）
         CloseableHttpResponse response = httpClient.execute(httpPost);
 
+        
         // 获取结果实体
         // 判断网络连接状态码是否正常(0--200都数正常)
-        /*if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+        int statusCode = response.getStatusLine().getStatusCode();
+        /*String result = "";
+        if (statusCode == HttpStatus.SC_OK) {
             result = EntityUtils.toString(response.getEntity(), "utf-8");
         }*/
         // 释放链接
         response.close();
-        return response.getStatusLine().getStatusCode();
+        return statusCode;
 	}
 	
 	/**
@@ -83,14 +94,6 @@ public class HttpClientUtil {
 			mEntityBuilder.addBinaryBody(entry.getKey(),entry.getValue());
 		}
 		httpPost.setEntity(mEntityBuilder.build());
-		// 装填参数
-       /* List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        if (map != null) {
-            for (Entry<String, String> entry : map.entrySet()) {
-                nameValuePairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-            }
-        // 设置参数到请求对象中
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, encoding));*/
         // 设置header信息
         // 指定报文头【Content-type】、【User-Agent】
         httpPost.setHeader("Content-type", "application/x-tar;boundary=THIS_STRING_SEPARATES");
@@ -123,8 +126,11 @@ public class HttpClientUtil {
 	 * @author peiyongdong
 	 * @date 2018年6月7日 下午4:10:14
 	 */
-	public static String sendPostDataByJson(String url, String json, String encoding) throws ClientProtocolException, IOException {
-        String result = "";
+	public static String sendPostDataByJson(String url, String json, String encoding) throws Exception {
+		if(url.indexOf("http:")==-1) {
+			url = "http://"+url;
+		}
+		String result = "";
 
         // 创建httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -168,7 +174,9 @@ public class HttpClientUtil {
 	 */
 	public static String sendGetData(String url,String param) throws ClientProtocolException, IOException {
         String result = "";
-
+        if(url.indexOf("http:")==-1) {
+			url = "http://"+url;
+		}
         // 创建httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -193,4 +201,46 @@ public class HttpClientUtil {
 
         return result;
     }
+	
+	public static String sendPostTar(String url, Map<String,File> map,String outPath)throws ClientProtocolException, IOException  {
+		String result = "";
+		if(url.indexOf("http:")==-1) {
+			url = "http://"+url;
+		}
+		// 创建httpclient对象
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		//创建post方式请求
+		HttpPost httpPost = new HttpPost(url);
+		MultipartEntityBuilder mEntityBuilder = MultipartEntityBuilder.create();
+		for(Entry<String,File> entry : map.entrySet()) {
+			mEntityBuilder.addBinaryBody(entry.getKey(),entry.getValue());
+		}
+		httpPost.setEntity(mEntityBuilder.build());
+        // 设置header信息
+        // 指定报文头【Content-type】、【User-Agent】
+        httpPost.setHeader("Content-type", "application/x-tar;boundary=THIS_STRING_SEPARATES");
+        httpPost.setHeader("Accept-Language","zh-cn");
+        //httpPost.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+        // 执行请求操作，并拿到结果（同步阻塞）
+        CloseableHttpResponse response = httpClient.execute(httpPost);
+        // 获取结果实体
+        HttpEntity entity = null;
+        // 判断网络连接状态码是否正常(0--200都数正常)
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+        	entity = response.getEntity();
+        	result = EntityUtils.toString(entity, "utf-8");
+        }
+        if(entity!=null) {
+             File file = new File(outPath);
+             OutputStream os = new FileOutputStream(file);
+             OutputStreamWriter out = new OutputStreamWriter(os);
+             out.write(result, 0,result.length());
+             out.close();
+             logger.info("文件"+file.getName()+"写出完毕！");
+        }
+        // 释放链接
+        response.close();
+
+        return result;
+	}
 }

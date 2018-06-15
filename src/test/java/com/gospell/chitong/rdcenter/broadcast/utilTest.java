@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.listener.HeartListener;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 
 @SpringBootTest
@@ -24,7 +25,7 @@ public class utilTest {
 	@Test
 	public void httpUtilTest() {
 		Map<String,File>map = new HashMap<>();
-		File file = new File(serverProperties.getHeartPakgePath());
+		File file = new File(serverProperties.getHeartSend());
 		map.put("test", file);
 		String url = "http://192.168.3.60:8888";
 		try {
@@ -35,5 +36,17 @@ public class utilTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	@Test
+	public void test2() {
+		Map<String,File> tarMap = new HashMap<>();
+		File file = new File(serverProperties.getHeartSend());
+		tarMap.put(file.getName(), file);
+		int rate = 10000;
+		String url = serverProperties.getHeartUrl();
+		String heartReceiptPath = serverProperties.getHeartReceipt();
+		HeartListener listerner = new HeartListener(tarMap, rate, url, heartReceiptPath);
+		listerner.setRate(10000);
+		listerner.start();
 	}
 }

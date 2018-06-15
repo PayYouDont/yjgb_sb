@@ -2,6 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -82,4 +83,6 @@ public class User implements Serializable {
     private String updateBy;
 
     private static final long serialVersionUID = 1L;
+    
+    private List<Role> roleList;
 }

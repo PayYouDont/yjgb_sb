@@ -38,12 +38,9 @@ $(document).ready(function(){
 		        {field:'updateTime',title:'修改时间',width:150,align:'center',sortable:"true"},
 		    ]],
 		    onLoadSuccess:function(data){
-		    	console.log("加载成功")
-		    	if(isconn){
-		    		var id = setTimeout(() => {
-			    		checkNode(data);
-					}, rate);
-		    	}
+		    	var id = setTimeout(() => {
+		    		checkNode(data);
+				}, rate);
 		    }
 		});
 });
@@ -63,7 +60,11 @@ function linkStatusFormatter(value,rowData,rowIndex){
 	}else if(value==-2){
 		return '<font style="color: #FF9800;">连接超时</font>';
 	}else if(value==null){
-		return '<font style="color: #FF9800;">连接中...</font>';
+		var msg = "测试中...";
+		if(rowData.nodeStatus==0){
+			msg = "节点未启用";
+		}
+		return '<font style="color: red;">'+msg+'</font>';
 	}else{
 		return '<font style="color:red;">连接失败!错误代码:'+value+'</font>';
 	}
@@ -170,7 +171,7 @@ function deleteData(ids){
 }
 
 /**********************WebScoket开始****************************/
-var socket;
+/*var socket;
 //是否连接
 var isconn;
 $(function(){
@@ -207,7 +208,7 @@ socket.onerror = function() {
 $(window).unload(function(){  
       socket.close();
       isconn = false;
-});  
+}); */ 
 
 /***************************WebScoket完毕************************************/
 function checkNode(data){
@@ -221,7 +222,8 @@ function checkNode(data){
 	    dataType:"json",
 	    success: function (json) {
 	    	if(json.success){
-	    		rate = json.data;
+	    		nodes = json.data;
+	    		$('#mainTab').datagrid("loadData",nodes)
 	    	}
 	    }
 	});

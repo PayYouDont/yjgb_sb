@@ -1,5 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Role;
 
 public interface RoleMapper {
@@ -14,4 +17,8 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+    
+    List<Role> list(Map<String,Object> map);
+	
+	int count(Map<String,Object> map);
 }

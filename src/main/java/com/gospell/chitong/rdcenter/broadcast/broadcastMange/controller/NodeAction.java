@@ -1,11 +1,11 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,6 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 @Controller
@@ -33,6 +32,10 @@ public class NodeAction extends BaseAction{
 		return "broadcast/node_list";
 	}
 	
+	@GetMapping("/toNodeNews")
+	public String toNodeNews() {
+		return "broadcast/nodenNews_list";
+	}
 	@GetMapping("/toAdd")
 	public String toAdd(Model model,Integer id) {
 		Node node = null;
@@ -71,7 +74,7 @@ public class NodeAction extends BaseAction{
 			service.deleteByIds(ids);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
-			logger.error("保存节点失败",e);
+			logger.error("删除节点失败",e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
@@ -80,13 +83,23 @@ public class NodeAction extends BaseAction{
 	@ResponseBody
 	public HashMap<String,Object> checkNode(@RequestBody List<Node> nodes){		
 		try {
-			String jsonStr = service.checkNodesToJsonStr(nodes);
-			WebScoketServer.sendInfo(jsonStr);
-			return JsonWrapper.successWrapper(10000);
-		} catch (IOException e) {
-			e.printStackTrace();
+			List<Node> list = service.checkNodes(nodes);
+			//WebScoketServer.sendInfo(jsonStr);
+			return JsonWrapper.successWrapper(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper();
 		}
 	}
-	
+	@RequestMapping("/receiveTar")
+	@ResponseBody
+	public HashMap<String,Object> receiveTar(HttpServletRequest request){		
+		try {
+			service.receiveTar(request);
+			return JsonWrapper.successWrapper();
+		} catch (Exception e) {
+			logger.error("接收tar包异常:"+e);
+			return JsonWrapper.failureWrapper();
+		}
+	}
 }

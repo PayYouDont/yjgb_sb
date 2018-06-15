@@ -1,5 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.User;
 
 public interface UserMapper {
@@ -16,4 +19,8 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
     
     User findByName(String name);
+    
+    List<User> list(Map<String,Object> map);
+    
+    int count(Map<String,Object> map);
 }

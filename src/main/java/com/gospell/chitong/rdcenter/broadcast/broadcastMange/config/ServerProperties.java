@@ -50,8 +50,12 @@ public class ServerProperties {
 	private String AreaLongitude;
 	// 平台管辖区域中心坐标纬度
 	private String AreaLatitude;
-	
-	private String heartPakgePath;
+	//心跳tar包路径
+	private String heartSend;
+	//心跳回执tar包路径
+	private String heartReceipt;
+	//发送心跳节点路径
+	private String heartUrl;
 	
 	public String getLocation() {
 		UnitJosn unitjson = new UnitJosn();

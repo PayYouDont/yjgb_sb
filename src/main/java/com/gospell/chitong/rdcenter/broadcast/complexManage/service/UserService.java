@@ -1,26 +1,23 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service;
 
-import org.apache.ibatis.annotations.Param;
+import java.util.List;
+import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.User;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.UserVO;
 
 public interface UserService {
-	int deleteByPrimaryKey(Integer id) throws Exception;;
+	int deleteById(Integer id) throws Exception;;
 
-    int insert(User record) throws Exception;
+    User selectById(Integer id);
 
-    int insertSelective(User record) throws Exception;;
-
-    User selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(User record) throws Exception;;
-
-    int updateByPrimaryKey(User record) throws Exception;
+    User findByName(String name);
     
-    User findByName(@Param("name")String name);
+    int save(User user) throws Exception;
     
     int resetPwd(UserVO userVO,User user) throws Exception;
     
-    int updateUser(User user) throws Exception;
+    List<User> list(Map<String,Object> map);
+    
+    int count(Map<String,Object> map);
 }

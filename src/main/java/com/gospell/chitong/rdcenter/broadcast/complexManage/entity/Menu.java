@@ -3,12 +3,14 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.entity;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.BaseEntity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * menu
  * @author 
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class Menu extends BaseEntity<Menu> {
     private Integer id;
 
