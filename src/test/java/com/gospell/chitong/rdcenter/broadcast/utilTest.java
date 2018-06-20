@@ -42,10 +42,9 @@ public class utilTest {
 		Map<String,File> tarMap = new HashMap<>();
 		File file = new File(serverProperties.getHeartSend());
 		tarMap.put(file.getName(), file);
-		int rate = 10000;
 		String url = serverProperties.getHeartUrl();
 		String heartReceiptPath = serverProperties.getHeartReceipt();
-		HeartListener listerner = new HeartListener(tarMap, rate, url, heartReceiptPath);
+		HeartListener listerner = new HeartListener(tarMap, url, heartReceiptPath,serverProperties.getHeartSend());
 		listerner.setRate(10000);
 		listerner.start();
 	}

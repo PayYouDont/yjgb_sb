@@ -21,7 +21,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class HeartXML extends BaseXML{
 	private String RptTime;
-	
 	@Override
 	public Map<String,Object> getMap(){
 		Map<String,Object> root = super.getMap();
@@ -34,7 +33,7 @@ public class HeartXML extends BaseXML{
 		return ConnectionCheck;
 	}
 	
-	public static void cheartHeartXMLTar(){
+	public static void cheartHeartXMLTar(String sendPath){
 		HeartXML xml = new HeartXML();
 		xml.setEBDVersion("1");
 		xml.setEBDID("01234000000000001010101010000000000000001");
@@ -46,7 +45,6 @@ public class HeartXML extends BaseXML{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		xml.setEBDTime(sdf.format(now));
 		xml.setRptTime(sdf.format(time));
-		String outPath = "D:\\tar\\heart\\send";
-		XMLUitl.createXMLTar(xml.getMap(),outPath, xml.getEBDID());
+		XMLUitl.createXMLTar(xml.getMap(),sendPath, xml.getEBDID());
 	}
 }

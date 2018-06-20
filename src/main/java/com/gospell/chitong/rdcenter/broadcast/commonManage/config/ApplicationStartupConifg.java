@@ -12,28 +12,28 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.listener.HeartListener;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.HeartXML;
 
 @Configuration
 public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent>{
 
 	@Resource
 	private ServerProperties serverProperties;
-	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		heartStart();//项目启动时候执行心跳包发送
 	}
 	
 	public void heartStart() {
-		
+		String sendPath = serverProperties.getHeartSend();
+		//生成心跳包
+		HeartXML.cheartHeartXMLTar(sendPath);
 		Map<String,File> tarMap = new HashMap<>();
-		File tar = new File(serverProperties.getHeartSend());
+		File tar = new File(sendPath);
 		tarMap.put(tar.getName(), tar);
-		int rate = 1500;
 		String url = serverProperties.getHeartUrl();
 		String heartReceiptPath = serverProperties.getHeartReceipt();
-		HeartListener listerner = new HeartListener(tarMap, rate, url, heartReceiptPath);
-		listerner.setRate(10000);
+		HeartListener listerner = new HeartListener(tarMap,url,sendPath,heartReceiptPath);
 		listerner.start();
 	}
 }

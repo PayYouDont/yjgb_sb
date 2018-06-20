@@ -25,13 +25,16 @@ public class HeartListener extends Thread{
 	private boolean isCancel = false;
 	//监听间隔
 	@NonNull
-	private Integer rate;
+	private Integer rate = 1500;
 	//监听节点
 	@NonNull
 	private String url;
 	//节点回执tar包存放路径
 	@NonNull
 	private String heartReceiptPath;
+	//节点发送tar包存放路径
+	@NonNull
+	private String heartSendPath;
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -51,7 +54,7 @@ public class HeartListener extends Thread{
 				logger.info("心跳包名称:"+key);
 			}
 			while(true&&!isCancel) {
-				HeartXML.cheartHeartXMLTar();
+				HeartXML.cheartHeartXMLTar(getHeartSendPath());
 				result = HttpClientUtil.sendPostTar(url, map, outPath);
 				this.setStatus(result.equals("")?0:1);
 				if(getRate()!=null) {
@@ -72,12 +75,11 @@ public class HeartListener extends Thread{
 		}
 	}
 
-
-	public HeartListener(Map<String, File> tarMap, Integer rate, String url, String heartReceiptPath) {
+	public HeartListener(Map<String, File> tarMap, String url,String heartSendPath, String heartReceiptPath) {
 		super();
 		this.tarMap = tarMap;
-		this.rate = rate;
 		this.url = url;
 		this.heartReceiptPath = heartReceiptPath;
+		this.heartSendPath = heartSendPath;
 	}
 }

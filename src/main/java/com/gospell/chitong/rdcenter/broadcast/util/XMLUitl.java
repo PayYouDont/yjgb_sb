@@ -23,8 +23,21 @@ import org.xeustechnologies.jtar.TarOutputStream;
 public class XMLUitl {
 
 	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.XMLUitl");
-	
-	public static String createXMLTar(Map<String,Object> map,String outPath,String name) {
+	/**
+	 * 生成xml文件并打包成tar包
+	 * @Title: createXMLTar 
+	 * @Description: TODO(生成xml文件并打包成tar包) 
+	 * @param @param map
+	 * @param @param outPath
+	 * @param @param name
+	 * @param @return    设定文件 
+	 * @return String    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月20日 下午1:36:30
+	 */
+	public static void createXMLTar(Map<String,Object> map,String outPath,String name) {
+		outPath = outPath.substring(0,outPath.lastIndexOf("\\"));
 		String xmlpath = createXML(map, outPath, name);
 		name = name.indexOf(".tar")==-1?name+".tar":name;
 		outPath = outPath + File.separatorChar + name;
@@ -40,7 +53,6 @@ public class XMLUitl {
 		}catch(IOException e) {
 			logger.error("创建tar包出错："+e);
 		}
-		return null;
 	}
 	
 	/**
@@ -67,10 +79,7 @@ public class XMLUitl {
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
-		xmlName = xmlName.indexOf(".xml")==-1?xmlName+".xml":xmlName;
-		outPath = outPath + File.separatorChar+xmlName;
-		//生成输出路径+名字
-		XmlWriter(document, outPath);
+		outPath = XmlWriter(document, outPath,xmlName);
 		return outPath;
 	}
 	/**
@@ -100,10 +109,8 @@ public class XMLUitl {
 		}catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
-		xmlName = xmlName.indexOf(".xml")==-1?xmlName+".xml":xmlName;
-		outPath = outPath + File.separatorChar+xmlName;
 		//生成输出路径+名字
-		XmlWriter(document, outPath);
+		XmlWriter(document, outPath,xmlName);
 		return document;
 	}
 	/**
@@ -180,13 +187,20 @@ public class XMLUitl {
 	 * @author peiyongdong
 	 * @date 2018年6月15日 上午11:38:12
 	 */
-	public static void XmlWriter(Document document,String outPath){
+	public static String XmlWriter(Document document,String outPath,String xmlName){
 		// 创建输出格式(OutputFormat对象)
         OutputFormat format = OutputFormat.createPrettyPrint();
         // 设置输出文件的编码
         // format.setEncoding("GBK");
         try {
         	File file = new File(outPath);
+        	if(!file.exists()) {
+        		file.mkdirs();
+        	}
+        	xmlName = xmlName+".xml";
+    		outPath = outPath + File.separatorChar+xmlName;
+    		file = new File(outPath);
+    		//生成输出路径+名字
             // 创建XMLWriter对象
             XMLWriter writer = new XMLWriter(new FileOutputStream(file), format);
 
@@ -202,9 +216,6 @@ public class XMLUitl {
             logger.error("创建XML错误:creatFixedXML error");
             logger.error(e.getMessage(),e);
         }
+        return outPath;
 	}
-	public static void main(String[] args) {
-		
-	}
-	
 }

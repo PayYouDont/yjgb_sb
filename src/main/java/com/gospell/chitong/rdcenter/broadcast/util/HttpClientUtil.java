@@ -34,7 +34,7 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 
 public class HttpClientUtil {
 
-	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util");
+	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil");
 	
 	public static Integer checkNode(Node node) throws ClientProtocolException, IOException{
 		String url = node.getUrl();
@@ -231,11 +231,16 @@ public class HttpClientUtil {
         	result = EntityUtils.toString(entity, "utf-8");
         }
         if(entity!=null) {
-             File file = new File(outPath);
-             OutputStream os = new FileOutputStream(file);
-             OutputStreamWriter out = new OutputStreamWriter(os);
-             out.write(result, 0,result.length());
-             out.close();
+        	String partPath = outPath.substring(0,outPath.lastIndexOf("\\"));
+            File file = new File(partPath);
+            if(!file.exists()) {
+            	 file.mkdirs();
+            }
+            file = new File(outPath);
+            OutputStream os = new FileOutputStream(file);
+            OutputStreamWriter out = new OutputStreamWriter(os);
+            out.write(result, 0,result.length());
+            out.close();
         }
         // 释放链接
         response.close();
