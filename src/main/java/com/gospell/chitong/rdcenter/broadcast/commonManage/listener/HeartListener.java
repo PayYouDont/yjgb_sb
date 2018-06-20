@@ -7,6 +7,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.HeartXML;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 
 import lombok.Data;
@@ -50,6 +51,7 @@ public class HeartListener extends Thread{
 				logger.info("心跳包名称:"+key);
 			}
 			while(true&&!isCancel) {
+				HeartXML.cheartHeartXMLTar();
 				result = HttpClientUtil.sendPostTar(url, map, outPath);
 				this.setStatus(result.equals("")?0:1);
 				if(getRate()!=null) {
@@ -58,8 +60,15 @@ public class HeartListener extends Thread{
 			}
 			logger.info("心跳包发送停止");
 		}catch(Exception e) {
-			logger.error("心跳包发送错误:"+e.getMessage());
-			logger.error(e.getMessage(),e);
+			logger.error("心跳包发送错误:"+e);
+			if(getRate()!=null) {
+				try {
+					Thread.currentThread().sleep(getRate());
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+			run();
 		}
 	}
 

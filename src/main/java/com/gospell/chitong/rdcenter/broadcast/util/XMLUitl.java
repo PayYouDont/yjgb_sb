@@ -1,8 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,10 +17,31 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xeustechnologies.jtar.TarEntry;
+import org.xeustechnologies.jtar.TarOutputStream;
 
 public class XMLUitl {
 
 	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.XMLUitl");
+	
+	public static String createXMLTar(Map<String,Object> map,String outPath,String name) {
+		String xmlpath = createXML(map, outPath, name);
+		name = name.indexOf(".tar")==-1?name+".tar":name;
+		outPath = outPath + File.separatorChar + name;
+		OutputStream tar = null;
+		TarOutputStream tarOut = null;
+		try {
+			tar = new FileOutputStream(outPath);
+			tarOut = new TarOutputStream(tar);
+			File xml = new File(xmlpath);
+			tarOut.putNextEntry(new TarEntry(xml,xml.getName()));
+			FileUtil.copyFile(new FileInputStream(xml), tarOut);
+			xml.delete();
+		}catch(IOException e) {
+			logger.error("创建tar包出错："+e);
+		}
+		return null;
+	}
 	
 	/**
 	 * 根Map创建XML
@@ -33,7 +56,7 @@ public class XMLUitl {
 	 * @author peiyongdong
 	 * @date 2018年6月15日 下午4:34:42
 	 */
-	public static Document createXML(Map<String,Object> map,String outPath,String xmlName) {
+	public static String createXML(Map<String,Object> map,String outPath,String xmlName) {
 		//创建Document对象
 		Document document = DocumentHelper.createDocument();
 		//创建根节点
@@ -48,7 +71,7 @@ public class XMLUitl {
 		outPath = outPath + File.separatorChar+xmlName;
 		//生成输出路径+名字
 		XmlWriter(document, outPath);
-		return document;
+		return outPath;
 	}
 	/**
 	 * 重写方法，为标元素签添加属性
@@ -174,7 +197,6 @@ public class XMLUitl {
 
             //关闭XMLWriter对象
             writer.close();
-            logger.info("创建XML成功！路径:"+file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
             logger.error("创建XML错误:creatFixedXML error");

@@ -236,7 +236,6 @@ public class HttpClientUtil {
              OutputStreamWriter out = new OutputStreamWriter(os);
              out.write(result, 0,result.length());
              out.close();
-             logger.info("文件"+file.getName()+"写出完毕！");
         }
         // 释放链接
         response.close();

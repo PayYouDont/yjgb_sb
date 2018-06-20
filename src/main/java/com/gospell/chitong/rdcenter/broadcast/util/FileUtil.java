@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import org.slf4j.Logger;
@@ -52,5 +53,28 @@ public class FileUtil {
 		} catch (IOException e) {
 			logger.error("复制文件错误:",e);
 		}
+	}
+	public static void copyFile(InputStream in,OutputStream out) {
+		byte[] b = new byte[1024];
+        int len = 0;
+        try {
+        	 while((len=in.read(b))!=-1) {
+             	out.write(b, 0, len);
+             }
+        }catch(IOException e) {
+        	logger.error("复制文件出错："+e);
+        }finally {
+            try {
+            	if(out!=null) {
+    				out.close();
+            	}
+            	if(in!=null) {
+    	            in.close();
+            	}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+       
 	}
 }

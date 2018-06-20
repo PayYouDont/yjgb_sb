@@ -1,7 +1,11 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.gospell.chitong.rdcenter.broadcast.util.XMLUitl;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,17 +33,20 @@ public class HeartXML extends BaseXML{
 		ConnectionCheck.put("RptTime",getRptTime());
 		return ConnectionCheck;
 	}
-	/**
-	 * exp:
-	 *  HeartXML xml = new HeartXML();
+	
+	public static void cheartHeartXMLTar(){
+		HeartXML xml = new HeartXML();
 		xml.setEBDVersion("1");
 		xml.setEBDID("01234000000000001010101010000000000000001");
 		xml.setEBDType("ConnectionCheck");
 		xml.setSRC_EBRID("23400000000000101010101");
 		xml.setDEST_EBRID("33415000000000101010101");
-		xml.setEBDTime("2017-06-07 13:40:36");
-		xml.setRptTime("YYYY-MM-DD HH:MI:SS");
-		String outPath = "C:\\Users\\pay\\Desktop\\xml";
-		createXML(xml.getMap(),outPath,"心跳检测222");
-	 */
+		Date now = new Date();
+		Date time = new Date(now.getTime()+1500);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		xml.setEBDTime(sdf.format(now));
+		xml.setRptTime(sdf.format(time));
+		String outPath = "D:\\tar\\heart\\send";
+		XMLUitl.createXMLTar(xml.getMap(),outPath, xml.getEBDID());
+	}
 }
