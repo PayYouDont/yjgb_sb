@@ -35,7 +35,6 @@ public class BroadcastRecordXML extends BaseXML{
 		public String MsgDesc;
 		public String AreaCode;
 		public String ProgramNum;
-		
 		public Map<String,Object> getMsgBasicInfo(){
 			Map<String,Object> MsgBasicInfo = new LinkedHashMap<>();
 			MsgBasicInfo.put("MsgType",getMsgType());
@@ -90,17 +89,17 @@ public class BroadcastRecordXML extends BaseXML{
 			return UnitInfo;
 		}
 	}
-	private String BrdStateCode;
-	private String BrdStateDesc;
 	private String CoverageRate;
 	private String AreaCode;
 	private String ResBrdStat;
+	private String BrdStateCode;
+	private String BrdStateDesc;
 	private ResBrdInfo ResBrdInfo = new ResBrdInfo();
 	@Data
 	public class ResBrdInfo{
 		public Map<String, Object> getMap() {
 			Map<String,Object> ResBrdItem = new LinkedHashMap<>();
-			ResBrdItem.put("", "");
+			//ResBrdItem.put("", "");
 			return ResBrdItem;
 		}
 	}
@@ -118,8 +117,8 @@ public class BroadcastRecordXML extends BaseXML{
 		Params.put("RptEndTime", getRptEndTime());
 		EBMBrdItem.put("EBM", getEBM().getMap());
 		EBMBrdItem.put("UnitInfo", getUnitInfo().getMap());
-		EBMBrdItem.put("BrdStateCode", getBrdStateCode());
-		EBMBrdItem.put("BrdStateDesc", getBrdStateDesc());
+		EBMBrdItem.put("BrdStateCode",getBrdStateCode());
+		EBMBrdItem.put("BrdStateDesc",getBrdStateDesc());
 		//EBMBrdItem节点下Coverage子节点
 		Map<String,Object> Coverage = new LinkedHashMap<>();
 		Coverage.put("CoverageRate", getCoverageRate());
@@ -132,5 +131,44 @@ public class BroadcastRecordXML extends BaseXML{
 		root.put("EBMBrdLog", EBMBrdLog);
 		return root;
 	}
-	
+	/**
+	 * exp:
+	 * BroadcastRecordXML xml = new BroadcastRecordXML();
+		xml.setEBDVersion("1");
+		xml.setEBDID("10234000000000001010101010000000000000001");
+		xml.setEBDType("EBMBrdLog");
+		xml.setSRC_EBRID("23400000000000101010101");
+		xml.setDEST_EBRID("33415000000000101010101");
+		xml.setEBDTime("2017-06-07 13:40:36");
+		xml.setRptStartTime("YYYY-MM-DD HH:MI:SS");
+		xml.setRptEndTime("YYYY-MM-DD HH:MI:SS");
+		EBM ebm = xml.getEBM();
+		ebm.setEBMID("23400000000000101010101");
+		ebm.setMsgType("1");
+		ebm.setSenderName("某应急办");
+		ebm.setSenderCode("1234");
+		ebm.setSendTime("YYYY-MM-DD HH:MI:SS");
+		ebm.setEventType("11A01");
+		ebm.setSeverity("2");
+		ebm.setStartTime("YYYY-MM-DD HH:MI:SS");
+		ebm.setEndTime("YYYY-MM-DD HH:MI:SS");
+		ebm.setLanguageCode("zho");
+		ebm.setMsgTitle("暴雨黄色预警");
+		ebm.setMsgDesc("下雨啦收衣服啦");
+		ebm.setAreaCode("341523000000,341523000001");
+		ebm.setProgramNum("12");
+		UnitInfo unitInfo = xml.getUnitInfo();
+		unitInfo.setEBRID("33415000000000101010101");
+		unitInfo.setUnitID("007");
+		unitInfo.setUnitName("应急办");
+		unitInfo.setPersonID("008");
+		unitInfo.setPersonName("刘德华");
+		xml.setBrdStateCode("3");
+		xml.setBrdStateDesc("播发成功");
+		xml.setCoverageRate("0.95");
+		xml.setAreaCode("341523000000,341523000001");
+		xml.setResBrdStat("1,4,4,118");
+		String outPath = "C:\\Users\\pay\\Desktop\\xml";
+		createXML(xml.getMap(),outPath,"播发记录2");
+	 */
 }
