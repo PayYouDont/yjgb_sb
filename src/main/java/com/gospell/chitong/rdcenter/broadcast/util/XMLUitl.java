@@ -276,4 +276,11 @@ public class XMLUitl {
 		 }
 		return xml;
 	}
+	public static void main(String[] args) {
+		/*String xmlPath = "C:\\Users\\pay\\Desktop\\xml\\播发记录.xml";
+	 	BaseXML xml = readXML(xmlPath, BroadcastRecordXML.class);
+	 	String outPath = "C:\\Users\\pay\\Desktop\\xml\\";
+	 	createXML(xml.getMap(), outPath, "播发记录22");
+	 	System.out.println(xml);*/
+	}
 }
