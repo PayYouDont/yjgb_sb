@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,11 +16,14 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarOutputStream;
+
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.BaseXML;
 
 public class XMLUitl {
 
@@ -217,5 +222,58 @@ public class XMLUitl {
             logger.error(e.getMessage(),e);
         }
         return outPath;
+	}
+	
+	public static BaseXML readXML(String xmlPath,Class<? extends BaseXML> clazz) {
+		SAXReader reader = new SAXReader();
+		try {
+			// 通过reader对象的read方法加载xml文件，获取document对象  
+			Document document = reader.read(new File(xmlPath));
+			// 通过document对象获取根节点bookstore  
+            Element EBD = document.getRootElement();  
+            //通过反射创建对象
+            BaseXML xml = clazz.newInstance();
+   		 	//属性集合
+	   		List<Field> fieldList = new ArrayList<>();
+	   		fieldList = ReflecUtil.getFields(clazz);
+	   		xml = writeToEntity(EBD, fieldList,xml);
+	   		return xml;
+		}catch(Exception e) {
+			logger.error("解析xml错误：",e);
+			return null;
+		}
+	}
+	/**
+	 * 将属性值写入实体类
+	 * @Title: writeToEntity 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param elem
+	 * @param @param fieldList
+	 * @param @param xml
+	 * @param @return
+	 * @param @throws Exception    设定文件 
+	 * @return BaseXML    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月21日 下午4:28:46
+	 */
+	public static BaseXML writeToEntity(Element elem,List<Field> fieldList,BaseXML xml) throws Exception{
+		 List<Element> elements = elem.elements();
+		 if(elements.size()>0) {
+			 for (Element element : elements) {
+				String parentName = element.getParent().getName();
+				String elemName = element.getName();
+				String text = element.getText();
+				for (Field field : fieldList) {
+					String fieldName = field.getName();
+					String ename = parentName+"_"+elemName;
+					if(fieldName.equals(ename)) {
+						field.set(xml, text);
+					}
+				}
+				writeToEntity(element, fieldList,xml);
+			 }
+		 }
+		return xml;
 	}
 }

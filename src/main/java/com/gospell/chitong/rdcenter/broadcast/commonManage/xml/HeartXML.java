@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class HeartXML extends BaseXML{
-	private String RptTime;
+	private String ConnectionCheck_RptTime;
 	@Override
 	public Map<String,Object> getMap(){
 		Map<String,Object> root = super.getMap();
@@ -29,22 +29,21 @@ public class HeartXML extends BaseXML{
 	}
 	public Map<String,Object> getConnectionCheck(){
 		Map<String,Object> ConnectionCheck = new LinkedHashMap<>();
-		ConnectionCheck.put("RptTime",getRptTime());
+		ConnectionCheck.put("RptTime",getConnectionCheck_RptTime());
 		return ConnectionCheck;
 	}
 	
 	public static void cheartHeartXMLTar(String sendPath){
 		HeartXML xml = new HeartXML();
-		xml.setEBDVersion("1");
-		xml.setEBDID("01234000000000001010101010000000000000001");
-		xml.setEBDType("ConnectionCheck");
+		xml.setEBD_EBDVersion("1");
+		xml.setEBD_EBDID("01234000000000001010101010000000000000001");
+		xml.setEBD_EBDType("ConnectionCheck");
 		xml.setSRC_EBRID("23400000000000101010101");
 		xml.setDEST_EBRID("33415000000000101010101");
 		Date now = new Date();
-		Date time = new Date(now.getTime()+1500);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		xml.setEBDTime(sdf.format(now));
-		xml.setRptTime(sdf.format(time));
-		XMLUitl.createXMLTar(xml.getMap(),sendPath, xml.getEBDID());
+		xml.setEBD_EBDTime(sdf.format(now));
+		xml.setConnectionCheck_RptTime(sdf.format(now));
+		XMLUitl.createXMLTar(xml.getMap(),sendPath, xml.getEBD_EBDID());
 	}
 }

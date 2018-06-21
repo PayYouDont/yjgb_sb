@@ -7,25 +7,30 @@ import lombok.Data;
 
 @Data
 public abstract class BaseXML {
-	protected String EBDVersion;
-	protected String EBDID;
-	protected String EBDType;
+	//命名规则为"上级节点名_下级节点名"格式，如下：
+	protected String EBD_EBDVersion;
+	protected String EBD_EBDID;
+	protected String EBD_EBDType;
 	protected String SRC_EBRID;
+	protected String SRC_URL;
 	protected String DEST_EBRID;
-	protected String EBDTime;
+	protected String EBD_EBDTime;
 	public Map<String,Object> getMap(){
 		Map<String,Object> root = new LinkedHashMap<>();
-		root.put("EBDVersion",getEBDVersion());
-		root.put("EBDID",getEBDID());
-		root.put("EBDType",getEBDType());
+		root.put("EBDVersion",getEBD_EBDVersion());
+		root.put("EBDID",getEBD_EBDID());
+		root.put("EBDType",getEBD_EBDType());
 		root.put("SRC",getSRC());
 		root.put("DEST",getDEST());
-		root.put("EBDTime",getEBDTime());
+		root.put("EBDTime",getEBD_EBDTime());
 		return root;
 	};
 	public Map<String,Object> getSRC() {
 		Map<String,Object> src = new LinkedHashMap<>();
 		src.put("EBRID", getSRC_EBRID());
+		if(getSRC_URL()!=null) {
+			src.put("URL", getSRC_URL());
+		}
 		return src;
 	}
 	public Map<String,Object> getDEST() {

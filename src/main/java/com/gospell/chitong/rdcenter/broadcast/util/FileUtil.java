@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FileUtil {
-	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util");
+	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.FileUtil");
 	
 	public static void copyFile(InputStream is,String outPaht,String fileName) {
 		File file = new File(outPaht);
@@ -61,6 +61,7 @@ public class FileUtil {
         	 while((len=in.read(b))!=-1) {
              	out.write(b, 0, len);
              }
+        	 out.flush();
         }catch(IOException e) {
         	logger.error("复制文件出错："+e);
         }finally {
