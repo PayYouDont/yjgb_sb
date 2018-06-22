@@ -37,6 +37,7 @@ public class ShrioConfig {
 		filterChainDefinitionMap.put("/easyui/**", "anon");
 		//filterChainDefinitionMap.put("/fonts/**", "anon");
 		filterChainDefinitionMap.put("/image/**", "anon");
+		filterChainDefinitionMap.put("/nodeAction/receiveTar", "anon");
 		//filterChainDefinitionMap.put("/docs/**", "anon");
 		//filterChainDefinitionMap.put("/upload/**", "anon");
 		//filterChainDefinitionMap.put("/files/**", "anon");

@@ -54,7 +54,7 @@ public class HeartListener extends Thread{
 				logger.info("心跳包名称:"+key);
 			}
 			while(true&&!isCancel) {
-				HeartXML.cheartHeartXMLTar(getHeartSendPath());
+				HeartXML.createHeartXMLTar(getHeartSendPath());
 				result = HttpClientUtil.sendPostTar(url, map, outPath);
 				this.setStatus(result.equals("")?0:1);
 				if(getRate()!=null) {

@@ -1,10 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,46 +18,12 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xeustechnologies.jtar.TarEntry;
-import org.xeustechnologies.jtar.TarOutputStream;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.BaseXML;
 
 public class XMLUitl {
 
 	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.XMLUitl");
-	/**
-	 * 生成xml文件并打包成tar包
-	 * @Title: createXMLTar 
-	 * @Description: TODO(生成xml文件并打包成tar包) 
-	 * @param @param map
-	 * @param @param outPath
-	 * @param @param name
-	 * @param @return    设定文件 
-	 * @return String    返回类型 
-	 * @throws 
-	 * @author peiyongdong
-	 * @date 2018年6月20日 下午1:36:30
-	 */
-	public static void createXMLTar(Map<String,Object> map,String outPath,String name) {
-		outPath = outPath.substring(0,outPath.lastIndexOf("\\"));
-		String xmlpath = createXML(map, outPath, name);
-		name = name.indexOf(".tar")==-1?name+".tar":name;
-		outPath = outPath + File.separatorChar + name;
-		OutputStream tar = null;
-		TarOutputStream tarOut = null;
-		try {
-			tar = new FileOutputStream(outPath);
-			tarOut = new TarOutputStream(tar);
-			File xml = new File(xmlpath);
-			tarOut.putNextEntry(new TarEntry(xml,xml.getName()));
-			FileUtil.copyFile(new FileInputStream(xml), tarOut);
-			xml.delete();
-		}catch(IOException e) {
-			logger.error("创建tar包出错："+e);
-		}
-	}
-	
 	/**
 	 * 根Map创建XML
 	 * @Title: createXML 

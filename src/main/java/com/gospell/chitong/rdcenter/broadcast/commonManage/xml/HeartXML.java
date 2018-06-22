@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.gospell.chitong.rdcenter.broadcast.util.XMLUitl;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,7 +33,7 @@ public class HeartXML extends BaseXML{
 		return ConnectionCheck;
 	}
 	
-	public static void cheartHeartXMLTar(String sendPath){
+	public static void createHeartXMLTar(String sendPath){
 		HeartXML xml = new HeartXML();
 		xml.setEBD_EBDVersion("1");
 		xml.setEBD_EBDID("01234000000000001010101010000000000000001");
@@ -44,6 +44,6 @@ public class HeartXML extends BaseXML{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		xml.setEBD_EBDTime(sdf.format(now));
 		xml.setConnectionCheck_RptTime(sdf.format(now));
-		XMLUitl.createXMLTar(xml.getMap(),sendPath, xml.getEBD_EBDID());
+		TarUtil.createXMLTar(xml.getMap(),sendPath, xml.getEBD_EBDID());
 	}
 }

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -142,11 +141,12 @@ public class INodeService implements NodeService {
 		//获取绝对文件夹路径
 		//String path = request.getSession().getServletContext().getRealPath("/upload");
 		//获取跟目录
-		File root = new File(ResourceUtils.getURL("classpath:").getPath());
-        if(!root.exists()) {
+		//File root = new File(ResourceUtils.getURL("classpath:").getPath());
+        File root = new File("D:\\tar");
+		if(!root.exists()) {
         	root = new File("");
         }
-		String outPath = root.getAbsolutePath()+File.separatorChar+"upload";
+		String outPath = root.getAbsolutePath()+File.separatorChar+"get";
         FileUtil.copyFile(mfile.getInputStream(), outPath, mfile.getOriginalFilename());
 	}
 }
