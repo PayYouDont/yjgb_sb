@@ -25,5 +25,5 @@ public interface NodeService {
     
     List<Node> checkNodes(List<Node> nodes);
     
-    void receiveTar(HttpServletRequest request) throws Exception;
+    String receiveTar(HttpServletRequest request) throws Exception;
 }

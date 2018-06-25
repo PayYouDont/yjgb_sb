@@ -1,11 +1,16 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +24,7 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 @Controller
@@ -91,11 +97,14 @@ public class NodeAction extends BaseAction{
 			return JsonWrapper.failureWrapper();
 		}
 	}
-	@RequestMapping("/receiveTar")
+	@RequestMapping("/upload")
 	@ResponseBody
-	public HashMap<String,Object> receiveTar(HttpServletRequest request){		
+	public HashMap<String,Object> upload(HttpServletRequest request,HttpServletResponse response){		
 		try {
-			service.receiveTar(request);
+			String outTarPath = service.receiveTar(request);
+			OutputStream out = response.getOutputStream();
+			InputStream in = new FileInputStream(new File(outTarPath));
+			FileUtil.wirteFile(in, out);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error("接收tar包异常:"+e);

@@ -21,6 +21,7 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService
 import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
@@ -126,7 +127,7 @@ public class INodeService implements NodeService {
 	}
 
 	@Override
-	public void receiveTar(HttpServletRequest request) throws Exception{
+	public String receiveTar(HttpServletRequest request) throws Exception{
 		MultipartHttpServletRequest mhsRequest = (MultipartHttpServletRequest) request;
 		Iterator<String> iter = mhsRequest.getFileNames();
 		String fileName = "";
@@ -138,15 +139,15 @@ public class INodeService implements NodeService {
 		if(!contentType.equals("application/x-tar")) {
 			new RuntimeException("上传的文件不是x-tar类型");
 		}
-		//获取绝对文件夹路径
-		//String path = request.getSession().getServletContext().getRealPath("/upload");
-		//获取跟目录
-		//File root = new File(ResourceUtils.getURL("classpath:").getPath());
         File root = new File("D:\\tar");
 		if(!root.exists()) {
         	root = new File("");
         }
 		String outPath = root.getAbsolutePath()+File.separatorChar+"get";
-        FileUtil.copyFile(mfile.getInputStream(), outPath, mfile.getOriginalFilename());
+		//将接收到的tar包写入指tar文件夹
+        String tarPath = FileUtil.copyFile(mfile.getInputStream(), outPath, mfile.getOriginalFilename());
+        //解析接收到的tar包并生成对应的回复tar包
+        String outTarPath = TarUtil.getTarByInTar(tarPath);
+        return outTarPath;
 	}
 }

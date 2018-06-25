@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.BaseXML;
 
-public class XMLUitl {
+public class XMLUtil {
 
 	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.XMLUitl");
 	/**
@@ -187,12 +187,22 @@ public class XMLUitl {
         }
         return outPath;
 	}
-	
-	public static BaseXML readXML(String xmlPath,Class<? extends BaseXML> clazz) {
+	/**
+	 * 读取xml文件内容，并生成对应实体类
+	 * @Title: readXML 
+	 * @Description: TODO(读取xml文件内容，并生成对应实体类) 
+	 * @param @param xmlFile
+	 * @param @return    设定文件 
+	 * @return BaseXML    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月25日 下午4:16:22
+	 */
+	public static BaseXML readXML(File xmlFile,Class<? extends BaseXML> clazz) {
 		SAXReader reader = new SAXReader();
 		try {
 			// 通过reader对象的read方法加载xml文件，获取document对象  
-			Document document = reader.read(new File(xmlPath));
+			Document document = reader.read(xmlFile);
 			// 通过document对象获取根节点bookstore  
             Element EBD = document.getRootElement();  
             //通过反射创建对象
@@ -206,6 +216,22 @@ public class XMLUitl {
 			logger.error("解析xml错误：",e);
 			return null;
 		}
+	}
+	/**
+	 * 根据xml路径读取xml文件内容，并生成对应实体类
+	 * @Title: readXML 
+	 * @Description: TODO(重写方法：根据xml路径读取xml文件内容，并生成对应实体类) 
+	 * @param @param xmlPath
+	 * @param @param clazz
+	 * @param @return    设定文件 
+	 * @return BaseXML    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月25日 下午4:19:04
+	 */
+	public static BaseXML readXML(String xmlPath,Class<? extends BaseXML> clazz) {
+		File xmlFile = new File(xmlPath);
+		return readXML(xmlFile, clazz);
 	}
 	/**
 	 * 将属性值写入实体类

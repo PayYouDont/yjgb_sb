@@ -6,7 +6,7 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-public abstract class BaseXML {
+public class BaseXML {
 	//命名规则为"上级节点名_下级节点名"格式，如下：
 	protected String EBD_EBDVersion;
 	protected String EBD_EBDID;
@@ -37,5 +37,21 @@ public abstract class BaseXML {
 		Map<String,Object> dest = new LinkedHashMap<>();
 		dest.put("EBRID",getDEST_EBRID());
 		return dest;
+	}
+	public static Class<? extends BaseXML> getClassByEBDType(String EBDType) {
+		switch (EBDType) {
+		case "OMDRequest":
+			return OMDRequest.class;
+		case "EBM":
+			return EBM.class;
+		case "EBMStateRequest":
+			return EBMStateRequest.class;
+		case "ConnectionCheck":
+			return HeartXML.class;
+		case "EBDResponse":
+			return EBDResponse.class;
+		default:
+			return BaseXML.class;
+		}
 	}
 }

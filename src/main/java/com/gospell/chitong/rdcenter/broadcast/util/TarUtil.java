@@ -13,6 +13,8 @@ import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.BaseXML;
+
 public class TarUtil {
 
 	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.TarUtil");
@@ -77,7 +79,7 @@ public class TarUtil {
 	 */
 	public static void createXMLTar(Map<String,Object> map,String outPath,String name) {
 		outPath = outPath.substring(0,outPath.lastIndexOf("\\"));
-		String xmlpath = XMLUitl.createXML(map, outPath, name);
+		String xmlpath = XMLUtil.createXML(map, outPath, name);
 		name = name.indexOf(".tar")==-1?name+".tar":name;
 		outPath = outPath + File.separatorChar + name;
 		OutputStream tar = null;
@@ -87,18 +89,61 @@ public class TarUtil {
 			tarOut = new TarOutputStream(tar);
 			File xml = new File(xmlpath);
 			tarOut.putNextEntry(new TarEntry(xml,xml.getName()));
-			FileUtil.copyFile(new FileInputStream(xml), tarOut);
+			FileUtil.wirteFile(new FileInputStream(xml), tarOut);
 			xml.delete();
 		}catch(IOException e) {
 			logger.error("创建tar包出错："+e);
 		}
 	}
+	/**
+	 * 根据tar包路径生成对应回执tar包路径
+	 * @Title: getTarByInTar 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param tarPath    设定文件 
+	 * @return void    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月25日 上午11:42:57
+	 */
+	public static String getTarByInTar(String tarPath) {
+		//d:/tar/xxxxx.tar
+		String temPath = tarPath.substring(0,tarPath.indexOf(".tar"));
+		//临时文件夹名称
+		temPath += File.separatorChar+"temp";
+		File tempFile = new File(temPath);
+		//查看临时文件夹是否存在
+		if(!tempFile.exists()) {
+			tempFile.mkdirs();
+		}
+		archive(tarPath, temPath);
+		File[] files = tempFile.listFiles();
+		for(int i=0;i<files.length;i++) {
+			File file = files[i];
+			if(!file.isDirectory()) {
+				String fileName = file.getName();
+				if(fileName.indexOf("EBDB")!=-1&&fileName.indexOf("EBDS")==-1) {
+					//获取BaseXML
+					BaseXML xml = XMLUtil.readXML(file,BaseXML.class);
+					//获取EBDType
+					String EBDType = xml.getEBD_EBDType();
+					//获取实际属于哪个子类
+					Class<? extends BaseXML> clazz = BaseXML.getClassByEBDType(EBDType);
+					String xmlPath = file.getAbsolutePath();
+					//获取实际xml实体类
+					xml = XMLUtil.readXML(xmlPath, clazz);
+					System.out.println(xml);
+				}
+			}
+		}
+		return null;
+	}
 	public static void createTar(String filesPath, String tarPath) {
 		
 	}
 	public static void main(String[] args) {
-		String inPath = "C:\\Users\\pay\\Desktop\\xml\\EBDT_10234000000000001010101010000000000002476.tar";
-		String outPath = "C:\\Users\\pay\\Desktop\\xml\\EBDT_10234000000000001010101010000000000002476";
-		archive(inPath, outPath);
+		//String inPath = "C:\\Users\\pay\\Desktop\\xml\\EBDT_10234000000000001010101010000000000002476.tar";
+		//String outPath = "C:\\Users\\pay\\Desktop\\xml\\EBDT_10234000000000001010101010000000000002476";
+		String tarPath = "D:\\tar\\get\\EBDT_10234000000000001010101010000000000002889_in.tar";
+		getTarByInTar(tarPath);
 	}
 }

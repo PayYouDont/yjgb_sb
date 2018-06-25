@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class BroadcastRequestXML extends BaseXML{
+public class EBM extends BaseXML{
 	
 	private String RelatedEBD_EBDID;
 	//EMB;
