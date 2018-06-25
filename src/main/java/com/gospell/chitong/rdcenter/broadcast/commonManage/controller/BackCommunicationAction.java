@@ -55,7 +55,6 @@ public class BackCommunicationAction extends BaseAction{
 		try {
 			String json = emerService.getEmerJson(emer);
 			sendPost = HttpClientUtil.sendPostDataByJson(url,json,"utf8");
-			System.out.println(sendPost);
 			if(!sendPost.equals("")){
 				JSONObject jsonResult = JSONObject.fromObject(sendPost); 
 				if(jsonResult.getString("Result").equals("success")){

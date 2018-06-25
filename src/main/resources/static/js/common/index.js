@@ -106,9 +106,8 @@ function reloadTab(){
 	var url = $(currTab.panel('options').content).attr("src");
 	
 	if(url == undefined){
-		url = "../deviceInfoAction/goBroatcastMonitorPage";
+		url = "../deviceInfoAction/index";
 	}
-	
 	$('#myEasyui-tabs').tabs('update', { 
 		tab: currTab,
 		options:{content:'<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:calc(100% - 6px);height:calc(100% - 6px);padding:3px;"></iframe>'}

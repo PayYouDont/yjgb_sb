@@ -179,7 +179,6 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService{
 		EBM_ContentList.add(EBM_Content);
 		eJson.setEBM_Info(EBM_Info);
 		eJson.setEBM_Content(EBM_ContentList);
-		System.out.println(JsonUtil.toJson(eJson));
 		return JsonUtil.toJson(eJson);
 	}
 }

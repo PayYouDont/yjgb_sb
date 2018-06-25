@@ -151,7 +151,6 @@ function initEmerInfo() {
 		checkOnSelect : false,
 		singleSelect : true,
 		onSelect : function(rowIndex, rowData) {// 选择表格行触发
-			console.log(rowIndex, rowData)
 			getDevByEmerAreaCode(rowData.addresscode);
 		},
 		idField : 'id',
@@ -239,11 +238,10 @@ function doSearch(param) {
 }
 
 function getDevByEmerAreaCode(addressCodes) {
-	$.post("../deviceinfoAction/findByCodes", {
+	$.post("../deviceInfoAction/findByCodes", {
 		code : addressCodes
 	}, function(data) {
-		var addressJsonArray = data.addressNameArray
-		console.log(addressJsonArray);
+		var addressJsonArray = data.data
 		map.clearOverlays();// 清除地图覆盖物
 		for (var i = 0; i < addressJsonArray.length; i++) {
 			console.log(addressJsonArray[i]);
