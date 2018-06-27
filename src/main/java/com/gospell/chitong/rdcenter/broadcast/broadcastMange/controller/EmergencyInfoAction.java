@@ -265,6 +265,17 @@ public class EmergencyInfoAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	/**
+	 * 保存应急信息
+	 * @Title: save 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param info
+	 * @param @return    设定文件 
+	 * @return HashMap<String,Object>    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月27日 下午4:10:42
+	 */
 	@RequestMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Emergencyinfo info){
@@ -308,7 +319,17 @@ public class EmergencyInfoAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
-	
+	/**
+	 * 分页查询信息播发列表
+	 * @Title: queryBroadCastList 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param page
+	 * @param @return    设定文件 
+	 * @return HashMap<String,Object>    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月27日 下午4:09:49
+	 */
 	@RequestMapping("/queryBroadCastList")
 	@ResponseBody
 	public HashMap<String,Object> queryBroadCastList(Page page){
