@@ -21,13 +21,14 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 	private ServerProperties serverProperties;
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		heartStart();//项目启动时候执行心跳包发送
+		//正式运行时开启此功能
+		//heartStart();//项目启动时候执行心跳包发送
 	}
 	
 	public void heartStart() {
 		String sendPath = serverProperties.getHeartSend();
 		//生成心跳包
-		HeartXML.cheartHeartXMLTar(sendPath);
+		HeartXML.createHeartXMLTar(sendPath);
 		Map<String,File> tarMap = new HashMap<>();
 		File tar = new File(sendPath);
 		tarMap.put(tar.getName(), tar);

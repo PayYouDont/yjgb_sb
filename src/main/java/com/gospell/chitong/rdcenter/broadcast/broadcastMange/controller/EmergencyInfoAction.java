@@ -18,11 +18,6 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyIn
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AccidentlevelService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AccidenttypeSevice;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DisplaylanguageService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DisplaymethodService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.InfosourceService;
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
@@ -32,21 +27,6 @@ public class EmergencyInfoAction extends BaseAction{
 	
 	@Resource
 	private EmergencyInfoService service;
-	
-	@Resource
-	private DisplaylanguageService dplService;
-	
-	@Resource
-	private DisplaymethodService dpmService;
-	
-	@Resource
-	private AccidenttypeSevice atService;
-	
-	@Resource
-	private AccidentlevelService alService;
-	
-	@Resource
-	private InfosourceService isService;
 	
 	@Resource
 	private AreaCodeChineseService accService;
@@ -157,15 +137,15 @@ public class EmergencyInfoAction extends BaseAction{
 		model.addAttribute("type", type); 
 		model.addAttribute("emer", emer);  
 		//输出资源（例如：参数配置中的 “麦克风（编码器1）”）
-		model.addAttribute("infoSourceList", isService.list(map));
+		model.addAttribute("infoSourceList", service.InfosourceList(map));
 		 //事件类型集合
-		model.addAttribute("accidentTypeList", atService.list(map));
+		model.addAttribute("accidentTypeList", service.AccidenttypeList(map));
 		 //应急事件等级
-		model.addAttribute("accidentLevelList", alService.list(map));
+		model.addAttribute("accidentLevelList", service.AccidentlevelList(map));
 		//所有的文字展示方式
-		model.addAttribute("displayMethodList", dpmService.list(map));
+		model.addAttribute("displayMethodList", service.DisplaymethodList(map));
 		 //展示语言
-		model.addAttribute("displayLanguageList", dplService.list(map));
+		model.addAttribute("displayLanguageList", service.DisplaylanguageList(map));
 		return "broadcast/emer_edit";
 	}
 	

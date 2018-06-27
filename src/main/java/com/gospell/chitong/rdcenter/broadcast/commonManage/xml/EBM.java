@@ -72,34 +72,5 @@ public class EBM extends BaseXML{
 		MsgContent.put("Auxiliary", Auxiliary);
 		return MsgContent;
 	}
-	/**
-	 * exp:BroadcastRequestXML xml = new BroadcastRequestXML();
-		xml.setEBDVersion("1");
-		xml.setEBDID("10434152300000001030101010000000000000002");
-		xml.setEBDType("EBM");
-		xml.setSRC_EBRID("43415230000000103010101");
-		xml.setSRC_URL("http://127.0.0.1:8080/Emergency/receive/ebd.htm");
-		xml.setDEST_EBRID("43415230000000303010201");
-		xml.setEBDTime("2018-06-15 21:59:05");
-		xml.setRelatedEBD_EBDID("10234000000000001010101010000000000002473");
-		xml.setEBMVersion("1");
-		xml.setEBMID("43415230000000103010101201802130002");
-		xml.setMsgType("3");
-		xml.setSenderName("安徽省调度控制平台");
-		xml.setSenderCode("23400000000000101010101");
-		xml.setSendTime("2018-06-15 21:58:46");
-		xml.setEventType("0000");
-		xml.setSeverity("1");
-		xml.setStartTime("2018-06-15 21:58:46");
-		xml.setEndTime("2018-06-15 22:08:46");
-		xml.setLanguageCode("zho");
-		xml.setMsgTitle("音频演练");
-		xml.setMsgDesc("");
-		xml.setAreaCode("341523000000");
-		xml.setAuxiliaryType("2");
-		xml.setAuxiliaryDesc("EBDR_1528773660358_gme.mp3");
-		xml.setSize("3569788");
-		String outPath = "C:\\Users\\pay\\Desktop\\xml";
-		XMLUitl.createXML(xml.getMap(), outPath, "播发请求222");
-	 */
+	
 }

@@ -98,12 +98,13 @@ public class TarUtil {
 	/**
 	 * 根据tar包路径生成对应回执tar包路径
 	 * @Title: getTarByInTar 
-	 * @Description: TODO(这里用一句话描述这个方法的作用) 
-	 * @param @param tarPath    设定文件 
-	 * @return void    返回类型 
+	 * @Description: TODO(根据tar包路径生成对应回执tar包路径) 
+	 * @param @param tarPath
+	 * @param @return    设定文件 
+	 * @return String    返回类型 
 	 * @throws 
 	 * @author peiyongdong
-	 * @date 2018年6月25日 上午11:42:57
+	 * @date 2018年6月27日 上午9:13:19
 	 */
 	public static String getTarByInTar(String tarPath) {
 		//d:/tar/xxxxx.tar
