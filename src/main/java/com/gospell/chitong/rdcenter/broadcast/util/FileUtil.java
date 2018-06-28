@@ -63,14 +63,68 @@ public class FileUtil {
         }
        
 	}
+	
+	public static boolean deleteFile(File file) {
+		if (file.exists() && file.isFile()) {
+			if(file.delete()) {
+				logger.info("删除文件"+file.getName()+"成功!");
+				return true;
+			}else {
+				logger.info("删除文件"+file.getName()+"失败!");
+				return false;
+			}
+		}
+		logger.info("删除单个文件" + file.getName() + "失败！");
+		return false;
+	}
+	
 	public static boolean deleteDirectory(File dir) {
 		// 如果dir对应的文件不存在，或者不是一个目录，则退出
         if ((!dir.exists()) || (!dir.isDirectory())) {
-            System.out.println("删除目录失败：" + dir + "不存在！");
+        	logger.info("删除目录失败：" + dir + "不存在！");
             return false;
         }
-		
-		
-		return true;
+        boolean flag = true;
+        // 删除文件夹中的所有文件包括子目录
+        File[] files = dir.listFiles();
+        for (int i = 0; i < files.length; i++) {
+        	  // 删除子文件
+            if (files[i].isFile()) {
+                flag = deleteFile(files[i]);
+                if (!flag)
+                    break;
+            }
+            // 删除子目录
+            else if (files[i].isDirectory()) {
+                flag = deleteDirectory(files[i]);
+                if (!flag)
+                    break;
+            }
+        }
+        if (!flag) {
+        	logger.info("删除目录失败！");
+            return false;
+        }
+        // 删除当前目录
+        if (dir.delete()) {
+        	logger.info("删除目录" + dir + "成功！");
+            return true;
+        } else {
+        	logger.info("删除目录失败！");
+            return false;
+        }
+	}
+	public static boolean deleteFile(String filePath) {
+		File file = new File(filePath);
+		if(!file.exists()) {
+			return false;
+		}
+		if(file.isFile()) {
+			deleteFile(file);
+			return true;
+		}else{
+			deleteDirectory(file);
+			return true;
+		}
 	}
 }

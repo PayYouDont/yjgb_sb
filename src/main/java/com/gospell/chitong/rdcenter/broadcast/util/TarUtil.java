@@ -124,9 +124,9 @@ public class TarUtil {
 	 */
 	public static String getTarByInTar(String inTarPath,String outTarPath) {
 		//d:/tar/xxxxx.tar
-		String temPath = inTarPath.substring(0,inTarPath.indexOf(".tar"));
+		String temDir = inTarPath.substring(0,inTarPath.indexOf(".tar"));
 		//临时文件夹名称
-		temPath += File.separatorChar+"temp";
+		String temPath = temDir + File.separatorChar+"temp";
 		File tempFile = new File(temPath);
 		//查看临时文件夹是否存在
 		if(!tempFile.exists()) {
@@ -153,7 +153,7 @@ public class TarUtil {
 					//创建回执tar包返回路径
 					outTarPath = createXMLTar(resultEntity, outTarPath, resultEntityName);
 					//删除临时文件
-					tempFile.deleteOnExit();
+					FileUtil.deleteFile(temDir);
 					return outTarPath;
 				}
 			}
