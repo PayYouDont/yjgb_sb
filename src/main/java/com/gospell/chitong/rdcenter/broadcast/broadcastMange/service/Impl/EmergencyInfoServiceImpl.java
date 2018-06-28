@@ -229,6 +229,18 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		return JsonUtil.toJson(eJson);
 	}
 
+	/**
+	 * 将xml内容存入数据库
+	 * <p>Title: saveXML</p> 
+	 * <p>Description: </p> 
+	 * @param ebmxml
+	 * @return
+	 * @throws Exception 
+	 * @see com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService#saveXML(com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月27日 下午4:08:54
+	 */
 	@Override
 	public int saveXML(EBM ebmxml) throws Exception {
 		Emergencyinfo info = new Emergencyinfo();

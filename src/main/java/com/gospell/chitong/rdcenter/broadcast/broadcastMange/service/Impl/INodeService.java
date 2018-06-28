@@ -147,7 +147,8 @@ public class INodeService implements NodeService {
 		//将接收到的tar包写入指tar文件夹
         String tarPath = FileUtil.copyFile(mfile.getInputStream(), outPath, mfile.getOriginalFilename());
         //解析接收到的tar包并生成对应的回复tar包
-        String outTarPath = TarUtil.getTarByInTar(tarPath);
+        String ouPath = "D:\\tar\\out";
+        String outTarPath = TarUtil.getTarByInTar(tarPath,ouPath);
         return outTarPath;
 	}
 }

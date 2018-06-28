@@ -24,6 +24,24 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.BaseXML;
 public class XMLUtil {
 
 	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.XMLUitl");
+	
+	/**
+	 * 根基实体类生成xml
+	 * @Title: createXML 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param entity
+	 * @param @param outPath
+	 * @param @param xmlName
+	 * @param @return    设定文件 
+	 * @return String    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年6月28日 上午9:00:06
+	 */
+	public static String createXML(BaseXML entity,String outPath,String xmlName) {
+		Map<String,Object> map = entity.getMap();
+		return createXML(map, outPath, xmlName);
+	}
 	/**
 	 * 根Map创建XML
 	 * @Title: createXML 

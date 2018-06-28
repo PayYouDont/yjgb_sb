@@ -63,4 +63,14 @@ public class FileUtil {
         }
        
 	}
+	public static boolean deleteDirectory(File dir) {
+		// 如果dir对应的文件不存在，或者不是一个目录，则退出
+        if ((!dir.exists()) || (!dir.isDirectory())) {
+            System.out.println("删除目录失败：" + dir + "不存在！");
+            return false;
+        }
+		
+		
+		return true;
+	}
 }

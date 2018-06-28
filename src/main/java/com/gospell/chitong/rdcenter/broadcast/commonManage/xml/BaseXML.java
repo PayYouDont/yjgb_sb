@@ -1,5 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -53,5 +55,15 @@ public class BaseXML {
 		default:
 			return BaseXML.class;
 		}
+	}
+	public BaseXML getResponseByClass(BaseXML entity) {
+		EBDResponse response = new EBDResponse();
+		response.setEBD_EBDVersion(entity.getEBD_EBDVersion());
+		response.setEBD_EBDID(entity.getEBD_EBDID());
+		response.setEBD_EBDType("EBDResponse");
+		response.setSRC_EBRID(entity.getDEST_EBRID());
+		response.setDEST_EBRID(entity.getSRC_EBRID());
+		response.setEBD_EBDTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+		return response;
 	}
 }
