@@ -21,6 +21,9 @@
 			property="updateTime" />
 		<result column="update_by" jdbcType="VARCHAR"
 			property="updateBy" />
+		<association property="deviceType" column="deviceType_id" 
+			javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicetype"	
+			select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicetypeMapper.selectById"/>
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, devModel, devModelDescription, deviceType_id, devModelCode,
@@ -209,9 +212,7 @@
 		</if>
 	</select>
 	<select id="count" resultType="int">
-		select
-		<include refid="Base_Column_List" />
-		from devicemodel
+		select count(*) from devicemodel
 		<where>
 			<if test="devmodel != null">
 				and devModel = #{devmodel,jdbcType=VARCHAR}

@@ -57,5 +57,7 @@ public class Devicemodel implements Serializable {
      */
     private String updateBy;
 
+    private Devicetype deviceType;
+    
     private static final long serialVersionUID = 1L;
 }

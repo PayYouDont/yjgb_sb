@@ -53,7 +53,7 @@ public class IDevicemodelparamService implements DevicemodelparamService{
 
 	@Override
 	public List<DevModelParamRelation> findByMap(Map<String, Object> map) {
-		return dmprdao.selectByParam(map);
+		return dmprdao.list(map);
 	}
 	
 	

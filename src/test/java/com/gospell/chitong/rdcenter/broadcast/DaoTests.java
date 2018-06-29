@@ -100,7 +100,8 @@ public class DaoTests {
 	
 	@Test
 	public void test6() {
-		System.out.println(ccidenttypedao.selectByPrimaryKey(1));
+		//System.out.println(ccidenttypedao.selectByPrimaryKey(1));
+		//String path =  "C:\\Users\\pay\\Desktop\\资料\\国家应急平台体系信息资源分类与编码规范.docx";
 	}
 	
 	@Resource

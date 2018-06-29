@@ -19,4 +19,6 @@ public interface DevicemodelMapper {
     int updateByPrimaryKey(Devicemodel record);
     
     List<Devicemodel> list(Map<String,Object> map);
+    
+    int count(Map<String,Object> map);
 }

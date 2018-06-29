@@ -76,7 +76,7 @@
 		dmp_id = #{dmpId,jdbcType=INTEGER}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<select id="selectByParam" resultMap="BaseResultMap">
+	<select id="list" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from dev_model_param_relation

@@ -18,5 +18,5 @@ public interface DevModelParamRelationMapper {
 
     int updateByPrimaryKey(DevModelParamRelation record);
     
-    List<DevModelParamRelation>selectByParam(Map<String,Object> map);
+    List<DevModelParamRelation>list(Map<String,Object> map);
 }
