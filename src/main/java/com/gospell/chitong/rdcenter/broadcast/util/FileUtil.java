@@ -114,17 +114,15 @@ public class FileUtil {
             return false;
         }
 	}
-	public static boolean deleteFile(String filePath) {
+	public static boolean delete(String filePath) {
 		File file = new File(filePath);
 		if(!file.exists()) {
 			return false;
 		}
 		if(file.isFile()) {
-			deleteFile(file);
-			return true;
+			return deleteFile(file);
 		}else{
-			deleteDirectory(file);
-			return true;
+			return deleteDirectory(file);
 		}
 	}
 }
