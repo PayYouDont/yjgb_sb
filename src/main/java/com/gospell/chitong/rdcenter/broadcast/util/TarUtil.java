@@ -153,7 +153,7 @@ public class TarUtil {
 					//创建回执tar包返回路径
 					outTarPath = createXMLTar(resultEntity, outTarPath, resultEntityName);
 					//删除临时文件
-					FileUtil.deleteFile(temDir);
+					FileUtil.delete(temDir);
 					return outTarPath;
 				}
 			}
