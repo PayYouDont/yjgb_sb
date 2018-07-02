@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBRDTInfo;
 
 public class XMLUtil {
 
@@ -285,10 +287,15 @@ public class XMLUtil {
 		return xml;
 	}
 	public static void main(String[] args) {
-		/*String xmlPath = "C:\\Users\\pay\\Desktop\\xml\\播发记录.xml";
-	 	BaseXML xml = readXML(xmlPath, BroadcastRecordXML.class);
+		String xmlPath = "C:\\Users\\pay\\Desktop\\资料\\tar\\EBDB_10434152300000001030101012018062300000001.xml";
+	 	BaseXML xml = readXML(xmlPath, EBRDTInfo.class);
 	 	String outPath = "C:\\Users\\pay\\Desktop\\xml\\";
-	 	createXML(xml.getMap(), outPath, "播发记录22");
-	 	System.out.println(xml);*/
+	 	Map<String,Object> map = xml.getMap();
+	 	Map<String,Object> EBRDT = new HashMap<>();
+ 		EBRDT.put("RptTime", "2018-06-23 16:38:45");
+ 		EBRDT.put("RptType", "Sync");
+ 		map = xml.addSubMap("EBRDTInfo", EBRDT);
+	 	createXML(map, outPath, "终端信息111");
+	 	System.out.println(xml);
 	}
 }

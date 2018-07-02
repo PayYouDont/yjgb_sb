@@ -2,8 +2,11 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import lombok.Data;
 
@@ -65,5 +68,45 @@ public class BaseXML {
 		response.setDEST_EBRID(entity.getSRC_EBRID());
 		response.setEBD_EBDTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
 		return response;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String,Object> getSubMapByKey(String key){
+		Object subMap = getMap().get(key);
+		if(subMap instanceof Map) {
+			return (Map<String, Object>) subMap;
+		}else {
+			return null;
+		}
+	}
+	/**
+	 * 添加重复子集到map
+	 * @Title: addSubMap 
+	 * @Description: TODO(解决某些xml有些重复的标签，但是值不同问题) 
+	 * @param @param key
+	 * @param @param map
+	 * @param @return    设定文件 
+	 * @return Map<String,Object>    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月2日 下午5:06:58
+	 */
+	public Map<String,Object> addSubMap(String key,Map<String,Object> map){
+		Map<String,Object> submap = getSubMapByKey(key);
+		Map<String,Object> root = getMap();
+		if(submap!=null) {
+	 		Map<String,Object> IdentityMap = new IdentityHashMap<>();
+	 		Set<Entry<String, Object>> set = submap.entrySet();
+	 		String IdentityKey = "";
+	 		for (Entry<String, Object> entry : set) {
+				String ekey = entry.getKey();
+				Object evalue = entry.getValue();
+				IdentityMap.put(ekey, evalue);
+				IdentityKey = ekey;
+			}
+	 		IdentityMap.put(new String(IdentityKey),map);
+	 		root.put(key, IdentityMap);
+	 	}
+		return root;
 	}
 }
