@@ -17,6 +17,11 @@ public class utilTest {
 	protected ServerProperties serverProperties;
 	@Test
 	public void httpUtilTest() {
-		EBRPSInfo.sendEBRPSInfo(serverProperties);
+		try {
+			EBRPSInfo.sendEBRPSInfo(serverProperties);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

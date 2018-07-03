@@ -11,7 +11,7 @@ public class RestartTest {
 	
 	@Test
 	public void test() {
-		Application.restart();
+		//Application.restart();
 	}
 	
 }

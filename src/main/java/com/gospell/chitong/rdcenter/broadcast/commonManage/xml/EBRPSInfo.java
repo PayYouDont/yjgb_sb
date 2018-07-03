@@ -74,17 +74,13 @@ public class EBRPSInfo extends BaseXML{
 		info.setEBRPS_URL(prop.getServer_ip()+prop.getServer_port()+"/nodeAction/upload");
 		return TarUtil.createXMLTar(info,prop.getTarOutPath(), info.getEBD_EBDID());
 	}
-	public static void sendEBRPSInfo(ServerProperties prop) {
+	public static void sendEBRPSInfo(ServerProperties prop) throws Exception {
 		String tarPath = EBRPSInfo.createTar(prop);
 		Map<String,File> tarMap = new LinkedHashMap<>();
 		File tar = new File(tarPath);
 		tarMap.put(tar.getName(), tar);
 		String url = prop.getSendUrl();
 		String outPath = prop.getTarInPath()+File.separatorChar+tar.getName();
-		try {
-			HttpClientUtil.sendPostTar(url, tarMap, outPath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		HttpClientUtil.sendPostTar(url, tarMap, outPath);
 	}
 }
