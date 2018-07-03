@@ -5,13 +5,15 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 /**
  * 心跳检测XML
-* @ClassName: HeartXML 
+* @ClassName: ConnectionCheck 
 * @Description: TODO(用于生成心跳检测XML) 
 * @author peiyongdong
 * @date 2018年6月15日 下午4:28:11 
@@ -19,7 +21,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class HeartXML extends BaseXML{
+public class ConnectionCheck extends BaseXML{
 	private String ConnectionCheck_RptTime;
 	@Override
 	public Map<String,Object> getMap(){
@@ -33,17 +35,17 @@ public class HeartXML extends BaseXML{
 		return ConnectionCheck;
 	}
 	
-	public static void createHeartXMLTar(String sendPath){
-		HeartXML xml = new HeartXML();
-		xml.setEBD_EBDVersion("1");
-		xml.setEBD_EBDID("01234000000000001010101010000000000000001");
+	public static String createTar(ServerProperties prop){
+		ConnectionCheck xml = new ConnectionCheck();
+		xml.setEBD_EBDVersion("1.0");
+		xml.setEBD_EBDID("01"+prop.getSRC_EBRID()+EBDcodeUtil.getConnectionCheckCode());
 		xml.setEBD_EBDType("ConnectionCheck");
-		xml.setSRC_EBRID("23400000000000101010101");
-		xml.setDEST_EBRID("33415000000000101010101");
+		xml.setSRC_EBRID(prop.getSRC_EBRID());
+		xml.setDEST_EBRID(prop.getDEST_EBRID());
 		Date now = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		xml.setEBD_EBDTime(sdf.format(now));
 		xml.setConnectionCheck_RptTime(sdf.format(now));
-		TarUtil.createXMLTar(xml.getMap(),sendPath, xml.getEBD_EBDID());
+		return TarUtil.createXMLTar(xml.getMap(),prop.getTarOutPath(), xml.getEBD_EBDID());
 	}
 }

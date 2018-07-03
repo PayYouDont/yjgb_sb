@@ -61,7 +61,7 @@ public class BaseXML {
 		case "EBMStateRequest":
 			return EBMStateRequest.class;
 		case "ConnectionCheck":
-			return HeartXML.class;
+			return ConnectionCheck.class;
 		case "EBDResponse":
 			return EBDResponse.class;
 		default:

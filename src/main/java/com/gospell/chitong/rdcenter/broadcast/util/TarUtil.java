@@ -93,7 +93,6 @@ public class TarUtil {
 	 * @date 2018年6月20日 下午1:36:30
 	 */
 	public static String createXMLTar(Map<String,Object> map,String outPath,String name) {
-		//outPath = outPath.substring(0,outPath.lastIndexOf("\\"));
 		String xmlpath = XMLUtil.createXML(map, outPath, name);
 		name = name.indexOf(".tar")==-1?name+".tar":name;
 		outPath = outPath + File.separatorChar + name;
@@ -105,7 +104,7 @@ public class TarUtil {
 			File xml = new File(xmlpath);
 			tarOut.putNextEntry(new TarEntry(xml,xml.getName()));
 			FileUtil.wirteFile(new FileInputStream(xml), tarOut);
-			xml.delete();
+			FileUtil.delete(xmlpath);
 		}catch(IOException e) {
 			logger.error("创建tar包出错："+e);
 		}

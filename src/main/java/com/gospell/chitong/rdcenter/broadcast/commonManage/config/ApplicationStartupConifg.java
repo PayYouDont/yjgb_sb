@@ -12,29 +12,40 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.listener.HeartListener;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.HeartXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.ConnectionCheck;
 
 @Configuration
-public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent>{
+public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent> {
 
 	@Resource
 	private ServerProperties serverProperties;
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		//正式运行时开启此功能
-		//heartStart();//项目启动时候执行心跳包发送
+		// 正式运行时开启此功能
+		heartStart();// 项目启动时候执行心跳包发送
 	}
-	
+
+	/**
+	 * 项目启动后执行心跳发送功能
+	 * 
+	 * @Title: heartStart
+	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @param 设定文件
+	 * @return void 返回类型
+	 * @throws @author
+	 *             peiyongdong
+	 * @date 2018年7月3日 下午3:21:35
+	 */
 	public void heartStart() {
-		String sendPath = serverProperties.getHeartSend();
-		//生成心跳包
-		HeartXML.createHeartXMLTar(sendPath);
-		Map<String,File> tarMap = new HashMap<>();
-		File tar = new File(sendPath);
+		// 生成心跳包
+		String tarPath = ConnectionCheck.createTar(serverProperties);
+		Map<String, File> tarMap = new HashMap<>();
+		File tar = new File(tarPath);
 		tarMap.put(tar.getName(), tar);
-		String url = serverProperties.getHeartUrl();
-		String heartReceiptPath = serverProperties.getHeartReceipt();
-		HeartListener listerner = new HeartListener(tarMap,url,sendPath,heartReceiptPath);
+		String url = serverProperties.getSendUrl();
+		String heartReceiptPath = serverProperties.getTarInPath() + File.separatorChar + tar.getName();
+		HeartListener listerner = new HeartListener(tarMap, url, tarPath, heartReceiptPath, serverProperties);
 		listerner.start();
 	}
 }
