@@ -645,4 +645,99 @@
 		from emergencyinfo
 		where start_time between #{firstDate,jdbcType=TIMESTAMP} and #{lastDate,jdbcType=TIMESTAMP}
 	</select>
+
+	<select id="getByEmb_id" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from emergencyinfo
+		where EBM_ID = #{ebmId,jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateByEmb_idSelective"
+			parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo">
+		update emergencyinfo
+		<set>
+			<if test="emergencyname != null">
+				emergencyName = #{emergencyname,jdbcType=VARCHAR},
+			</if>
+			<if test="emergencycode != null">
+				emergencyCode = #{emergencycode,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sound != null">
+				sound = #{sound,jdbcType=VARCHAR},
+			</if>
+			<if test="duration != null">
+				duration = #{duration,jdbcType=VARCHAR},
+			</if>
+			<if test="addresscode != null">
+				addressCode = #{addresscode,jdbcType=VARCHAR},
+			</if>
+			<if test="programId != null">
+				program_id = #{programId,jdbcType=INTEGER},
+			</if>
+			<if test="programdescription != null">
+				programDescription = #{programdescription,jdbcType=VARCHAR},
+			</if>
+			<if test="infosourceId != null">
+				infoSource_id = #{infosourceId,jdbcType=INTEGER},
+			</if>
+			<if test="accidentlevelId != null">
+				accidentLevel_id = #{accidentlevelId,jdbcType=INTEGER},
+			</if>
+			<if test="accidenttypeId != null">
+				accidentType_id = #{accidenttypeId,jdbcType=INTEGER},
+			</if>
+			<if test="displaymethodId != null">
+				displayMethod_id = #{displaymethodId,jdbcType=INTEGER},
+			</if>
+			<if test="displaylanguageId != null">
+				displayLanguage_id = #{displaylanguageId,jdbcType=INTEGER},
+			</if>
+			<if test="emergencylocationId != null">
+				emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="unitname != null">
+				unitName = #{unitname,jdbcType=VARCHAR},
+			</if>
+			<if test="ebmId != null">
+				EBM_ID = #{ebmId,jdbcType=VARCHAR},
+			</if>
+			<if test="areacode != null">
+				areaCode = #{areacode,jdbcType=VARCHAR},
+			</if>
+			<if test="flag != null">
+				flag = #{flag,jdbcType=INTEGER},
+			</if>
+			<if test="addresscodename != null">
+				addressCodeName = #{addresscodename,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where EBM_ID = #{ebmId,jdbcType=VARCHAR}
+	</update>
 </mapper>

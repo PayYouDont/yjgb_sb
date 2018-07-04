@@ -25,4 +25,6 @@ public interface EmergencyinfoMapper {
     int count(Map<String,Object> map);
     
     List<Emergencyinfo> getByStartTime(Map<String,Object> map);
+    Emergencyinfo getByEmb_id(String ebmId);
+    int updateByEmb_idSelective(Emergencyinfo record);
 }

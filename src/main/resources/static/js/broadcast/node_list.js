@@ -38,9 +38,10 @@ $(document).ready(function(){
 		        {field:'updateTime',title:'修改时间',width:150,align:'center',sortable:"true"},
 		    ]],
 		    onLoadSuccess:function(data){
-		    	var id = setTimeout(() => {
-		    		checkNode(data);
-				}, rate);
+               // var id = setTimeout(() => {
+		    	// 	checkNode(data);
+				// }, rate);
+                setTimeout(checkNode(data),rate);
 		    }
 		});
 });

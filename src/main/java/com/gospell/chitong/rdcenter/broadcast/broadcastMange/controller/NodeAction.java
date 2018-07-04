@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +37,8 @@ public class NodeAction extends BaseAction{
 
 	@Resource
 	private NodeService service;
+	@Resource
+	private EmergencyInfoService emergencyInfoService;
 	@GetMapping("/toList")
 	public String toList() {
 		return "broadcast/node_list";
@@ -60,6 +66,7 @@ public class NodeAction extends BaseAction{
 		Map<String,Object> map = page.getMap();
 		List<Node> list = service.list(map);
 		int total = service.count(page.getMap());
+		System.out.println(JsonWrapper.wrapperPage(list, total));
 		return JsonWrapper.wrapperPage(list, total);
 	}
 	@PostMapping("/save")
@@ -110,5 +117,21 @@ public class NodeAction extends BaseAction{
 			logger.error("接收tar包异常:"+e);
 			return JsonWrapper.failureWrapper();
 		}
+	}
+	@RequestMapping("/showNodeNews")
+	@ResponseBody
+	public String showNodeNews(){
+		String path = "D:\\tar\\EBDT_10234000000000001010101010000000000002889_in.tar";
+		File tarfile = new File(path);
+		EBM ebm = service.getEbmFromTar(tarfile);
+		try {
+			emergencyInfoService.saveXML(ebm);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		HashMap<String, Object> map = ebm.getEMBMap();
+		List<HashMap<String, Object>> list = new LinkedList<>();
+		list.add(map);
+		return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
 	}
 }

@@ -85,4 +85,11 @@ public class JsonWrapper {
 		wrapper.put("rows", list);
     	return wrapper;
     }
+	//转换为Jquery easyUI适配的Json数组
+	public static HashMap<String,Object> wrapperPage(Map<String,Object> map,int total){
+		HashMap<String, Object> wrapper = new HashMap<String, Object>();
+		wrapper.put("total",total);
+		wrapper.put("rows", map);
+		return wrapper;
+	}
 }

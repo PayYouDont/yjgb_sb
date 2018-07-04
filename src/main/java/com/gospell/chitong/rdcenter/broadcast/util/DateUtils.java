@@ -2,6 +2,9 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -168,8 +171,31 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
 		long beforeTime = before.getTime();  
 		long afterTime = after.getTime();  
 		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);  
-	}  
+	}
+	/**
+	 * 获取两个日期之间的分钟数
+	 *
+	 * @param before
+	 * @param after
+	 * @return
+	 */
+	public static double getDistanceOfTwoMinute(Date before, Date after) {
+		long beforeTime = before.getTime();
+		long afterTime = after.getTime();
+		return (afterTime - beforeTime) / (1000 * 60);
+	}
 
+	/**
+	 * Java 8 获取两个时间之间的天数，月份数，年数
+	 * @param before
+	 * @param after
+	 */
+	public void period(LocalDate before, LocalDate after) {
+		Period between = Period.between(before, after);
+		between.getDays();
+		between.getMonths();
+		between.getYears();
+	}
 	/**
 	 * 获取当月第一天
 	 * 
@@ -226,9 +252,36 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
 		calendar.set(Calendar.MILLISECOND, 999);
 		return calendar.getTime();
 	}
-	
+
+	/**
+	 *  java 8 字符串格式日期转Date
+	 * @param strDate
+	 * @param pattern
+	 * @return
+	 */
+	public static LocalDate formatDate(String strDate, String pattern) {
+
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+
+		return LocalDate.parse(strDate,dateTimeFormatter);
+
+	}
 	public static void main(String[] args) {
 //		getDayOfWeek(8);
+			String starttime = "2018-06-16 10:22:40";
+			String endtime = "2018-06-16 10:32:40";
+			LocalDate startDate = formatDate("2018-06-16 10:22:40","yyyy-MM-dd hh:mm:ss");
+			LocalDate endDate = formatDate("2018-06-16 10:32:40","yyyy-MM-dd hh:mm:ss");
+			//getDistanceOfTwoMinute(startDate,startDate);
+		Period between = Period.between(startDate, endDate);
+		System.out.println(between.getDays());
+		System.out.println(between.getMonths());
+		System.out.println(between.getYears());
+		/*SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date begin=dfs.parse("2004-01-02 11:30:24");
+		Date end = dfs.parse("2004-03-26 13:31:40");
+		long between=(end.getTime()-begin.getTime())/1000;//除以1000是为了转换成秒
+		long min=between/60;*/
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -32,20 +33,29 @@ public class EBM extends BaseXML{
 	private String Auxiliary_AuxiliaryDesc;
 	private String Auxiliary_Size;
 	@Override
-	public Map<String, Object> getMap() {
+	public HashMap<String, Object> getMap() {
 		//根节点
-		Map<String,Object> root = super.getMap();
+		HashMap<String,Object> root = new HashMap<>();
 		Map<String,Object> RelatedEBD = new LinkedHashMap<>();
 		RelatedEBD.put("EBDID", getRelatedEBD_EBDID());
 		root.put("RelatedEBD",RelatedEBD);
 		//根节点下EMB子节点
-		Map<String,Object> EMB = new LinkedHashMap<>();
+		HashMap<String,Object> EMB = new LinkedHashMap<>();
 		EMB.put("EBMVersion", getEBM_EBMVersion());
 		EMB.put("EBMID", getEBM_EBMID());
-		EMB.put("MsgBasicInfo",getMsgBasicInfo());
-		EMB.put("MsgContent",getMsgContent());
+		EMB.putAll(getMsgBasicInfo());
+		EMB.putAll(getMsgContent());
 		root.put("EMB", EMB);
-		return root;
+		return EMB;
+	}
+	public HashMap<String,Object> getEMBMap(){
+		HashMap<String,Object> EMB = new LinkedHashMap<>();
+		EMB.put("EBMVersion", getEBM_EBMVersion());
+		EMB.put("EBMID", getEBM_EBMID());
+		EMB.putAll(getMsgBasicInfo());
+		EMB.putAll(getMsgContent());
+		//root.put("EMB", EMB);
+		return EMB;
 	}
 	public Map<String,Object> getMsgBasicInfo(){
 		Map<String,Object> MsgBasicInfo = new LinkedHashMap<>();
@@ -69,7 +79,7 @@ public class EBM extends BaseXML{
 		Auxiliary.put("AuxiliaryType", getAuxiliary_AuxiliaryType());
 		Auxiliary.put("AuxiliaryDesc", getAuxiliary_AuxiliaryDesc());
 		Auxiliary.put("Size", getAuxiliary_Size());
-		MsgContent.put("Auxiliary", Auxiliary);
+		MsgContent.putAll(Auxiliary);
 		return MsgContent;
 	}
 	/**

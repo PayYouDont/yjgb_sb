@@ -9,6 +9,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
+import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -150,5 +153,45 @@ public class INodeService implements NodeService {
         String ouPath = "D:\\tar\\out";
         String outTarPath = TarUtil.getTarByInTar(tarPath,ouPath);
         return outTarPath;
+	}
+	/**
+	 * 根据tar包获取tar包内容对应实体类
+	 * @param tarfile
+	 * @return EBM
+	 */
+	@Override
+	public EBM getEbmFromTar(File tarfile){
+		String filepath = tarfile.getPath();
+		String outPath = filepath.substring(0,filepath.lastIndexOf('.'));
+		//String outPath = filepath.substring(0,filepath.lastIndexOf("\\"));
+		TarUtil.archive(filepath,outPath);
+		String xmlPath = refreshFileList(outPath);
+		BaseXML xml = XMLUtil.readXML(xmlPath, EBM.class);
+		FileUtil.delete(outPath);
+		return (EBM) xml;
+	}
+	/**
+	 * 循环文件夹找xml文件
+	 * @param strPath 文件夹路径
+	 * @return
+	 */
+	public  String refreshFileList(String strPath) {
+		File dir = new File(strPath);
+		File[] files = dir.listFiles();
+		String xmlPath =null;
+		if (files == null)
+			return null;
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].isDirectory()) {
+				refreshFileList(files[i].getAbsolutePath());
+			} else {
+				String strFileName = files[i].getAbsolutePath();
+				System.out.println("---" + strFileName);
+				if (strFileName.indexOf("EBDB") !=-1 && strFileName.indexOf("EBDS") == -1) {
+					xmlPath = files[i].getPath();
+				}
+			}
+		}
+		return xmlPath;
 	}
 }

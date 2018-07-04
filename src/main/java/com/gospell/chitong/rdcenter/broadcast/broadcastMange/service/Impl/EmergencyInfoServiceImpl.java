@@ -10,6 +10,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
+import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
 import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
@@ -57,6 +60,8 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 	
 	@Resource
 	private ServerProperties serverProperties;
+	@Resource
+	private AreaCodeChineseService accService;
 
 	@Override
 	public List<Displaylanguage> DisplaylanguageList(Map<String,Object> map){
@@ -243,6 +248,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 	 */
 	@Override
 	public int saveXML(EBM ebmxml) throws Exception {
+		System.out.println(ebmxml);
 		Emergencyinfo info = new Emergencyinfo();
 		info.setAreacode(ebmxml.getMsgContent_AreaCode());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -250,8 +256,12 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setEndTime(sdf.parse(ebmxml.getMsgBasicInfo_EndTime()));
 		info.setContent(ebmxml.getMsgContent_MsgDesc());
 		info.setEmergencyname(ebmxml.getMsgContent_MsgTitle());
+		info.setEbmId(ebmxml.getEBM_EBMID());
+		info.setProgramdescription(ebmxml.getAuxiliary_AuxiliaryDesc());
 		String language = ebmxml.getMsgContent_LanguageCode();
-
+		long between=(info.getStartTime().getTime()-info.getEndTime().getTime())/(1000*60);//除以1000是为了转换成秒
+		info.setSound("60");
+		info.setDuration(String.valueOf(Math.abs(between)));  //持续时间
 		Displaylanguage dl = null;
 		if (language.equals("zho")) {
 			Map<String, Object> map = new HashMap<>();
@@ -326,7 +336,23 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		}
 		info.setDisplaymethodId(dm.getId());
 		info.setInfosourceId(1);
-		info.setCreateBy(ebmxml.getMsgBasicInfo_SenderName());
-		return dao.insertSelective(info);
+
+		info.setEmergencycode(EBMessageUtil.generateSendtime());
+		info.setStatus(2);  //初始化为待审核
+		info.setFlag(1);
+		info.setUnitname(serverProperties.getUnitName());
+		//设置事件编码（随机数）
+		info.setEmergencycode(EBMessageUtil.generateSendtime());
+		info.setAddresscodename(accService.getPcodeChinese(ShiroUtils.getUser().getAreaCode()));
+		if (info.getId() != null) {
+			info.setCreateBy(ebmxml.getMsgBasicInfo_SenderName());
+		} else {
+			info.setUpdateBy(ShiroUtils.getUser().getName());
+		}
+		if (dao.getByEmb_id(info.getEbmId()) == null){  //验证数据库是否存在相关数据
+			return dao.insertSelective(info);
+		}else {
+			return dao.updateByEmb_idSelective(info);
+		}
 	}
 }
