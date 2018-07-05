@@ -3,7 +3,6 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.config;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -22,9 +21,6 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.service.UserService;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 public class UserRealm extends AuthorizingRealm {
-	@Resource
-	private UserService userService;
-
 	// 权限的实现
 	@Override
 	public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
@@ -49,7 +45,7 @@ public class UserRealm extends AuthorizingRealm {
 		 */
 		String password = new String((char[]) token.getCredentials());
 		// 获取容器中的userMapper
-		// UserMapper userMapper = ApplicationContextRegister.getBean(UserMapper.class);
+		UserService userService = ApplicationContextRegister.getBean(UserService.class);
 		// 查询用户信息
 		User user = userService.findByName(name);
 

@@ -159,8 +159,31 @@ public class XMLUtil {
 			if(value instanceof Map) {
 				setElem(elem, (Map<String,Object>)value);
 			}else {
-				elem.setText(value.toString());
+				if(value!=null) {
+					elem.setText(value.toString());
+				}else {
+					deleteNullElement(elem);
+					return;
+				}
 			}
+		}
+	}
+	/**
+	 * 删除空节点
+	 * @Title: deleteNullElement 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param elem    设定文件 
+	 * @return void    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月5日 下午5:41:29
+	 */
+	public static void deleteNullElement(Element elem) {
+		String text = elem.getText();
+		Element pe = elem.getParent();
+		if(!pe.getName().equals("EBD")&&text.equals("")) {
+			pe.remove(elem);
+			deleteNullElement(pe);
 		}
 	}
 	/**

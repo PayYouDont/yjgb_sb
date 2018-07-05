@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBRPSInfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 
 import lombok.Data;
@@ -38,8 +39,6 @@ public class HeartListener extends Thread {
 	@NonNull
 	private String heartSendPath;
 
-	private ServerProperties prop;
-
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@SuppressWarnings("static-access")
@@ -66,6 +65,7 @@ public class HeartListener extends Thread {
 					setStatus(1);
 				}
 				if(!isSend&&getStatus()==1) {
+					ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 					EBRPSInfo.sendEBRPSInfo(prop);
 					isSend = true;
 				}
@@ -87,13 +87,11 @@ public class HeartListener extends Thread {
 		}
 	}
 
-	public HeartListener(Map<String, File> tarMap, String url, String heartSendPath, String heartReceiptPath,
-			ServerProperties prop) {
+	public HeartListener(Map<String, File> tarMap, String url, String heartSendPath, String heartReceiptPath) {
 		super();
 		this.tarMap = tarMap;
 		this.url = url;
 		this.heartReceiptPath = heartReceiptPath;
 		this.heartSendPath = heartSendPath;
-		this.prop = prop;
 	}
 }

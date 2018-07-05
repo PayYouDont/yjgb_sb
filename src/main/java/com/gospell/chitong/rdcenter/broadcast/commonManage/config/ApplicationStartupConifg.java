@@ -19,11 +19,11 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 
 	@Resource
 	private ServerProperties serverProperties;
-
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		// 正式运行时开启此功能
-		heartStart();// 项目启动时候执行心跳包发送
+		//heartStart();// 项目启动时候执行心跳包发送
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 		tarMap.put(tar.getName(), tar);
 		String url = serverProperties.getSendUrl();
 		String heartReceiptPath = serverProperties.getTarInPath() + File.separatorChar + tar.getName();
-		HeartListener listerner = new HeartListener(tarMap, url, tarPath, heartReceiptPath, serverProperties);
+		HeartListener listerner = new HeartListener(tarMap, url, tarPath, heartReceiptPath);
 		listerner.start();
 	}
 }

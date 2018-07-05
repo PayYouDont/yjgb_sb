@@ -37,7 +37,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DaoTests {
+public class DaoTest {
 
 	@Resource
 	private EmergencyinfoMapper emergencyinfodao;
