@@ -203,7 +203,8 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		if (!v_addressCode.equals("") && v_addressCode != null) {
 			String[] addressCodeArray = v_addressCode.split(";");
 			for (int i = 0; i < addressCodeArray.length; i++) {
-				addressCodeArray[i] = "0000" + addressCodeArray[i] + "00";
+				//addressCodeArray[i] = "0000" + addressCodeArray[i] + "00";
+				addressCodeArray[i] = "4" + addressCodeArray[i] + "0101"+"01"+"01"+"01";
 			}
 			EBM_resource_code = Arrays.asList(addressCodeArray);
 			EBM_Info.setEBM_resource_code(EBM_resource_code);
