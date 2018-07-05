@@ -3,12 +3,16 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.RequestXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class OMDRequest extends BaseXML{
+public class OMDRequest extends BaseXML implements RequestXML{
 	private String OMDRequest_OMDType;
 	private String Params_RptStartTime;
 	private String Params_RptEndTime;
@@ -30,9 +34,9 @@ public class OMDRequest extends BaseXML{
 		return root;
 	}
 	/**
-	 * 根据实体类生成回执实体
+	 * 根据查询类生成对应的回执类
 	 * @Title: getResponseByClass 
-	 * @Description: TODO(具体回执暂未处理，目前只写了统一回复方式) 
+	 * @Description: TODO() 
 	 * @param @param entity
 	 * @param @return    设定文件 
 	 * @return BaseXML    返回类型 
@@ -42,9 +46,68 @@ public class OMDRequest extends BaseXML{
 	 */
 	@Override
 	public BaseXML getResponseByClass(BaseXML entity) {
-		EBDResponse response = (EBDResponse) super.getResponseByClass(entity);
-		response.setEBDResponse_ResultCode("1");
-		response.setEBDResponse_ResultDesc("已完成接收");
-		return response;
+		OMDRequest request = (OMDRequest)entity;
+		String OMDType = request.getOMDRequest_OMDType();
+		String RptType = request.getParams_RptType();
+		BaseXML xml = null;
+		if("Full".equals(RptType)){
+			xml = queryFull(OMDType);
+		}else {
+			xml = queryIncremental(OMDType);
+		}
+		return xml;
+	}
+	/**
+	 * 
+	 * @Title: getFull 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param OMDType
+	 * @param @return    设定文件 
+	 * @return BaseXML    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月5日 上午9:25:15
+	 */
+	@Override
+	public BaseXML queryFull(String OMDType) {
+		Class<? extends BaseXML> clazz = getResponseClass(OMDType);
+		try {
+			ResponseXML xml = (ResponseXML) clazz.newInstance();
+			return xml.createFullEntity();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@Override
+	public BaseXML queryIncremental(String OMDType) {
+		Class<? extends BaseXML> clazz = getResponseClass(OMDType);
+		try {
+			ResponseXML xml = (ResponseXML) clazz.newInstance();
+			return xml.createIncrementalEntity();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	private Class<? extends BaseXML> getResponseClass(String OMDType) {
+		switch (OMDType) {
+		case "EBRPSInfo":
+			return EBRPSInfo.class;
+		case "EBRASInfo":
+			return EBRASInfo.class;
+		case "EBRDTInfo":
+			return EBRDTInfo.class;
+		case "EBRPSState":
+			return EBRPSState.class;
+		case "EBRASState":
+			return EBRASState.class;
+		case "EBRDTState":
+			return EBRDTState.class;
+		case "EBMBrdLog":
+			return EBMBrdLog.class;
+		default:
+			return BaseXML.class;
+		}
 	}
 }

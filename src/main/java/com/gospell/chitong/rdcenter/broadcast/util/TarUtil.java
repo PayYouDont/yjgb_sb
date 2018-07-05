@@ -13,7 +13,7 @@ import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 
 public class TarUtil {
 

@@ -266,22 +266,5 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
 		return LocalDate.parse(strDate,dateTimeFormatter);
 
 	}
-	public static void main(String[] args) {
-//		getDayOfWeek(8);
-			String starttime = "2018-06-16 10:22:40";
-			String endtime = "2018-06-16 10:32:40";
-			LocalDate startDate = formatDate("2018-06-16 10:22:40","yyyy-MM-dd hh:mm:ss");
-			LocalDate endDate = formatDate("2018-06-16 10:32:40","yyyy-MM-dd hh:mm:ss");
-			//getDistanceOfTwoMinute(startDate,startDate);
-		Period between = Period.between(startDate, endDate);
-		System.out.println(between.getDays());
-		System.out.println(between.getMonths());
-		System.out.println(between.getYears());
-		/*SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date begin=dfs.parse("2004-01-02 11:30:24");
-		Date end = dfs.parse("2004-03-26 13:31:40");
-		long between=(end.getTime()-begin.getTime())/1000;//除以1000是为了转换成秒
-		long min=between/60;*/
-	}
 	
 }

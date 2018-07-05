@@ -3,12 +3,15 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class EBRDTInfo extends BaseXML{
+public class EBRDTInfo extends BaseXML implements ResponseXML{
 	//EBRDTInfo/EBRDT
 	private String EBRDT_RptTime;
 	private String EBRDT_RptType;
@@ -35,5 +38,15 @@ public class EBRDTInfo extends BaseXML{
 		Map<String,Object> root = super.getMap();
 		root.put("EBRDTInfo", getEBRDTInfoMap());
 		return root;
+	}
+	@Override
+	public BaseXML createFullEntity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public BaseXML createIncrementalEntity() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

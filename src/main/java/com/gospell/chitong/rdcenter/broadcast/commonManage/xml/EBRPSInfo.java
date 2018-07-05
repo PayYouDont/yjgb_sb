@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
@@ -15,7 +17,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class EBRPSInfo extends BaseXML{
+public class EBRPSInfo extends BaseXML implements ResponseXML{
 	private String EBRPS_RptTime;
 	private String EBRPS_RptType;
 	private String RelatedEBRPS_EBRID;
@@ -82,5 +84,17 @@ public class EBRPSInfo extends BaseXML{
 		String url = prop.getSendUrl();
 		String outPath = prop.getTarInPath()+File.separatorChar+tar.getName();
 		HttpClientUtil.sendPostTar(url, tarMap, outPath);
+	}
+
+	@Override
+	public BaseXML createFullEntity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BaseXML createIncrementalEntity() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

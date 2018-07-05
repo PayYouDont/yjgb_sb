@@ -3,6 +3,9 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 /**
@@ -15,7 +18,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class BroadcastRecordXML extends BaseXML{
+public class EBMBrdLog extends BaseXML implements ResponseXML{
 	//EBMBrdLog/Params
 	private String Params_RptStartTime;
 	private String Params_RptEndTime;
@@ -144,5 +147,15 @@ public class BroadcastRecordXML extends BaseXML{
 		response.setEBDResponse_ResultCode("1");
 		response.setEBDResponse_ResultDesc("已完成接收");
 		return response;
+	}
+	@Override
+	public BaseXML createFullEntity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public BaseXML createIncrementalEntity() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -3,6 +3,8 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
