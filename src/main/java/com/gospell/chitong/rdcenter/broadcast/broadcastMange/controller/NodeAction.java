@@ -2,6 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import org.springframework.stereotype.Controller;
@@ -129,9 +131,14 @@ public class NodeAction extends BaseAction{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		HashMap<String, Object> map = ebm.getEMBMap();
-		List<HashMap<String, Object>> list = new LinkedList<>();
+		Map<String, Object> map = ebm.getEMBMap();
+		List<Map<String, Object>> list = new LinkedList<>();
 		list.add(map);
+		/*try {
+			WebScoketServer.sendInfo(JsonUtil.toJson(JsonWrapper.wrapperPage(list,1))); //推送到前台
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
 		return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
 	}
 }

@@ -163,7 +163,7 @@ public class EmergencyInfoAction extends BaseAction{
 	@ResponseBody
 	public HashMap<String,Object> queryEmer(Page page){
 		Map<String,Object> map = page.getMap();
-		//map.put("areacode",getUser().getAreaCode());
+		map.put("areacode",getUser().getAreaCode());
 		map.put("flag", 1);
 		map.put("sort", "start_time");
 		map.put("order", "DESC");

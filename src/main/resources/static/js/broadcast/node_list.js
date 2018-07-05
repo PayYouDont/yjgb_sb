@@ -38,10 +38,9 @@ $(document).ready(function(){
 		        {field:'updateTime',title:'修改时间',width:150,align:'center',sortable:"true"},
 		    ]],
 		    onLoadSuccess:function(data){
-               // var id = setTimeout(() => {
-		    	// 	checkNode(data);
-				// }, rate);
-                setTimeout(checkNode(data),rate);
+               var id = setTimeout(() => {
+		    		checkNode(data);
+				}, rate);
 		    }
 		});
 });
@@ -172,7 +171,7 @@ function deleteData(ids){
 }
 
 /**********************WebScoket开始****************************/
-/*var socket;
+var socket;
 //是否连接
 var isconn;
 $(function(){
@@ -209,7 +208,7 @@ socket.onerror = function() {
 $(window).unload(function(){  
       socket.close();
       isconn = false;
-}); */ 
+});
 
 /***************************WebScoket完毕************************************/
 function checkNode(data){

@@ -33,9 +33,9 @@ public class EBM extends BaseXML{
 	private String Auxiliary_AuxiliaryDesc;
 	private String Auxiliary_Size;
 	@Override
-	public HashMap<String, Object> getMap() {
+	public Map<String, Object> getMap() {
 		//根节点
-		HashMap<String,Object> root = new HashMap<>();
+		Map<String,Object> root = new HashMap<>();
 		Map<String,Object> RelatedEBD = new LinkedHashMap<>();
 		RelatedEBD.put("EBDID", getRelatedEBD_EBDID());
 		root.put("RelatedEBD",RelatedEBD);
@@ -48,7 +48,7 @@ public class EBM extends BaseXML{
 		root.put("EMB", EMB);
 		return EMB;
 	}
-	public HashMap<String,Object> getEMBMap(){
+	public Map<String,Object> getEMBMap(){
 		HashMap<String,Object> EMB = new LinkedHashMap<>();
 		EMB.put("EBMVersion", getEBM_EBMVersion());
 		EMB.put("EBMID", getEBM_EBMID());
