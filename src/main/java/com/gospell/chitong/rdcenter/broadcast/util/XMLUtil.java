@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -286,8 +287,10 @@ public class XMLUtil {
 		 }
 		return xml;
 	}
+
+
 	public static void main(String[] args) {
-		String xmlPath = "C:\\Users\\pay\\Desktop\\资料\\tar\\EBDB_10434152300000001030101012018062300000001.xml";
+		/*String xmlPath = "C:\\Users\\pay\\Desktop\\资料\\tar\\EBDB_10434152300000001030101012018062300000001.xml";
 	 	BaseXML xml = readXML(xmlPath, EBRDTInfo.class);
 	 	String outPath = "C:\\Users\\pay\\Desktop\\xml\\";
 	 	Map<String,Object> map = xml.getMap();
@@ -296,6 +299,11 @@ public class XMLUtil {
  		EBRDT.put("RptType", "Sync");
  		map = xml.addSubMap("EBRDTInfo", EBRDT);
 	 	createXML(map, outPath, "终端信息111");
-	 	System.out.println(xml);
+	 	System.out.println(xml);*/
+		String path = "D:\\tar\\EBDT_10234000000000001010101010000000000002889_in.tar";
+		File tarfile = new File(path);
+		//getEbmFromTar(tarfile);
 	}
+
+
 }

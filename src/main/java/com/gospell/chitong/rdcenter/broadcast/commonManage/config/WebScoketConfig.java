@@ -1,4 +1,4 @@
-/*package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,4 +11,3 @@ public class WebScoketConfig {
 		return new ServerEndpointExporter();
 	}
 }
-*/

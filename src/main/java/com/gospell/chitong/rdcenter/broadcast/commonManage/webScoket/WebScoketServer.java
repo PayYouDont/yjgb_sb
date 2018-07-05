@@ -1,8 +1,13 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import javax.annotation.Resource;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -10,6 +15,10 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,7 +30,7 @@ public class WebScoketServer {
     
     public final Logger log = LoggerFactory.getLogger(this.getClass());
     
-    private static CopyOnWriteArraySet<WebScoketServer> webSocketSet = new CopyOnWriteArraySet<WebScoketServer>(); 
+    private static CopyOnWriteArraySet<WebScoketServer> webSocketSet = new CopyOnWriteArraySet<WebScoketServer>();
     /** 
      * 连接建立成功调用的方法*/  
     @OnOpen  
@@ -61,8 +70,8 @@ public class WebScoketServer {
                 e.printStackTrace();  
             }  
         }
-    }  
-    /** 
+    }
+    /**
      *  
      * @param session 
      * @param error 
@@ -78,7 +87,7 @@ public class WebScoketServer {
     /** 
      * 群发自定义消息 
      * */  
-    public static void sendInfo(String message) throws IOException { 
+    public static void sendInfo(String message) throws IOException {
         for (WebScoketServer item : webSocketSet) {  
             try {  
                 item.sendMessage(message);
