@@ -1,6 +1,5 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -35,12 +34,12 @@ public class EBM extends BaseXML{
 	@Override
 	public Map<String, Object> getMap() {
 		//根节点
-		Map<String,Object> root = new HashMap<>();
+		Map<String,Object> root = new LinkedHashMap<>();
 		Map<String,Object> RelatedEBD = new LinkedHashMap<>();
 		RelatedEBD.put("EBDID", getRelatedEBD_EBDID());
 		root.put("RelatedEBD",RelatedEBD);
 		//根节点下EMB子节点
-		HashMap<String,Object> EMB = new LinkedHashMap<>();
+		Map<String,Object> EMB = new LinkedHashMap<>();
 		EMB.put("EBMVersion", getEBM_EBMVersion());
 		EMB.put("EBMID", getEBM_EBMID());
 		EMB.putAll(getMsgBasicInfo());
@@ -49,7 +48,7 @@ public class EBM extends BaseXML{
 		return EMB;
 	}
 	public Map<String,Object> getEMBMap(){
-		HashMap<String,Object> EMB = new LinkedHashMap<>();
+		Map<String,Object> EMB = new LinkedHashMap<>();
 		EMB.put("EBMVersion", getEBM_EBMVersion());
 		EMB.put("EBMID", getEBM_EBMID());
 		EMB.putAll(getMsgBasicInfo());
