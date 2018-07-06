@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaymethod;
 
-public interface DisplaymethodService {
+public interface DisplayMethodService {
 	
 	List<Displaymethod> list(Map<String, Object> map);
 	

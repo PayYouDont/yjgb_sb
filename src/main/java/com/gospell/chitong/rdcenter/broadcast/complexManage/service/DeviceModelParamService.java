@@ -6,8 +6,10 @@ import java.util.Map;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DevModelParamRelation;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodelparam;
 
-public interface DevicemodelparamService {
+public interface DeviceModelParamService {
 
+	Devicemodelparam findById(Integer id);
+	
 	List<Devicemodelparam> list(Map<String,Object>map);
 	
 	int count(Map<String,Object>map);

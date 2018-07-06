@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource;
 
-public interface InfosourceService {
+public interface InfoSourceService {
 	
 	List<Infosource> list(Map<String,Object> map);
 	

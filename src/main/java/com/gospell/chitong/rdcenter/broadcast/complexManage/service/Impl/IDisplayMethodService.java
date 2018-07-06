@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DisplaymethodMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaymethod;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DisplaymethodService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DisplayMethodService;
 
 @Service
-public class IDisplaymethodService implements DisplaymethodService{
+public class IDisplayMethodService implements DisplayMethodService{
 	
 	@Resource
 	private DisplaymethodMapper dao;

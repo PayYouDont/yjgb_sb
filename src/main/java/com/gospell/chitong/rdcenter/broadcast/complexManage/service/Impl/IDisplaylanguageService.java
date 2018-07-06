@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DisplaylanguageMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaylanguage;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DisplaylanguageService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DisplayLanguageService;
 
 @Service
-public class IDisplaylanguageService implements DisplaylanguageService{
+public class IDisplaylanguageService implements DisplayLanguageService{
 
 	@Resource
 	private DisplaylanguageMapper dao;

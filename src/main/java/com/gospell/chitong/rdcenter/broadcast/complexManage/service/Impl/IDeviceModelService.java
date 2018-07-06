@@ -18,10 +18,10 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodelparam;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicetype;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DevicemodelService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceModelService;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 @Service
-public class IDevicemodelService implements DevicemodelService{
+public class IDeviceModelService implements DeviceModelService{
 	@Resource
 	private DevicemodelMapper dao;
 	@Resource

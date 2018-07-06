@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -13,13 +11,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.listener.HeartListener;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 
 @Configuration
 public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent> {
-
-	@Resource
-	private ServerProperties serverProperties;
-	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		// 正式运行时开启此功能
@@ -38,13 +33,14 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 	 * @date 2018年7月3日 下午3:21:35
 	 */
 	public void heartStart() {
+		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 		// 生成心跳包
-		String tarPath = ConnectionCheck.createTar(serverProperties);
+		String tarPath = ConnectionCheck.createTar(prop);
 		Map<String, File> tarMap = new HashMap<>();
 		File tar = new File(tarPath);
 		tarMap.put(tar.getName(), tar);
-		String url = serverProperties.getSendUrl();
-		String heartReceiptPath = serverProperties.getTarInPath() + File.separatorChar + tar.getName();
+		String url = prop.getSendUrl();
+		String heartReceiptPath = prop.getTarInPath() + File.separatorChar + tar.getName();
 		HeartListener listerner = new HeartListener(tarMap, url, tarPath, heartReceiptPath);
 		listerner.start();
 	}

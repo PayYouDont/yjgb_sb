@@ -14,11 +14,11 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMa
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceinfoService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 @Service
-public class IDeviceinfoService implements DeviceinfoService{
+public class IDeviceInfoService implements DeviceInfoService{
 	
 	@Resource
 	private DeviceinfoMapper dao;

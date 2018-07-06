@@ -19,7 +19,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DevModelParam
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodelparam;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicetype;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DevicemodelService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceModelService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.DevicemodelVO;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
@@ -28,7 +28,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 public class DeviceModelAction extends BaseAction{
 	
 	@Resource
-	private DevicemodelService service;
+	private DeviceModelService service;
 	
 	@GetMapping("/toList")
 	public String toList() {

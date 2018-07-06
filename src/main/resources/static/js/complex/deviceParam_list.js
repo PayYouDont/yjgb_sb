@@ -60,7 +60,7 @@ function refreshPage(){
 
 //增加 
 function add(){
-	$('#editIframe').attr('src','../deviceModelParamAction/toAdd');
+	$('#editIframe').attr('src','../deviceModelParamAction/toEdit');
 	$('#editModal').window('setTitle','设备参数添加');
 	$('#editModal').window('open');
 }
@@ -74,7 +74,7 @@ function edit(){
 		return;
 	}
 	var id=checkedData[0].id;
-	$('#editIframe').attr('src','../deviceModelParamAction/updateUI?id='+id);
+	$('#editIframe').attr('src','../deviceModelParamAction/toEdit?id='+id);
 	$('#editModal').window('setTitle','设备参数修改');
 	$('#editModal').window('open');
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidentlevel;
 
-public interface AccidentlevelService {
+public interface AccidentLevelService {
 
 	List<Accidentlevel> list(Map<String, Object> map);
 

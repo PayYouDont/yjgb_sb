@@ -17,7 +17,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DevModelParamRelation;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodelparam;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DevicemodelparamService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceModelParamService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 @Controller
@@ -25,16 +25,22 @@ import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 public class deviceModelParamAction extends BaseAction{
 	
 	@Resource
-	private DevicemodelparamService service;
+	private DeviceModelParamService service;
 	
 	@GetMapping("/toList")
 	public String toList(Model model) {
 		return "complex/deviceParam_list";
 	}
 	
-	@GetMapping("/toAdd")
-	public String toAdd(Model model) {
-		model.addAttribute("deviceModelParam", new Devicemodelparam());
+	@GetMapping("/toEdit")
+	public String toAdd(Model model,Integer id) {
+		Devicemodelparam  dmp= null;
+		if(id!=null) {
+			dmp = service.findById(id);
+		}else {
+			dmp = new Devicemodelparam();
+		}
+		model.addAttribute("deviceModelParam", dmp);
 		return "complex/deviceParam_edit";
 	}
 	

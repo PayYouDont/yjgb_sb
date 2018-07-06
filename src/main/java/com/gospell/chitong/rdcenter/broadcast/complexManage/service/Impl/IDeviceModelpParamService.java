@@ -11,11 +11,11 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevModelParamRel
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelparamMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DevModelParamRelation;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodelparam;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DevicemodelparamService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceModelParamService;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 @Service
-public class IDevicemodelparamService implements DevicemodelparamService{
+public class IDeviceModelpParamService implements DeviceModelParamService{
 	
 	@Resource
 	private DevicemodelparamMapper dao;
@@ -54,6 +54,11 @@ public class IDevicemodelparamService implements DevicemodelparamService{
 	@Override
 	public List<DevModelParamRelation> findByMap(Map<String, Object> map) {
 		return dmprdao.list(map);
+	}
+
+	@Override
+	public Devicemodelparam findById(Integer id) {
+		return dao.selectByPrimaryKey(id);
 	}
 	
 	

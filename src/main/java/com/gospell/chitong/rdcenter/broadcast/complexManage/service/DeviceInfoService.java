@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 
-public interface DeviceinfoService {
+public interface DeviceInfoService {
 	
 	int save(Deviceinfo deviceinfo) throws Exception;
 	

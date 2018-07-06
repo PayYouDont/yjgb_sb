@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidentlevelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidentlevel;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AccidentlevelService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AccidentLevelService;
 
 @Service
-public class IAccidentlevelService implements AccidentlevelService{
+public class IAccidentLevelService implements AccidentLevelService{
 	
 	@Resource AccidentlevelMapper dao;
 

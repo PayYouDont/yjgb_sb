@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
@@ -18,7 +19,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.DeviceJson;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AdministrativeService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceinfoService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
@@ -32,7 +33,7 @@ public class BackCommunicationAction extends BaseAction{
 	@Resource
 	private EmergencyInfoService emerService;
 	@Resource
-	private DeviceinfoService devService;
+	private DeviceInfoService devService;
 	@Resource
 	private AdministrativeService adService;
 	
@@ -208,5 +209,11 @@ public class BackCommunicationAction extends BaseAction{
 			}
 		}
 		return JsonWrapper.failureWrapper("ebm_ID为空");
+	}
+	@RequestMapping("/getRegisterDevice")
+	@ResponseBody
+	public HashMap<String,Object> getRegisterDevice(String registerDeviceJson){
+		System.out.println(registerDeviceJson);
+		return null;
 	}
 }

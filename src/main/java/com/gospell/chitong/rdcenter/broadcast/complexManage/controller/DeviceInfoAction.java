@@ -12,24 +12,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceModelService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceParamValService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceinfoService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DevicemodelService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 @Controller
 @RequestMapping("/deviceInfoAction")
 public class DeviceInfoAction extends BaseAction{
 	@Resource
-	private DeviceinfoService service;
+	private DeviceInfoService service;
 	
 	@Resource
-	private DevicemodelService dmService;
+	private DeviceModelService dmService;
 	
 	@Resource
 	private DeviceParamValService dpvService;

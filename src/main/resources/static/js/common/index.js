@@ -103,10 +103,12 @@ function closeTab(){
 //刷新tab
 function reloadTab(){
 	var currTab = $('#myEasyui-tabs').tabs('getSelected');
+	if(currTab==null){
+		return;
+	}
 	var url = $(currTab.panel('options').content).attr("src");
-	
 	if(url == undefined){
-		url = "../deviceInfoAction/index";
+		url = "../loadMap";
 	}
 	$('#myEasyui-tabs').tabs('update', { 
 		tab: currTab,
@@ -118,7 +120,7 @@ function reloadTab(){
 //首页
 function goHome(){
 	var menuName="实时监控";
-	var url="../deviceInfoAction/goBroatcastMonitorPage";
+	var url="../loadMap";
 	var icon="icon-area";	
 	if ($('#myEasyui-tabs').tabs('exists', menuName)){
 		$('#myEasyui-tabs').tabs('select', menuName);

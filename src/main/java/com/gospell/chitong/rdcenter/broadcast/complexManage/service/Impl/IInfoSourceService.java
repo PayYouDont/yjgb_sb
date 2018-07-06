@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.InfosourceMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.InfosourceService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.InfoSourceService;
 
 @Service
-public class IInfosourceService implements InfosourceService{
+public class IInfoSourceService implements InfoSourceService{
 	
 	@Resource
 	private InfosourceMapper dao;

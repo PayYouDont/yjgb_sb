@@ -8,7 +8,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodelparam;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicetype;
 
-public interface DevicemodelService {
+public interface DeviceModelService {
 	
 	Devicemodel selectById(Integer id);
 	
