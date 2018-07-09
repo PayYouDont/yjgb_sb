@@ -9,7 +9,14 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 查询请求
+* @ClassName: OMDRequest 
+* @Description: TODO(  查询请求   ) 
+* @author peiyongdong
+* @date 2018年7月9日 上午9:35:11 
+*
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class OMDRequest extends BaseXML implements RequestXML{

@@ -7,7 +7,14 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 信息播发
+* @ClassName: EBM 
+* @Description: TODO(  信息播发   ) 
+* @author peiyongdong
+* @date 2018年7月9日 上午9:28:45 
+*
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBM extends BaseXML{

@@ -15,7 +15,14 @@ import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 平台信息
+* @ClassName: EBRPSInfo 
+* @Description: TODO(  平台信息   ) 
+* @author peiyongdong
+* @date 2018年7月9日 上午9:22:13 
+*
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRPSInfo extends BaseXML implements ResponseXML{
