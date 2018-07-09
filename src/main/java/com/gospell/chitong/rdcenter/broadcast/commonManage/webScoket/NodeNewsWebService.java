@@ -34,23 +34,24 @@ import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 public class NodeNewsWebService extends BaseService {
 	@Resource
 	private NodeService service;
-
+	private String path;
 	@Override
 	protected String getMessage(String path) {
 		if(StringUtils.isNotBlank(path)){
-			return showNodeNews(path);
+			return showNodeNews();
 		}
 		return null;
 	}
 
 	/**
 	 * 返回推送消息
-	 * @param path
+	 * @param
 	 * @return
 	 */
-	public String showNodeNews(String path){
+	public String showNodeNews(){
 		//String path = "D:\\tar\\EBDT_10234000000000001010101010000000000002889_in.tar";
-		File tarfile = new File(path);
+
+		File tarfile = new File(this.path);
 		EBM ebm = service.getEbmFromTar(tarfile);
 		Map<String, Object> map = ebm.getEMBMap();
 		List<Map<String, Object>> list = new LinkedList<>();
@@ -61,7 +62,9 @@ public class NodeNewsWebService extends BaseService {
 	@Override
 	public void start(Session session) {
 		setSleepDuration(4L);
-		super.start(session);
+		if(this.path != null){  //指定tar包路径不为空 才推送
+			super.start(session);
+		}
 	}
 
 	@OnClose
@@ -85,7 +88,8 @@ public class NodeNewsWebService extends BaseService {
 	/**
 	 * 主动推送外部调用接口
 	 */
-	public void startPush(){
+	public void startPush(String path){
+		this.path=path;
 		super.start(this.session);
 	}
 }
