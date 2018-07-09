@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.PlatformVO;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.PlatformService;
-import com.gospell.chitong.rdcenter.broadcast.util.ProepertyUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.ProepertyUtil;	
 
 @Service
 public class IPlatformService implements PlatformService{
@@ -29,6 +29,5 @@ public class IPlatformService implements PlatformService{
 		}
 		String propertyPath = "config/server.properties";
 		return ProepertyUtil.writeToProperties(map, propertyPath);
-		
 	}
 }
