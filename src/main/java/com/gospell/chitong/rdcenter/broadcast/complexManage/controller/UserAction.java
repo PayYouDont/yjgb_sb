@@ -53,8 +53,7 @@ public class UserAction extends BaseAction{
 		User user = null;
 		if(id!=null) {
 			user = service.selectById(id);
-		}
-		if(user==null) {
+		}else{
 			user = new User();
 		}
 		List<Role> roleList = roleService.list(new HashMap<>());

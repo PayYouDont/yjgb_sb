@@ -7,7 +7,14 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 播发状态请求
+* @ClassName: EBMStateRequest 
+* @Description: TODO(  播发状态请求   ) 
+* @author peiyongdong
+* @date 2018年7月9日 上午9:28:22 
+*
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBMStateRequest extends BaseXML{

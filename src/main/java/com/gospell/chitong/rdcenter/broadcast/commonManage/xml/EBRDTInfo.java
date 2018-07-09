@@ -8,7 +8,14 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 终端信息
+* @ClassName: EBRDTInfo 
+* @Description: TODO(  终端信息  ) 
+* @author peiyongdong
+* @date 2018年7月9日 上午9:00:40 
+*
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRDTInfo extends BaseXML implements ResponseXML{

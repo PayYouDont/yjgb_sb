@@ -1,5 +1,4 @@
-<
-style type ="text/css">html, body {
+html, body {
 	height: 100%;
 	width: 100%;
 	background-color: rgb(4, 64, 98);
@@ -145,7 +144,7 @@ select {
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	/*在选择框的最右侧中间显示小箭头图片*/
-	background: url("../common/image/icon/combo_arrow.png") no-repeat scroll
+	background: url("/easyui/themes/black/images/combo_arrow.png") no-repeat scroll
 		right center transparent;
 	/*为下拉小箭头留出一点位置，避免被文字覆盖*/
 	padding-right: 14px;
@@ -159,6 +158,3 @@ select::-ms-expand {
 .mybadge:HOVER {
 	border: 2px solid #50abe4;
 }
-</
-style
->
