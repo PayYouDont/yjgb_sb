@@ -13,6 +13,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -49,8 +50,6 @@ public class NodeNewsWebService extends BaseService {
 	 * @return
 	 */
 	public String showNodeNews(){
-		//String path = "D:\\tar\\EBDT_10234000000000001010101010000000000002889_in.tar";
-
 		File tarfile = new File(this.path);
 		EBM ebm = service.getEbmFromTar(tarfile);
 		Map<String, Object> map = ebm.getEMBMap();
@@ -92,4 +91,13 @@ public class NodeNewsWebService extends BaseService {
 		this.path=path;
 		super.start(this.session);
 	}
+
+    /**
+     * 外部静态调用
+     * @param path
+     */
+    public static void startpush(String path){
+        NodeNewsWebService nodeNewsWebService = ApplicationContextRegister.getBean(NodeNewsWebService.class);
+        nodeNewsWebService.startPush(path);
+    }
 }
