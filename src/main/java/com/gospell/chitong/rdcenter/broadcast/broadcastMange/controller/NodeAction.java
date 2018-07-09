@@ -121,22 +121,6 @@ public class NodeAction extends BaseAction{
 	@RequestMapping("/showNodeNews")
 	@ResponseBody
 	public String showNodeNews(){
-		String path = "D:\\tar\\EBDT_10234000000000001010101010000000000002889_in.tar";
-		File tarfile = new File(path);
-		EBM ebm = service.getEbmFromTar(tarfile);
-		try {
-			emergencyInfoService.saveXML(ebm);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Map<String, Object> map = ebm.getEMBMap();
-		List<Map<String, Object>> list = new LinkedList<>();
-		list.add(map);
-		/*try {
-			WebScoketServer.sendInfo(JsonUtil.toJson(JsonWrapper.wrapperPage(list,1))); //推送到前台
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-		return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
+		return null;
 	}
 }
