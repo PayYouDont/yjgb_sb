@@ -14,10 +14,12 @@
             <directory>${project.basedir}</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
-                <include>README*</include>
-                <include>LICENSE*</include>
+            	<include>*.sql</include>
+                <include>*.bat</include>
+                <include>*.md</include>
+                <!-- <include>LICENSE*</include>
                 <include>NOTICE*</include>
-                <include>build.info</include>
+                <include>build.info</include> -->
             </includes>
         </fileSet>
 
