@@ -151,7 +151,11 @@ public class TarUtil {
 					xml = XMLUtil.readXML(xmlPath, clazz);
 					BaseXML resultEntity = xml.getResponseByClass(xml);
 					if(xml instanceof EBM) {
-						NodeNewsWebService.startpush(inTarPath);
+						try{
+							NodeNewsWebService.startpush(inTarPath);
+						}catch(Exception e) {
+							logger.error("播发节点消息失败",e);
+						}
 					}
 					String resultEntityName = "EBDE_"+resultEntity.getEBD_EBDID();
 					//创建回执tar包返回路径

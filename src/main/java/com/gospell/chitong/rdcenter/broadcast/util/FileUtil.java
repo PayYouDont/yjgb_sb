@@ -67,10 +67,10 @@ public class FileUtil {
 	public static boolean deleteFile(File file) {
 		if (file.exists() && file.isFile()) {
 			if(file.delete()) {
-				logger.info("删除文件"+file.getName()+"成功!");
+				logger.debug("删除文件"+file.getName()+"成功!");
 				return true;
 			}else {
-				logger.info("删除文件"+file.getName()+"失败!");
+				logger.debug("删除文件"+file.getName()+"失败!");
 				return false;
 			}
 		}
@@ -81,7 +81,7 @@ public class FileUtil {
 	public static boolean deleteDirectory(File dir) {
 		// 如果dir对应的文件不存在，或者不是一个目录，则退出
         if ((!dir.exists()) || (!dir.isDirectory())) {
-        	logger.info("删除目录失败：" + dir + "不存在！");
+        	logger.debug("删除目录失败：" + dir + "不存在！");
             return false;
         }
         boolean flag = true;
@@ -102,15 +102,15 @@ public class FileUtil {
             }
         }
         if (!flag) {
-        	logger.info("删除目录失败！");
+        	logger.debug("删除目录失败！");
             return false;
         }
         // 删除当前目录
         if (dir.delete()) {
-        	logger.info("删除目录" + dir + "成功！");
+        	logger.debug("删除目录" + dir + "成功！");
             return true;
         } else {
-        	logger.info("删除目录失败！");
+        	logger.debug("删除目录失败！");
             return false;
         }
 	}

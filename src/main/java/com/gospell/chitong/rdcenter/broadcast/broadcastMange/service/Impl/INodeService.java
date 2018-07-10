@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.DateJsonValueProcessor;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.NodeMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
@@ -142,17 +144,13 @@ public class INodeService implements NodeService {
 		if(!contentType.equals("application/x-tar")) {
 			new RuntimeException("上传的文件不是x-tar类型");
 		}
-        File root = new File("D:\\tar");
-		if(!root.exists()) {
-        	root = new File("");
-        }
-		String outPath = root.getAbsolutePath()+File.separatorChar+"get";
-		//将接收到的tar包写入指tar文件夹
-        String tarPath = FileUtil.copyFile(mfile.getInputStream(), outPath, mfile.getOriginalFilename());
+		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
+		String getPath = prop.getTarInPath();
+		//将接收到的tar包写入指定tar文件夹
+        String tarPath = FileUtil.copyFile(mfile.getInputStream(), getPath, mfile.getOriginalFilename());
         //解析接收到的tar包并生成对应的回复tar包
-        String ouPath = "D:\\tar\\out";
-        String outTarPath = TarUtil.getTarByInTar(tarPath,ouPath);
-        return outTarPath;
+        String outPath = prop.getTarOutPath();
+        return TarUtil.getTarByInTar(tarPath,outPath);
 	}
 	/**
 	 * 根据tar包获取tar包内容对应实体类
@@ -186,7 +184,6 @@ public class INodeService implements NodeService {
 				refreshFileList(files[i].getAbsolutePath());
 			} else {
 				String strFileName = files[i].getAbsolutePath();
-				System.out.println("---" + strFileName);
 				if (strFileName.indexOf("EBDB") !=-1 && strFileName.indexOf("EBDS") == -1) {
 					xmlPath = files[i].getPath();
 				}
