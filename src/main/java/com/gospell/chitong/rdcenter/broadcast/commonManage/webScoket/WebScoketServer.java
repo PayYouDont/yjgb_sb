@@ -26,19 +26,30 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @ServerEndpoint("/webscoket")
 public class WebScoketServer {
 
-    private NodeService service =ApplicationContextRegister.getBean(NodeService.class);
-
-    private EmergencyInfoService emergencyInfoService =ApplicationContextRegister.getBean(EmergencyInfoService.class);;
-
-    private String path;
-
     //与某个客户端的连接会话，需要通过它来给客户端发送数据  
     private Session session; 
     
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     private static CopyOnWriteArraySet<WebScoketServer> webSocketSet = new CopyOnWriteArraySet<WebScoketServer>();
-    /** 
+
+    public static enum  Status{
+        success("200"),
+        timeError("-200"),
+        exception("500");
+        String status;
+        Status(String s) {
+            this.status=s;
+        }
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+    }
+    /**
      * 连接建立成功调用的方法*/  
     @OnOpen  
     public void onOpen(Session session) {  
@@ -122,7 +133,7 @@ public class WebScoketServer {
             e.printStackTrace();
         }
         if (i == -200)
-            return "-200";
+            return Status.timeError.getStatus();
         else
             return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
     }
@@ -130,22 +141,23 @@ public class WebScoketServer {
     /**
      * 外部静态调用
      * @param path
-     * @return  "-200" 错误标识     "200"  正常标识
+     * @return  "-200" 日期异常错误标识   "500" 连接异常   "200"  正常标识
      */
     public static String startpush(String path){
         WebScoketServer webScoketServer = ApplicationContextRegister.getBean(WebScoketServer.class);
         String data = showNodeNews(path);
-        if (data.equals("-200")){
-            return "-200";
+        if (data.equals(Status.timeError.getStatus())){
+            return Status.timeError.getStatus();
         }else {
             if (webScoketServer.session.isOpen()){
                 try {
                     WebScoketServer.sendInfo(data);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return Status.exception.getStatus();
                 }
             }
-            return "200";
+            return Status.success.getStatus();
         }
     }
 }
