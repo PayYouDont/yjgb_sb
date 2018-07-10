@@ -13,6 +13,8 @@ import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.NodeNewsWebService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 
 public class TarUtil {
@@ -148,6 +150,9 @@ public class TarUtil {
 					//获取实际xml实体类
 					xml = XMLUtil.readXML(xmlPath, clazz);
 					BaseXML resultEntity = xml.getResponseByClass(xml);
+					if(xml instanceof EBM) {
+						NodeNewsWebService.startpush(inTarPath);
+					}
 					String resultEntityName = "EBDE_"+resultEntity.getEBD_EBDID();
 					//创建回执tar包返回路径
 					outTarPath = createXMLTar(resultEntity, outTarPath, resultEntityName);

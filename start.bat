@@ -1,0 +1,1 @@
+java -jar -Dspring.config.location=%cd%\application.properties -Dlogging.path=%cd%\log %cd%\yjgb-sb-0.0.1-SNAPSHOT.jar
