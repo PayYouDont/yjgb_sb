@@ -1,7 +1,14 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket;
 
-import java.io.IOException;
-import java.util.concurrent.CopyOnWriteArraySet;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -9,17 +16,26 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 @ServerEndpoint("/webscoket")
 public class WebScoketServer {
+
+    private NodeService service =ApplicationContextRegister.getBean(NodeService.class);
+
+    private EmergencyInfoService emergencyInfoService =ApplicationContextRegister.getBean(EmergencyInfoService.class);;
+
+    private String path;
+
     //与某个客户端的连接会话，需要通过它来给客户端发送数据  
     private Session session; 
     
-    public final Logger log = LoggerFactory.getLogger(this.getClass());
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     private static CopyOnWriteArraySet<WebScoketServer> webSocketSet = new CopyOnWriteArraySet<WebScoketServer>();
     /** 
@@ -28,8 +44,8 @@ public class WebScoketServer {
     public void onOpen(Session session) {  
         this.session = session;  
         webSocketSet.add(this);     //加入set中  
-        System.out.println("有新连接加入:"+session.getId()); 
-        log.info("有新连接加入:"+session.getId());
+        System.out.println("有新连接加入:"+session.getId());
+        logger.info("有新连接加入:"+session.getId());
         try {
         	sendInfo("连接成功");
         }catch(IOException e) {
@@ -43,7 +59,7 @@ public class WebScoketServer {
     public void onClose(Session session) {
         System.out.println("有一连接关闭:" +session.getId());
         webSocketSet.remove(this);  //从set中删除  
-        log.info("有一连接关闭:" +session.getId());
+        logger.info("有一连接关闭:" +session.getId());
     }  
     /** 
      * 收到客户端消息后调用的方法 
@@ -87,5 +103,49 @@ public class WebScoketServer {
             }  
         } 
     	
+    }
+    /**
+     * 返回推送消息
+     * @param
+     * @return
+     */
+    public static String showNodeNews(String path){
+        File tarfile = new File(path);
+        EBM ebm = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(tarfile);
+        Map<String, Object> map = ebm.getEMBMap();
+        List<Map<String, Object>> list = new LinkedList<>();
+        list.add(map);
+        int i=0;
+        try {
+           i = ApplicationContextRegister.getBean(EmergencyInfoService.class).saveXML(ebm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (i == -200)
+            return "-200";
+        else
+            return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
+    }
+
+    /**
+     * 外部静态调用
+     * @param path
+     * @return  "-200" 错误标识     "200"  正常标识
+     */
+    public static String startpush(String path){
+        WebScoketServer webScoketServer = ApplicationContextRegister.getBean(WebScoketServer.class);
+        String data = showNodeNews(path);
+        if (data.equals("-200")){
+            return "-200";
+        }else {
+            if (webScoketServer.session.isOpen()){
+                try {
+                    WebScoketServer.sendInfo(data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return "200";
+        }
     }
 }

@@ -1,17 +1,5 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.Impl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
@@ -35,6 +23,16 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource;
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmergencyInfoServiceImpl implements EmergencyInfoService {
@@ -260,8 +258,16 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setProgramdescription(ebmxml.getAuxiliary_AuxiliaryDesc());
 		String language = ebmxml.getMsgContent_LanguageCode();
 		long between=(info.getStartTime().getTime()-info.getEndTime().getTime())/(1000*60);//除以1000是为了转换成秒
-		info.setSound("60");
 		info.setDuration(String.valueOf(Math.abs(between)));  //持续时间
+
+		Date date=sdf.parse(sdf.format(new Date())); //当前系统时间
+		if (info.getStartTime().getTime()>date.getTime()){ //如果开始时间大于系统当前时间
+			info.setStatus(5);  //初始化为待发送
+		}else {
+			return  -200;
+		}
+		info.setSound("60");
+
 		Displaylanguage dl = null;
 		if (language.equals("zho")) {
 			Map<String, Object> map = new HashMap<>();
@@ -338,7 +344,6 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setInfosourceId(1);
 
 		info.setEmergencycode(EBMessageUtil.generateSendtime());
-		info.setStatus(2);  //初始化为待审核
 		info.setFlag(1);
 		info.setUnitname(serverProperties.getUnitName());
 		//设置事件编码（随机数）

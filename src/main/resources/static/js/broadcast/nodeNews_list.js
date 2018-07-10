@@ -4,7 +4,7 @@ $(document).ready(function(){
         console.log("您的浏览器不支持WebSocket");
     }else{
         console.log("您的浏览器支持WebSocket");
-        socket = new WebSocket("ws://localhost:8090/webscokets");
+        socket = new WebSocket("ws://localhost:8090/webscoket");
         socket.onopen =function () {
             isconn = true;
         }
