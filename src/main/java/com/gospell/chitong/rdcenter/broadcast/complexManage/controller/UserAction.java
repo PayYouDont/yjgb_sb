@@ -28,6 +28,11 @@ import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 import com.gospell.chitong.rdcenter.broadcast.util.MD5Util;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+@Api(description = "用户操作相关接口")
 @Controller
 @RequestMapping("/userAction")
 public class UserAction extends BaseAction{
@@ -61,7 +66,7 @@ public class UserAction extends BaseAction{
 		model.addAttribute("roleList", roleList);
 		return "complex/user_edit";
 	}
-	
+
 	/**
 	 * @Title: login 
 	 * @Description: TODO(登录) 
@@ -72,13 +77,16 @@ public class UserAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月1日 下午3:04:17
 	 */
+	@ApiOperation(value="登录", notes="登录接口")
+    @ApiImplicitParams({
+          @ApiImplicitParam(name = "name", value = "用户名", required = true ,dataType = "String"),
+          @ApiImplicitParam(name = "password", value = "密码", required = true ,dataType = "String"),
+    })
 	@PostMapping("/login")
 	@ResponseBody
-	public HashMap<String,Object> login(User user) {
-		String password = user.getPassword();
-		String username = user.getName();
-		password = MD5Util.encrypt(username, password);
-		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+	public HashMap<String,Object> login(String password,String name) {
+		password = MD5Util.encrypt(name, password);
+		UsernamePasswordToken token = new UsernamePasswordToken(name, password);
 		Subject subject = SecurityUtils.getSubject();
 		try {
 			subject.login(token);
