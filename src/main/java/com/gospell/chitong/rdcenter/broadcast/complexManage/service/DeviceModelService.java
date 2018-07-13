@@ -29,4 +29,6 @@ public interface DeviceModelService {
 	int saveDMPR(Integer modelId,String paramIds) throws Exception;
 	
 	int deleteDMPRByDevModelId(Integer devModelId) throws Exception;
+	
+	List<Devicemodelparam> getDevParmByDevicemodel(Devicemodel deviceModel);
 }

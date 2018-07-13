@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -54,6 +56,14 @@ public class EBRDTInfo extends BaseXML implements ResponseXML{
 	@Override
 	public BaseXML createIncrementalEntity() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	public static String createTar(Deviceinfo deviceInfo) {
+		EBRDTInfo info = (EBRDTInfo)BaseXML.createBaseXML(EBRDTInfo.class);
+		info.setEBRDT_RptTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
+		info.setEBRDT_RptType("Sync");
+		info.setRelatedEBRPS_EBRID(info.getSRC_EBRID());
+		info.setEBRDT_EBRID("");
 		return null;
 	}
 }

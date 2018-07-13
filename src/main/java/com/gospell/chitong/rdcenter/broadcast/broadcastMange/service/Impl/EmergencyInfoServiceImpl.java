@@ -246,7 +246,6 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 	 */
 	@Override
 	public int saveXML(EBM ebmxml) throws Exception {
-		System.out.println(ebmxml);
 		Emergencyinfo info = new Emergencyinfo();
 		info.setAreacode(ebmxml.getMsgContent_AreaCode());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -260,12 +259,12 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		long between=(info.getStartTime().getTime()-info.getEndTime().getTime())/(1000*60);//除以1000是为了转换成秒
 		info.setDuration(String.valueOf(Math.abs(between)));  //持续时间
 
-		Date date=sdf.parse(sdf.format(new Date())); //当前系统时间
+	/*	Date date=sdf.parse(sdf.format(new Date())); //当前系统时间
 		if (info.getStartTime().getTime()>date.getTime()){ //如果开始时间大于系统当前时间
 			info.setStatus(5);  //初始化为待发送
 		}else {
 			return  -200;
-		}
+		}*/
 		info.setSound("60");
 
 		Displaylanguage dl = null;
@@ -348,8 +347,9 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setUnitname(serverProperties.getUnitName());
 		//设置事件编码（随机数）
 		info.setEmergencycode(EBMessageUtil.generateSendtime());
-		info.setAddresscodename(accService.getPcodeChinese(ShiroUtils.getUser().getAreaCode()));
-		if (info.getId() != null) {
+		//System.out.println(ShiroUtils.getUser().getAreaCodeName());
+		//info.setAddresscodename(ShiroUtils.getUser().getAreaCodeName());
+		if (info.getId() == null) {
 			info.setCreateBy(ebmxml.getMsgBasicInfo_SenderName());
 		} else {
 			info.setUpdateBy(ShiroUtils.getUser().getName());

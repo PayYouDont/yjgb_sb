@@ -36,8 +36,11 @@ public class IAdministrativeService implements AdministrativeService{
 	public String getTreeStr(String areaCode) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("code", areaCode);
-		Administrative ative = dao.list(map).get(0);
-		if(ative==null) {
+		List<Administrative> list = dao.list(map);
+		Administrative ative = null;
+		if(list.size()>0) {
+			ative = list.get(0);
+		}else {
 			return null;
 		}
 		ative = getChildList(ative);

@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DeviceinfoMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DevicemodelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
@@ -24,8 +26,11 @@ public class IDeviceInfoService implements DeviceInfoService{
 	private DeviceinfoMapper dao;
 	
 	@Resource
+	private DevicemodelMapper dmdao;
+	
+	@Resource
 	private AdministrativeMapper adsDao;
-
+	
 	@Override
 	public int save(Deviceinfo deviceinfo) throws Exception {
 		if(deviceinfo.getId()!=null) {
@@ -87,6 +92,21 @@ public class IDeviceInfoService implements DeviceInfoService{
 			}
 		}
 		return addressList;
+	}
+
+	/** 
+	 * <p>Title: getDeviceModelList</p> 
+	 * <p>Description: </p> 
+	 * @param map
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService#getDeviceModelList(java.util.Map) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月12日 上午9:16:58
+	 */
+	@Override
+	public List<Devicemodel> getDeviceModelList(Map<String, Object> map) {
+		return dmdao.list(map);
 	}
 	
 }

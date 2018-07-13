@@ -1,5 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.Impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,5 +106,29 @@ public class IDeviceModelService implements DeviceModelService{
 			index += dmprdao.insertSelective(dmpr);
 		}
 		return index;
+	}
+	
+
+	/** 
+	 * <p>Title: getDevParmByDevicemodel</p> 
+	 * <p>Description: </p> 
+	 * @param deviceModel
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService#getDevParmByDevicemodel(com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月12日 下午5:54:08
+	 */
+	@Override
+	public List<Devicemodelparam> getDevParmByDevicemodel(Devicemodel deviceModel) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("dmpId", deviceModel.getId());
+		List<DevModelParamRelation> dmprs = dmprdao.list(map);
+		List<Devicemodelparam> dmps = new ArrayList<>();
+		for (DevModelParamRelation devModelParamRelation : dmprs) {
+			Integer dmpid = devModelParamRelation.getDmpId();
+			dmps.add(dmpdao.selectByPrimaryKey(dmpid));
+		}
+		return dmps;
 	}
 }

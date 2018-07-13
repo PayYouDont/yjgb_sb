@@ -149,7 +149,7 @@ function edit(){
 		$.messager.alert('选择提示','请选择一个已注册设备！','info');
 		return;
 	}
-	$('#editIframe').attr('src','../deviceInfoAction/updateBase?id='+id);
+	$('#editIframe').attr('src','../deviceInfoAction/toEdit?id='+id);
 	$('#editModal').window('setTitle','设备基本信息修改');
 	$('#editModal').window('open');
 }

@@ -90,14 +90,13 @@ function baseSave(){
 		success: function(json){
 			$.messager.progress('close');	// hide progress bar while submit successfully
 			var data = JSON.parse(json);
-			console.log(data)
 			if (data.success){
 				$.messager.alert('系统提示', '注册成功!','info',function(){
 					window.parent.closeMyModal();
 					window.parent.refreshPage();
 				});
 			}else{
-				$.messager.alert('异常', '注册失败!','error');
+				$.messager.alert('异常', '注册失败!'+data.data,'error');
 			}
 		}
 	});

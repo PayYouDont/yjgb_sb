@@ -1,14 +1,11 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -16,18 +13,23 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArraySet;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 @Component
 @ServerEndpoint("/webscoket")
 public class WebScoketServer {
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据  
-    private Session session; 
+    private static Session session; 
     
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
     
@@ -53,9 +55,8 @@ public class WebScoketServer {
      * 连接建立成功调用的方法*/  
     @OnOpen  
     public void onOpen(Session session) {  
-        this.session = session;  
+    	WebScoketServer.session = session;  
         webSocketSet.add(this);     //加入set中  
-        System.out.println("有新连接加入:"+session.getId());
         logger.info("有新连接加入:"+session.getId());
         try {
         	sendInfo("连接成功");
@@ -68,7 +69,6 @@ public class WebScoketServer {
      */  
     @OnClose  
     public void onClose(Session session) {
-        System.out.println("有一连接关闭:" +session.getId());
         webSocketSet.remove(this);  //从set中删除  
         logger.info("有一连接关闭:" +session.getId());
     }  
@@ -77,9 +77,8 @@ public class WebScoketServer {
      * 
      * @param message 客户端发送过来的消息*/  
     @OnMessage  
-    public void onMessage(String message, Session session) {  
-        System.out.println("来自客户端的消息:" + message);  
-  
+    public void onMessage(String message, Session session) {
+        logger.info("来自客户端的消息:" + message);
         //群发消息  
         for (WebScoketServer item : webSocketSet) {  
             try {  
@@ -95,12 +94,11 @@ public class WebScoketServer {
      * @param error 
      */  
     @OnError  
-    public void onError(Session session, Throwable error) {  
-        System.out.println("发生错误");  
-        error.printStackTrace();  
+    public void onError(Session session, Throwable error) {
+        logger.info("发生错误",error);
     }  
     public void sendMessage(String message) throws IOException {  
-        this.session.getBasicRemote().sendText(message);  
+    	WebScoketServer.session.getBasicRemote().sendText(message);  
     }  
     /** 
      * 群发自定义消息 
@@ -144,12 +142,11 @@ public class WebScoketServer {
      * @return  "-200" 日期异常错误标识   "500" 连接异常   "200"  正常标识
      */
     public static String startpush(String path){
-        WebScoketServer webScoketServer = ApplicationContextRegister.getBean(WebScoketServer.class);
         String data = showNodeNews(path);
         if (data.equals(Status.timeError.getStatus())){
             return Status.timeError.getStatus();
         }else {
-            if (webScoketServer.session.isOpen()){
+            if (WebScoketServer.session.isOpen()){
                 try {
                     WebScoketServer.sendInfo(data);
                 } catch (IOException e) {

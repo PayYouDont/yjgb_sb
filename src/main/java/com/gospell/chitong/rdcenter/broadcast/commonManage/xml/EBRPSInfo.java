@@ -157,14 +157,6 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 */
 	@Override
 	public BaseXML createIncrementalEntity() {
-		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
-		EBRPSInfo info = new EBRPSInfo();
-		info.setEBD_EBDVersion("1.0");
-		info.setEBD_EBDID("10"+prop.getSRC_EBRID()+DateUtils.getDate("yyyyMMdd")+EBDcodeUtil.getEBDIDCode());
-		info.setEBD_EBDType("EBRDTInfo");
-		info.setSRC_EBRID(prop.getSRC_EBRID());
-		info.setDEST_EBRID(prop.getDEST_EBRID());
-		info.setEBD_EBDTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
-		return info;
+		return (EBRPSInfo)BaseXML.createBaseXML(EBRPSInfo.class);
 	}
 }

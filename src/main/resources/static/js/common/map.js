@@ -213,10 +213,7 @@ function initEmerInfo() {
 			title : '经度',
 			width : 150,
 			align : 'center',
-			hidden : true,
-			formatter : function(value, row, index) {
-				// console.log(value,row,index)
-			}
+			hidden : true
 		}, {
 			field : 'lat',
 			title : '纬度',
@@ -244,7 +241,6 @@ function getDevByEmerAreaCode(addressCodes) {
 		var addressJsonArray = data.data
 		map.clearOverlays();// 清除地图覆盖物
 		for (var i = 0; i < addressJsonArray.length; i++) {
-			console.log(addressJsonArray[i]);
 			getBoundary(addressJsonArray[i]);
 		}
 	}, 'json');

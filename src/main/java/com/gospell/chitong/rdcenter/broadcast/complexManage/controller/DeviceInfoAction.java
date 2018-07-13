@@ -39,7 +39,20 @@ public class DeviceInfoAction extends BaseAction{
 	public String toDevList() {
 		return "complex/device_list";
 	}
-	
+	@GetMapping("/toEdit")
+	public String toEdit(Model model,Integer id) {
+		Deviceinfo deviceInfo = new Deviceinfo();
+		if(id!=null) {
+			deviceInfo = service.findById(id);
+		}else {
+			deviceInfo = new Deviceinfo();
+		}
+		Map<String,Object> map = new HashMap<>();
+		List<Devicemodel> deviceModelList = service.getDeviceModelList(map);
+		model.addAttribute("deviceInfo",deviceInfo);
+		model.addAttribute("deviceModelList", deviceModelList);
+		return "complex/device_edit";
+	}
 	@GetMapping("/updateParam")
 	public String updateParam(Model model,Integer id) {
 		Deviceinfo info = service.findById(id);
@@ -62,13 +75,15 @@ public class DeviceInfoAction extends BaseAction{
 		model.addAttribute("deviceModelList", deviceModelList);
 		return "complex/device_regist";
 	}
-	
-	@GetMapping("/goMap")
+	@GetMapping("/goCoordinate")
 	public String goMap(Model model) {
 		model.addAttribute("unit_json", serverProperties.getLocation());
 		return "common/coordinate";
 	}
-	
+	@GetMapping("/goTree")
+	public String goTree() {
+		return "common/areaTree";
+	}
 	@PostMapping("/findByCodes")
 	@ResponseBody
 	public HashMap<String,Object> findByCodes(String code){

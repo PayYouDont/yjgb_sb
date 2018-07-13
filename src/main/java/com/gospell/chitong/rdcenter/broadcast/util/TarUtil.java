@@ -13,7 +13,7 @@ import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.NodeNewsWebService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 
@@ -152,7 +152,7 @@ public class TarUtil {
 					BaseXML resultEntity = xml.getResponseByClass(xml);
 					if(xml instanceof EBM) {
 						try{
-							NodeNewsWebService.startpush(inTarPath);
+							WebScoketServer.startpush(inTarPath);
 						}catch(Exception e) {
 							logger.error("播发节点消息失败",e);
 						}

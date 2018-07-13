@@ -4,14 +4,21 @@ import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Set;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBMStateRequest;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.OMDRequest;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 
 import lombok.Data;
 
@@ -31,6 +38,8 @@ public class BaseXML {
 	protected String DEST_EBRID;
 	protected String EBD_EBDTime;
 
+	public static final Logger logger = LoggerFactory.getLogger(BaseXML.class);
+	
 	public Map<String, Object> getMap() {
 		Map<String, Object> root = new LinkedHashMap<>();
 		root.put("EBDVersion", getEBD_EBDVersion());
@@ -128,5 +137,22 @@ public class BaseXML {
 			root.put(key, IdentityMap);
 		}
 		return root;
+	}
+	
+	public static BaseXML createBaseXML(Class<? extends BaseXML> clazz){
+		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
+		try {
+			BaseXML xml = clazz.newInstance();
+			xml.setEBD_EBDVersion("1.0");
+			xml.setEBD_EBDID(EBDcodeUtil.getEBDID(xml));
+			xml.setEBD_EBDType("EBRDTInfo");
+			xml.setSRC_EBRID(prop.getSRC_EBRID());
+			xml.setDEST_EBRID(prop.getDEST_EBRID());
+			xml.setEBD_EBDTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
+			return xml;
+		}catch(Exception e) {
+			logger.error("创建xml错误",e);
+		}
+		return null;
 	}
 }

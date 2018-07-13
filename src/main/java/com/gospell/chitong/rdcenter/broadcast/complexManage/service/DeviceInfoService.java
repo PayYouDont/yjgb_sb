@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
 
 public interface DeviceInfoService {
 	
@@ -18,4 +19,7 @@ public interface DeviceInfoService {
 	int queryCount(Map<String,Object> map);
 	
 	List<String> findByCodes(String code);
+	
+	List<Devicemodel> getDeviceModelList(Map<String,Object> map);
+	
 }
