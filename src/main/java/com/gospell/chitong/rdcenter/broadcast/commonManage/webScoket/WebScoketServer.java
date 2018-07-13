@@ -34,9 +34,9 @@ public class WebScoketServer {
     private static CopyOnWriteArraySet<WebScoketServer> webSocketSet = new CopyOnWriteArraySet<WebScoketServer>();
 
     public static enum  Status{
-        success("200"),
-        timeError("-200"),
-        exception("500");
+        success("200"),   //返回成功 状态
+        timeError("-200"), //日期异常  状态
+        exception("500");  // 连接异常  状态
         String status;
         Status(String s) {
             this.status=s;
