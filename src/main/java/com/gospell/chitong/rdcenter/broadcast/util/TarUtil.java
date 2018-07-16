@@ -14,8 +14,8 @@ import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 
 public class TarUtil {
 

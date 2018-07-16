@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 
 public interface NodeService {
 	

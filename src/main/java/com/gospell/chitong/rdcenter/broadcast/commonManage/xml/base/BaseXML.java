@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.ConnectionCheck;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBDResponse;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBMStateRequest;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.OMDRequest;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBMStateRequest;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.OMDRequest;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
@@ -143,9 +143,9 @@ public class BaseXML {
 		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 		try {
 			BaseXML xml = clazz.newInstance();
-			xml.setEBD_EBDVersion("1.0");
+			xml.setEBD_EBDVersion(prop.getServer_version());
 			xml.setEBD_EBDID(EBDcodeUtil.getEBDID(xml));
-			xml.setEBD_EBDType("EBRDTInfo");
+			xml.setEBD_EBDType(clazz.getSimpleName());
 			xml.setSRC_EBRID(prop.getSRC_EBRID());
 			xml.setDEST_EBRID(prop.getDEST_EBRID());
 			xml.setEBD_EBDTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));

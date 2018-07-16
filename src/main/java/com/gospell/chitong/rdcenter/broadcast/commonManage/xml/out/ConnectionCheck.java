@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

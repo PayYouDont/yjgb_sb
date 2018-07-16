@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidentlevel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidenttype;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaylanguage;

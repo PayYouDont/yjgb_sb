@@ -10,7 +10,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.listener.HeartListener;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 
 @Configuration

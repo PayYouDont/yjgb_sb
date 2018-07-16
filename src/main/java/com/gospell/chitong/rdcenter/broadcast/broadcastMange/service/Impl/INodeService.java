@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
 import org.apache.http.client.ClientProtocolException;

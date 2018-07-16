@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBRPSInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRPSInfo;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -24,4 +24,9 @@ public class utilTest {
 			e.printStackTrace();
 		}
 	}
+	/*@Test
+	public void test() {
+		Class clazz=EBRDTInfo.class;
+		System.out.println(clazz.getSimpleName());
+	}*/
 }

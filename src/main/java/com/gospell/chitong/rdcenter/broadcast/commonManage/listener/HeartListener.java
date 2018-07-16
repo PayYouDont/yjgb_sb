@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBRPSInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRPSInfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 

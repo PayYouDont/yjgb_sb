@@ -9,7 +9,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Content;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Info;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EmerJson;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidentlevelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AccidenttypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.DisplaylanguageMapper;
@@ -239,7 +239,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 	 * @param ebmxml
 	 * @return
 	 * @throws Exception 
-	 * @see com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService#saveXML(com.gospell.chitong.rdcenter.broadcast.commonManage.xml.EBM) 
+	 * @see com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService#saveXML(com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM) 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年6月27日 下午4:08:54

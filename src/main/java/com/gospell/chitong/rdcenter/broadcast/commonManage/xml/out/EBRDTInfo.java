@@ -1,12 +1,19 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,7 +57,6 @@ public class EBRDTInfo extends BaseXML implements ResponseXML{
 	}
 	@Override
 	public BaseXML createFullEntity() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
@@ -58,12 +64,29 @@ public class EBRDTInfo extends BaseXML implements ResponseXML{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public static String createTar(Deviceinfo deviceInfo) {
+	public static EBRDTInfo createEntity(Deviceinfo deviceInfo) {
 		EBRDTInfo info = (EBRDTInfo)BaseXML.createBaseXML(EBRDTInfo.class);
 		info.setEBRDT_RptTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
 		info.setEBRDT_RptType("Sync");
 		info.setRelatedEBRPS_EBRID(info.getSRC_EBRID());
-		info.setEBRDT_EBRID("");
-		return null;
+		String code = deviceInfo.getDevaddresscode();
+		AdministrativeMapper dao = ApplicationContextRegister.getBean(AdministrativeMapper.class);
+		Map<String, Object> map = new HashMap<>();
+		map.put("code", code);
+		List<Administrative> list = dao.list(map);
+		Integer level = null;
+		if(list.size()>0) {
+			level = list.get(0).getCodeLevel();
+		}
+		info.setEBRDT_EBRID(level+code+"10314040401");
+		info.setEBRDT_EBRName(deviceInfo.getDevname());
+		info.setEBRDT_Latitude(deviceInfo.getLat());
+		info.setEBRDT_Longitude(deviceInfo.getLng());
+		return info;
+	}
+	public static String createTar(Deviceinfo deviceInfo) {
+		EBRDTInfo info = createEntity(deviceInfo);
+		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
+		return TarUtil.createXMLTar(info,prop.getTarOutPath(), info.getEBD_EBDID());
 	}
 }

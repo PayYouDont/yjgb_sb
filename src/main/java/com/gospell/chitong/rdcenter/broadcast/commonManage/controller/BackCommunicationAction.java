@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.DeviceJson;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRDTInfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.DeviceParamVal;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
@@ -199,6 +200,8 @@ public class BackCommunicationAction extends BaseAction {
 		    		val.setParamName(deviceModelParam.getParamName());
 		    		dpvService.save(val);
 				}
+				//注冊后创建对应的tar包
+				EBRDTInfo.createTar(deviceInfo);
 			}
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {

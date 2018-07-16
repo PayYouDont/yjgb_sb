@@ -1,8 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 
 public class EBDcodeUtil {

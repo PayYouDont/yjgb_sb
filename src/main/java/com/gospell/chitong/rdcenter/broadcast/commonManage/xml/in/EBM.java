@@ -1,9 +1,10 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBDResponse;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

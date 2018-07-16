@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
 import java.io.File;
 import java.util.LinkedHashMap;
@@ -9,7 +9,6 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
-import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
@@ -90,13 +89,7 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 * @date 2018年7月5日 下午5:05:18
 	 */
 	public static EBRPSInfo createEntity(ServerProperties prop){
-		EBRPSInfo info = new EBRPSInfo();
-		info.setEBD_EBDVersion("1.0");
-		info.setEBD_EBDID("10"+prop.getSRC_EBRID()+DateUtils.getDate("yyyyMMdd")+EBDcodeUtil.getEBDIDCode());
-		info.setEBD_EBDType("EBRDTInfo");
-		info.setSRC_EBRID(prop.getSRC_EBRID());
-		info.setDEST_EBRID(prop.getDEST_EBRID());
-		info.setEBD_EBDTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
+		EBRPSInfo info = (EBRPSInfo)BaseXML.createBaseXML(EBRPSInfo.class);
 		info.setEBRPS_RptTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
 		info.setEBRPS_RptType("Sync");
 		info.setRelatedEBRPS_EBRID(prop.getDEST_EBRID());

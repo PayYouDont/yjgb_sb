@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -6,6 +6,13 @@ import java.util.Map;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.RequestXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBMBrdLog;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRASInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRASState;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRDTInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRDTState;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRPSInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRPSState;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
