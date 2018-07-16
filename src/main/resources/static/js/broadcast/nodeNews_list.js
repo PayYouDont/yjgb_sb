@@ -4,7 +4,8 @@ $(document).ready(function(){
         console.log("您的浏览器不支持WebSocket");
     }else{
         console.log("您的浏览器支持WebSocket");
-        socket = new WebSocket("ws://127.0.0.1:8090/webscoket");
+        var host = window.location.host
+        socket = new WebSocket("ws://"+host+"/webscoket");
         socket.onopen =function () {
             isconn = true;
         }
@@ -12,8 +13,13 @@ $(document).ready(function(){
         var isconn;
         //获得消息事件
         socket.onmessage = function(msg) {
-            var data = JSON.parse(msg.data)
-            $('#mainTab').datagrid("loadData",data)
+            var data = msg.data;
+            if(typeof(msg.data) == "object"){
+                data = JSON.parse(msg.data)
+                $('#mainTab').datagrid("loadData",data)
+            }else{
+                $.messager.alert('系统提示',data,'info');
+            }
         };
         //关闭事件
         socket.onclose = function() {
