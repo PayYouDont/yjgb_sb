@@ -11,7 +11,7 @@
  Target Server Version : 50705
  File Encoding         : 65001
 
- Date: 28/06/2018 16:53:24
+ Date: 17/07/2018 15:19:09
 */
 
 SET NAMES utf8mb4;
@@ -1549,7 +1549,7 @@ CREATE TABLE `dev_model_param_relation`  (
   `dm_id` int(20) NOT NULL COMMENT 'devModel的id',
   `dmp_id` int(20) NOT NULL COMMENT 'devModelParam的id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of dev_model_param_relation
@@ -1558,12 +1558,13 @@ INSERT INTO `dev_model_param_relation` VALUES (1, 33, 19);
 INSERT INTO `dev_model_param_relation` VALUES (2, 39, 19);
 INSERT INTO `dev_model_param_relation` VALUES (3, 43, 19);
 INSERT INTO `dev_model_param_relation` VALUES (4, 33, 20);
-INSERT INTO `dev_model_param_relation` VALUES (5, 44, 20);
 INSERT INTO `dev_model_param_relation` VALUES (6, 33, 21);
-INSERT INTO `dev_model_param_relation` VALUES (7, 44, 21);
 INSERT INTO `dev_model_param_relation` VALUES (8, 33, 22);
 INSERT INTO `dev_model_param_relation` VALUES (9, 33, 23);
 INSERT INTO `dev_model_param_relation` VALUES (10, 33, 24);
+INSERT INTO `dev_model_param_relation` VALUES (17, 44, 25);
+INSERT INTO `dev_model_param_relation` VALUES (18, 44, 21);
+INSERT INTO `dev_model_param_relation` VALUES (19, 44, 20);
 
 -- ----------------------------
 -- Table structure for device_log
@@ -1733,10 +1734,10 @@ CREATE TABLE `devicemodel`  (
 -- ----------------------------
 -- Records of devicemodel
 -- ----------------------------
-INSERT INTO `devicemodel` VALUES (33, '型号1', '参数：音量，Mask，Gate,本地ip，服务ip，服务端口', 6, NULL, '2018-02-27 15:55:06', '2018-01-15 17:57:17', '2018-02-27 15:54:32', 'admin');
-INSERT INTO `devicemodel` VALUES (39, '型号3', '参数：音量', 6, NULL, '2018-02-27 15:55:06', NULL, '2018-02-27 15:53:20', 'admin');
-INSERT INTO `devicemodel` VALUES (43, '型号2', '参数：音量', 6, NULL, '2018-02-27 15:55:06', NULL, '2018-02-27 15:52:53', 'admin');
-INSERT INTO `devicemodel` VALUES (44, '123', '123123', 6, NULL, '2018-02-27 15:47:27', NULL, '2018-02-27 15:52:11', 'admin');
+INSERT INTO `devicemodel` VALUES (33, '型号1', '参数：音量，Mask，Gate,本地ip，服务ip，服务端口', 6, NULL, '2018-02-27 15:55:06', 'admin', '2018-06-29 11:15:00', 'admin');
+INSERT INTO `devicemodel` VALUES (39, '型号3', '参数：音量', 6, NULL, '2018-02-27 15:55:06', 'admin', '2018-06-29 11:15:00', 'admin');
+INSERT INTO `devicemodel` VALUES (43, '型号2', '参数：音量', 6, NULL, '2018-02-27 15:55:06', 'admin', '2018-06-29 11:15:00', 'admin');
+INSERT INTO `devicemodel` VALUES (44, '123', '参数：测试,Gate,Mask', 7, NULL, '2018-02-27 15:47:27', 'admin', '2018-07-10 17:04:38', 'admin');
 
 -- ----------------------------
 -- Table structure for devicemodelparam
@@ -1780,7 +1781,13 @@ CREATE TABLE `devicetype`  (
   `update_by` varchar(0) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `devTypeCode` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '设备类型code',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of devicetype
+-- ----------------------------
+INSERT INTO `devicetype` VALUES (6, '接收终端', '接收终端', '2018-01-09 15:46:18', NULL, '2018-01-12 16:49:05', NULL, '0600');
+INSERT INTO `devicetype` VALUES (7, '适配设备', '适配设备', '2018-04-10 10:01:17', NULL, '2018-04-10 10:01:20', NULL, '0400');
 
 -- ----------------------------
 -- Table structure for displaylanguage
@@ -1865,7 +1872,7 @@ CREATE TABLE `emergencyinfo`  (
   `flag` int(10) NULL DEFAULT NULL COMMENT '信息类型(0:预案1:非预案)',
   `addressCodeName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 151 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 154 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of emergencyinfo
@@ -1945,6 +1952,9 @@ INSERT INTO `emergencyinfo` VALUES (145, 'vvvvssss', '58268162806', '2018-05-30 
 INSERT INTO `emergencyinfo` VALUES (146, '888888', '58268163146', '2018-05-30 16:35:52', '2018-05-30 17:35:52', '60', '60', '445103000000;', 'fscadddee1111', NULL, '', 1, 2, 1, 1, 1, NULL, NULL, NULL, 'admin', '2018-05-30 16:31:47', 6, '潮安区', '123456789987654321201805300002', '445103000000', 1, '潮安区;');
 INSERT INTO `emergencyinfo` VALUES (147, '预案测试(2018-06-05 10:55:20)', '58247141233', '2018-06-05 10:55:20', '2018-06-05 11:55:20', '60', '60', '445103000000;', '1111111111111111111111', NULL, '', 1, 2, 1, 1, 1, NULL, NULL, NULL, 'admin', '2018-05-09 14:12:33', 5, '潮安区', NULL, '445103000000', 1, '潮安区;');
 INSERT INTO `emergencyinfo` VALUES (150, 'boot测试', '58281115749', '2018-06-12 11:57:31', '2018-06-12 12:57:31', '60', '60', '445103100000;', 'springboot测试', NULL, '', 1, 2, 1, 1, 1, NULL, 'admin', '2018-06-12 13:34:42', 'admin', '2018-06-12 11:57:49', 6, '潮安区', '123456789987654321201806120002', '445103000000', 1, '广东省;潮州市;潮安区;');
+INSERT INTO `emergencyinfo` VALUES (151, '2018年7月3日18:30:43测试', '58302183108', '2018-07-03 18:30:47', '2018-07-03 19:30:47', '60', '60', '445103100000;', '文字测试2018年7月3日18:31:01', NULL, '', 1, 2, 1, 1, 1, NULL, 'admin', '2018-07-03 18:31:15', 'admin', '2018-07-03 18:31:08', 6, '安徽省舒城县', '123456789987654321201807030001', '445103000000', 1, '广东省;潮州市;潮安区;');
+INSERT INTO `emergencyinfo` VALUES (152, '2018年7月3日18:48:14测试', '58302184831', '2018-07-03 18:48:19', '2018-07-03 19:48:19', '60', '60', '445103104000;', '2018年7月3日18:48:23测试', NULL, '', 1, 2, 1, 1, 1, NULL, 'admin', '2018-07-03 18:48:36', 'admin', '2018-07-03 18:48:31', 6, '安徽省舒城县', '123456789987654321201807030001', '445103000000', 1, '广东省;潮州市;潮安区;');
+INSERT INTO `emergencyinfo` VALUES (153, '音频演练', '58316150528', '2018-06-15 21:58:46', '2018-06-15 22:08:46', '60', '10', NULL, '', NULL, 'EBDR_1528773660358_gme.mp3', 1, 2, 1, 2, 1, NULL, NULL, '2018-07-17 15:05:38', '安徽省调度控制平台', '2018-07-13 15:06:26', NULL, '安徽省舒城县', '23400000000000101010101201806150001', '341523000000', 1, NULL);
 
 -- ----------------------------
 -- Table structure for infosource
@@ -2004,8 +2014,8 @@ INSERT INTO `menu` VALUES (14, '事件类型', 10, 2, '../accidentTypeAction/goA
 INSERT INTO `menu` VALUES (15, '事件等级', 10, 3, '../accidentLevelAction/goAccidentLevel', '事件等级：增加，修改，删除', 'accidentLevel', '0', 'icon-man');
 INSERT INTO `menu` VALUES (16, '流程管理', 1, 4, '', '流程管理：审核流程，发送流程', 'liuchen', '0', 'icon-man');
 INSERT INTO `menu` VALUES (17, '审核流程', 16, 1, '', '审核流程', 'registerManage', '0', 'icon-man');
-INSERT INTO `menu` VALUES (18, '设备型号', 9, 13, '../deviceModelAction/goDeviceModel', '设备型号：增加，修改，删除', 'deviceModel', '0', 'icon-man');
-INSERT INTO `menu` VALUES (19, '设备类型', 9, 14, '../deviceTypeAction/goDeviceType', '设备类型：增加，修改，删除', 'deviceType', '0', 'icon-man');
+INSERT INTO `menu` VALUES (18, '设备型号', 9, 13, '../deviceModelAction/toList', '设备型号：增加，修改，删除', 'deviceModel', '0', 'icon-man');
+INSERT INTO `menu` VALUES (19, '设备类型', 9, 14, '../deviceTypeAction/toList', '设备类型：增加，修改，删除', 'deviceType', '0', 'icon-man');
 INSERT INTO `menu` VALUES (20, '设备总参', 9, 12, '../deviceModelParamAction/toList', '设备参数总表设置', 'deviceParam', '0', 'icon-man');
 INSERT INTO `menu` VALUES (21, '预案信息', 8, 1, '../emergencyInfoAction/goEmerPlan', '应急预案信息', 'emergencyInfoPlan', '1', 'icon-man');
 INSERT INTO `menu` VALUES (22, '统计管理', 6, 3, '', '统计管理：统计图表，统计信息', 'tongj', '1', 'icon-man');
@@ -2066,6 +2076,33 @@ INSERT INTO `node` VALUES (4, '测试节点2', 'localhost:8888', NULL, 1, '23400
 INSERT INTO `node` VALUES (5, '测试节点3', 'localhost:8090', NULL, 0, '23400000000000101010101', '23400000000000101010101', 'admin', '2018-06-11 16:12:53', 'admin', '2018-06-13 08:43:57', '23400000000000101010101');
 
 -- ----------------------------
+-- Table structure for receive_tar
+-- ----------------------------
+DROP TABLE IF EXISTS `receive_tar`;
+CREATE TABLE `receive_tar`  (
+  `id` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '对应tar包名字中的EBDT_后面id',
+  `resource_id` varchar(24) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '接收到tar包的时间',
+  `status` int(10) NULL DEFAULT NULL COMMENT '状态',
+  `audit_user` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `audit_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` int(20) NULL DEFAULT NULL,
+  `audit_depar` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `audit_desc` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `resource_code` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `ebd_type` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of receive_tar
+-- ----------------------------
+INSERT INTO `receive_tar` VALUES ('100102510100000000012018052200000007', '', '2018-05-22 13:00:37', 1, '', NULL, 2, '', '', '010251010000000001', '0');
+INSERT INTO `receive_tar` VALUES ('10234000000000001010101010000000000002285', NULL, '2018-07-17 15:03:57', 1, NULL, '2018-07-17 15:03:57', 1, NULL, NULL, '23400000000000101010101', 'OMDRequest');
+INSERT INTO `receive_tar` VALUES ('10234000000000001010101010000000000002296', NULL, '2018-07-17 15:05:20', 1, NULL, '2018-07-17 15:05:20', 1, NULL, NULL, '23400000000000101010101', 'OMDRequest');
+INSERT INTO `receive_tar` VALUES ('10234000000000001010101010000000000002476', NULL, '2018-07-17 15:05:28', 1, NULL, '2018-07-17 15:05:28', 1, NULL, NULL, '23400000000000101010101', 'EBM');
+
+-- ----------------------------
 -- Table structure for role
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
@@ -2088,6 +2125,28 @@ CREATE TABLE `role`  (
 INSERT INTO `role` VALUES (1, '超级管理', '超级管理拥有系统所有权限', '2018-02-02 10:38:37', 'admin', '2018-04-27 15:40:13', 'admin', NULL, NULL);
 INSERT INTO `role` VALUES (2, '综合管理系统管理员', '综合管理系统管理员', '2018-02-07 17:49:36', 'admin', '2018-02-26 17:22:44', 'admin', NULL, NULL);
 INSERT INTO `role` VALUES (3, '应急播发系统管理员', '应急播发系统所有权限', '2018-02-24 10:13:57', 'admin', '2018-02-26 17:24:34', 'admin', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for send_tar
+-- ----------------------------
+DROP TABLE IF EXISTS `send_tar`;
+CREATE TABLE `send_tar`  (
+  `ebdid` varchar(41) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `ebd_type` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `result_code` int(20) NULL DEFAULT NULL,
+  `result_desc` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `dest_id` varchar(23) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `send_date` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ebdid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of send_tar
+-- ----------------------------
+INSERT INTO `send_tar` VALUES ('10234000000000001010101010000000000002476', 'EBDResponse', NULL, NULL, '23400000000000101010101', '2018-07-17 15:05:38');
+INSERT INTO `send_tar` VALUES ('10434152300000001030101012018061600000016', '1', NULL, '23400000000000101010101', '12', '2018-06-16 12:48:53');
+INSERT INTO `send_tar` VALUES ('10444510300000001030101012018071700000001', 'EBRPSInfo', NULL, NULL, '23415230000000101010101', '2018-07-17 15:03:57');
+INSERT INTO `send_tar` VALUES ('10444510300000001030101012018071700000002', 'EBRPSInfo', NULL, NULL, '23415230000000101010101', '2018-07-17 15:05:20');
 
 -- ----------------------------
 -- Table structure for user

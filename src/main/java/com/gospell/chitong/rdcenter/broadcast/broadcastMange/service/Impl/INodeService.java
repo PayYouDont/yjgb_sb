@@ -9,10 +9,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,10 +19,14 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProper
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.NodeMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
@@ -148,10 +148,13 @@ public class INodeService implements NodeService {
 		String getPath = prop.getTarInPath();
 		//将接收到的tar包写入指定tar文件夹
         String tarPath = FileUtil.copyFile(mfile.getInputStream(), getPath, mfile.getOriginalFilename());
+        //保存tar包相关信息到数据库
+        
         //解析接收到的tar包并生成对应的回复tar包
         String outPath = prop.getTarOutPath();
         return TarUtil.getTarByInTar(tarPath,outPath);
 	}
+	
 	/**
 	 * 根据tar包获取tar包内容对应实体类
 	 * @param tarfile

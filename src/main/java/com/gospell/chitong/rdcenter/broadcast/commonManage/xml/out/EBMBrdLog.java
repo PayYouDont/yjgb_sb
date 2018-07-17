@@ -129,30 +129,57 @@ public class EBMBrdLog extends BaseXML implements ResponseXML{
 		root.put("EBMBrdLog", EBMBrdLog);
 		return root;
 	}
-	
-	/**
-	 * 根据实体类生成回执实体
-	 * @Title: getResponseByClass 
-	 * @Description: TODO(具体回执暂未处理，目前只写了统一回复方式) 
-	 * @param @param entity
-	 * @param @return    设定文件 
-	 * @return BaseXML    返回类型 
+	/** 
+	 * <p>Title: getResultCode</p> 
+	 * <p>Description: </p> 
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#getResultCode() 
 	 * @throws 
 	 * @author peiyongdong
-	 * @date 2018年6月28日 上午8:45:18
+	 * @date 2018年7月17日 上午11:52:45
 	 */
 	@Override
-	public BaseXML getResponseByClass(BaseXML entity) {
-		EBDResponse response = (EBDResponse) super.getResponseByClass(entity);
-		response.setEBDResponse_ResultCode("1");
-		response.setEBDResponse_ResultDesc("已完成接收");
-		return response;
+	public String getResultCode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+	/** 
+	 * <p>Title: getResultDesc</p> 
+	 * <p>Description: </p> 
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#getResultDesc() 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月17日 上午11:52:45
+	 */
+	@Override
+	public String getResultDesc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/** 
+	 * <p>Title: createFullEntity</p> 
+	 * <p>Description: </p> 
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#createFullEntity() 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月17日 上午11:53:21
+	 */
 	@Override
 	public BaseXML createFullEntity() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	/** 
+	 * <p>Title: createIncrementalEntity</p> 
+	 * <p>Description: </p> 
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#createIncrementalEntity() 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月17日 上午11:53:21
+	 */
 	@Override
 	public BaseXML createIncrementalEntity() {
 		// TODO Auto-generated method stub

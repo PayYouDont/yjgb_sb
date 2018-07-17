@@ -6,4 +6,11 @@ public interface ResponseXML{
 	
 	BaseXML createIncrementalEntity();
 	
+	default String getResultCode() {
+		return "";
+	};
+	
+	default String getResultDesc() {
+		return "";
+	};
 }

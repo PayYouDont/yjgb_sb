@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gospell.chitong.rdcenter.broadcast.commonManage.dao.SendTarMapper">
+  <resultMap id="BaseResultMap" type="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar">
+    <id column="ebdid" jdbcType="VARCHAR" property="ebdid" />
+    <result column="ebd_type" jdbcType="VARCHAR" property="ebdType" />
+    <result column="result_code" jdbcType="INTEGER" property="resultCode" />
+    <result column="result_desc" jdbcType="VARCHAR" property="resultDesc" />
+    <result column="dest_id" jdbcType="VARCHAR" property="destId" />
+    <result column="send_date" jdbcType="TIMESTAMP" property="sendDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ebdid, ebd_type, result_code, result_desc, dest_id, send_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from send_tar
+    where ebdid = #{ebdid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from send_tar
+    where ebdid = #{ebdid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar">
+    insert into send_tar (ebdid, ebd_type, result_code, 
+      result_desc, dest_id, send_date
+      )
+    values (#{ebdid,jdbcType=VARCHAR}, #{ebdType,jdbcType=VARCHAR}, #{resultCode,jdbcType=INTEGER}, 
+      #{resultDesc,jdbcType=VARCHAR}, #{destId,jdbcType=VARCHAR}, #{sendDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar">
+    insert into send_tar
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ebdid != null">
+        ebdid,
+      </if>
+      <if test="ebdType != null">
+        ebd_type,
+      </if>
+      <if test="resultCode != null">
+        result_code,
+      </if>
+      <if test="resultDesc != null">
+        result_desc,
+      </if>
+      <if test="destId != null">
+        dest_id,
+      </if>
+      <if test="sendDate != null">
+        send_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ebdid != null">
+        #{ebdid,jdbcType=VARCHAR},
+      </if>
+      <if test="ebdType != null">
+        #{ebdType,jdbcType=VARCHAR},
+      </if>
+      <if test="resultCode != null">
+        #{resultCode,jdbcType=INTEGER},
+      </if>
+      <if test="resultDesc != null">
+        #{resultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="destId != null">
+        #{destId,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDate != null">
+        #{sendDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar">
+    update send_tar
+    <set>
+      <if test="ebdType != null">
+        ebd_type = #{ebdType,jdbcType=VARCHAR},
+      </if>
+      <if test="resultCode != null">
+        result_code = #{resultCode,jdbcType=INTEGER},
+      </if>
+      <if test="resultDesc != null">
+        result_desc = #{resultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="destId != null">
+        dest_id = #{destId,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDate != null">
+        send_date = #{sendDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ebdid = #{ebdid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar">
+    update send_tar
+    set ebd_type = #{ebdType,jdbcType=VARCHAR},
+      result_code = #{resultCode,jdbcType=INTEGER},
+      result_desc = #{resultDesc,jdbcType=VARCHAR},
+      dest_id = #{destId,jdbcType=VARCHAR},
+      send_date = #{sendDate,jdbcType=TIMESTAMP}
+    where ebdid = #{ebdid,jdbcType=VARCHAR}
+  </update>
+</mapper>

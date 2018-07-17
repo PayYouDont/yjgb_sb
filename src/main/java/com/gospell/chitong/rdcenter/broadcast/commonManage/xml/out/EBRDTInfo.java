@@ -55,15 +55,6 @@ public class EBRDTInfo extends BaseXML implements ResponseXML{
 		root.put("EBRDTInfo", getEBRDTInfoMap());
 		return root;
 	}
-	@Override
-	public BaseXML createFullEntity() {
-		return null;
-	}
-	@Override
-	public BaseXML createIncrementalEntity() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	public static EBRDTInfo createEntity(Deviceinfo deviceInfo) {
 		EBRDTInfo info = (EBRDTInfo)BaseXML.createBaseXML(EBRDTInfo.class);
 		info.setEBRDT_RptTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
@@ -88,5 +79,61 @@ public class EBRDTInfo extends BaseXML implements ResponseXML{
 		EBRDTInfo info = createEntity(deviceInfo);
 		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 		return TarUtil.createXMLTar(info,prop.getTarOutPath(), info.getEBD_EBDID());
+	}
+	/** 
+	 * <p>Title: createFullEntity</p> 
+	 * <p>Description: </p> 
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#createFullEntity() 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月17日 上午11:54:56
+	 */
+	@Override
+	public BaseXML createFullEntity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/** 
+	 * <p>Title: createIncrementalEntity</p> 
+	 * <p>Description: </p> 
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#createIncrementalEntity() 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月17日 上午11:54:56
+	 */
+	@Override
+	public BaseXML createIncrementalEntity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/** 
+	 * <p>Title: getResultCode</p> 
+	 * <p>Description: </p> 
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#getResultCode() 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月17日 上午11:54:56
+	 */
+	@Override
+	public String getResultCode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/** 
+	 * <p>Title: getResultDesc</p> 
+	 * <p>Description: </p> 
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#getResultDesc() 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月17日 上午11:54:56
+	 */
+	@Override
+	public String getResultDesc() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
