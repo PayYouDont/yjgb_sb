@@ -2,9 +2,13 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base;
 
 public interface ResponseXML{
 	
-	BaseXML createFullEntity();
+	default BaseXML createFullEntity() {
+		return null;
+	};
 	
-	BaseXML createIncrementalEntity();
+	default BaseXML createIncrementalEntity() {
+		return null;
+	};
 	
 	default String getResultCode() {
 		return "";

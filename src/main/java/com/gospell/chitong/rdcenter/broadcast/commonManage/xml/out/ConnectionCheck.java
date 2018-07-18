@@ -1,13 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
-import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import lombok.Data;
@@ -37,16 +34,9 @@ public class ConnectionCheck extends BaseXML{
 	}
 	
 	public static String createTar(ServerProperties prop){
-		ConnectionCheck xml = new ConnectionCheck();
-		xml.setEBD_EBDVersion("1.0");
-		xml.setEBD_EBDID("01"+prop.getSRC_EBRID()+EBDcodeUtil.getConnectionCheckCode());
-		xml.setEBD_EBDType("ConnectionCheck");
-		xml.setSRC_EBRID(prop.getSRC_EBRID());
-		xml.setDEST_EBRID(prop.getDEST_EBRID());
-		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		xml.setEBD_EBDTime(sdf.format(now));
-		xml.setConnectionCheck_RptTime(sdf.format(now));
-		return TarUtil.createXMLTar(xml.getMap(),prop.getTarOutPath(), xml.getEBD_EBDID());
+		ConnectionCheck xml = (ConnectionCheck)createBaseXML(ConnectionCheck.class);
+		xml.setConnectionCheck_RptTime(xml.getEBD_EBDTime());
+		String tarName = xml.getEBD_EBDID();
+		return TarUtil.createXMLTar(xml,prop.getTarOutPath(),tarName);
 	}
 }

@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
@@ -25,6 +28,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRPSInfo extends BaseXML implements ResponseXML{
+	
+	public static final Logger logger = LoggerFactory.getLogger(EBRPSInfo.class);
+	
 	private String EBRPS_RptTime;
 	private String EBRPS_RptType;
 	private String RelatedEBRPS_EBRID;
@@ -90,7 +96,7 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 */
 	public static EBRPSInfo createEntity(ServerProperties prop){
 		EBRPSInfo info = (EBRPSInfo)BaseXML.createBaseXML(EBRPSInfo.class);
-		info.setEBRPS_RptTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
+		info.setEBRPS_RptTime(DateUtils.getDateTime());
 		info.setEBRPS_RptType("Sync");
 		info.setRelatedEBRPS_EBRID(prop.getDEST_EBRID());
 		info.setEBRPS_EBRID(prop.getSRC_EBRID());
@@ -122,6 +128,24 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 		String url = prop.getSendUrl();
 		String outPath = prop.getTarInPath()+File.separatorChar+tar.getName();
 		HttpClientUtil.sendPostTar(url, tarMap, outPath);
+	}
+	/**
+	 * 发送平台信息
+	 * @Title: sendEBRPSInfo 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @throws Exception    设定文件 
+	 * @return void    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月18日 下午5:44:39
+	 */
+	public static void sendEBRPSInfo(){
+		try {
+			ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
+			sendEBRPSInfo(prop);
+		} catch (Exception e) {
+			logger.error("发送平台信息错误！",e);
+		}
 	}
 	/**
 	 * 获取平台全量信息

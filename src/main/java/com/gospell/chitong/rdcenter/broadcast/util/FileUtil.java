@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FileUtil {
-	public static final Logger logger = LoggerFactory.getLogger("com.gospell.chitong.rdcenter.broadcast.util.FileUtil");
+	public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 	
 	public static String copyFile(InputStream in,String outPaht,String fileName) {
 		File file = new File(outPaht);

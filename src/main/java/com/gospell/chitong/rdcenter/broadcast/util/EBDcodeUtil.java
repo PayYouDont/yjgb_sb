@@ -1,5 +1,7 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
+import java.util.Date;
+
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.ConnectionCheck;
@@ -9,13 +11,24 @@ public class EBDcodeUtil {
 	
 	public static int EBDID = 0;
 	
+	public static Date DAY = new Date();
+	
 	public static String getEBDIDCode() {
+		Date now = new Date();
+		if(DateUtils.getDistanceOfTwoDate(now, DAY)>=1) {//每天重置EBDID
+			DAY = new Date();
+			EBDID = 0;
+		}
 		EBDID++;
 		return StringUtil.patch("0", 8, EBDID);
 	}
 	public static String getConnectionCheckCode() {
-		EBDID++;
-		return StringUtil.patch("0", 16, EBDID);
+		Date now = new Date();
+		if(DateUtils.getDistanceOfTwoDate(now, DAY)>=1) {//每天重置EBDID
+			DAY = new Date();
+			EBDID = 0;
+		}
+		return StringUtil.patch("0", 16, 0);
 	}
 	public static String getEBDID(Object object) {
 		if(object instanceof BaseXML) {

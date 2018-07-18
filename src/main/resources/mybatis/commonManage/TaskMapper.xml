@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gospell.chitong.rdcenter.broadcast.commonManage.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Task">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression" />
+    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
+    <result column="is_concurrent" jdbcType="VARCHAR" property="isConcurrent" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="bean_class" jdbcType="VARCHAR" property="beanClass" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="job_status" jdbcType="VARCHAR" property="jobStatus" />
+    <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="spring_bean" jdbcType="VARCHAR" property="springBean" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cron_expression, method_name, is_concurrent, description, update_by, bean_class, 
+    create_time, job_status, job_group, update_time, create_by, spring_bean, job_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from task
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Task">
+    insert into task (id, cron_expression, method_name, 
+      is_concurrent, description, update_by, 
+      bean_class, create_time, job_status, 
+      job_group, update_time, create_by, 
+      spring_bean, job_name)
+    values (#{id,jdbcType=BIGINT}, #{cronExpression,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, 
+      #{isConcurrent,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, 
+      #{beanClass,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{jobStatus,jdbcType=VARCHAR}, 
+      #{jobGroup,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{springBean,jdbcType=VARCHAR}, #{jobName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Task">
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cronExpression != null">
+        cron_expression,
+      </if>
+      <if test="methodName != null">
+        method_name,
+      </if>
+      <if test="isConcurrent != null">
+        is_concurrent,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="beanClass != null">
+        bean_class,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="jobStatus != null">
+        job_status,
+      </if>
+      <if test="jobGroup != null">
+        job_group,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="springBean != null">
+        spring_bean,
+      </if>
+      <if test="jobName != null">
+        job_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="cronExpression != null">
+        #{cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null">
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="isConcurrent != null">
+        #{isConcurrent,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="beanClass != null">
+        #{beanClass,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jobStatus != null">
+        #{jobStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null">
+        #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="springBean != null">
+        #{springBean,jdbcType=VARCHAR},
+      </if>
+      <if test="jobName != null">
+        #{jobName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Task">
+    update task
+    <set>
+      <if test="cronExpression != null">
+        cron_expression = #{cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null">
+        method_name = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="isConcurrent != null">
+        is_concurrent = #{isConcurrent,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="beanClass != null">
+        bean_class = #{beanClass,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jobStatus != null">
+        job_status = #{jobStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null">
+        job_group = #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="springBean != null">
+        spring_bean = #{springBean,jdbcType=VARCHAR},
+      </if>
+      <if test="jobName != null">
+        job_name = #{jobName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Task">
+    update task
+    set cron_expression = #{cronExpression,jdbcType=VARCHAR},
+      method_name = #{methodName,jdbcType=VARCHAR},
+      is_concurrent = #{isConcurrent,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      bean_class = #{beanClass,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      job_status = #{jobStatus,jdbcType=VARCHAR},
+      job_group = #{jobGroup,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      spring_bean = #{springBean,jdbcType=VARCHAR},
+      job_name = #{jobName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByJobName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task
+    where job_name = #{jobName,jdbcType=BIGINT}
+  </select>
+</mapper>

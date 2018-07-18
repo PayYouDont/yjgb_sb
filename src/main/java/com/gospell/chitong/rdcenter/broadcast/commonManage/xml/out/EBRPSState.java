@@ -14,7 +14,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class EBRPSState extends BaseXML implements ResponseXML{/** 
+public class EBRPSState extends BaseXML implements ResponseXML{
+	
+	/** 
 	 * <p>Title: createFullEntity</p> 
 	 * <p>Description: </p> 
 	 * @return 

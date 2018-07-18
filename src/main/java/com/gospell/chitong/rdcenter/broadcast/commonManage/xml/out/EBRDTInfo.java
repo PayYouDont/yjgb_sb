@@ -87,12 +87,12 @@ public class EBRDTInfo extends BaseXML implements ResponseXML{
 	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#createFullEntity() 
 	 * @throws 
 	 * @author peiyongdong
-	 * @date 2018年7月17日 上午11:54:56
+	 * @date 2018年7月17日 下午4:29:49
 	 */
 	@Override
 	public BaseXML createFullEntity() {
 		// TODO Auto-generated method stub
-		return null;
+		return ResponseXML.super.createFullEntity();
 	}
 	/** 
 	 * <p>Title: createIncrementalEntity</p> 
@@ -101,39 +101,11 @@ public class EBRDTInfo extends BaseXML implements ResponseXML{
 	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#createIncrementalEntity() 
 	 * @throws 
 	 * @author peiyongdong
-	 * @date 2018年7月17日 上午11:54:56
+	 * @date 2018年7月17日 下午4:29:56
 	 */
 	@Override
 	public BaseXML createIncrementalEntity() {
 		// TODO Auto-generated method stub
-		return null;
-	}
-	/** 
-	 * <p>Title: getResultCode</p> 
-	 * <p>Description: </p> 
-	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#getResultCode() 
-	 * @throws 
-	 * @author peiyongdong
-	 * @date 2018年7月17日 上午11:54:56
-	 */
-	@Override
-	public String getResultCode() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	/** 
-	 * <p>Title: getResultDesc</p> 
-	 * <p>Description: </p> 
-	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#getResultDesc() 
-	 * @throws 
-	 * @author peiyongdong
-	 * @date 2018年7月17日 上午11:54:56
-	 */
-	@Override
-	public String getResultDesc() {
-		// TODO Auto-generated method stub
-		return null;
+		return ResponseXML.super.createIncrementalEntity();
 	}
 }

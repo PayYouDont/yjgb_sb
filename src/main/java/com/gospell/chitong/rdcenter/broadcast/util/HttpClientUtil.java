@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -201,8 +202,17 @@ public class HttpClientUtil {
 
         return result;
     }
-	
-	public static String sendPostTar(String url, Map<String,File> map,String outPath)throws ClientProtocolException, IOException  {
+	public static String sendPostTar(String url, String tarPath,String path)throws Exception  {
+		File tar = new File(tarPath);
+		if(!tar.exists()) {
+			return null;
+		}
+		Map<String, File> tarMap = new HashMap<>();
+		tarMap.put(tar.getName(), tar);
+		path += File.separatorChar + tar.getName();
+		return sendPostTar(url, tarMap, path);
+	}
+	public static String sendPostTar(String url, Map<String,File> map,String path)throws ClientProtocolException, IOException  {
 		String result = "";
 		if(url.indexOf("http:")==-1) {
 			url = "http://"+url;
@@ -231,12 +241,12 @@ public class HttpClientUtil {
         	result = EntityUtils.toString(entity, "utf-8");
         }
         if(entity!=null) {
-        	String partPath = outPath.substring(0,outPath.lastIndexOf("\\"));
-            File file = new File(partPath);
+        	String parentPath = path.substring(0,path.lastIndexOf("\\"));
+            File file = new File(parentPath);
             if(!file.exists()) {
             	 file.mkdirs();
             }
-            file = new File(outPath);
+            file = new File(path);
             OutputStream os = new FileOutputStream(file);
             OutputStreamWriter out = new OutputStreamWriter(os);
             out.write(result, 0,result.length());

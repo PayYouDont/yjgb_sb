@@ -117,7 +117,7 @@ public class TarUtil {
 	public static String createXMLTar(Map<String, Object> map, String outPath, String name) {
 		String xmlpath = XMLUtil.createXML(map, outPath, name);
 		name = name.indexOf(".tar") == -1 ? name + ".tar" : name;
-		outPath = outPath + File.separatorChar + name;
+		outPath += File.separatorChar +"EBDT_"+name;
 		OutputStream tar = null;
 		TarOutputStream tarOut = null;
 		try {
@@ -151,7 +151,7 @@ public class TarUtil {
 		BaseXML xml = archiveAndgetBaseXML(inTarPath);
 		if (xml != null) {
 			// 将tar包信息保存至数据库
-			saveReceiveTar(xml);
+			//saveReceiveTar(xml);
 			if (xml instanceof EBM) {
 				try {
 					WebScoketServer.startpush(inTarPath);
@@ -164,7 +164,7 @@ public class TarUtil {
 			// 创建回执tar包返回路径
 			outTarPath = createXMLTar(resultEntity, outTarPath, resultEntityName);
 			// 保存发送tar包信息
-			saveSendTar(resultEntity);
+			//saveSendTar(resultEntity);
 			return outTarPath;
 		}
 		return null;

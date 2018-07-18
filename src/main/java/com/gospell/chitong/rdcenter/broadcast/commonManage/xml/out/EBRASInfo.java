@@ -112,32 +112,4 @@ public class EBRASInfo extends BaseXML implements ResponseXML{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	/** 
-	 * <p>Title: getResultCode</p> 
-	 * <p>Description: </p> 
-	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#getResultCode() 
-	 * @throws 
-	 * @author peiyongdong
-	 * @date 2018年7月17日 上午11:54:26
-	 */
-	@Override
-	public String getResultCode() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	/** 
-	 * <p>Title: getResultDesc</p> 
-	 * <p>Description: </p> 
-	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML#getResultDesc() 
-	 * @throws 
-	 * @author peiyongdong
-	 * @date 2018年7月17日 上午11:54:26
-	 */
-	@Override
-	public String getResultDesc() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

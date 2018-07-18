@@ -148,7 +148,7 @@ public class BaseXML {
 			xml.setEBD_EBDType(clazz.getSimpleName());
 			xml.setSRC_EBRID(prop.getSRC_EBRID());
 			xml.setDEST_EBRID(prop.getDEST_EBRID());
-			xml.setEBD_EBDTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
+			xml.setEBD_EBDTime(DateUtils.getDateTime());
 			return xml;
 		}catch(Exception e) {
 			logger.error("创建xml错误",e);

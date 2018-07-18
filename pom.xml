@@ -163,7 +163,12 @@
 		  <groupId>io.springfox</groupId>
 		  <artifactId>springfox-staticdocs</artifactId>
 		  <version>2.6.1</version>
-		</dependency> -->	
+		</dependency> -->
+		<!-- 添加quartz依赖(定时任务) -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>	
 	</dependencies>
 	<build>
 		<plugins>

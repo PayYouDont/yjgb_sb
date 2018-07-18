@@ -14,11 +14,11 @@ $(document).ready(function(){
         //获得消息事件
         socket.onmessage = function(msg) {
             var data = msg.data;
-            if(typeof(msg.data) == "object"){
-                data = JSON.parse(msg.data)
+            data = JSON.parse(msg.data)
+            if(data.total){
                 $('#mainTab').datagrid("loadData",data)
             }else{
-                $.messager.alert('系统提示',data,'info');
+                $.messager.alert('系统提示',data.data,'info');
             }
         };
         //关闭事件

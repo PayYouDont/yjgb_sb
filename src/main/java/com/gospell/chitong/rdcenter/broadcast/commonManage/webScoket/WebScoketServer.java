@@ -59,7 +59,8 @@ public class WebScoketServer {
         webSocketSet.add(this);     //加入set中  
         logger.info("有新连接加入:"+session.getId());
         try {
-        	sendInfo("连接成功");
+        	String msg = JsonUtil.toJson(JsonWrapper.successWrapper("连接成功"));
+        	sendInfo(msg);
         }catch(IOException e) {
         	e.printStackTrace();
         }
