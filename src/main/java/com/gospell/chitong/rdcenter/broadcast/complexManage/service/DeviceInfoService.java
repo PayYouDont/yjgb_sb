@@ -22,4 +22,7 @@ public interface DeviceInfoService {
 	
 	List<Devicemodel> getDeviceModelList(Map<String,Object> map);
 	
+	List<Deviceinfo> getListByModel(Devicemodel model);
+	
+	List<Deviceinfo> getRegistListByType(String devtype);
 }

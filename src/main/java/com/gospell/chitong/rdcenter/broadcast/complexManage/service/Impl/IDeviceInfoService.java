@@ -108,5 +108,45 @@ public class IDeviceInfoService implements DeviceInfoService{
 	public List<Devicemodel> getDeviceModelList(Map<String, Object> map) {
 		return dmdao.list(map);
 	}
-	
+
+	/** 
+	 * <p>Title: getListByModel</p> 
+	 * <p>Description: </p> 
+	 * @param model
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService#getListByModel(com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月19日 上午9:49:17
+	 */
+	@Override
+	public List<Deviceinfo> getListByModel(Devicemodel model) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("devicemodelId", model.getId());
+		return list(map);
+	}
+
+	/** 
+	 * <p>Title: getRegistListByType</p> 
+	 * <p>Description: </p> 
+	 * @param devtype
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService#getListByModelType(java.lang.String) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月19日 上午10:37:23
+	 */
+	@Override
+	public List<Deviceinfo> getRegistListByType(String devtype) {
+		List<Deviceinfo> deviceinfos = dao.list(null);
+		List<Deviceinfo> list = new ArrayList<>();
+		for (Deviceinfo info : deviceinfos) {
+			if(info.getOnregister().equals("1")) {//已经注册
+				if(info.getDeviceModel().getDeviceType().getDevtype().indexOf(devtype)!=-1) {//属于适配器还是终端
+					list.add(info);
+				}
+			}
+		}
+		return list;
+	}
 }

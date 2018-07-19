@@ -100,6 +100,18 @@ public class DeviceInfoAction extends BaseAction{
 		int total = service.queryCount(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
-	
+	@RequestMapping("/delete")
+	@ResponseBody
+	public HashMap<String,Object> delete(Integer id){
+		if(id==null) {
+			return JsonWrapper.failureWrapper("id为空");
+		}
+		try {
+			service.delete(id);
+			return JsonWrapper.successWrapper();
+		} catch (Exception e) {
+			return JsonWrapper.failureWrapper(e);
+		}
+	}
 	
 }

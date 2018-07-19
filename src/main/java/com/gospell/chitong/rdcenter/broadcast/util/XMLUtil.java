@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRDTInfo;
 
 public class XMLUtil {
 
@@ -288,6 +291,7 @@ public class XMLUtil {
 	 * @author peiyongdong
 	 * @date 2018年6月21日 下午4:28:46
 	 */
+	@SuppressWarnings("unchecked")
 	public static BaseXML writeToEntity(Element elem,List<Field> fieldList,BaseXML xml) throws Exception{
 		 List<Element> elements = elem.elements();
 		 if(elements.size()>0) {
@@ -299,12 +303,56 @@ public class XMLUtil {
 					String fieldName = field.getName();
 					String ename = parentName+"_"+elemName;
 					if(fieldName.equals(ename)) {
-						field.set(xml, text);
+						//如果是数组类型
+						if(field.getType().isInstance(new ArrayList<Object>())) {
+							List<BaseXML> list = new ArrayList<>();
+							if(field.get(xml)!=null) {
+								list = (List<BaseXML>)field.get(xml);
+							}
+							list.addAll(writeArrayToEntrty(field,element));
+							field.set(xml, list);
+						}else {
+							field.set(xml, text);
+						}
 					}
 				}
 				writeToEntity(element, fieldList,xml);
 			 }
 		 }
 		return xml;
+	}
+	/**
+	 * 将xml元素中的数组类型值写入到对象数组属性中
+	 * @Title: writeArrayToEntrty 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param field
+	 * @param elem
+	 * @return
+	 * @throws Exception    设定文件 
+	 * @return List<BaseXML>    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月19日 下午4:40:57
+	 */
+	public static List<BaseXML> writeArrayToEntrty(Field field,Element elem) throws Exception {
+		List<BaseXML> list = new ArrayList<>();
+		Type type = field.getGenericType();
+		if(ParameterizedType.class.isAssignableFrom(type.getClass())) {
+			BaseXML xml = null;
+			for(Type t:((ParameterizedType) type).getActualTypeArguments()) {
+				Class<?> clazz = (Class<?>)t;
+				List<Field> fieldList = ReflecUtil.getFields(clazz);
+				xml = (BaseXML) clazz.newInstance();
+				xml = writeToEntity(elem, fieldList, xml);
+				list.add(xml);
+			}
+			
+		}
+		return list;
+	}
+	public static void main(String[] args) {
+		String xmlPath = "D:\\tar\\out\\EBDE_10444510300000001030101012018071900000001.xml";
+		BaseXML xml = XMLUtil.readXML(xmlPath, EBRDTInfo.class);
+		System.out.println(xml);
 	}
 }

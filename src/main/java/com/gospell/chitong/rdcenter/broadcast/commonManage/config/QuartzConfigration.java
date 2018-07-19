@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.quartz.Scheduler;
-import org.quartz.ee.servlet.QuartzInitializerListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -42,14 +41,6 @@ public class QuartzConfigration {
 		propertiesFactoryBean.afterPropertiesSet();
 		return propertiesFactoryBean.getObject();
 	}
-
-	 /*
-     * quartz初始化监听器
-     */
-    @Bean
-    public QuartzInitializerListener executorListener() {
-       return new QuartzInitializerListener();
-    }
 	
 	/*
 	 * 创建schedule

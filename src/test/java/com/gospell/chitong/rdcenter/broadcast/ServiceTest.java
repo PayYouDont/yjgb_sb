@@ -12,8 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AdministrativeService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,6 +42,7 @@ public class ServiceTest {
 	NodeService nodeservice;
 	@Test
 	public void test3() {
-		
+		DeviceInfoService service = ApplicationContextRegister.getBean(DeviceInfoService.class);
+		System.out.println(service);
 	}
 }

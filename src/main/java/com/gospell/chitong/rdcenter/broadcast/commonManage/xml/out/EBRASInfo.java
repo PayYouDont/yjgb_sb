@@ -1,10 +1,17 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo.EBRAS;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
+import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,22 +32,7 @@ public class EBRASInfo extends BaseXML implements ResponseXML{
 	private String Params_RptStartTime;
 	private String Params_RptEndTime;
 	private String Params_RptType;
-	/*
-	 * EBD/EBRASInfo/EBRAS
-	 */
-	private String EBRAS_RptTime;
-	private String EBRAS_RptType;
-	//关联平台(可选)
-	private String RelatedEBRPS_EBRID;
-	//关联站台(可选) 
-	private String RelatedEBRST_EBRID;
-	private String EBRAS_EBRID;
-	private String EBRAS_EBRName;
-	private String EBRAS_Longitude;
-	private String EBRAS_Latitude;
-	private String EBRAS_URL;
-	//附加参数(可选)
-	private Map<String,Object> EBRAS_Params;
+	private List<EBRAS> EBRASInfo_EBRAS;
 	
 	public Map<String,Object> getParamsMap(){
 		Map<String,Object> Params = new LinkedHashMap<>();
@@ -49,39 +41,20 @@ public class EBRASInfo extends BaseXML implements ResponseXML{
 		Params.put("RptType", getParams_RptType());
 		return Params;
 	}
-	public Map<String,Object> getEBRASMap(){
-		Map<String,Object> EBRAS = new LinkedHashMap<>();
-		EBRAS.put("RptTime", getEBRAS_RptTime());
-		EBRAS.put("RptType", getEBRAS_RptType());
-		if(getRelatedEBRPS_EBRID()!=null) {
-			Map<String,Object> RelatedEBRPS = new LinkedHashMap<>();
-			RelatedEBRPS.put("EBRID", getRelatedEBRPS_EBRID());
-			EBRAS.put("RelatedEBRPS", RelatedEBRPS);
-		}
-		if(getRelatedEBRST_EBRID()!=null) {
-			Map<String,Object> RelatedEBRST = new LinkedHashMap<>();
-			RelatedEBRST.put("EBRID", getRelatedEBRST_EBRID());
-			EBRAS.put("RelatedEBRST", RelatedEBRST);
-		}
-		EBRAS.put("EBRID", getEBRAS_EBRID());
-		EBRAS.put("EBRName", getEBRAS_EBRName());
-		EBRAS.put("Longitude", getEBRAS_Longitude());
-		EBRAS.put("Latitude", getEBRAS_Latitude());
-		EBRAS.put("URL", getEBRAS_URL());
-		if(getParamsMap()!=null) {
-			EBRAS.put("Params", getParamsMap());
-		}
-		return EBRAS;
-	}
-	public Map<String,Object> getEBRASInfo(){
-		Map<String,Object> EBRASInfo = new LinkedHashMap<>();
+
+	public Map<String,Object> getEBRASInfoMap(){
+		Map<String,Object> EBRASInfo = new IdentityHashMap<>();
 		EBRASInfo.put("Params", getParamsMap());
-		EBRASInfo.put("EBRAS", getEBRASMap());
+		if(getEBRASInfo_EBRAS()!=null) {
+			for(EBRAS ebras:getEBRASInfo_EBRAS()) {
+				EBRASInfo.put(new String("EBRAS"), ebras.getMap());
+			}
+		}
 		return EBRASInfo;
 	}
 	public Map<String,Object> getMap(){
 		Map<String,Object> root = super.getMap();
-		root.put("EBRASInfo", getEBRASInfo());
+		root.put("EBRASInfo", getEBRASInfoMap());
 		return root;
 	}
 	/** 
@@ -95,8 +68,14 @@ public class EBRASInfo extends BaseXML implements ResponseXML{
 	 */
 	@Override
 	public BaseXML createFullEntity() {
-		// TODO Auto-generated method stub
-		return null;
+		DeviceInfoService service = ApplicationContextRegister.getBean(DeviceInfoService.class);
+		List<Deviceinfo> deviceinfos = service.getRegistListByType("适配");
+		EBRASInfo info = (EBRASInfo)createBaseXML(EBRASInfo.class);
+		info.setParams_RptStartTime(DateUtils.getDateTime());
+		info.setParams_RptEndTime(DateUtils.getDateTime());
+		info.setParams_RptType("Full");
+		info.setEBRASInfo_EBRAS(EBRAS.getList(deviceinfos, info));
+		return info;
 	}
 	/** 
 	 * <p>Title: createIncrementalEntity</p> 
@@ -109,7 +88,10 @@ public class EBRASInfo extends BaseXML implements ResponseXML{
 	 */
 	@Override
 	public BaseXML createIncrementalEntity() {
-		// TODO Auto-generated method stub
-		return null;
+		EBRASInfo info = (EBRASInfo)createBaseXML(EBRASInfo.class);
+		info.setParams_RptStartTime(DateUtils.getDateTime());
+		info.setParams_RptEndTime(DateUtils.getDateTime());
+		info.setParams_RptType("Incremental");
+		return info;
 	}
 }

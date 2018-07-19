@@ -148,10 +148,10 @@ public class TarUtil {
 	 * @date 2018年6月27日 上午9:13:19
 	 */
 	public static String getTarByInTar(String inTarPath, String outTarPath) {
-		BaseXML xml = archiveAndgetBaseXML(inTarPath);
+		BaseXML xml = archiveAndGetBaseXML(inTarPath);
 		if (xml != null) {
 			// 将tar包信息保存至数据库
-			//saveReceiveTar(xml);
+			saveReceiveTar(xml);
 			if (xml instanceof EBM) {
 				try {
 					WebScoketServer.startpush(inTarPath);
@@ -164,7 +164,7 @@ public class TarUtil {
 			// 创建回执tar包返回路径
 			outTarPath = createXMLTar(resultEntity, outTarPath, resultEntityName);
 			// 保存发送tar包信息
-			//saveSendTar(resultEntity);
+			saveSendTar(resultEntity);
 			return outTarPath;
 		}
 		return null;
@@ -181,7 +181,7 @@ public class TarUtil {
 	 * @author peiyongdong
 	 * @date 2018年7月17日 下午2:30:14
 	 */
-	public static BaseXML archiveAndgetBaseXML(String tarPath) {
+	public static BaseXML archiveAndGetBaseXML(String tarPath) {
 		// d:/tar/xxxxx.tar
 		String temDir = tarPath.substring(0, tarPath.indexOf(".tar"));
 		// 临时文件夹名称
@@ -231,7 +231,7 @@ public class TarUtil {
 	 * @date 2018年7月17日 下午2:27:10
 	 */
 	public static int saveReceiveTar(String tarPath) {
-		BaseXML xml = archiveAndgetBaseXML(tarPath);
+		BaseXML xml = archiveAndGetBaseXML(tarPath);
 		return saveReceiveTar(xml);
 	}
 	/**
@@ -248,14 +248,22 @@ public class TarUtil {
 	public static int saveReceiveTar(BaseXML xml) {
 		try {
 			ReceiveTarMapper dao = ApplicationContextRegister.getBean(ReceiveTarMapper.class);
-			ReceiveTar tar = new ReceiveTar();
+			ReceiveTar tar = dao.selectByPrimaryKey(xml.getEBD_EBDID());
+			ReceiveTar selectTar = tar;
+			if(tar==null) {
+				tar = new ReceiveTar();
+			}
 			tar.setId(xml.getEBD_EBDID());
 			tar.setResourceCode(xml.getSRC_EBRID());
 			tar.setStatus(1);
 			tar.setType(1);
 			tar.setEbdType(xml.getEBD_EBDType());
 			// tar.setResourceId();
-			return dao.insertSelective(tar);
+			if(selectTar==null) {
+				return dao.insertSelective(tar);
+			}else {
+				return dao.updateByPrimaryKeySelective(tar);
+			}
 		}catch(Exception e) {
 			logger.error("接收tar包信息保存失败",e);
 			return 0;
@@ -273,7 +281,7 @@ public class TarUtil {
 	 * @date 2018年7月17日 下午2:28:21
 	 */
 	public static int saveSendTar(String tarPath) {
-		BaseXML xml = archiveAndgetBaseXML(tarPath);
+		BaseXML xml = archiveAndGetBaseXML(tarPath);
 		return saveSendTar(xml);
 	}
 	/**
@@ -290,7 +298,11 @@ public class TarUtil {
 	public static int saveSendTar(BaseXML xml) {
 		try {
 			SendTarMapper dao = ApplicationContextRegister.getBean(SendTarMapper.class);
-			SendTar tar = new SendTar();
+			SendTar tar = dao.selectByPrimaryKey(xml.getEBD_EBDID());
+			SendTar selectTar = tar;
+			if(tar==null) {
+				tar = new SendTar();
+			}
 			tar.setEbdid(xml.getEBD_EBDID());
 			tar.setEbdType(xml.getEBD_EBDType());
 			tar.setDestId(xml.getDEST_EBRID());
@@ -304,7 +316,11 @@ public class TarUtil {
 					tar.setResultDesc(response.getResultDesc());
 				}
 			}
-			return dao.insertSelective(tar);
+			if(selectTar==null) {
+				return dao.insertSelective(tar);
+			}else {
+				return dao.updateByPrimaryKeySelective(tar);
+			}
 		}catch(Exception e) {
 			logger.error("发送tar包信息保存失败",e);
 			return 0;

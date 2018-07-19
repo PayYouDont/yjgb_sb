@@ -199,15 +199,17 @@ function deleteData(id){
 	$.ajax({
 	    type: "post",
 	    data: {id:id},
-	    //contentType: "application/json",
-	    url: "../deviceInfoAction/deleteDeviceInfo",
-	    success: function (data) {
-			if(data=="ok"){$.messager.alert('删除提示','删除成功！','info',function(){refreshPage();});}
-			else {$.messager.alert('删除提示','删除失败！','error');}
+	    dataType: "json",
+	    url: "../deviceInfoAction/delete",
+	    success: function (json) {
+			if(json.success){
+				$.messager.alert('删除提示','删除成功！','info',function(){
+					refreshPage();
+				});
+			}else {
+				$.messager.alert('删除提示','删除失败！'+json.data,'error');
+			}
 	    },
-//	    complete: function () {//完成响应
-//	        $("#submit").removeAttr("disabled");
-//	    },
 	    error: function (data) {
 	    	$.messager.alert('系统提示','异常：'+data,'error')
 	    }

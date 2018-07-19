@@ -85,7 +85,7 @@ public class DaoTest {
 	
 	@Test
 	public void test4() {
-		List<Devicemodel> list = devicemodeldao.list(new HashMap<>());
+		List<Devicemodel> list = devicemodeldao.list(null);
 		System.out.println(list);
 	}
 	@Resource
