@@ -122,12 +122,10 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 */
 	public static void sendEBRPSInfo(ServerProperties prop) throws Exception {
 		String tarPath = EBRPSInfo.createTar(prop);
-		Map<String,File> tarMap = new LinkedHashMap<>();
 		File tar = new File(tarPath);
-		tarMap.put(tar.getName(), tar);
 		String url = prop.getSendUrl();
 		String outPath = prop.getTarInPath()+File.separatorChar+tar.getName();
-		HttpClientUtil.sendPostTar(url, tarMap, outPath);
+		HttpClientUtil.sendPostTar(url, tarPath, outPath);
 	}
 	/**
 	 * 发送平台信息

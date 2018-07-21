@@ -2,17 +2,43 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FileUtil {
 	public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
-	
+
+	public static String writeString(String msg,String path) {
+		PrintWriter out = null;
+		try {
+			File file = new File(path);
+			if(file.isDirectory()) {
+				return "文件写出路径有误!";
+			}
+			if(!file.exists()) {
+				file.createNewFile();
+			}
+			out = new PrintWriter(path);
+			out.write(msg);
+			out.flush();
+		} catch (FileNotFoundException e) {
+			logger.error("写出文件失败",e);
+		} catch (IOException e) {
+			logger.error("写出文件失败",e);
+		}finally{
+			if(out!=null) {
+				out.close();
+			}
+		}
+		return null;
+	}
 	public static String copyFile(InputStream in,String outPaht,String fileName) {
 		File file = new File(outPaht);
 		if(!file.exists()) {
