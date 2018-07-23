@@ -160,7 +160,7 @@ public class TarUtil {
 				}
 			}
 			BaseXML resultEntity = xml.getResponseByClass(xml);
-			String resultEntityName = "EBDE_" + resultEntity.getEBD_EBDID();
+			String resultEntityName = resultEntity.getEBD_EBDID();
 			// 创建回执tar包返回路径
 			outTarPath = createXMLTar(resultEntity, outTarPath, resultEntityName);
 			// 保存发送tar包信息
@@ -309,10 +309,10 @@ public class TarUtil {
 			if (xml instanceof ResponseXML) {
 				ResponseXML response = (ResponseXML) xml;
 				String code = response.getResultCode();
-				if(!code.equals("")) {
+				if(code!=null&&!"".equals(code)) {
 					tar.setResultCode(new Integer(code));
 				}
-				if(!response.getResultDesc().equals("")) {
+				if(code!=null&&!"".equals(response.getResultDesc())) {
 					tar.setResultDesc(response.getResultDesc());
 				}
 			}

@@ -90,8 +90,8 @@ public class HttpClientUtil {
 	        httpPost.setEntity(reqEntity); 
 	        response = httpClient.execute(httpPost); 
 	        HttpEntity resEntity = response.getEntity();
-	        if (resEntity != null) { 
-	        	result = EntityUtils.toString(response.getEntity(), "utf-8");
+	        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+	            result = EntityUtils.toString(response.getEntity(), "utf-8");
 	        }
 	        EntityUtils.consume(resEntity); 
 	        response.close(); 
