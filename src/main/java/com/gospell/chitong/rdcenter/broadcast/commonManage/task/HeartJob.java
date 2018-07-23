@@ -49,7 +49,7 @@ public class HeartJob implements Job{
 		String outPath = server.getTarInPath();
 		try {
 			String result = HttpClientUtil.sendPostTar(url, tarPath, outPath);
-			if(!flag&&!result.equals("")) {
+			if(!flag&&!"".equals(result)) {
 				EBRPSInfo.sendEBRPSInfo();
 				flag = true;
 			}

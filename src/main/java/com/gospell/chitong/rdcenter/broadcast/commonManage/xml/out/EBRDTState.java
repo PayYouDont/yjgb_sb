@@ -1,10 +1,16 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo.EBRDTStateVO;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,23 +25,16 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRDTState extends BaseXML implements ResponseXML{
-	private String EBRDT_RptTime;
-	private String EBRDT_EBRID;
-	private String EBRDT_StateCode;
-	private String EBRDT_StateDesc;
-	
-	public Map<String,Object> getEBRDTMap(){
-		Map<String,Object> EBRDT = new LinkedHashMap<String, Object>();
-		EBRDT.put("RptTime", getEBRDT_RptTime());
-		EBRDT.put("RptTime", getEBRDT_EBRID());
-		EBRDT.put("RptTime", getEBRDT_StateCode());
-		EBRDT.put("RptTime", getEBRDT_StateDesc());
-		return EBRDT;
-	}
+
+	private List<EBRDTStateVO> EBRDTState_EBRDT;
 	
 	public Map<String,Object> getEBRDTStateMap(){
 		Map<String,Object> EBRDTState = new LinkedHashMap<String, Object>();
-		EBRDTState.put("EBRDT", getEBRDTMap());
+		Map<String,Object> EBRDT = new IdentityHashMap<>();
+		for(EBRDTStateVO vo:getEBRDTState_EBRDT()) {
+			EBRDT.put(new String("EBRDT"), vo.getMap());
+		}
+		EBRDTState.put(null, EBRDT);
 		return EBRDTState;
 	}
 	public Map<String,Object> getMap(){
@@ -54,8 +53,11 @@ public class EBRDTState extends BaseXML implements ResponseXML{
 	 */
 	@Override
 	public BaseXML createFullEntity() {
-		// TODO Auto-generated method stub
-		return ResponseXML.super.createFullEntity();
+		EBRDTState state = (EBRDTState)createBaseXML(EBRDTState.class);
+		DeviceInfoService service = ApplicationContextRegister.getBean(DeviceInfoService.class);
+		List<Deviceinfo> deviceinfos = service.getRegistListByType("终端");
+		state.setEBRDTState_EBRDT(EBRDTStateVO.getList(deviceinfos, state));
+		return state;
 	}
 	/** 
 	 * <p>Title: createIncrementalEntity</p> 
@@ -68,7 +70,6 @@ public class EBRDTState extends BaseXML implements ResponseXML{
 	 */
 	@Override
 	public BaseXML createIncrementalEntity() {
-		// TODO Auto-generated method stub
-		return ResponseXML.super.createIncrementalEntity();
+		return (EBRDTState)createBaseXML(EBRDTState.class);
 	}
 }

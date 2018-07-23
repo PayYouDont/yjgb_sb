@@ -73,12 +73,15 @@ public class HttpClientUtil {
 		// 创建httpclient对象
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
-		//创建post方式请求
-		HttpPost httpPost = new HttpPost(url);
 		String result = "";
+		if(url.indexOf("http:")==-1) {
+			url = "http://"+url;
+		}
 		try {
+			//创建post方式请求
+			HttpPost httpPost = new HttpPost(url);
 			 //设置超时
-	        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(20000).setConnectTimeout(100000).build();
+	        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(100000).build();
 	        httpPost.setConfig(requestConfig);
 	        //
 	        FileBody bin = new FileBody(file); 
@@ -105,6 +108,7 @@ public class HttpClientUtil {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			logger.error(e.getMessage(),e);
 			return e.getMessage();
 		}
 	}
@@ -201,12 +205,10 @@ public class HttpClientUtil {
 	public static String sendPostTar(String url, String tarPath,String path){
 		File tar = new File(tarPath);
 		if(!tar.exists()) {
-			return null;
+			return "";
 		}
 		path += File.separatorChar + tar.getName();
 		String result = postUpload(url, tar);
-		File file = new File(path);
-		FileUtil.writeString(result, path);
-		return file.getAbsolutePath();
+		return FileUtil.writeString(result, path);
 	}
 }

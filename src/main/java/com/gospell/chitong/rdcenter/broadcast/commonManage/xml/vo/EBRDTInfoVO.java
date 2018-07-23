@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class EBRDT extends BaseXML{
+public class EBRDTInfoVO extends BaseXML{
 	private String EBRDT_RptTime;
 	private String EBRDT_RptType;
 	private String RelatedEBRPS_EBRID;
@@ -46,10 +46,10 @@ public class EBRDT extends BaseXML{
 		EBRDT.put("Latitude", getEBRDT_Latitude());
 		return EBRDT;
 	}
-	public static List<EBRDT> getList(List<Deviceinfo> deviceinfos,EBRDTInfo EBRDTInfo) {
-		List<EBRDT> list = new ArrayList<>();
+	public static List<EBRDTInfoVO> getList(List<Deviceinfo> deviceinfos,EBRDTInfo EBRDTInfo) {
+		List<EBRDTInfoVO> list = new ArrayList<>();
 		for(Deviceinfo info:deviceinfos) {
-			EBRDT ebrdt = new EBRDT();
+			EBRDTInfoVO ebrdt = new EBRDTInfoVO();
 			ebrdt.setEBRDT_RptTime(DateUtils.getDateTime());
 			ebrdt.setEBRDT_RptType("Sync");
 			ebrdt.setRelatedEBRPS_EBRID(EBRDTInfo.getSRC_EBRID());

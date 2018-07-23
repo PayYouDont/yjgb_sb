@@ -1,6 +1,5 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -122,9 +121,8 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 */
 	public static void sendEBRPSInfo(ServerProperties prop) throws Exception {
 		String tarPath = EBRPSInfo.createTar(prop);
-		File tar = new File(tarPath);
 		String url = prop.getSendUrl();
-		String outPath = prop.getTarInPath()+File.separatorChar+tar.getName();
+		String outPath = prop.getTarInPath();
 		HttpClientUtil.sendPostTar(url, tarPath, outPath);
 	}
 	/**

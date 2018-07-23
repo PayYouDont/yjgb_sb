@@ -18,6 +18,8 @@ public class EBDcodeUtil {
 	public static int EBDID = 0;
 	
 	public static Date DAY = new Date();
+	//状态描述
+	public static String EBRPSStateDesc = "";
 	
 	public static String getEBDIDCode() {
 		Date now = new Date();
@@ -53,5 +55,14 @@ public class EBDcodeUtil {
 			level = list.get(0).getCodeLevel();
 		}
 		return level+code+lastCode;
+	}
+	
+	public static String getEBRPSStateDesc() {
+		if("".equals(EBRPSStateDesc)) {
+			EBRPSStateDesc = "开机";
+		}else {
+			EBRPSStateDesc = "运行正常";
+		}
+		return EBRPSStateDesc;
 	}
 }

@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class EBRAS extends BaseXML{
+public class EBRASInfoVO extends BaseXML{
 	private String EBRAS_RptTime;
 	private String EBRAS_RptType;
 	//关联平台(可选)
@@ -66,10 +66,10 @@ public class EBRAS extends BaseXML{
 		return EBRAS;
 	}
 	
-	public static List<EBRAS> getList(List<Deviceinfo> deviceinfos,EBRASInfo EBRASInfo) {
-		List<EBRAS> list = new ArrayList<>();
+	public static List<EBRASInfoVO> getList(List<Deviceinfo> deviceinfos,EBRASInfo EBRASInfo) {
+		List<EBRASInfoVO> list = new ArrayList<>();
 		for(Deviceinfo info:deviceinfos) {
-			EBRAS ebras = new EBRAS();
+			EBRASInfoVO ebras = new EBRASInfoVO();
 			ebras.setEBRAS_RptTime(DateUtils.getDateTime());
 			ebras.setEBRAS_RptType("Sync");
 			ebras.setRelatedEBRPS_EBRID(EBRASInfo.getSRC_EBRID());

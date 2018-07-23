@@ -1,9 +1,15 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo.EBRASStateVO;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,23 +26,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class EBRASState extends BaseXML implements ResponseXML{
 	
-	private String EBRAS_RptTime;
-	private String EBRAS_EBRID;
-	private String EBRAS_StateCode;
-	private String EBRAS_StateDesc;
-	
-	public Map<String,Object> getEBRASMap(){
-		Map<String,Object> EBRAS = new LinkedHashMap<String, Object>();
-		EBRAS.put("RptTime", getEBRAS_RptTime());
-		EBRAS.put("RptTime", getEBRAS_EBRID());
-		EBRAS.put("RptTime", getEBRAS_StateCode());
-		EBRAS.put("RptTime", getEBRAS_StateDesc());
-		return EBRAS;
-	}
+	private List<EBRASStateVO> EBRASState_EBRAS;
 	
 	public Map<String,Object> getEBRASStateMap(){
 		Map<String,Object> EBRASState = new LinkedHashMap<String, Object>();
-		EBRASState.put("EBRAS", getEBRASMap());
+		Map<String,Object> EBRAS = new IdentityHashMap<>();
+		for(EBRASStateVO vo:getEBRASState_EBRAS()) {
+			EBRAS.put(new String("EBRAS"), vo.getMap());
+		}
+		EBRASState.put(null, EBRAS);
 		return EBRASState;
 	}
 	public Map<String,Object> getMap(){
@@ -55,8 +53,11 @@ public class EBRASState extends BaseXML implements ResponseXML{
 	 */
 	@Override
 	public BaseXML createFullEntity() {
-		// TODO Auto-generated method stub
-		return ResponseXML.super.createFullEntity();
+		EBRASState state = (EBRASState)createBaseXML(EBRASState.class);
+		DeviceInfoService service = ApplicationContextRegister.getBean(DeviceInfoService.class);
+		List<Deviceinfo> deviceinfos = service.getRegistListByType("适配");
+		state.setEBRASState_EBRAS(EBRASStateVO.getList(deviceinfos, state));
+		return state;
 	}
 	/** 
 	 * <p>Title: createIncrementalEntity</p> 
@@ -69,7 +70,6 @@ public class EBRASState extends BaseXML implements ResponseXML{
 	 */
 	@Override
 	public BaseXML createIncrementalEntity() {
-		// TODO Auto-generated method stub
-		return ResponseXML.super.createIncrementalEntity();
+		return (EBRASState)createBaseXML(EBRASState.class);
 	}
 }

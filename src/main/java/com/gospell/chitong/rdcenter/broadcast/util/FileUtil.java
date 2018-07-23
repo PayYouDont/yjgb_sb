@@ -17,15 +17,12 @@ public class FileUtil {
 
 	public static String writeString(String msg,String path) {
 		PrintWriter out = null;
+		File file = new File(path);
 		try {
-			File file = new File(path);
-			if(file.isDirectory()) {
-				return "文件写出路径有误!";
-			}
 			if(!file.exists()) {
 				file.createNewFile();
 			}
-			out = new PrintWriter(path);
+			out = new PrintWriter(file);
 			out.write(msg);
 			out.flush();
 		} catch (FileNotFoundException e) {
@@ -37,7 +34,7 @@ public class FileUtil {
 				out.close();
 			}
 		}
-		return null;
+		return file.getAbsolutePath();
 	}
 	public static String copyFile(InputStream in,String outPaht,String fileName) {
 		File file = new File(outPaht);

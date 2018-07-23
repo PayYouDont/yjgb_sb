@@ -82,11 +82,11 @@ public class BaseXML {
 	public BaseXML getResponseByClass(BaseXML entity) {
 		EBDResponse response = new EBDResponse();
 		response.setEBD_EBDVersion(entity.getEBD_EBDVersion());
-		response.setEBD_EBDID(entity.getEBD_EBDID());
+		response.setEBD_EBDID(EBDcodeUtil.getEBDID(response));
 		response.setEBD_EBDType("EBDResponse");
 		response.setSRC_EBRID(entity.getDEST_EBRID());
 		response.setDEST_EBRID(entity.getSRC_EBRID());
-		response.setEBD_EBDTime(DateUtils.getDate("yyyy-MM-dd hh:mm:ss"));
+		response.setEBD_EBDTime(DateUtils.getDateTime());
 		return response;
 	}
 	public static BaseXML createBaseXML(Class<? extends BaseXML> clazz){

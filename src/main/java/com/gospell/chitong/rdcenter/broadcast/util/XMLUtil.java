@@ -158,7 +158,10 @@ public class XMLUtil {
 		for (Entry<String, Object> entry : set) {
 			String key = entry.getKey();
 			Object value = entry.getValue();
-			Element elem = root.addElement(key);
+			Element elem = root;
+			if(key!=null) {
+				elem = root.addElement(key);
+			}
 			if(value instanceof Map) {
 				setElem(elem, (Map<String,Object>)value);
 			}else {

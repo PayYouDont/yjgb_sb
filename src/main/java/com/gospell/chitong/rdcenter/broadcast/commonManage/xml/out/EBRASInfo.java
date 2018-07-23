@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo.EBRAS;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo.EBRASInfoVO;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
@@ -32,7 +32,7 @@ public class EBRASInfo extends BaseXML implements ResponseXML{
 	private String Params_RptStartTime;
 	private String Params_RptEndTime;
 	private String Params_RptType;
-	private List<EBRAS> EBRASInfo_EBRAS;
+	private List<EBRASInfoVO> EBRASInfo_EBRAS;
 	
 	public Map<String,Object> getParamsMap(){
 		Map<String,Object> Params = new LinkedHashMap<>();
@@ -43,13 +43,16 @@ public class EBRASInfo extends BaseXML implements ResponseXML{
 	}
 
 	public Map<String,Object> getEBRASInfoMap(){
-		Map<String,Object> EBRASInfo = new IdentityHashMap<>();
+		Map<String,Object> EBRASInfo = new LinkedHashMap<>();
 		EBRASInfo.put("Params", getParamsMap());
+		Map<String,Object> EBRAS = new IdentityHashMap<>();
 		if(getEBRASInfo_EBRAS()!=null) {
-			for(EBRAS ebras:getEBRASInfo_EBRAS()) {
-				EBRASInfo.put(new String("EBRAS"), ebras.getMap());
+			for(EBRASInfoVO ebras:getEBRASInfo_EBRAS()) {
+				EBRAS.put(new String("EBRAS"), ebras.getMap());
 			}
 		}
+		//设置一个空节点，解析方法会自动将空节点添加到父节点下，解决节点顺序问题
+		EBRASInfo.put(null, EBRAS);
 		return EBRASInfo;
 	}
 	public Map<String,Object> getMap(){
@@ -74,7 +77,7 @@ public class EBRASInfo extends BaseXML implements ResponseXML{
 		info.setParams_RptStartTime(DateUtils.getDateTime());
 		info.setParams_RptEndTime(DateUtils.getDateTime());
 		info.setParams_RptType("Full");
-		info.setEBRASInfo_EBRAS(EBRAS.getList(deviceinfos, info));
+		info.setEBRASInfo_EBRAS(EBRASInfoVO.getList(deviceinfos, info));
 		return info;
 	}
 	/** 

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo.EBRDT;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo.EBRDTInfoVO;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
@@ -24,12 +24,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRDTInfo extends BaseXML implements ResponseXML{
-	private List<EBRDT> EBRDTInfo_EBRDT;
+	private List<EBRDTInfoVO> EBRDTInfo_EBRDT;
 	
 	public Map<String,Object> getEBRDTInfoMap(){
 		Map<String,Object> EBRDTInfoMap = new IdentityHashMap<>();
 		if(getEBRDTInfo_EBRDT()!=null) {
-			for(EBRDT ebrdt:getEBRDTInfo_EBRDT()) {
+			for(EBRDTInfoVO ebrdt:getEBRDTInfo_EBRDT()) {
 				EBRDTInfoMap.put(new String("EBRDT"), ebrdt.getMap());
 			}
 		}
@@ -54,7 +54,7 @@ public class EBRDTInfo extends BaseXML implements ResponseXML{
 		DeviceInfoService service = ApplicationContextRegister.getBean(DeviceInfoService.class);
 		List<Deviceinfo> deviceinfos = service.getRegistListByType("终端");
 		EBRDTInfo info = (EBRDTInfo)createBaseXML(EBRDTInfo.class);
-		info.setEBRDTInfo_EBRDT(EBRDT.getList(deviceinfos, info));
+		info.setEBRDTInfo_EBRDT(EBRDTInfoVO.getList(deviceinfos, info));
 		return info;
 	}
 	/** 

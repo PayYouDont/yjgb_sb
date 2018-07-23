@@ -24,7 +24,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		// 正式运行时开启此功能
-		//startHeartJob();// 项目启动时候执行心跳包发送
+		startHeartJob();// 项目启动时候执行心跳包发送
 	}
 	public void startHeartJob(){
 		Task task = taskDao.selectByJobName("heartJob");
