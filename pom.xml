@@ -209,12 +209,12 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
                 <version>1.5.3</version>
 
-                <!-- Configure generic document generation settings -->
+                Configure generic document generation settings
                 <configuration>
                     <sourceDirectory>${project.basedir}/docs/asciidoc</sourceDirectory>
                     <sourceDocumentName>index.adoc</sourceDocumentName>
@@ -229,8 +229,8 @@
                         <generated>${project.build.directory}/asciidoc</generated>
                     </attributes>
                 </configuration>
-                <!-- Since each execution can only handle one backend, run
-                     separate executions for each desired output type -->
+                Since each execution can only handle one backend, run
+                     separate executions for each desired output type
                 <executions>
                     <execution>
                         <id>output-html</id>
@@ -240,11 +240,11 @@
                         </goals>
                         <configuration>
                             <backend>html5</backend>
-                            <!--<outputDirectory>${project.basedir}/docs/asciidoc/html</outputDirectory>-->
+                            <outputDirectory>${project.basedir}/docs/asciidoc/html</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
 		</plugins>
 	</build>
 </project>

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -103,6 +104,7 @@ public class NodeAction extends BaseAction{
 	}
 	@RequestMapping("/upload")
 	@ResponseBody
+	@Transactional
 	public HashMap<String,Object> upload(HttpServletRequest request,HttpServletResponse response){		
 		try {
 			String outTarPath = service.receiveTar(request);
