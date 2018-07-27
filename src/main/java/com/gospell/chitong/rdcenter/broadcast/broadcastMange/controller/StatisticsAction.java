@@ -23,7 +23,7 @@ public class StatisticsAction extends BaseAction{
 	@Resource
 	private StatisticsService service;
 	
-	@GetMapping("/goList")
+	@GetMapping("/toList")
 	public String goStatistics() {
 		return "broadcast/statistics";
 	}

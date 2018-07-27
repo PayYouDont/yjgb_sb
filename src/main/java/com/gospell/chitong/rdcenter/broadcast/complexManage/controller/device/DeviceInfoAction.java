@@ -35,7 +35,7 @@ public class DeviceInfoAction extends BaseAction{
 	@Resource
 	private DeviceParamValService dpvService;
 	
-	@GetMapping("/toDevList")
+	@GetMapping("/toList")
 	public String toDevList() {
 		return "complex/device/device_list";
 	}

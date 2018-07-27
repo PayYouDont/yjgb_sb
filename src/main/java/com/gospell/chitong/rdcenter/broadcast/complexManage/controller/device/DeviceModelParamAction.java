@@ -22,7 +22,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 @Controller
 @RequestMapping("/deviceModelParamAction")
-public class deviceModelParamAction extends BaseAction{
+public class DeviceModelParamAction extends BaseAction{
 	
 	@Resource
 	private DeviceModelParamService service;

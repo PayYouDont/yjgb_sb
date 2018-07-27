@@ -61,7 +61,7 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月5日 上午11:41:57
 	 */
-	@GetMapping("/goEmer") 
+	@GetMapping("/toList") 
 	public String goEmer(Model model) {
 		model.addAttribute("emerType", "信息管理");
 		return "broadcast/emer_list";
