@@ -16,9 +16,37 @@
 <!--easyui控件js -->
 <script src="/easyui/jquery.easyui.min.js"></script>
 <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
-<script src="/js/complex/param/administrative_list.js"></script>
+<script src="/js/complex/param/accidentType_list.js"></script>
 </head>
-<body>
+<style type="text/css">
+a:FOCUS {
+	outline: none;
+}
+</style>
+</head>
+<body class="easyui-layout">
 
+	<div id="MyBtnDiv" style="height: 30px; padding: 3px 5px 0px 5px;">
+		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add"
+			onclick="add();">增加</a> <a href="#" class="easyui-linkbutton"
+			plain="true" iconCls="icon-edit" onclick="edit();">修改</a> <a href="#"
+			class="easyui-linkbutton" plain="true" iconCls="icon-remove"
+			onclick="remove();">删除</a> <input class="easyui-searchbox"
+			id="searchValue" name="searchValue" value=''
+			data-options="prompt:'请输入事件类型名称',searcher:doSearch"
+			style="width: 180px; height: 23px;">
+	</div>
+	<div data-options="region:'center'" border="true"
+		iconCls="icon-extendlist" title="设备类型列表" style="height: auto;">
+		<table id="mainTab" class="easyui-datagrid"
+			style="width: 100%; height: auto;" toolbar="#MyBtnDiv" border="false">
+		</table>
+	</div>
+	<div id="editModal" class="easyui-window" title="事件类型编辑"
+		data-options="iconCls:'icon-extenduser',shadow:false,modal:true,closed:true"
+		style="width: 400px; height: 250px; padding: 5px;">
+		<iframe id="editIframe" scrolling="auto" frameborder="0" src=""
+			style="width: 100%; height: 100%;"> </iframe>
+	</div>
 </body>
 </html>

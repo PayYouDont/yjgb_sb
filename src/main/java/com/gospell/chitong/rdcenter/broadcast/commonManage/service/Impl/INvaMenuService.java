@@ -9,8 +9,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.NvaMenuService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.MenuMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
 import com.gospell.chitong.rdcenter.broadcast.util.SortUtil;
 
 @Service

@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceinfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="devName" jdbcType="VARCHAR" property="devname" />
+		<result column="devDsn" jdbcType="VARCHAR" property="devdsn" />
+		<result column="devCode" jdbcType="VARCHAR" property="devcode" />
+		<result column="devHexcode" jdbcType="VARCHAR"
+			property="devhexcode" />
+		<result column="devAddressCode" jdbcType="VARCHAR"
+			property="devaddresscode" />
+		<result column="devAddress" jdbcType="VARCHAR"
+			property="devaddress" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="lat" jdbcType="VARCHAR" property="lat" />
+		<result column="lng" jdbcType="VARCHAR" property="lng" />
+		<result column="messageId" jdbcType="INTEGER"
+			property="messageid" />
+		<result column="deviceModel_id" jdbcType="INTEGER"
+			property="devicemodelId" />
+		<result column="deviceId" jdbcType="INTEGER"
+			property="deviceid" />
+		<result column="statusScript" jdbcType="VARCHAR"
+			property="statusscript" />
+		<result column="timefind" jdbcType="TIMESTAMP"
+			property="timefind" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+		<result column="create_by" jdbcType="VARCHAR"
+			property="createBy" />
+		<result column="update_by" jdbcType="VARCHAR"
+			property="updateBy" />
+		<result column="parentPath" jdbcType="VARCHAR"
+			property="parentpath" />
+		<!-- 关联查询deviceModel -->
+		<association property="deviceModel" column="deviceModel_id" 
+		javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidenttype"	
+		select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicemodelMapper.selectById"/>	
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, devName, devDsn, devCode, devHexcode, devAddressCode, devAddress,
+		status, lat,
+		lng, messageId, deviceModel_id, deviceId, statusScript, timefind,
+		create_time, update_time,
+		create_by, update_by, parentPath
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from deviceinfo
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from deviceinfo
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into deviceinfo (devName, devDsn, devCode,
+		devHexcode, devAddressCode, devAddress,
+		status, lat, lng, messageId,
+		deviceModel_id, deviceId, statusScript,
+		timefind, create_time, update_time,
+		create_by, update_by, parentPath
+		)
+		values (#{devname,jdbcType=VARCHAR}, #{devdsn,jdbcType=VARCHAR},
+		#{devcode,jdbcType=VARCHAR},
+		#{devhexcode,jdbcType=VARCHAR}, #{devaddresscode,jdbcType=VARCHAR}, #{devaddress,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR},
+		#{lng,jdbcType=VARCHAR}, #{messageid,jdbcType=INTEGER},
+		#{devicemodelId,jdbcType=INTEGER}, #{deviceid,jdbcType=INTEGER},
+		#{statusscript,jdbcType=VARCHAR},
+		#{timefind,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+		#{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR},
+		#{parentpath,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into deviceinfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="devname != null">
+				devName,
+			</if>
+			<if test="devdsn != null">
+				devDsn,
+			</if>
+			<if test="devcode != null">
+				devCode,
+			</if>
+			<if test="devhexcode != null">
+				devHexcode,
+			</if>
+			<if test="devaddresscode != null">
+				devAddressCode,
+			</if>
+			<if test="devaddress != null">
+				devAddress,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="lat != null">
+				lat,
+			</if>
+			<if test="lng != null">
+				lng,
+			</if>
+			<if test="messageid != null">
+				messageId,
+			</if>
+			<if test="devicemodelId != null">
+				deviceModel_id,
+			</if>
+			<if test="deviceid != null">
+				deviceId,
+			</if>
+			<if test="statusscript != null">
+				statusScript,
+			</if>
+			<if test="timefind != null">
+				timefind,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="parentpath != null">
+				parentPath,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="devname != null">
+				#{devname,jdbcType=VARCHAR},
+			</if>
+			<if test="devdsn != null">
+				#{devdsn,jdbcType=VARCHAR},
+			</if>
+			<if test="devcode != null">
+				#{devcode,jdbcType=VARCHAR},
+			</if>
+			<if test="devhexcode != null">
+				#{devhexcode,jdbcType=VARCHAR},
+			</if>
+			<if test="devaddresscode != null">
+				#{devaddresscode,jdbcType=VARCHAR},
+			</if>
+			<if test="devaddress != null">
+				#{devaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="lat != null">
+				#{lat,jdbcType=VARCHAR},
+			</if>
+			<if test="lng != null">
+				#{lng,jdbcType=VARCHAR},
+			</if>
+			<if test="messageid != null">
+				#{messageid,jdbcType=INTEGER},
+			</if>
+			<if test="devicemodelId != null">
+				#{devicemodelId,jdbcType=INTEGER},
+			</if>
+			<if test="deviceid != null">
+				#{deviceid,jdbcType=INTEGER},
+			</if>
+			<if test="statusscript != null">
+				#{statusscript,jdbcType=VARCHAR},
+			</if>
+			<if test="timefind != null">
+				#{timefind,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="parentpath != null">
+				#{parentpath,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo">
+		update deviceinfo
+		<set>
+			<if test="devname != null">
+				devName = #{devname,jdbcType=VARCHAR},
+			</if>
+			<if test="devdsn != null">
+				devDsn = #{devdsn,jdbcType=VARCHAR},
+			</if>
+			<if test="devcode != null">
+				devCode = #{devcode,jdbcType=VARCHAR},
+			</if>
+			<if test="devhexcode != null">
+				devHexcode = #{devhexcode,jdbcType=VARCHAR},
+			</if>
+			<if test="devaddresscode != null">
+				devAddressCode = #{devaddresscode,jdbcType=VARCHAR},
+			</if>
+			<if test="devaddress != null">
+				devAddress = #{devaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="lat != null">
+				lat = #{lat,jdbcType=VARCHAR},
+			</if>
+			<if test="lng != null">
+				lng = #{lng,jdbcType=VARCHAR},
+			</if>
+			<if test="messageid != null">
+				messageId = #{messageid,jdbcType=INTEGER},
+			</if>
+			<if test="devicemodelId != null">
+				deviceModel_id = #{devicemodelId,jdbcType=INTEGER},
+			</if>
+			<if test="deviceid != null">
+				deviceId = #{deviceid,jdbcType=INTEGER},
+			</if>
+			<if test="statusscript != null">
+				statusScript = #{statusscript,jdbcType=VARCHAR},
+			</if>
+			<if test="timefind != null">
+				timefind = #{timefind,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="parentpath != null">
+				parentPath = #{parentpath,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo">
+		update deviceinfo
+		set devName = #{devname,jdbcType=VARCHAR},
+		devDsn = #{devdsn,jdbcType=VARCHAR},
+		devCode = #{devcode,jdbcType=VARCHAR},
+		devHexcode = #{devhexcode,jdbcType=VARCHAR},
+		devAddressCode = #{devaddresscode,jdbcType=VARCHAR},
+		devAddress = #{devaddress,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		lat = #{lat,jdbcType=VARCHAR},
+		lng = #{lng,jdbcType=VARCHAR},
+		messageId = #{messageid,jdbcType=INTEGER},
+		deviceModel_id = #{devicemodelId,jdbcType=INTEGER},
+		deviceId = #{deviceid,jdbcType=INTEGER},
+		statusScript = #{statusscript,jdbcType=VARCHAR},
+		timefind = #{timefind,jdbcType=TIMESTAMP},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		create_by = #{createBy,jdbcType=VARCHAR},
+		update_by = #{updateBy,jdbcType=VARCHAR},
+		parentPath = #{parentpath,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="list" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from deviceinfo
+		<where>
+			<if test="devname != null">
+				and devName = #{devname,jdbcType=VARCHAR}
+			</if>
+			<if test="devdsn != null">
+				and devDsn = #{devdsn,jdbcType=VARCHAR}
+			</if>
+			<if test="devcode != null">
+				and devCode = #{devcode,jdbcType=VARCHAR}
+			</if>
+			<if test="devhexcode != null">
+				devHexcode = #{devhexcode,jdbcType=VARCHA
+			</if>
+			<if test="devaddresscode != null">
+				and devAddressCode = #{devaddresscode,jdbcType=VARCHAR}
+			</if>
+			<if test="devaddress != null">
+				and devAddress = #{devaddress,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and status = #{status,jdbcType=VARCHAR}
+			</if>
+			<if test="lat != null">
+				and lat = #{lat,jdbcType=VARCHAR}
+			</if>
+			<if test="lng != null">
+				and lng = #{lng,jdbcType=VARCHAR}
+			</if>
+			<if test="messageid != null">
+				and messageId = #{messageid,jdbcType=INTEGER}
+			</if>
+			<if test="devicemodelId != null">
+				and deviceModel_id = #{devicemodelId,jdbcType=INTEGER}
+			</if>
+			<if test="deviceid != null">
+				and deviceId = #{deviceid,jdbcType=INTEGER}
+			</if>
+			<if test="statusscript != null">
+				and statusScript = #{statusscript,jdbcType=VARCHAR}
+			</if>
+			<if test="timefind != null">
+				and timefind = #{timefind,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+				and update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+				and create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateBy != null">
+				and update_by = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="parentpath != null">
+				and parentPath = #{parentpath,jdbcType=VARCHAR}
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from deviceinfo
+		<where>
+			<if test="devname != null">
+				and devName = #{devname,jdbcType=VARCHAR}
+			</if>
+			<if test="devdsn != null">
+				and devDsn = #{devdsn,jdbcType=VARCHAR}
+			</if>
+			<if test="devcode != null">
+				and devCode = #{devcode,jdbcType=VARCHAR}
+			</if>
+			<if test="devhexcode != null">
+				devHexcode = #{devhexcode,jdbcType=VARCHA
+			</if>
+			<if test="devaddresscode != null">
+				and devAddressCode = #{devaddresscode,jdbcType=VARCHAR}
+			</if>
+			<if test="devaddress != null">
+				and devAddress = #{devaddress,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and status = #{status,jdbcType=VARCHAR}
+			</if>
+			<if test="lat != null">
+				and lat = #{lat,jdbcType=VARCHAR}
+			</if>
+			<if test="lng != null">
+				and lng = #{lng,jdbcType=VARCHAR}
+			</if>
+			<if test="messageid != null">
+				and messageId = #{messageid,jdbcType=INTEGER}
+			</if>
+			<if test="devicemodelId != null">
+				and deviceModel_id = #{devicemodelId,jdbcType=INTEGER}
+			</if>
+			<if test="deviceid != null">
+				and deviceId = #{deviceid,jdbcType=INTEGER}
+			</if>
+			<if test="statusscript != null">
+				and statusScript = #{statusscript,jdbcType=VARCHAR}
+			</if>
+			<if test="timefind != null">
+				and timefind = #{timefind,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+				and update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+				and create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateBy != null">
+				and update_by = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="parentpath != null">
+				and parentPath = #{parentpath,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="selectById"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from deviceinfo
+		where id = #{deviceInfoId,jdbcType=INTEGER}
+	</select>
+</mapper>

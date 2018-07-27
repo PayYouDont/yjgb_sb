@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>播发语言编辑</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/complex/param/displayLanguage_edit.js"></script>
+<style type="text/css">
+html, body {
+	height: 100%;
+	width: 100%;
+}
+
+.ztree * {
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+	color: rgb(0, 136, 204);
+	font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif
+}
+</style>
+</head>
+<body id="body">
+	<div class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'center'" title="" style="padding: 10px;">
+			<form id="edit_form" method="post" data-options="novalidate:true">
+				<div>
+					<label for="name">&emsp;&emsp;&emsp;&emsp;序号:</label> <input
+						class="easyui-textbox easyui-validatebox" type="text"
+						data-options="required:true" id="number" name="number"
+						th:value="${displayLanguage.number}">
+				</div>
+				<br>
+				<div>
+					<label for="name">播发语言名称:</label> <input
+						class="easyui-textbox easyui-validatebox" type="text"
+						data-options="required:true" id="language" name="language"
+						th:value='${displayLanguage.language}'>
+				</div>
+				<br>
+				<div>
+					<label for="name">播发语言简写:</label> <input
+						class="easyui-validatebox easyui-textbox" type="text"
+						data-options="required:true" id="shortname" name="shortname"
+						th:value="${displayLanguage.shortname}">
+				</div>
+				<input id="id" name="id" type="hidden" th:value="${displayLanguage.id}" />
+			</form>
+
+		</div>
+		<div data-options="region:'south',border:false"
+			style="text-align: right; padding: 5px 0 0;">
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+				href="javascript:void(0)" onclick="mysave();" style="width: 80px">保存</a>
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
+				href="javascript:void(0)" onclick="closeParentModal();"
+				style="width: 80px">取消</a>
+		</div>
+
+	</div>
+
+</body>
+</html>

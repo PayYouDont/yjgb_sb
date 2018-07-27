@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevModelParamRelationMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DevModelParamRelation">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="dm_id" jdbcType="INTEGER" property="dmId" />
+		<result column="dmp_id" jdbcType="INTEGER" property="dmpId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, dm_id, dmp_id
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from dev_model_param_relation
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from dev_model_param_relation
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DevModelParamRelation">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into dev_model_param_relation (dm_id, dmp_id)
+		values (#{dmId,jdbcType=INTEGER}, #{dmpId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DevModelParamRelation">
+		<selectKey keyProperty="id" order="AFTER"
+			resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into dev_model_param_relation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="dmId != null">
+				dm_id,
+			</if>
+			<if test="dmpId != null">
+				dmp_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="dmId != null">
+				#{dmId,jdbcType=INTEGER},
+			</if>
+			<if test="dmpId != null">
+				#{dmpId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DevModelParamRelation">
+		update dev_model_param_relation
+		<set>
+			<if test="dmId != null">
+				dm_id = #{dmId,jdbcType=INTEGER},
+			</if>
+			<if test="dmpId != null">
+				dmp_id = #{dmpId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DevModelParamRelation">
+		update dev_model_param_relation
+		set dm_id = #{dmId,jdbcType=INTEGER},
+		dmp_id = #{dmpId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="list" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from dev_model_param_relation
+		<where>
+			<if test="dmId != null">
+				and dm_id = #{dmId,jdbcType=INTEGER}
+			</if>
+			<if test="dmpId != null">
+				and dmp_id = #{dmpId,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+</mapper>

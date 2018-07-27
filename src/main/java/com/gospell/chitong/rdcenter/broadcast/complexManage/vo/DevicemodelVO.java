@@ -2,7 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.vo;
 
 import java.util.Date;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Devicemodel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
 
 import lombok.Data;
 

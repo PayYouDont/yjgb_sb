@@ -8,8 +8,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AdministrativeService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.param.AdministrativeService;
 /**
  * 此类方法用于返回区域编码对应的中文名字
 * @ClassName: AreaCodeChineseService 

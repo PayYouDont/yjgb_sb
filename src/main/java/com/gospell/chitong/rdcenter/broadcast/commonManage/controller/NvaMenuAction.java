@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.NvaMenuService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 /**

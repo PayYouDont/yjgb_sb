@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidentlevel;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Accidenttype;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaylanguage;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Displaymethod;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Infosource;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Infosource;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidentlevel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidenttype;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaylanguage;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaymethod;
 
 import lombok.Data;
 

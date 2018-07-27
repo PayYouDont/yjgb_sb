@@ -13,9 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AdministrativeService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.param.AdministrativeService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

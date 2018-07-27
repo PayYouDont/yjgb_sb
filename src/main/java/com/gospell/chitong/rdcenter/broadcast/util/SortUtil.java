@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Menu;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
 
 public class SortUtil{
 

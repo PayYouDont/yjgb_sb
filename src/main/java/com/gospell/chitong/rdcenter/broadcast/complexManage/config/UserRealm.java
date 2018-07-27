@@ -15,9 +15,9 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.User;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.MenuRoleRelationService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.UserService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.User;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.MenuRoleRelationService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.UserService;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 public class UserRealm extends AuthorizingRealm {

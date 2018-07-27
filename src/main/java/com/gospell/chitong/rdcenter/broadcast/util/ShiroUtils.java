@@ -3,7 +3,7 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.User;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.User;
 
 public class ShiroUtils {
    /* @Autowired

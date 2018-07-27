@@ -9,8 +9,8 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo.EBRDTStateVO;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.DeviceInfoService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

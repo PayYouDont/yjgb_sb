@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.User;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.User;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 @Controller

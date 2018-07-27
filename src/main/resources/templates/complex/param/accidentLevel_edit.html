@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>事件等级编辑</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/complex/param/accidentLevel_edit.js"></script>
+<style type="text/css">
+		a:FOCUS{outline:none;}
+	</style>
+</head>
+<body class="easyui-layout">
+	<form id="edit_form" method="post" data-options="novalidate:true">
+	<div data-options="region:'center'"  title="" style="padding:10px;">
+		<input id="id" name="id" type="hidden" th:value="${accidentLevel.id}"/>
+		<table class="tab" cellpadding="1"  cellspacing ="5"
+			style="width:calc(100% - 2px);margin-top:10px;">
+    		<tr><td  style="text-align:center;">等级名称</td><td>
+				<input class="easyui-textbox"
+					id="level" name="level" th:value='${accidentLevel.level}' 
+					data-options="required:true">    			
+				</td>
+    		</tr>
+  			<tr><td style="text-align:center;">等级编码</td><td>
+  				<input  id="levelcode" name="levelcode" 
+  					th:value="${accidentLevel.levelcode}"
+					class="easyui-textbox"	data-options="required:true">
+				</td>  
+    		</tr>
+    		<tr><td style="text-align:center;">等级序号</td><td>
+  				<input id="number" name="number" th:value="${accidentLevel.number}" 
+  					type="text" class="easyui-numberbox" 
+  					data-options="min:0,precision:0,required:true"
+  					missingMessage="请输入排序数字"/>
+  				</td>  
+    		</tr>
+	   	 </table>
+	</div>
+	</form>	
+	<div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="mysave();" style="width:80px">保存</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="closeParentModal();" style="width:80px">关闭</a>
+	</div>
+</body>
+</html>

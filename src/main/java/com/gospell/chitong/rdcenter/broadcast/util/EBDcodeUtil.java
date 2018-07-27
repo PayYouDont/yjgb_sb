@@ -9,9 +9,9 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProper
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
 
 public class EBDcodeUtil {
 	
