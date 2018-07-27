@@ -67,7 +67,8 @@ public class ServerProperties {
 	private String SuperAreaLevel;
 	// 上级平台区域编码
 	private String SuperAreaCode;
-
+	//是否开启心跳检测
+	private boolean ConnectionCheck;
 	public String getSRC_EBRID() {
 		String SRC_EBRID = "";
 		// 格式为：区域级别+区域编码+资源类型码+资源子类型号(0103=调度控制系统)

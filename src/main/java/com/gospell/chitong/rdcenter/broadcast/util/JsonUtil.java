@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.sf.json.JSONArray;
+
 public class JsonUtil {
 	 private static ObjectMapper m = new ObjectMapper();
 	 public static String toJson(Object object){
@@ -15,4 +17,8 @@ public class JsonUtil {
 	        }
 	    	return jsonArrayString;
 	    }
+	 public static <T> String toJsonArray(Object object) {
+		 String jsonStr = JSONArray.fromObject(object).toString();
+		 return jsonStr;
+	 }
 }

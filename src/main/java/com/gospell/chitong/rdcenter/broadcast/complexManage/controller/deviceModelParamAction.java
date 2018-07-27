@@ -29,7 +29,7 @@ public class deviceModelParamAction extends BaseAction{
 	
 	@GetMapping("/toList")
 	public String toList(Model model) {
-		return "complex/deviceParam_list";
+		return "complex/device/deviceParam_list";
 	}
 	
 	@GetMapping("/toEdit")
@@ -41,7 +41,7 @@ public class deviceModelParamAction extends BaseAction{
 			dmp = new Devicemodelparam();
 		}
 		model.addAttribute("deviceModelParam", dmp);
-		return "complex/deviceParam_edit";
+		return "complex/device/deviceParam_edit";
 	}
 	
 	

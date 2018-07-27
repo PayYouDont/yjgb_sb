@@ -31,7 +31,7 @@ $(document).ready(function(){
 		panelWidth:400,
 		panelHeight:200,
 		onShowPanel:function(){
-			$('#coordinateMapIframe').attr('src','/deviceInfoAction/goMap');
+			$('#coordinateMapIframe').attr('src','/deviceInfoAction/goCoordinate');
 		},
 	});
 	$('#coordinateMap').appendTo($('#coordinate').combo('panel'));

@@ -235,6 +235,9 @@
 			<if test="codeLike != null">
 				and code like  #{codeLike,jdbcType=VARCHAR} "%"
 			</if>
+			<if test="nameLike!= null">
+				and name like "%" #{nameLike,jdbcType=VARCHAR} "%"
+			</if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">

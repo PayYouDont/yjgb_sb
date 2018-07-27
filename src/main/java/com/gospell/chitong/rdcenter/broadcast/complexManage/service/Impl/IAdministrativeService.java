@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.AdministrativeService;
-
-import net.sf.json.JSONArray;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 
 @Service
 public class IAdministrativeService implements AdministrativeService{
@@ -26,26 +25,12 @@ public class IAdministrativeService implements AdministrativeService{
 		map.put("code",code);
 		return dao.list(map)==null?null:dao.list(map).get(0);
 	}
-
-	@Override
-	public List<Administrative> list(Map<String, Object> map) {
-		return dao.list(map);
-	}
-
 	@Override
 	public String getTreeStr(String areaCode) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("code", areaCode);
-		List<Administrative> list = dao.list(map);
-		Administrative ative = null;
-		if(list.size()>0) {
-			ative = list.get(0);
-		}else {
-			return null;
-		}
-		ative = getChildList(ative);
-		ative.setState("closed");
-		String jsonstr=JSONArray.fromObject(ative).toString().replaceAll("name", "text").replaceAll("id", "areaId").replaceAll("code", "id");
+		List<Administrative> list = list(map);
+		String jsonstr=JsonUtil.toJsonArray(list).replaceAll("name", "text").replaceAll("id", "areaId").replaceAll("code", "id");
 		return jsonstr;
 	}
 	public Administrative getChildList(Administrative ad){
@@ -68,5 +53,44 @@ public class IAdministrativeService implements AdministrativeService{
 			e.printStackTrace();
 		}
 		return ad;
+	}
+
+	/** 
+	 * <p>Title: count</p> 
+	 * <p>Description: </p> 
+	 * @param map
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.complexManage.service.AdministrativeService#count(java.util.Map) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月26日 上午10:20:18
+	 */
+	@Override
+	public int count(Map<String, Object> map) {
+		return dao.count(map);
+	}
+	/** 
+	 * <p>Title: list</p> 
+	 * <p>Description: </p> 
+	 * @param map
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.complexManage.service.AdministrativeService#list(java.util.Map) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年7月26日 上午11:35:39
+	 */
+	@Override
+	public List<Administrative> list(Map<String, Object> map) {
+		List<Administrative> list = dao.list(map);
+		if(list.size()==0) {
+			return null;
+		}
+		for (Administrative ative : list) {
+			if(ative.getCodeLevel()<5) {
+				ative = getChildList(ative);
+				ative.setState("closed");
+			}
+		}
+		return list;
 	}
 }

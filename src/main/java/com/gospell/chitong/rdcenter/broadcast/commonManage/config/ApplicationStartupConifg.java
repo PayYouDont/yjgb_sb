@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.TaskMapper;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.ScheduleJob;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Task;
@@ -17,16 +18,20 @@ import com.gospell.chitong.rdcenter.broadcast.util.ScheduleJobUtils;
 public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent> {
 	@Resource
 	private QuartzManager quartzManager;
-	
+	@Resource
+	private ServerProperties server;
 	@Resource
 	private TaskMapper taskDao;
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		// 正式运行时开启此功能
-		startHeartJob();// 项目启动时候执行心跳包发送
+		startHeartJob(server.isConnectionCheck());// 项目启动时候执行心跳包发送
 	}
-	public void startHeartJob(){
+	public void startHeartJob(boolean isCheck){
+		if(!isCheck) {
+			return;
+		}
 		Task task = taskDao.selectByJobName("heartJob");
 		if(task==null) {
 			task = new Task();

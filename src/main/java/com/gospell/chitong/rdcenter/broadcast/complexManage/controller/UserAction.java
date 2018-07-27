@@ -50,7 +50,7 @@ public class UserAction extends BaseAction{
 	
 	@GetMapping("/toList")
 	public String toList(){
-		return "complex/user_list";
+		return "complex/sys/user_list";
 	}
 	
 	@GetMapping("/toEdit")
@@ -64,7 +64,7 @@ public class UserAction extends BaseAction{
 		List<Role> roleList = roleService.list(new HashMap<>());
 		model.addAttribute("user", user);
 		model.addAttribute("roleList", roleList);
-		return "complex/user_edit";
+		return "complex/sys/user_edit";
 	}
 
 	/**

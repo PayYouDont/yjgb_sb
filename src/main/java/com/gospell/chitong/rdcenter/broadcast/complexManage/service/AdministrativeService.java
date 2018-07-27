@@ -12,5 +12,5 @@ public interface AdministrativeService {
 	
 	String getTreeStr(String areaCode);
 	
-	Administrative getChildList(Administrative ad);
+	int count(Map<String,Object> map);
 }

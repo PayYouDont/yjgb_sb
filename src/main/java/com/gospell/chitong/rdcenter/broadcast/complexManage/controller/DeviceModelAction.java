@@ -32,7 +32,7 @@ public class DeviceModelAction extends BaseAction{
 	
 	@GetMapping("/toList")
 	public String toList() {
-		return "complex/deviceModel_list";
+		return "complex/device/deviceModel_list";
 	}
 	
 	@GetMapping("/toEdit")
@@ -57,7 +57,7 @@ public class DeviceModelAction extends BaseAction{
 		model.addAttribute("deviceModelParamList", deviceModelParamList);
 		model.addAttribute("deviceTypeList", deviceTypeList);
 		model.addAttribute("deviceModelParamIds", deviceModelParamIds);
-		return "complex/deviceModel_edit";
+		return "complex/device/deviceModel_edit";
 	}
 	@RequestMapping("/queryList")
 	@ResponseBody

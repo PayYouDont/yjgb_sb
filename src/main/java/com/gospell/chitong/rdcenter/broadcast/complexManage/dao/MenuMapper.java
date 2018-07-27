@@ -20,8 +20,6 @@ public interface MenuMapper {
 
     int updateByPrimaryKey(Menu record);
     
-    List<Menu> findByPid(@Param("pid")Integer pid);
-    
     List<Menu> findByText(@Param("text")String text);
     
     List<Menu> list(Map<String,Object> map);

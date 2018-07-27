@@ -32,11 +32,6 @@ public class IMenuService implements MenuService{
 	}
 
 	@Override
-	public List<Menu> findByPid(Integer pid) {
-		return dao.findByPid(pid);
-	}
-
-	@Override
 	public List<Menu> getTree() {
 		Map<String,Object> map = new HashMap<>();
 		map.put("number", 0);
@@ -59,7 +54,11 @@ public class IMenuService implements MenuService{
 	 */
 	public Menu getChildren(Menu menu) {
 		Integer pid = menu.getId();
-		List<Menu> children = findByPid(pid);
+		Map<String,Object> map = new HashMap<>();
+		map.put("pid", pid);
+		map.put("order", "number");
+		map.put("sort", "ASC");
+		List<Menu> children = list(map);
 		menu.setChildren(children);
 		if(children.size()>0) {
 			for (Menu childmenu : children) {

@@ -35,7 +35,7 @@
         <!-- 把项目自己编译出来的jar文件，打包进zip文件的根目录 -->
         <fileSet>
             <directory>${project.build.directory}</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/jar</outputDirectory>
             <includes>
                 <include>*.jar</include>
             </includes>

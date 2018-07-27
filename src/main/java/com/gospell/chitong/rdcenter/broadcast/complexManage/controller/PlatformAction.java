@@ -26,7 +26,7 @@ public class PlatformAction extends BaseAction{
 	@GetMapping("toPlatform")
 	public String toPlatform(Model model) {
 		model.addAttribute("server", serverProperties);
-		return "complex/platform";
+		return "complex/sys/platform";
 	}
 	
 	@PostMapping("/save")

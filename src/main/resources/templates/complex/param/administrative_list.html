@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>行政区域</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/complex/param/administrative_list.js"></script>
+<style type="text/css">
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color: white;
+}
+
+a:FOCUS {
+	outline: none;
+}
+
+.titlefont1 {
+	line-height: 40px;
+	height: 40px;
+	font-size: 14px;
+	font-weight: bold;
+	color:
+}
+
+.titlefont2 {
+	line-height: 35px;
+	height: 35px;
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+}
+
+.mybutton {
+	height: calc(100% - 4px);
+	width: 80px;
+	background-color: #666666;
+	float: right;
+	border: 2px solid #CCCCCC;
+	cursor: pointer;
+}
+
+.mybutton:HOVER {
+	background-color: #1A1A1A;
+}
+
+.buttonfont {
+	line-height: 26px;
+	height: 26px;
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+}
+
+.btn:HOVER {
+	background-color: black;
+}
+
+.pagefont {
+	color: #085d9b;
+}
+
+.searchInput {
+	height: calc(100% - 8px);
+	width: 260px;
+	float: right;
+	margin-right: 1px;
+}
+
+/* 	.table-striped tbody > tr:nth-child(odd) > td, */
+/* 	.table-striped tbody > tr:nth-child(odd) > th { */
+/* 	  background-color:#50abe4;; */
+/* 	} */
+
+/* 	.table-hover tbody tr:hover > td, */
+/* 	.table-hover tbody tr:hover > th { */
+/* 	  background-color: #dd7e6b; */
+/* 	} */
+.table-bordered {
+	border: 1px solid rgb(65, 155, 214);
+	border-collapse: separate;
+	*border-collapse: collapse;
+	border-left: 0;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.table-bordered th, .table-bordered td {
+	border-left: 1px solid rgb(65, 155, 214);
+	border-top: 1px solid rgb(65, 155, 214);
+}
+</style>
+</head>
+<body id="body">
+	<div class="easyui-panel" title="区域信息列表" style="padding: 1px; width: 100%;"
+		data-options="iconCls:'icon-extendlist',closable:true,collapsible:true,fit:true">
+		<div id="MyBtnDiv" style="height: 30px; padding: 3px 5px 0px 5px;">
+			<input id="search" class="easyui-searchbox"
+				data-options="prompt:'请输入区域名称',searcher:doSearch"
+				style="width: 200px; height: 23px;">
+		</div>
+
+		<table id="mainTab"
+			style="width: 100%; height: auto; border-top: 1px solid red;"
+			data-options="border:false,striped:true">
+		</table>
+	</div>
+
+</body>
+</html>

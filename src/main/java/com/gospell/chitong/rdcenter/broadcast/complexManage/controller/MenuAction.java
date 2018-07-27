@@ -34,7 +34,7 @@ public class MenuAction extends BaseAction{
 	
 	@GetMapping("/toList")
 	public String toList(Model model) {
-        return "complex/menu_list";
+        return "complex/sys/menu_list";
 	}
 	
 	@GetMapping("/toAdd")
@@ -46,7 +46,7 @@ public class MenuAction extends BaseAction{
 			menu = new Menu();
 		}
 		model.addAttribute("menu", menu);
-        return "complex/menu_edit";
+        return "complex/sys/menu_edit";
 	}
 	
 	@RequestMapping("/list")

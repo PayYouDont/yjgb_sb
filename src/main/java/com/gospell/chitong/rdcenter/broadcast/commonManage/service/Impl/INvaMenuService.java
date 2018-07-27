@@ -1,6 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -19,11 +21,20 @@ public class INvaMenuService implements NvaMenuService{
 	
 	@Override
 	public List<Menu> getNvaMenuById(Integer id) throws Exception{
-		List<Menu> menus = menuDao.findByPid(id);
+		List<Menu> menus = findByPid(id);
 		SortUtil.MenuListSort(menus);
 		return menus;
 	}
 
+	public List<Menu> findByPid(Integer pid){
+		Map<String,Object> map = new HashMap<>();
+		map.put("pid", pid);
+		map.put("order", "number");
+		map.put("sort", "ASC");
+		List<Menu> list = menuDao.list(map);
+		return list;
+	}
+	
 	@Override
 	public List<Menu> getNvaMenuByType(String type) throws Exception {
 		//获取导航菜单主类型
@@ -35,7 +46,7 @@ public class INvaMenuService implements NvaMenuService{
 		Menu menuType = list.get(0);
 		Integer pid = menuType.getId();
 		//获取主类型子菜单
-		List<Menu> menus = menuDao.findByPid(pid);
+		List<Menu> menus = findByPid(pid);
 		SortUtil.MenuListSort(menus);
 		return menus;
 	}

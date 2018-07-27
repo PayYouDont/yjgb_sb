@@ -37,7 +37,7 @@ public class DeviceInfoAction extends BaseAction{
 	
 	@GetMapping("/toDevList")
 	public String toDevList() {
-		return "complex/device_list";
+		return "complex/device/device_list";
 	}
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id) {
@@ -51,7 +51,7 @@ public class DeviceInfoAction extends BaseAction{
 		List<Devicemodel> deviceModelList = service.getDeviceModelList(map);
 		model.addAttribute("deviceInfo",deviceInfo);
 		model.addAttribute("deviceModelList", deviceModelList);
-		return "complex/device_edit";
+		return "complex/device/device_edit";
 	}
 	@GetMapping("/updateParam")
 	public String updateParam(Model model,Integer id) {
@@ -64,7 +64,7 @@ public class DeviceInfoAction extends BaseAction{
 		}
 		model.addAttribute("params", params);
 		model.addAttribute("deviceInfo", info);
-		return "complex/device_param";
+		return "complex/device/device_param";
 	}
 	
 	@GetMapping("/goDeviceRegister")
@@ -73,7 +73,7 @@ public class DeviceInfoAction extends BaseAction{
 		List<Devicemodel> deviceModelList = dmService.list(new HashMap<>());
 		model.addAttribute("device", dev);
 		model.addAttribute("deviceModelList", deviceModelList);
-		return "complex/device_regist";
+		return "complex/device/device_regist";
 	}
 	@GetMapping("/goCoordinate")
 	public String goMap(Model model) {

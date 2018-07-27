@@ -153,13 +153,7 @@
 		menuImage = #{menuimage,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<select id="findByPid" parameterType="java.lang.Integer"
-		resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from menu
-		where pid = #{pid,jdbcType=INTEGER}
-	</select>
+	
 	<select id="findByText" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select
@@ -200,7 +194,7 @@
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
-				order by ${sort} ${order}
+				order by ${order} ${sort}
 			</when>
 			<otherwise>
 				order by id desc

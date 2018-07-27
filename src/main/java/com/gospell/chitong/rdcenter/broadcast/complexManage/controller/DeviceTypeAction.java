@@ -28,7 +28,7 @@ public class DeviceTypeAction extends BaseAction{
 	
 	@GetMapping("/toList")
 	public String toList(Model model){
-		return "complex/deviceType_list";
+		return "complex/device/deviceType_list";
 	}
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id){
@@ -39,7 +39,7 @@ public class DeviceTypeAction extends BaseAction{
 			deviceType = new Devicetype();
 		}
 		model.addAttribute("deviceType", deviceType);
-		return "complex/deviceType_edit";
+		return "complex/device/deviceType_edit";
 	}
 	@PostMapping("/list")
 	@ResponseBody
