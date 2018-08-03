@@ -9,6 +9,7 @@ $(document).ready(function(){
 	    idField:'id',    
 	    treeField:'text',
 	    nowrap:true,
+        striped:true,
 		frozenColumns:[[
 		            	{field:'ck',width:5,checkbox:true},
 		    	        {title:'id',field:'id',width:200,hidden:true},

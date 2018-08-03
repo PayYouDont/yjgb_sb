@@ -1,6 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.PlatformVO;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PlatformVO;
 
 public interface PlatformService {
 	

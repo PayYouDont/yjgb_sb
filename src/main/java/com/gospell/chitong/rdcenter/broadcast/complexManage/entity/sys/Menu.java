@@ -1,17 +1,17 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.BaseEntity;
-
+import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PermissionsVO;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * menu
  * @author 
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class Menu extends BaseEntity<Menu> {
+public class Menu {
     private Integer id;
 
     /**
@@ -55,4 +55,14 @@ public class Menu extends BaseEntity<Menu> {
     private String menuimage;
     
     private static final long serialVersionUID = 1L;
+    /**
+     * 菜单权限
+     */
+    private PermissionsVO permissions = new PermissionsVO();
+
+    private String state = "open";
+
+    private Boolean checked = false;
+
+    private List<Menu> children = new ArrayList<> ();
 }

@@ -1,10 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.MenuRoleRelation;
+
+import java.util.List;
+import java.util.Map;
 
 public interface MenuRoleRelationMapper {
     int deleteByPrimaryKey(Integer id);
@@ -18,6 +17,9 @@ public interface MenuRoleRelationMapper {
     int updateByPrimaryKeySelective(MenuRoleRelation record);
 
     int updateByPrimaryKey(MenuRoleRelation record);
-    
-    List<MenuRoleRelation> findByRoleId(@Param("roleId")Integer roleId);
+
+    List<MenuRoleRelation> list(Map<String,Object> map);
+
+    int count(Map<String,Object> map);
+
 }

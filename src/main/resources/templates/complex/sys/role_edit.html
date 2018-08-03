@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>菜单编辑</title>
+    <!--easyui控件css -->
+    <link id="easyuiTheme" rel="stylesheet" type="text/css"
+          href="/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+    <script src="/js/core/jquery.min.js"></script>
+    <!--easyui控件js -->
+    <script src="/easyui/jquery.easyui.min.js"></script>
+    <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/complex/sys/role_edit.js"></script>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west'" title="基础信息" style="padding:10px;">
+    <form id="dataForm" class="easyui-form" method="post">
+        <input id="id" name="id" th:value="${role.id}" type="hidden">
+        <!--<input id="menuIds" name="menuIds" th:value="${menuIds}" type="hidden">-->
+        <table class="tab" cellpadding="1" cellspacing="5"
+               style="width:calc(100% - 2px);">
+            <tr>
+                <td style="text-align:center;">角色名称</td>
+                <td>
+                    <input class="easyui-textbox" id="name" name="name" th:value='${role.name}' data-options="required:true">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center;">角色说明</td>
+                <td>
+                    <input id="descript" name="descript" th:value='${role.descript}' style="height:50px;" class="easyui-textbox" data-options="multiline:true">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div data-options="region:'east',split:true" style="width:55%;padding:5px;" title="功能菜单">
+    <table id="mainTab" class="easyui-datagrid" toolbar="#MyBtnDiv" fit="true" border="false">
+    </table>
+</div>
+
+<div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="mysave();"
+       style="width:80px">保存</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)"
+       onclick="closeParentModal();" style="width:80px">关闭</a>
+</div>
+</body>
+</html>

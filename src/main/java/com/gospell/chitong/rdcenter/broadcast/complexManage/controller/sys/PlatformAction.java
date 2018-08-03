@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.PlatformVO;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PlatformVO;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 

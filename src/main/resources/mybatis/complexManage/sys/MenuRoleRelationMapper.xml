@@ -5,13 +5,18 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="menu_id" jdbcType="INTEGER" property="menuId" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="is_view" jdbcType="BIT" property="isView" />
+    <result column="is_modify" jdbcType="BIT" property="isModify" />
+    <result column="is_add" jdbcType="BIT" property="isAdd" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, menu_id, role_id, create_time, create_by, update_time, update_by
+    id, menu_id, role_id, is_view, is_modify, is_add, is_delete, create_time, create_by, 
+    update_time, update_by
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,27 +29,38 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.MenuRoleRelation">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into menu_role_relation (menu_id, role_id, create_time, 
-      create_by, update_time, update_by
-      )
-    values (#{menuId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}
-      )
+    insert into menu_role_relation (id, menu_id, role_id, 
+      is_view, is_modify, is_add, is_delete, 
+      create_time, create_by, update_time, 
+      update_by)
+    values (#{id,jdbcType=INTEGER}, #{menuId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, 
+      #{isView,jdbcType=BIT}, #{isModify,jdbcType=BIT}, #{isAdd,jdbcType=BIT}, #{isDelete,jdbcType=BIT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.MenuRoleRelation">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into menu_role_relation
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="menuId != null">
         menu_id,
       </if>
       <if test="roleId != null">
         role_id,
+      </if>
+      <if test="isView != null">
+        is_view,
+      </if>
+      <if test="isModify != null">
+        is_modify,
+      </if>
+      <if test="isAdd != null">
+        is_add,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
       </if>
       <if test="createTime != null">
         create_time,
@@ -60,11 +76,26 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
       <if test="menuId != null">
         #{menuId,jdbcType=INTEGER},
       </if>
       <if test="roleId != null">
         #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="isView != null">
+        #{isView,jdbcType=BIT},
+      </if>
+      <if test="isModify != null">
+        #{isModify,jdbcType=BIT},
+      </if>
+      <if test="isAdd != null">
+        #{isAdd,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -89,6 +120,18 @@
       <if test="roleId != null">
         role_id = #{roleId,jdbcType=INTEGER},
       </if>
+      <if test="isView != null">
+        is_view = #{isView,jdbcType=BIT},
+      </if>
+      <if test="isModify != null">
+        is_modify = #{isModify,jdbcType=BIT},
+      </if>
+      <if test="isAdd != null">
+        is_add = #{isAdd,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -108,16 +151,104 @@
     update menu_role_relation
     set menu_id = #{menuId,jdbcType=INTEGER},
       role_id = #{roleId,jdbcType=INTEGER},
+      is_view = #{isView,jdbcType=BIT},
+      is_modify = #{isModify,jdbcType=BIT},
+      is_add = #{isAdd,jdbcType=BIT},
+      is_delete = #{isDelete,jdbcType=BIT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       update_by = #{updateBy,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="findByRoleId" parameterType="java.lang.Integer" resultType="java.lang.String">
-    select 
+  <select id="list" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from menu_role_relation
-    where role_id = #{roleId,jdbcType=INTEGER}
+    <where>
+      <if test="menuId != null">
+        and menu_id = #{menuId,jdbcType=INTEGER}
+      </if>
+      <if test="roleId != null">
+        and role_id = #{roleId,jdbcType=INTEGER}
+      </if>
+      <if test="isView != null">
+        and is_view = #{isView,jdbcType=BIT}
+      </if>
+      <if test="isModify != null">
+        and is_modify = #{isModify,jdbcType=BIT}
+      </if>
+      <if test="isAdd != null">
+        and is_add = #{isAdd,jdbcType=BIT}
+      </if>
+      <if test="isDelete != null">
+        and is_delete = #{isDelete,jdbcType=BIT}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createBy != null">
+        and create_by = #{createBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateBy != null">
+        and update_by = #{updateBy,jdbcType=VARCHAR}
+      </if>
+    </where>
+    <choose>
+      <when test="sort != null and sort.trim() != ''">
+        order by ${sort} ${order}
+      </when>
+      <otherwise>
+        order by id desc
+      </otherwise>
+    </choose>
+    <if test="begin != null and pageSize != null">
+      limit #{begin},#{pageSize}
+    </if>
+  </select>
+  <select id="count" resultType="int">
+    select count(*) from menu_role_relation
+    <where>
+      <if test="menuId != null">
+        and menu_id = #{menuId,jdbcType=INTEGER}
+      </if>
+      <if test="roleId != null">
+        and role_id = #{roleId,jdbcType=INTEGER}
+      </if>
+      <if test="isView != null">
+        and is_view = #{isView,jdbcType=BIT}
+      </if>
+      <if test="isModify != null">
+        and is_modify = #{isModify,jdbcType=BIT}
+      </if>
+      <if test="isAdd != null">
+        and is_add = #{isAdd,jdbcType=BIT}
+      </if>
+      <if test="isDelete != null">
+        and is_delete = #{isDelete,jdbcType=BIT}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createBy != null">
+        and create_by = #{createBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateBy != null">
+        and update_by = #{updateBy,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="selectById"
+          parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from deviceinfo
+    where id = #{deviceInfoId,jdbcType=INTEGER}
   </select>
 </mapper>

@@ -1,21 +1,32 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.Impl.sys;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuRoleRelationMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.RoleMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.MenuRoleRelation;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.RoleService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PermissionsVO;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.RoleMenuVO;
+import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class IRoleService implements RoleService{
 
 	@Resource
 	private RoleMapper dao;
+	@Resource
+	private MenuMapper menuDao;
+	@Resource
+	private MenuRoleRelationMapper mrrDao;
 
 	@Override
 	public Role findById(Integer id) {
@@ -28,8 +39,52 @@ public class IRoleService implements RoleService{
 	}
 
 	@Override
-	public int save(Role role) throws Exception {
-		return role.getId()!=null?dao.updateByPrimaryKeySelective(role):dao.insertSelective(role);
+	@Transactional
+	public int save(RoleMenuVO vo) throws Exception {
+		String userName = ShiroUtils.getUser ().getName ();
+		Role role = vo.getRole ();
+		try {
+			if(role.getId ()==null){
+				role.setCreateBy (userName);
+				dao.insertSelective (role);
+			}else{
+				role.setUpdateBy (userName);
+				dao.updateByPrimaryKeySelective (role);
+			}
+		}catch (Exception e){
+			return -1;
+		}
+		List<Menu> menus = vo.getMenusList ();
+		Map<String,Object> map;
+		for (Menu menu:menus) {
+			PermissionsVO permis = menu.getPermissions ();
+			if(permis.hasPermission ()){
+				MenuRoleRelation mrr = new MenuRoleRelation ();
+				mrr.setIsAdd (permis.isAdd ());
+				mrr.setIsDelete(permis.isDelete ());
+				mrr.setIsModify (permis.isModify ());
+				mrr.setIsView (permis.isView ());
+				mrr.setRoleId (role.getId ());
+				mrr.setMenuId (menu.getId ());
+				map = new HashMap<> ();
+				map.put ("roleId",role.getId ());
+				map.put ("menuId",menu.getId ());
+				int count = mrrDao.count (map);
+				try{
+					if(count>0){
+						mrr.setUpdateBy (userName);
+						mrr.setId (mrrDao.list (map).get (0).getId ());
+						mrrDao.updateByPrimaryKeySelective (mrr);
+					}else{
+						mrr.setCreateBy (userName);
+						mrrDao.insertSelective (mrr);
+					}
+				}catch (Exception e){
+					return -2;
+				}
+			}
+		}
+		return 0;
 	}
 
 	@Override

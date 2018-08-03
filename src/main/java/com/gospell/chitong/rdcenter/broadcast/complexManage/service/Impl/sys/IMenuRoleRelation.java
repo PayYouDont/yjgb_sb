@@ -1,18 +1,14 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.Impl.sys;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuRoleRelationMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.MenuRoleRelation;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.MenuRoleRelationService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.*;
 
 @Service
 public class IMenuRoleRelation implements MenuRoleRelationService{
@@ -61,12 +57,16 @@ public class IMenuRoleRelation implements MenuRoleRelationService{
 
 	@Override
 	public List<MenuRoleRelation> findByRoleId(Integer roleId) {
-		List<MenuRoleRelation> mrrs = dao.findByRoleId(roleId);
+		Map<String,Object> map = new HashMap<> ();
+		map.put("roleId",roleId);
+		List<MenuRoleRelation> mrrs = dao.list (map);
 		return mrrs;
 	}
 	@Override
 	public Set<String> getMenusByRoleId(Integer roleId) {
-		List<MenuRoleRelation> mrrs = dao.findByRoleId(roleId);
+		Map<String,Object> map = new HashMap<> ();
+		map.put("roleId",roleId);
+		List<MenuRoleRelation> mrrs = dao.list (map);
 		Set<String> menuNames = new HashSet<>();
 		for (MenuRoleRelation mrr : mrrs) {
 			Integer mid = mrr.getMenuId();

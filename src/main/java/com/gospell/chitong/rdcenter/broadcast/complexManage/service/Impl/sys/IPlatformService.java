@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.PlatformVO;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PlatformVO;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
 import com.gospell.chitong.rdcenter.broadcast.util.ProepertyUtil;	
 

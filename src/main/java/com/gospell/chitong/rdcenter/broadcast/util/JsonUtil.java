@@ -1,13 +1,12 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import net.sf.json.JSONArray;
 
+import java.io.IOException;
+
 public class JsonUtil {
-	 private static ObjectMapper m = new ObjectMapper();
+	 private static final ObjectMapper m = new ObjectMapper();
 	 public static String toJson(Object object){
 	    	String jsonArrayString = null;
 	    	try {

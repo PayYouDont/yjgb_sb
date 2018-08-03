@@ -1,23 +1,26 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.Impl.sys;
 
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuRoleRelationMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.MenuRoleRelation;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.MenuService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PermissionsVO;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.MenuService;
 
 @Service
 public class IMenuService implements MenuService{
 
 	@Resource
 	private MenuMapper dao;
-	
+	@Resource
+	private MenuRoleRelationMapper mrrDao;
+
 	@Override
 	public int deleteById(Integer id) throws Exception{
 		int i = dao.deleteByPrimaryKey(id);
@@ -32,12 +35,12 @@ public class IMenuService implements MenuService{
 	}
 
 	@Override
-	public List<Menu> getTree() {
+	public List<Menu> getTree(Integer roleId) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("number", 0);
 		List<Menu> pMenus= list(map);
 		for (Menu menu : pMenus) {
-			getChildren(menu);
+			getChildren(menu,roleId);
 		}
 		return pMenus;
 	}
@@ -52,7 +55,7 @@ public class IMenuService implements MenuService{
 	 * @author peiyongdong
 	 * @date 2018年6月8日 上午9:39:21
 	 */
-	public Menu getChildren(Menu menu) {
+	public Menu getChildren(Menu menu,Integer roleId) {
 		Integer pid = menu.getId();
 		Map<String,Object> map = new HashMap<>();
 		map.put("pid", pid);
@@ -62,7 +65,25 @@ public class IMenuService implements MenuService{
 		menu.setChildren(children);
 		if(children.size()>0) {
 			for (Menu childmenu : children) {
-				getChildren(childmenu);
+				if(roleId!=null){
+					map = new HashMap<>();
+					map.put ("roleId",roleId);
+					map.put("menuId",childmenu.getId ());
+					int count = mrrDao.count (map);
+					if(count>0){//将对应目录权限勾上
+						MenuRoleRelation mrr = mrrDao.list (map).get (0);
+						PermissionsVO vo = new PermissionsVO ();
+						vo.setAdd (mrr.getIsAdd ());
+						vo.setDelete (mrr.getIsDelete ());
+						vo.setModify (mrr.getIsModify ());
+						vo.setView (mrr.getIsView ());
+						if(vo.hasPermissionAll ()){
+							childmenu.setChecked (true);
+						}
+						childmenu.setPermissions (vo);
+					}
+				}
+				getChildren(childmenu,roleId);
 			}
 		}
 		return menu;
