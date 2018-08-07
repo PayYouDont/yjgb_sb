@@ -8,7 +8,7 @@ $(document).ready(function(){
 				param.pageIndex = page; //这里就是重新命名了
 				param.pageSize = rows; //这里就是重新命名了
 			},
-			url:'../userAction/querryUser',
+			url:'../userAction/list',
 		    autoRowHeight:false,
 		    fit:true,
 		    nowrap:true,

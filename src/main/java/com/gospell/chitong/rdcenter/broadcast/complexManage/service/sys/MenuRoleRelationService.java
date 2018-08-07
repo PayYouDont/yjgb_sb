@@ -22,5 +22,5 @@ public interface MenuRoleRelationService {
     
     List<MenuRoleRelation> findByRoleId(@Param("roleId")Integer roleId);
     
-    Set<String> getMenusByRoleId(Integer roleId);
+    Set<String> getRolePerms(Integer roleId);
 }

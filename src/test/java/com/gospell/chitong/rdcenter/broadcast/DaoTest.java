@@ -33,6 +33,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Device
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodelparam;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -146,7 +147,8 @@ public class DaoTest {
 	
 	@Test
 	public void test11() {
-		
+		List<Menu> list = menudao.list(null);
+		System.out.println(list);
 	}
 	@Resource
 	private UserLogMapper userlogdao;

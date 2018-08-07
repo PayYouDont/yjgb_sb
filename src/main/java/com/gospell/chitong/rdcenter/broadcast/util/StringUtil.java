@@ -41,6 +41,6 @@ public class StringUtil {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(patch("0", 8, 23));
+		System.out.println("\033[31m test  \033[39m 时间");
 	}
 }

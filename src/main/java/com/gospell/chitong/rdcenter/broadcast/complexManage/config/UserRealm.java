@@ -24,12 +24,12 @@ public class UserRealm extends AuthorizingRealm {
 	// 权限的实现
 	@Override
 	public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
-		System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
 		int roleId = ShiroUtils.getUserRoleId();
 		MenuRoleRelationService mrrService = ApplicationContextRegister.getBean(MenuRoleRelationService.class);
-		Set<String> perms = mrrService.getMenusByRoleId(roleId);
+		Set<String> perms = mrrService.getRolePerms(roleId);
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		info.setStringPermissions(perms);
+		System.out.println(perms);
 		return info;
 	}
 

@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,7 +53,7 @@ public class UserAction extends BaseAction{
 	public String toList(){
 		return "complex/sys/user_list";
 	}
-	
+	@RequiresPermissions("sys:user:edit")
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id){
 		User user = null;
@@ -157,15 +158,17 @@ public class UserAction extends BaseAction{
 			return JsonWrapper.failureWrapper();
 		}
 	}
-	@PostMapping("/querryUser")
+
+	@RequiresPermissions("sys:user:list")
+	@PostMapping("/list")
 	@ResponseBody
-	public HashMap<String,Object> querryUser(Page page){
+	public HashMap<String,Object> list(Page page){
 		Map<String,Object> map = page.getMap();
 		List<User> list = service.list(map);
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
-	
+	@RequiresPermissions("sys:user:delete")
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id){
@@ -176,5 +179,9 @@ public class UserAction extends BaseAction{
 			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper();
 		}
+	}
+	@RequestMapping("/error")
+	public String toError() {
+		return "error/error";
 	}
 }

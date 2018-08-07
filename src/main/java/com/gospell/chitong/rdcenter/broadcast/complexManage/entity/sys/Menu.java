@@ -1,17 +1,19 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PermissionsVO;
-import lombok.Data;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PermissionsVO;
+
+import lombok.Data;
 
 /**
  * menu
  * @author 
  */
 @Data
-public class Menu {
+public class Menu implements Serializable {
     private Integer id;
 
     /**
@@ -53,8 +55,14 @@ public class Menu {
      * 默认图片
      */
     private String menuimage;
-    
+
+    /**
+     * 授权
+     */
+    private String perms;
+
     private static final long serialVersionUID = 1L;
+    
     /**
      * 菜单权限
      */
@@ -65,4 +73,5 @@ public class Menu {
     private Boolean checked = false;
 
     private List<Menu> children = new ArrayList<> ();
+
 }

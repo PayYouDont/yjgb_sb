@@ -2,11 +2,16 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import lombok.Data;
 
 /**
  * menu_role_relation
  * @author 
  */
+@Data
 public class MenuRoleRelation implements Serializable {
     private Integer id;
 
@@ -61,92 +66,21 @@ public class MenuRoleRelation implements Serializable {
     private String updateBy;
 
     private static final long serialVersionUID = 1L;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(Integer menuId) {
-        this.menuId = menuId;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public Boolean getIsView() {
-        return isView;
-    }
-
-    public void setIsView(Boolean isView) {
-        this.isView = isView;
-    }
-
-    public Boolean getIsModify() {
-        return isModify;
-    }
-
-    public void setIsModify(Boolean isModify) {
-        this.isModify = isModify;
-    }
-
-    public Boolean getIsAdd() {
-        return isAdd;
-    }
-
-    public void setIsAdd(Boolean isAdd) {
-        this.isAdd = isAdd;
-    }
-
-    public Boolean getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
+    
+    public Set<String> getPermsSet(String perms) {
+    	Set<String> permsSet = new HashSet<>();
+    	if(getIsView()) {
+    		permsSet.add(perms+":list");
+    	}
+    	if(getIsAdd()) {
+    		permsSet.add(perms+":add");
+    	}
+    	if(getIsModify()) {
+    		permsSet.add(perms+":edit");
+    	}
+    	if(getIsDelete()) {
+    		permsSet.add(perms+":delete");
+    	}
+    	return permsSet;
     }
 }

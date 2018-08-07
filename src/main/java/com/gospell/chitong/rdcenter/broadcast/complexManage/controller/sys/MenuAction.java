@@ -1,9 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.sys;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.MenuService;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.MenuService;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 @Controller
 @RequestMapping("/menuAction")
@@ -34,8 +36,7 @@ public class MenuAction extends BaseAction{
 	public String toList(Model model) {
         return "complex/sys/menu_list";
 	}
-	
-	@GetMapping("/toAdd")
+	@GetMapping("/toEdit")
 	public String toAdd(Model model,Integer id) {
 		Menu menu = null;
 		if(id!=null) {
@@ -46,7 +47,6 @@ public class MenuAction extends BaseAction{
 		model.addAttribute("menu", menu);
         return "complex/sys/menu_edit";
 	}
-	
 	@RequestMapping("/list")
 	@ResponseBody
 	public List<Menu> list(Integer roleId){
@@ -65,7 +65,6 @@ public class MenuAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
-	
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id){

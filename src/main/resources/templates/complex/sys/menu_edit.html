@@ -35,31 +35,32 @@
 
 
 				<tr>
+					<td style="text-align: center;">权限</td>
+					<td>
+						<input id="perms" name="perms"
+						th:value='${menu.perms}' placeholder="icon-man" class="easyui-textbox"
+						data-options="required:true">
+					</td>
 					<td style="text-align: center;">顺序编号</td>
 					<td><input class="easyui-numberspinner" id="number"
 						name="number" th:value='${menu.number}'
 						data-options="required:true,min:1,precision:0"
 						missingMessage="根据编号顺序大小进行菜单排序"></td>
+				</tr>
+				<tr>
 					<td style="text-align: center;">菜单图标</td>
 					<td><input id="menuImage" name="menuimage"
 						th:value='${menu.menuimage}' placeholder="icon-man" class="easyui-textbox"
 						data-options="required:true"></td>
-
-				</tr>
-
-				
-				<tr>
 					<td style="text-align: center;">英文名称</td>
 					<td><input class="easyui-textbox" id="menuCaptionEn"
 						name="menucaptionen" th:value='${menu.menucaptionen}'
 						data-options="required:true"></td>
-
+				</tr>
+				<tr>
 					<td style="text-align: center;">连接地址</td>
 					<td><input id="url" name="url" th:value='${menu.url}'
 						class="easyui-textbox" data-options=""></td>
-				</tr>
-
-				<tr>
 					<td style="text-align: center;">菜单说明</td>
 					<td><input id="menuCaptionHint" name="menucaptionhint"
 						th:value='${menu.menucaptionhint}' class="easyui-textbox"

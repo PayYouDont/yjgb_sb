@@ -4,24 +4,31 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+
 @Configuration
 public class ShrioConfig {
-	 /**
-     * ShiroDialect，为了在thymeleaf里使用shiro的标签的bean
-     * @return
-     */
-    /*@Bean
+	@Bean
     public ShiroDialect shiroDialect() {
         return new ShiroDialect();
-    }*/
+    }
+	@Bean
+    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+	
 	@Bean
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -48,8 +55,8 @@ public class ShrioConfig {
 		shiroFilterFactoryBean.setLoginUrl("/userAction/login");
 		// 登录成功后要跳转的链接
 		//shiroFilterFactoryBean.setSuccessUrl("/userAction/index");
-		//未授权界面;
-		shiroFilterFactoryBean.setUnauthorizedUrl("/userAction/403");
+		//未授权界面
+		//shiroFilterFactoryBean.setUnauthorizedUrl("/userAction/error");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}
@@ -59,12 +66,14 @@ public class ShrioConfig {
 	public UserRealm UserRealm(){
 		UserRealm userRealm = new UserRealm();
 		userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+		
 		return userRealm;
 	}
 	@Bean
 	public SecurityManager securityManager(){
 		DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
 		securityManager.setRealm(UserRealm());
+		securityManager.setCacheManager(ehCacheManager());//用户授权/认证信息Cache, 采用EhCache 缓存
 		return securityManager;
 	}
 
@@ -106,4 +115,17 @@ public class ShrioConfig {
 		//r.setWarnLogCategory("example.MvcLogger");     // No default
 		return r;
 	}
+	@Bean
+    public EhCacheManager ehCacheManager() {
+        EhCacheManager em = new EhCacheManager();
+        em.setCacheManagerConfigFile("classpath:config/ehcache.xml");
+        return em;
+    }
+	@Bean
+	@ConditionalOnMissingBean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
+        daap.setProxyTargetClass(true);
+        return daap;
+    }
 }

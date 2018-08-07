@@ -17,10 +17,13 @@
 			property="menusystem" />
 		<result column="menuImage" jdbcType="VARCHAR"
 			property="menuimage" />
+		<result column="perms" jdbcType="VARCHAR" property="perms" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, text, pid, number, url, menuCaptionHint, menuCaptionEn, menuSystem,
-		menuImage
+		id, `text`, pid, `number`, url, menuCaptionHint,
+		menuCaptionEn,
+		menuSystem, menuImage,
+		perms
 	</sql>
 	<select id="selectByPrimaryKey"
 		parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -36,35 +39,35 @@
 	</delete>
 	<insert id="insert"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu">
-		<selectKey keyProperty="id" order="AFTER"
-			resultType="java.lang.Integer">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-		insert into menu (text, pid, number,
-		url, menuCaptionHint, menuCaptionEn,
-		menuSystem, menuImage)
-		values (#{text,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER},
+		insert into menu (id, `text`, pid,
+		`number`, url,
+		menuCaptionHint,
+		menuCaptionEn, menuSystem, menuImage,
+		perms)
+		values
+		(#{id,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR},
+		#{pid,jdbcType=INTEGER},
 		#{number,jdbcType=INTEGER},
 		#{url,jdbcType=VARCHAR}, #{menucaptionhint,jdbcType=VARCHAR},
-		#{menucaptionen,jdbcType=VARCHAR},
-		#{menusystem,jdbcType=VARCHAR}, #{menuimage,jdbcType=VARCHAR})
+		#{menucaptionen,jdbcType=VARCHAR}, #{menusystem,jdbcType=VARCHAR},
+		#{menuimage,jdbcType=VARCHAR},
+		#{perms,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu">
-		<selectKey keyProperty="id" order="AFTER"
-			resultType="java.lang.Integer">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
 		insert into menu
 		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
 			<if test="text != null">
-				text,
+				`text`,
 			</if>
 			<if test="pid != null">
 				pid,
 			</if>
 			<if test="number != null">
-				number,
+				`number`,
 			</if>
 			<if test="url != null">
 				url,
@@ -81,8 +84,14 @@
 			<if test="menuimage != null">
 				menuImage,
 			</if>
+			<if test="perms != null">
+				perms,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
 			<if test="text != null">
 				#{text,jdbcType=VARCHAR},
 			</if>
@@ -107,6 +116,9 @@
 			<if test="menuimage != null">
 				#{menuimage,jdbcType=VARCHAR},
 			</if>
+			<if test="perms != null">
+				#{perms,jdbcType=VARCHAR},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective"
@@ -114,13 +126,13 @@
 		update menu
 		<set>
 			<if test="text != null">
-				text = #{text,jdbcType=VARCHAR},
+				`text` = #{text,jdbcType=VARCHAR},
 			</if>
 			<if test="pid != null">
 				pid = #{pid,jdbcType=INTEGER},
 			</if>
 			<if test="number != null">
-				number = #{number,jdbcType=INTEGER},
+				`number` = #{number,jdbcType=INTEGER},
 			</if>
 			<if test="url != null">
 				url = #{url,jdbcType=VARCHAR},
@@ -137,23 +149,33 @@
 			<if test="menuimage != null">
 				menuImage = #{menuimage,jdbcType=VARCHAR},
 			</if>
+			<if test="perms != null">
+				perms = #{perms,jdbcType=VARCHAR},
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<update id="updateByPrimaryKey"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu">
 		update menu
-		set text = #{text,jdbcType=VARCHAR},
-		pid = #{pid,jdbcType=INTEGER},
-		number = #{number,jdbcType=INTEGER},
-		url = #{url,jdbcType=VARCHAR},
-		menuCaptionHint = #{menucaptionhint,jdbcType=VARCHAR},
-		menuCaptionEn = #{menucaptionen,jdbcType=VARCHAR},
-		menuSystem = #{menusystem,jdbcType=VARCHAR},
-		menuImage = #{menuimage,jdbcType=VARCHAR}
-		where id = #{id,jdbcType=INTEGER}
+		set `text` = #{text,jdbcType=VARCHAR},
+		pid =
+		#{pid,jdbcType=INTEGER},
+		`number` = #{number,jdbcType=INTEGER},
+		url =
+		#{url,jdbcType=VARCHAR},
+		menuCaptionHint =
+		#{menucaptionhint,jdbcType=VARCHAR},
+		menuCaptionEn =
+		#{menucaptionen,jdbcType=VARCHAR},
+		menuSystem =
+		#{menusystem,jdbcType=VARCHAR},
+		menuImage =
+		#{menuimage,jdbcType=VARCHAR},
+		perms = #{perms,jdbcType=VARCHAR}
+		where
+		id = #{id,jdbcType=INTEGER}
 	</update>
-	
 	<select id="findByText" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select
@@ -161,20 +183,19 @@
 		from menu
 		where text = #{text,jdbcType=VARCHAR}
 	</select>
-
 	<select id="list" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from menu
 		<where>
 			<if test="text != null">
-				and text = #{text,jdbcType=VARCHAR}
+				and `text` = #{text,jdbcType=VARCHAR}
 			</if>
 			<if test="pid != null">
 				and pid = #{pid,jdbcType=INTEGER}
 			</if>
 			<if test="number != null">
-				and number = #{number,jdbcType=INTEGER}
+				and `number` = #{number,jdbcType=INTEGER}
 			</if>
 			<if test="url != null">
 				and url = #{url,jdbcType=VARCHAR}
@@ -191,6 +212,9 @@
 			<if test="menuimage != null">
 				and menuImage = #{menuimage,jdbcType=VARCHAR}
 			</if>
+			<if test="perms != null">
+				and perms = #{perms,jdbcType=VARCHAR}
+			</if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -203,5 +227,43 @@
 		<if test="begin != null and pageSize != null">
 			limit #{begin},#{pageSize}
 		</if>
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from menu
+		<where>
+			<if test="text != null">
+				and `text` = #{text,jdbcType=VARCHAR}
+			</if>
+			<if test="pid != null">
+				and pid = #{pid,jdbcType=INTEGER}
+			</if>
+			<if test="number != null">
+				and `number` = #{number,jdbcType=INTEGER}
+			</if>
+			<if test="url != null">
+				and url = #{url,jdbcType=VARCHAR}
+			</if>
+			<if test="menucaptionhint != null">
+				and menuCaptionHint = #{menucaptionhint,jdbcType=VARCHAR}
+			</if>
+			<if test="menucaptionen != null">
+				and menuCaptionEn = #{menucaptionen,jdbcType=VARCHAR}
+			</if>
+			<if test="menusystem != null">
+				and menuSystem = #{menusystem,jdbcType=VARCHAR}
+			</if>
+			<if test="menuimage != null">
+				and menuImage = #{menuimage,jdbcType=VARCHAR}
+			</if>
+			<if test="perms != null">
+				and perms = #{perms,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getRootMenu" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from menu
+		where pid is NULL order by number asc
 	</select>
 </mapper>

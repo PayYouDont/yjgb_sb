@@ -1,9 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.MenuRoleRelation;
-
 import java.util.List;
 import java.util.Map;
+
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.MenuRoleRelation;
 
 public interface MenuRoleRelationMapper {
     int deleteByPrimaryKey(Integer id);
@@ -21,5 +21,4 @@ public interface MenuRoleRelationMapper {
     List<MenuRoleRelation> list(Map<String,Object> map);
 
     int count(Map<String,Object> map);
-
-}
+	}

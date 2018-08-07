@@ -10,7 +10,7 @@ var grid;
 function getMenu() {
     var roleId = $("#id").val();
     grid = $('#mainTab').treegrid({
-        url:'../menuAction/list?roleId='+roleId ,
+        url:'../menuAction/list?roleId='+roleId,
         autoRowHeight:false,
         fit:true,
         fitColumns:false,
@@ -36,9 +36,9 @@ function getMenu() {
                         return;
                     }
                     if(row.permissions.view==false){
-                        return '<input type="checkbox" value="false"/>';
+                        return '<input type="checkbox"/>';
                     }else{
-                        return '<input type="checkbox" checked="true" value="true"/>' ;
+                        return '<input type="checkbox" checked="true"/>' ;
                     }
                 }
             },
@@ -49,9 +49,9 @@ function getMenu() {
                     }
 
                     if(row.permissions.add==false){
-                        return '<input type="checkbox" value="false" />' ;
+                        return '<input type="checkbox"/>' ;
                     }else{
-                        return '<input type="checkbox" checked="true" value="true"/>' ;
+                        return '<input type="checkbox" checked="true"/>' ;
                     }
                 }
             },
@@ -61,9 +61,9 @@ function getMenu() {
                         return;
                     }
                     if(row.permissions.modify==false){
-                        return '<input type="checkbox" value="false" />' ;
+                        return '<input type="checkbox" />' ;
                     }else{
-                        return '<input  type="checkbox" checked="true" value="true"/>' ;
+                        return '<input  type="checkbox" checked="true"/>' ;
                     }
                 }
             },
@@ -73,9 +73,9 @@ function getMenu() {
                         return;
                     }
                     if(row.permissions.delete==false){
-                        return '<input type="checkbox" value="false"/>' ;
+                        return '<input type="checkbox"/>' ;
                     }else{
-                        return '<input type="checkbox" checked="true" value="true"/>' ;
+                        return '<input type="checkbox" checked="true" />' ;
                     }
                 }
             }
@@ -184,25 +184,3 @@ function mysave(){
 		}
 	});
 }
-/*****************************/
-$.extend($.fn.datagrid.defaults.editors, {
-    checkbox: {
-        init: function(container, options){
-            var input = $('<input type="checkbox" class="datagrid-editable-input">').appendTo(container);
-            return input;
-        },
-        destroy: function(target){
-            $(target).remove();
-        },
-        getValue: function(target){
-            return $(target).val();
-        },
-        setValue: function(target, value){
-            console.log(target, value)
-            $(target).val(value);
-        },
-        resize: function(target, width){
-            $(target)._outerWidth(width);
-        }
-    }
-});

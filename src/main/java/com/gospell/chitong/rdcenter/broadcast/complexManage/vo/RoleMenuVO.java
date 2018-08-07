@@ -23,7 +23,8 @@ public class RoleMenuVO {
         return list;
     }
 
-    public static List<Menu> getChildren(JSONArray array,List<Menu> list){
+    @SuppressWarnings("unchecked")
+	public static List<Menu> getChildren(JSONArray array,List<Menu> list){
            for(int i=0;i<array.size ();i++){
                List<Menu> menus = JSONArray.toList (array,new Menu(),new JsonConfig ());
                list.addAll (menus);

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class IRoleService implements RoleService{
+public class IRoleService implements RoleService {
 
 	@Resource
 	private RoleMapper dao;
@@ -41,47 +41,45 @@ public class IRoleService implements RoleService{
 	@Override
 	@Transactional
 	public int save(RoleMenuVO vo) throws Exception {
-		String userName = ShiroUtils.getUser ().getName ();
-		Role role = vo.getRole ();
+		String userName = ShiroUtils.getUser().getName();
+		Role role = vo.getRole();
 		try {
-			if(role.getId ()==null){
-				role.setCreateBy (userName);
-				dao.insertSelective (role);
-			}else{
-				role.setUpdateBy (userName);
-				dao.updateByPrimaryKeySelective (role);
+			if (role.getId() == null) {
+				role.setCreateBy(userName);
+				dao.insertSelective(role);
+			} else {
+				role.setUpdateBy(userName);
+				dao.updateByPrimaryKeySelective(role);
 			}
-		}catch (Exception e){
+		} catch (Exception e) {
 			return -1;
 		}
-		List<Menu> menus = vo.getMenusList ();
-		Map<String,Object> map;
-		for (Menu menu:menus) {
-			PermissionsVO permis = menu.getPermissions ();
-			if(permis.hasPermission ()){
-				MenuRoleRelation mrr = new MenuRoleRelation ();
-				mrr.setIsAdd (permis.isAdd ());
-				mrr.setIsDelete(permis.isDelete ());
-				mrr.setIsModify (permis.isModify ());
-				mrr.setIsView (permis.isView ());
-				mrr.setRoleId (role.getId ());
-				mrr.setMenuId (menu.getId ());
-				map = new HashMap<> ();
-				map.put ("roleId",role.getId ());
-				map.put ("menuId",menu.getId ());
-				int count = mrrDao.count (map);
-				try{
-					if(count>0){
-						mrr.setUpdateBy (userName);
-						mrr.setId (mrrDao.list (map).get (0).getId ());
-						mrrDao.updateByPrimaryKeySelective (mrr);
-					}else{
-						mrr.setCreateBy (userName);
-						mrrDao.insertSelective (mrr);
-					}
-				}catch (Exception e){
-					return -2;
+		List<Menu> menus = vo.getMenusList();
+		Map<String, Object> map;
+		for (Menu menu : menus) {
+			PermissionsVO permis = menu.getPermissions();
+			MenuRoleRelation mrr = new MenuRoleRelation();
+			mrr.setIsAdd(permis.isAdd());
+			mrr.setIsDelete(permis.isDelete());
+			mrr.setIsModify(permis.isModify());
+			mrr.setIsView(permis.isView());
+			mrr.setRoleId(role.getId());
+			mrr.setMenuId(menu.getId());
+			map = new HashMap<>();
+			map.put("roleId", role.getId());
+			map.put("menuId", menu.getId());
+			int count = mrrDao.count(map);
+			try {
+				if (count > 0) {
+					mrr.setUpdateBy(userName);
+					mrr.setId(mrrDao.list(map).get(0).getId());
+					mrrDao.updateByPrimaryKeySelective(mrr);
+				} else {
+					mrr.setCreateBy(userName);
+					mrrDao.insertSelective(mrr);
 				}
+			} catch (Exception e) {
+				return -2;
 			}
 		}
 		return 0;
@@ -96,6 +94,5 @@ public class IRoleService implements RoleService{
 	public int count(Map<String, Object> map) {
 		return dao.count(map);
 	}
-	
-	
+
 }

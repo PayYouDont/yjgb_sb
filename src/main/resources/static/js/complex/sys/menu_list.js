@@ -17,13 +17,13 @@ $(document).ready(function(){
 		    	        {title:'菜单名称',field:'text',width:200,align:'left',halign:'center'},
 					]],
 	    columns:[[
+	    	{title:'顺序编号',field:'number',width:100,align:'center'},
+	    	{title:'权限',field:'perms',width:200,align:'center'},
+	    	{title:'连接地址',field:'url',width:300,align:'left',halign:'center'},
+	        {title:'说明信息',field:'menucaptionhint',width:200,align:'left',halign:'center'},
 			{title:'英文标题',field:'menucaptionen',width:200,align:'center'},
 	        {title:'菜单图标',field:'menuimage',width:200,align:'center'},
-	        {title:'连接地址',field:'url',width:300,align:'left',halign:'center'},
-	        {title:'说明信息',field:'menucaptionhint',width:200,align:'left',halign:'center'},
-	        {title:'系统归属',field:'menusystem',width:200,align:'center',halign:'center',formatter:systemFormatter},
-	        {title:'顺序编号',field:'number',width:100,align:'center'},
-
+	        {title:'系统归属',field:'menusystem',width:200,align:'center',halign:'center',formatter:systemFormatter}
 	    ]]    
 	});  
 });
@@ -58,7 +58,7 @@ function refreshMyData(){
 //增加 （打开模态框）
 function add(){
 
-	$('#editIframe').attr('src','../menuAction/toAdd');
+	$('#editIframe').attr('src','../menuAction/toEdit');
 	$('#editModal').window('setTitle','菜单添加');
 	$('#editModal').window('open');
 }
@@ -81,7 +81,7 @@ function edit(){
 		$.messager.alert('选择提示','该菜单不能操作！','info');
 		return;
 	}
-	$('#editIframe').attr('src','../menuAction/toAdd?id='+v_id);
+	$('#editIframe').attr('src','../menuAction/toEdit?id='+v_id);
 	$('#editModal').window('setTitle','菜单修改');
 	$('#editModal').window('open');
 }

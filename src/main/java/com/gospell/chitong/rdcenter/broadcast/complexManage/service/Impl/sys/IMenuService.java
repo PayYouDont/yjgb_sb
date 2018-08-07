@@ -24,6 +24,12 @@ public class IMenuService implements MenuService{
 	@Override
 	public int deleteById(Integer id) throws Exception{
 		int i = dao.deleteByPrimaryKey(id);
+		Map<String,Object> map = new HashMap<>();
+		map.put("menuId", id);
+		List<MenuRoleRelation> mrrs = mrrDao.list(map);
+		if(mrrs.size()>0) {
+			i += mrrDao.deleteByPrimaryKey(mrrs.get(0).getId());
+		}
 		return i;
 	}
 
@@ -36,9 +42,7 @@ public class IMenuService implements MenuService{
 
 	@Override
 	public List<Menu> getTree(Integer roleId) {
-		Map<String,Object> map = new HashMap<>();
-		map.put("number", 0);
-		List<Menu> pMenus= list(map);
+		List<Menu> pMenus= dao.getRootMenu();
 		for (Menu menu : pMenus) {
 			getChildren(menu,roleId);
 		}
@@ -85,6 +89,8 @@ public class IMenuService implements MenuService{
 				}
 				getChildren(childmenu,roleId);
 			}
+		}else {
+			menu.setState("open");
 		}
 		return menu;
 	}

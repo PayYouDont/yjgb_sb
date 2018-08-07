@@ -63,17 +63,17 @@ public class IMenuRoleRelation implements MenuRoleRelationService{
 		return mrrs;
 	}
 	@Override
-	public Set<String> getMenusByRoleId(Integer roleId) {
+	public Set<String> getRolePerms(Integer roleId) {
 		Map<String,Object> map = new HashMap<> ();
 		map.put("roleId",roleId);
 		List<MenuRoleRelation> mrrs = dao.list (map);
-		Set<String> menuNames = new HashSet<>();
+		Set<String> permsSet = new HashSet<>();
 		for (MenuRoleRelation mrr : mrrs) {
 			Integer mid = mrr.getMenuId();
 			Menu menu = menuDao.selectByPrimaryKey(mid);
-			String menuUrl = menu.getUrl();
-			menuNames.add(menuUrl);
+			String perms = menu.getPerms();
+			permsSet.addAll(mrr.getPermsSet(perms));
 		}
-		return menuNames;
+		return permsSet;
 	}
 }
