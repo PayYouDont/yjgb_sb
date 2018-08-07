@@ -362,6 +362,9 @@
 			<if test="parentpath != null">
 				and parentPath = #{parentpath,jdbcType=VARCHAR}
 			</if>
+			<if test="devdsnLike != null">
+				and devDsn like "%" #{devdsnLike,jdbcType=VARCHAR} "%"
+			</if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">

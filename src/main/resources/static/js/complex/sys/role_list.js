@@ -36,7 +36,7 @@ $(document).ready(function(){
 //搜索
 function doSearch(value){
 	$('#mainTab').datagrid('load',{
-		roleGroupName:value
+        search:value
 	});
 }
 

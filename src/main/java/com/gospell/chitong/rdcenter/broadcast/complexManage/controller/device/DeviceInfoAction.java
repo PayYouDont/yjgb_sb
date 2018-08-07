@@ -1,18 +1,5 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.device;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DeviceParamVal;
@@ -22,6 +9,19 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.Devic
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceModelService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceParamValService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/deviceInfoAction")
@@ -39,13 +39,12 @@ public class DeviceInfoAction extends BaseAction{
 	public String toDevList() {
 		return "complex/device/device_list";
 	}
+	@RequiresPermissions (value = {"dev:info:add","dev:info:edit"},logical= Logical.OR)
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id) {
 		Deviceinfo deviceInfo = new Deviceinfo();
 		if(id!=null) {
 			deviceInfo = service.findById(id);
-		}else {
-			deviceInfo = new Deviceinfo();
 		}
 		Map<String,Object> map = new HashMap<>();
 		List<Devicemodel> deviceModelList = service.getDeviceModelList(map);
@@ -66,7 +65,7 @@ public class DeviceInfoAction extends BaseAction{
 		model.addAttribute("deviceInfo", info);
 		return "complex/device/device_param";
 	}
-	
+	@RequiresPermissions ("dev:info:edit")
 	@GetMapping("/goDeviceRegister")
 	public String goDeviceRegister(Model model,Integer id) {
 		Deviceinfo dev = service.findById(id);
@@ -90,12 +89,15 @@ public class DeviceInfoAction extends BaseAction{
 		List<String> list = service.findByCodes(code);
 		return JsonWrapper.successWrapper(list);
 	}
-	@RequestMapping("/queryList")
+	@RequestMapping("/list")
 	@ResponseBody
-	public HashMap<String,Object> queryList(Page page){
+	public HashMap<String,Object> list(Page page,String devDsn){
 		Map<String,Object> map = page.getMap();
 		map.put("sort","id");
 		map.put("order", "ASC");
+		if(devDsn!=null){
+			map.put ("devdsnLike",devDsn);
+		}
 		List<Deviceinfo> list = service.list(map);
 		int total = service.queryCount(map);
 		return JsonWrapper.wrapperPage(list, total);

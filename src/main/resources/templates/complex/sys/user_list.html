@@ -51,16 +51,20 @@ a:FOCUS {
 <body class="easyui-layout">
 
 	<div id="MyBtnDiv" style="height: 30px; padding: 1px 5px 3px 5px;">
-		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add"
-			onclick="add();">增加</a> <a href="#" class="easyui-linkbutton"
-			plain="true" iconCls="icon-edit" onclick="edit();">修改</a> <a href="#"
-			class="easyui-linkbutton" plain="true" iconCls="icon-remove"
-			onclick="remove();">删除</a> <a href="#" class="easyui-linkbutton"
-			plain="true" iconCls="icon-edit" onclick="editPass();">修改密码</a> <font
-			style="height: 30px; line-height: 30px;">&emsp;&emsp;搜索:</font> <input
-			class="easyui-searchbox" id="searchValue" name="searchValue" value=''
-			data-options="prompt:'请输入用户名称',searcher:doSearch"
-			style="width: 180px; height: 23px;">
+		<shiro:hasPermission name="sys:user:add">
+			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="add();">增加</a>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="sys:user:edit">
+			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="edit();">修改</a>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="sys:user:delete">
+			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="remove();">删除</a>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="sys:user:edit">
+			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="editPass();">修改密码</a>
+		</shiro:hasPermission>
+		<font style="height: 30px; line-height: 30px;">&emsp;&emsp;搜索:</font>
+		<input class="easyui-searchbox" id="searchValue" name="searchValue" value='' data-options="prompt:'请输入用户名称',searcher:doSearch" style="width: 180px; height: 23px;">
 	</div>
 
 

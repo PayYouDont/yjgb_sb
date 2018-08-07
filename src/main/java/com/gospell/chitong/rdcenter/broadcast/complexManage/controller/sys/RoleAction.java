@@ -6,6 +6,8 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.RoleService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.RoleMenuVO;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ public class RoleAction extends BaseAction {
     public String toList(){
         return "complex/sys/role_list";
     }
+    @RequiresPermissions (value={"sys:role:add","sys:role:edit"},logical=Logical.OR)
     @GetMapping("toEdit")
     public String toEdit(Model model,Integer id){
         Role role = new Role ();
@@ -39,15 +42,19 @@ public class RoleAction extends BaseAction {
         return "complex/sys/role_edit";
     }
 
+    @RequiresPermissions ("sys:role:list")
     @PostMapping("list")
     @ResponseBody
-    public HashMap<String,Object> list(Page page){
+    public HashMap<String,Object> list(Page page,String search){
         Map<String,Object> map = page.getMap ();
+        if(search!=null){
+            map.put ("nameLike",search);
+        }
         List<Role> list = service.list (map);
         int total = service.count (map);
         return JsonWrapper.wrapperPage(list,total);
     }
-
+    @RequiresPermissions (value={"sys:role:add","sys:role:edit"},logical=Logical.OR)
     @PostMapping("save")
     @ResponseBody
     public HashMap<String,Object> save(RoleMenuVO vo){

@@ -1,23 +1,5 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.sys;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
@@ -28,11 +10,27 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.UserVO;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 import com.gospell.chitong.rdcenter.broadcast.util.MD5Util;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 @Api(description = "用户操作相关接口")
 @Controller
 @RequestMapping("/userAction")
@@ -53,7 +51,7 @@ public class UserAction extends BaseAction{
 	public String toList(){
 		return "complex/sys/user_list";
 	}
-	@RequiresPermissions("sys:user:edit")
+	@RequiresPermissions(value = {"sys:user:edit","sys:user:add"},logical= Logical.OR)
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id){
 		User user = null;
@@ -123,6 +121,7 @@ public class UserAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月1日 下午3:04:04
 	 */
+	@RequiresPermissions("sys:user:edit")
 	@RequestMapping("/resetPwd")
 	@ResponseBody
 	public HashMap<String,Object> resetPwd(UserVO userVO){
@@ -134,7 +133,7 @@ public class UserAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
-	
+	@RequiresPermissions(value = {"sys:user:edit","sys:user:add"},logical= Logical.OR)
 	@RequestMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> updateUser(User user){
@@ -162,8 +161,11 @@ public class UserAction extends BaseAction{
 	@RequiresPermissions("sys:user:list")
 	@PostMapping("/list")
 	@ResponseBody
-	public HashMap<String,Object> list(Page page){
+	public HashMap<String,Object> list(Page page,String userName){
 		Map<String,Object> map = page.getMap();
+		if(userName!=null){
+			map.put ("nameLike",userName);
+		}
 		List<User> list = service.list(map);
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
@@ -179,9 +181,5 @@ public class UserAction extends BaseAction{
 			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper();
 		}
-	}
-	@RequestMapping("/error")
-	public String toError() {
-		return "error/error";
 	}
 }
