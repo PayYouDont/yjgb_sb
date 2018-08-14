@@ -141,7 +141,6 @@ function goHome(){
  * @param refreshGridFunc 自定义的刷新方法
  */
 function refreshTabData(title, refreshGridFunc){
-	console.log("into top function..............");
 	if ($("#myEasyui-tabs" ).tabs('exists', title)) {  
         $('#myEasyui-tabs').tabs('select' , title);  
         console.log("ready to go review function.......")

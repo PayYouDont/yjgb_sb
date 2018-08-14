@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>参数设置</title>
+<!--easyui控件css -->
+<link rel="stylesheet" type="text/css" href="/css/common/index.css">
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/common/uiTree.js"></script>
+<script src="/js/complex/device/device_param.js"></script>
+<style type="text/css">
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+a:FOCUS {
+	outline: none;
+}
+</style>
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'center'" style="padding: 10px;">
+		<form id="dataForm" class="easyui-form" method="post">
+			<input id="deviceId" type="hidden" name="id" th:value="${deviceInfo.id}">
+			<table class="tab" cellpadding="3">
+  			<tr th:each="pa,paStat:${params}">
+  				<td th:text="${pa.paramName}" style="text-align:center;width:80px;"></td>
+  				<td>
+  					<input class="easyui-textbox" style="width:200px;"
+  					th:id="${pa.paramVariable}" th:name="${pa.paramVariable}" 
+  					th:value="${pa.val}" th:attr="data-options=|validType:'${pa.paramFormCheck}'|"/>
+  				</td>
+  			</tr>
+			</table>
+		</form>
+	</div>
+	<div data-options="region:'south',border:false"
+		style="text-align: right; padding: 5px 0 0;">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+			href="javascript:void(0)" onclick="mysave();" style="width: 80px">发送</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+			href="javascript:void(0)" onclick="clearForm();" style="width: 80px">重置</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
+			href="javascript:void(0)" onclick="closeParentModal();"
+			style="width: 80px">关闭</a>
+	</div>
+</body>
+</html>

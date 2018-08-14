@@ -29,7 +29,6 @@ public class UserRealm extends AuthorizingRealm {
 		Set<String> perms = mrrService.getRolePerms(roleId);
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		info.setStringPermissions(perms);
-		System.out.println(perms);
 		return info;
 	}
 

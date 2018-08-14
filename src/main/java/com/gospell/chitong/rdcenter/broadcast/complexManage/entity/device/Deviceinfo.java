@@ -123,16 +123,28 @@ public class Deviceinfo implements Serializable {
     private static final long serialVersionUID = 1L;
     
     public String getOnregister() {
-    	return getStatus().substring(7,8);
+    	if(getStatus()!=null&&!"".equals(getStatus())) {
+        	return getStatus().substring(7,8);
+    	}
+    	return null;
     }
     public String getOnline() {
-    	return getStatus().substring(6,7);
+    	if(getStatus()!=null&&!"".equals(getStatus())) {
+        	return getStatus().substring(6,7);
+    	}
+    	return null;
     }
     public String getOnwork() {
-    	return getStatus().substring(5,6);
+    	if(getStatus()!=null&&!"".equals(getStatus())) {
+        	return getStatus().substring(5,6);
+    	}
+    	return null;
     }
     public String getOnwarning() {
-    	return getStatus().substring(4,5);
+    	if(getStatus()!=null&&!"".equals(getStatus())) {
+        	return getStatus().substring(4,5);
+    	}
+    	return null;
     }
     //获取纬度
     public String getLat() {

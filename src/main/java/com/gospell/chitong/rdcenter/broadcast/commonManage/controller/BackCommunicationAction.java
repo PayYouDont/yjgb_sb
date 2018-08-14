@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -250,5 +251,47 @@ public class BackCommunicationAction extends BaseAction {
 	public HashMap<String, Object> getRegisterDevice(String registerDeviceJson) {
 		System.out.println(registerDeviceJson);
 		return null;
+	}
+	@RequestMapping("/devParamSetting")
+	@ResponseBody
+	public HashMap<String, Object> devParamSetting(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		Deviceinfo info = devService.findById(Integer.valueOf(id));
+		Map<String,Object> map = new HashMap<>();
+		map.put("deviceInfoId",info.getId());
+		List<DeviceParamVal> devModelParamList = dpvService.list(map);
+		//参数
+		Map<String, Object> paramMap = new HashMap<String, Object>();		
+		for (DeviceParamVal deviceParamVal : devModelParamList) {
+			String parameter = request.getParameter(deviceParamVal.getParamVariable());
+			if(deviceParamVal.getVal()==null){
+				paramMap.put(deviceParamVal.getParamVariable(), parameter);
+			}else if(!deviceParamVal.getVal().equals(parameter)){
+				paramMap.put(deviceParamVal.getParamVariable(), parameter);
+			}
+		}
+		DeviceJson  deviceJson= new DeviceJson();
+		deviceJson.setDevDsn(info.getDevdsn());
+		deviceJson.setDevHexcode(info.getDevhexcode());
+		deviceJson.setDevCode(info.getDevcode());
+		deviceJson.setParamMap(paramMap);
+		String json = JsonUtil.toJson(deviceJson);
+		String url = serverProperties.getSetParasAddress();
+		try {
+			String sendPost = HttpClientUtil.sendPostDataByJson(url, json,"utf8");
+			if(sendPost.equals("OK")){
+				for (DeviceParamVal deviceParamVal : devModelParamList) {
+					String parameter = request.getParameter(deviceParamVal.getParamVariable());
+					if(parameter!=null){
+						deviceParamVal.setVal(parameter);
+						dpvService.save(deviceParamVal);
+					}
+				}
+			}
+			return JsonWrapper.successWrapper();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return JsonWrapper.failureWrapper(e.getMessage());
+		}
 	}
 }
