@@ -1,5 +1,5 @@
 var emerArrayJson;// 已发布信息
-
+var app = {};
 $(function() {
 	// 解决ajax的异步问题
 	$.ajaxSetup({
@@ -273,6 +273,10 @@ function setMap(unitLng, unitLat, level, myStyle) {
 		isOpen : true,
 		anchor : BMAP_ANCHOR_BOTTOM_RIGHT
 	});
+	var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+	map.addControl(top_left_control);        
+	map.addControl(top_left_navigation); 
 	map.addControl(overView); // 添加默认缩略地图控件
 	// map.addControl(overViewOpen); //右下角，打开
 	// 2添加地图类型控件
@@ -285,6 +289,72 @@ function setMap(unitLng, unitLat, level, myStyle) {
 	map.setMapStyle({
 		style : myStyle
 	});
+	app.polyline = new BMap.Polyline([],{strokeColor:"red", strokeWeight:2, strokeOpacity:0.5});
+	customOverlay();
+}
+/****************自定义覆盖物************************/
+//定义一个控件类,即function
+function ZoomControl(){
+  // 默认停靠位置和偏移量
+  this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
+  this.defaultOffset = new BMap.Size(10, 10);
+}
+function customOverlay(){
+	// 通过JavaScript的prototype属性继承于BMap.Control
+	ZoomControl.prototype = new BMap.Control();
+
+	// 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+	// 在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
+	ZoomControl.prototype.initialize = function(map) {
+		// 创建一个DOM元素
+		var div = document.createElement("div");
+		// 添加文字说明
+		div.appendChild(document.createTextNode("开启点击"));
+		// 设置样式
+		div.style.cursor = "pointer";
+		div.style.border = "1px solid gray";
+		div.style.backgroundColor = "white";
+		var Listener;
+		// 绑定事件,点击一次放大两级
+		div.onclick = function(e) {
+			var text = this.innerText;
+			if(text=="开启点击"){
+				map.setDefaultCursor("Default");   //设置地图默认的鼠标指针样式
+				//单击获取点击的经纬度
+				map.addEventListener("click",Listener = function(e){
+					var lng = e.point.lng;
+					var lat = e.point.lat;
+					//添加覆盖物
+					add_overlay(lng,lat);
+				});
+				this.innerText = "关闭点击";
+			}else{
+				map.setDefaultCursor("Pointer");   //设置地图默认的鼠标指针样式
+				if(Listener){
+					map.removeEventListener("click",Listener);
+				}
+				this.innerText = "开启点击"
+			}
+			
+		}
+		// 添加DOM元素到地图中
+		map.getContainer().appendChild(div);
+		// 将DOM元素返回
+		return div;
+	}
+	// 创建控件
+	var myZoomCtrl = new ZoomControl();
+	// 添加到地图当中
+	map.addControl(myZoomCtrl);
+}
+// 添加覆盖物
+function add_overlay(lng,lat){
+	var Point = new BMap.Point(lng,lat);
+	var pointArr = app.polyline.getPath();
+	pointArr.push(Point)
+	app.polyline.setPath(pointArr);
+	app.polyline.enableEditing();
+	map.addOverlay(app.polyline);          //增加折线
 }
 
 /*******************************************************************************
