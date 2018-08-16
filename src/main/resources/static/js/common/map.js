@@ -289,10 +289,21 @@ function setMap(unitLng, unitLat, level, myStyle) {
 	map.setMapStyle({
 		style : myStyle
 	});
-	app.polyline = new BMap.Polyline([],{strokeColor:"red", strokeWeight:2, strokeOpacity:0.5});
+	//初始化app覆盖物属性
+	initAppPolygon();
+	//添加自定义覆盖物
 	customOverlay();
+	//创建导入菜单
+	createBMapMenu();
 }
 /****************自定义覆盖物************************/
+//初始化app覆盖物属性
+function initAppPolygon(){
+	app.Polygon = getPolygon();
+}
+function getPolygon(){
+	return new BMap.Polygon([],{strokeColor:"red", strokeWeight:2, strokeOpacity:0.5});
+}
 //定义一个控件类,即function
 function ZoomControl(){
   // 默认停靠位置和偏移量
@@ -309,7 +320,7 @@ function customOverlay(){
 		// 创建一个DOM元素
 		var div = document.createElement("div");
 		// 添加文字说明
-		div.appendChild(document.createTextNode("开启点击"));
+		div.appendChild(document.createTextNode("添加覆盖"));
 		// 设置样式
 		div.style.cursor = "pointer";
 		div.style.border = "1px solid gray";
@@ -318,7 +329,7 @@ function customOverlay(){
 		// 绑定事件,点击一次放大两级
 		div.onclick = function(e) {
 			var text = this.innerText;
-			if(text=="开启点击"){
+			if(text=="添加覆盖"){
 				map.setDefaultCursor("Default");   //设置地图默认的鼠标指针样式
 				//单击获取点击的经纬度
 				map.addEventListener("click",Listener = function(e){
@@ -327,13 +338,16 @@ function customOverlay(){
 					//添加覆盖物
 					add_overlay(lng,lat);
 				});
-				this.innerText = "关闭点击";
+				this.innerText = "关闭添加";
+				//添加鼠标右键
+				markMenu(app.Polygon);
 			}else{
 				map.setDefaultCursor("Pointer");   //设置地图默认的鼠标指针样式
 				if(Listener){
 					map.removeEventListener("click",Listener);
+					initAppPolygon();
 				}
-				this.innerText = "开启点击"
+				this.innerText = "添加覆盖"
 			}
 			
 		}
@@ -350,13 +364,106 @@ function customOverlay(){
 // 添加覆盖物
 function add_overlay(lng,lat){
 	var Point = new BMap.Point(lng,lat);
-	var pointArr = app.polyline.getPath();
+	var pointArr = app.Polygon.getPath();
 	pointArr.push(Point)
-	app.polyline.setPath(pointArr);
-	app.polyline.enableEditing();
-	map.addOverlay(app.polyline);          //增加折线
+	app.Polygon.setPath(pointArr);
+	app.Polygon.enableEditing();
+	map.addOverlay(app.Polygon);
 }
-
+//清除覆盖物
+var removePolygon = function(e,ee,polygon){
+	map.removeOverlay(polygon);
+	initAppPolygon();
+	markMenu(app.Polygon);
+}
+//导出覆盖物数据
+var exportPolygon = function(e,ee,polygon){
+	var data = JSON.stringify(polygon.getPath());
+	var urlObject = window.URL || window.webkitURL || window;
+	var export_blob = new Blob([data]);
+	var save_link = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
+	save_link.href = urlObject.createObjectURL(export_blob); 
+	save_link.download = new Date().getTime()+".txt";
+	var ev = new MouseEvent("click", {
+	    bubbles: true,
+	    cancelable: true,
+	    view: window
+	});
+	save_link.dispatchEvent(ev);
+}
+//创建右键菜单
+function markMenu(polygon){
+	var markerMenu=new BMap.ContextMenu();
+	markerMenu.addItem(new BMap.MenuItem('删除',removePolygon.bind(polygon)));
+	markerMenu.addItem(new BMap.MenuItem('导出',exportPolygon.bind(polygon)));
+	//var polygon = app.Polygon;
+	map.addOverlay(polygon);
+	polygon.addContextMenu(markerMenu);
+}
+//地图上创建导入菜单
+function createBMapMenu(){
+	var menu = new BMap.ContextMenu();
+	var txtMenuItem = {
+			text:'导入覆盖物',
+			callback:function(){
+				importPolygon();
+			}
+		};
+	menu.addItem(new BMap.MenuItem(txtMenuItem.text,txtMenuItem.callback,100));
+	map.addContextMenu(menu);
+}
+//导入覆覆盖物
+function importPolygon(){
+	var input = document.createElement("input");
+	input.setAttribute("type", "file");
+	input.setAttribute("style", "visiblity:hidden");
+	document.body.appendChild(input);
+	input.multiple = true;
+	input.click();
+	input.addEventListener("change", function() {
+		var files = this.files;
+		for(var k=0;f=files[k];k++){
+			var reader = new FileReader();
+			reader.readAsText(f, "UTF-8");// 读取文件
+			reader.onload = function(evt) { // 读取完文件之后会回来这里
+				var result = evt.target.result; // 读取文件内容
+				var fileResult = app.fileResult;
+				if(fileResult==result){
+					alert("该数据已经存在")
+					return;
+				}
+				app.fileResult = result;
+				try{
+					var data = JSON.parse(result);
+					add_overlayByData(data);
+				}catch(e){
+					console.log(e)
+					alert("数据读取错误！");
+				}
+			}
+		}
+	});
+}
+//添加覆盖物
+function add_overlayByData(data){
+	if(!(data instanceof Array)){
+		alert("导入的不是覆盖物数据");
+		return;
+	}
+	var polygon = getPolygon();
+	map.addOverlay(polygon);
+	var pointArr = polygon.getPath();
+	for(var i=0;i<data.length;i++){
+		var lng = data[i].lng;
+		var lat = data[i].lat;
+		var point = new BMap.Point(lng,lat);
+		pointArr.push(point);
+	}
+	polygon.setPath(pointArr);
+	polygon.enableEditing();
+	map.addOverlay(polygon);
+	markMenu(polygon);
+}
 /*******************************************************************************
  * 获得区域边界，并覆盖
  * 
