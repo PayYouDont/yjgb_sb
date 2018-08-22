@@ -163,7 +163,7 @@ function intiEmerTab(){
 		onSelect:function(rowIndex,rowData){//选择表格行触发
 			getEmertail(rowIndex,rowData);
 		},
-		url:'../emergencyInfoAction/queryBroadCastList',
+		url:'../emergencyInfoAction/castList',
 		autoRowHeight:false,
 	    nowrap:true,
 		fitColumns:true,

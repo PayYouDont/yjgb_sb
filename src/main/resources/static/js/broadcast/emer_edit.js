@@ -75,7 +75,7 @@ function formClear(){
 //返回预案列表
 function goback(){
 	//返回预案还是正常list页面
-	var href = type=="add"?"goEmer":"goEmerPlan";
+	var href = type=="add"?"toList":"toPlan";
 	window.location.href="/emergencyInfoAction/"+href;
 }
 
@@ -108,7 +108,7 @@ function mysave(){
 			if (data.success){
 				$.messager.alert('系统提示', '保存成功!','info',function(){
 					//返回预案还是正常list页面
-					var href = type=="add"?"goEmer":"goEmerPlan";
+					var href = type=="add"?"toList":"toPlan";
 					window.location.href="/emergencyInfoAction/"+href;
 				});
 			}else{

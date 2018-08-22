@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +36,7 @@ public class DeviceModelAction extends BaseAction{
 	public String toList() {
 		return "complex/device/deviceModel_list";
 	}
-	
+	@RequiresPermissions(value = { "dev:model:add", "dev:model:edit" }, logical = Logical.OR)
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id) {
 		Devicemodel deviceModel = null;
@@ -59,9 +61,9 @@ public class DeviceModelAction extends BaseAction{
 		model.addAttribute("deviceModelParamIds", deviceModelParamIds);
 		return "complex/device/deviceModel_edit";
 	}
-	@RequestMapping("/queryList")
+	@RequestMapping("/list")
 	@ResponseBody
-	public HashMap<String,Object> queryList(Page page){
+	public HashMap<String,Object> list(Page page){
 		Map<String,Object> map = page.getMap();
 		map.put("sort","id");
 		map.put("order", "ASC");
@@ -70,6 +72,7 @@ public class DeviceModelAction extends BaseAction{
 		return JsonWrapper.wrapperPage(list, total);
 	}
 	
+	@RequiresPermissions(value = { "dev:model:add", "dev:model:edit" }, logical = Logical.OR)
 	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String, Object> save(DevicemodelVO vo){
@@ -87,7 +90,7 @@ public class DeviceModelAction extends BaseAction{
 		}
 		
 	}
-	
+	@RequiresPermissions("dev:model:delete")
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id){

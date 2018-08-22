@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +54,7 @@ public class EmergencyInfoAction extends BaseAction{
     }
 	/***
 	 * 信息管理
-	 * @Title: goEmer 
+	 * @Title: toList 
 	 * @Description: TODO(这里用一句话描述这个方法的作用) 
 	 * @param @param model
 	 * @param @return    设定文件 
@@ -62,7 +64,7 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @date 2018年6月5日 上午11:41:57
 	 */
 	@GetMapping("/toList") 
-	public String goEmer(Model model) {
+	public String toList(Model model) {
 		model.addAttribute("emerType", "信息管理");
 		return "broadcast/emer_list";
 	}
@@ -77,14 +79,14 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月5日 上午11:41:46
 	 */
-	@GetMapping("/goEmerReview") 
-	public String goEmerReview(Model model) {
+	@GetMapping("/toReviewList") 
+	public String toReviewList(Model model) {
 		model.addAttribute("emerType", "信息审核");
 		return "broadcast/emerReview_list";
 	}
 	/**
 	 * 信息播发
-	 * @Title: goEmerBroadCast 
+	 * @Title: toCastList 
 	 * @Description: TODO(信息播发) 
 	 * @param @param model
 	 * @param @return    设定文件 
@@ -93,15 +95,14 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月6日 上午11:08:48
 	 */
-	@GetMapping("/goEmerBroadCast") 
-	public String goEmerBroadCast(Model model) {
+	@GetMapping("/toCastList") 
+	public String toCastList(Model model) {
 		model.addAttribute("emerType", "信息播发");
 		return "broadcast/broadcast_list";
 	}
 	
-	@GetMapping("/goEmerPlan")
+	@GetMapping("/toPlan")
 	public String goEmerPlan(Model model) {
-		
 		return "broadcast/emerPlan_list";
 	}
 	/**
@@ -115,8 +116,9 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月5日 上午11:41:30
 	 */
-	@GetMapping("/addEmer")
-	public String addEmer(Model model,String type,Integer id) {
+	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
+	@GetMapping("/toEdit")
+	public String toEdit(Model model,String type,Integer id) {
 		Emergencyinfo emer = null;
 		if(id!=null) {
 			emer = service.selectById(id);
@@ -159,9 +161,9 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月1日 下午5:14:20
 	 */
-	@RequestMapping("/queryEmer")
+	@RequestMapping("/list")
 	@ResponseBody
-	public HashMap<String,Object> queryEmer(Page page){
+	public HashMap<String,Object> list(Page page){
 		Map<String,Object> map = page.getMap();
 		map.put("areacode",getUser().getAreaCode());
 		map.put("flag", 1);
@@ -218,7 +220,7 @@ public class EmergencyInfoAction extends BaseAction{
 	}
 	/**
 	 * 信息审核list数据
-	 * @Title: queryReviewList 
+	 * @Title: reviewList 
 	 * @Description: TODO(信息审核list数据) 
 	 * @param @param page
 	 * @param @param queryParam
@@ -228,7 +230,7 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月5日 上午8:31:24
 	 */
-	@RequestMapping("/queryReviewList")
+	@RequestMapping("/reviewList")
 	@ResponseBody
 	public HashMap<String,Object> queryReviewList(Page page,String queryParam){
 		int flag = queryParam.indexOf("plan")!=-1?0:1;
@@ -299,7 +301,7 @@ public class EmergencyInfoAction extends BaseAction{
 	}
 	/**
 	 * 删除应急信息
-	 * @Title: deleteEmer 
+	 * @Title: delete
 	 * @Description: TODO(删除应急信息) 
 	 * @param @param ids
 	 * @param @return    设定文件 
@@ -308,7 +310,7 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月6日 上午11:07:13
 	 */
-	@RequestMapping("/deleteEmer")
+	@RequestMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> deleteEmer(Integer[] ids){
 		try {
@@ -321,7 +323,7 @@ public class EmergencyInfoAction extends BaseAction{
 	}
 	/**
 	 * 分页查询信息播发列表
-	 * @Title: queryBroadCastList 
+	 * @Title: castList 
 	 * @Description: TODO(这里用一句话描述这个方法的作用) 
 	 * @param @param page
 	 * @param @return    设定文件 
@@ -330,9 +332,9 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月27日 下午4:09:49
 	 */
-	@RequestMapping("/queryBroadCastList")
+	@RequestMapping("/castList")
 	@ResponseBody
-	public HashMap<String,Object> queryBroadCastList(Page page){
+	public HashMap<String,Object> castList(Page page){
 		Map<String,Object> map = page.getMap();
 		map.put("areacode", getUser().getAreaCode());
 		map.put("status",5);

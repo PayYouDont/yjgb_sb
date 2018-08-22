@@ -8,7 +8,7 @@ $(document).ready(function(){
 				param.pageIndex = page; //这里就是重新命名了
 				param.pageSize = rows; //这里就是重新命名了
 			},
-			url:'../emergencyInfoAction/queryEmer',
+			url:'../emergencyInfoAction/list',
 			queryParams: {
 				emergencyName: '',
 			},
@@ -132,7 +132,7 @@ function refreshPage(){
 
 //增加
 function add(){
-	window.location.href="../emergencyInfoAction/addEmer?type=add"
+	window.location.href="../emergencyInfoAction/toEdit?type=add"
 }
 
 
@@ -169,7 +169,7 @@ function deleteData(ids){
 	$.ajax({
 	    type: "post",
 	    data: {ids:ids},
-	    url: "../emergencyInfoAction/deleteEmer",
+	    url: "../emergencyInfoAction/delete",
 	    traditional:true,
 	    dataType:"json",
 	    success: function (json) {

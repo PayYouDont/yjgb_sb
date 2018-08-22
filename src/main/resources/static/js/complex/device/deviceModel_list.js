@@ -11,7 +11,7 @@ $(document).ready(function(){
 					param.sort="deviceType.id";
 				}
 			},
-			url:'../deviceModelAction/queryList',
+			url:'../deviceModelAction/list',
 			autoRowHeight:false,
 		    nowrap:true,
 			pagination:true,

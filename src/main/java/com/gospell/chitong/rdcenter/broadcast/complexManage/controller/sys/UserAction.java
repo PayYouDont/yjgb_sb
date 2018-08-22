@@ -1,5 +1,25 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.sys;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
@@ -10,29 +30,13 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.UserVO;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 import com.gospell.chitong.rdcenter.broadcast.util.MD5Util;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-@Api(description = "用户操作相关接口")
-@Controller
+@Api(tags = "用户管理接口")
+@RestController
 @RequestMapping("/userAction")
 public class UserAction extends BaseAction{
 	
@@ -43,17 +47,17 @@ public class UserAction extends BaseAction{
 	private RoleService roleService;
 	
 	@GetMapping("/login")
-	public String toLogin() {
-		return "login/login";
+	public ModelAndView toLogin() {
+		return new ModelAndView("login/login");
 	}
 	
 	@GetMapping("/toList")
-	public String toList(){
-		return "complex/sys/user_list";
+	public ModelAndView toList(){
+		return new ModelAndView("complex/sys/user_list");
 	}
 	@RequiresPermissions(value = {"sys:user:edit","sys:user:add"},logical= Logical.OR)
 	@GetMapping("/toEdit")
-	public String toEdit(Model model,Integer id){
+	public ModelAndView toEdit(Model model,Integer id){
 		User user = null;
 		if(id!=null) {
 			user = service.selectById(id);
@@ -63,7 +67,7 @@ public class UserAction extends BaseAction{
 		List<Role> roleList = roleService.list(new HashMap<>());
 		model.addAttribute("user", user);
 		model.addAttribute("roleList", roleList);
-		return "complex/sys/user_edit";
+		return new ModelAndView("complex/sys/user_edit");
 	}
 
 	/**
@@ -81,11 +85,11 @@ public class UserAction extends BaseAction{
           @ApiImplicitParam(name = "name", value = "用户名", required = true ,dataType = "String"),
           @ApiImplicitParam(name = "password", value = "密码", required = true ,dataType = "String"),
     })
+	@Log("用户登录")
 	@PostMapping("/login")
-	@ResponseBody
-	public HashMap<String,Object> login(String password,String name) {
-		password = MD5Util.encrypt(name, password);
-		UsernamePasswordToken token = new UsernamePasswordToken(name, password);
+	public HashMap<String,Object> login(User user) {
+		String password = MD5Util.encrypt(user.getName(), user.getPassword());
+		UsernamePasswordToken token = new UsernamePasswordToken(user.getName(), password);
 		Subject subject = SecurityUtils.getSubject();
 		try {
 			subject.login(token);
@@ -104,6 +108,7 @@ public class UserAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月1日 下午3:04:29
 	 */
+	@Log("用户退出")
 	@GetMapping("/logout")
 	String logout() {
 		ShiroUtils.logout();
@@ -123,7 +128,6 @@ public class UserAction extends BaseAction{
 	 */
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping("/resetPwd")
-	@ResponseBody
 	public HashMap<String,Object> resetPwd(UserVO userVO){
 		try {
 			service.resetPwd(userVO,getUser());
@@ -133,9 +137,10 @@ public class UserAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	
+	@Log("更新用户")
 	@RequiresPermissions(value = {"sys:user:edit","sys:user:add"},logical= Logical.OR)
 	@RequestMapping("/save")
-	@ResponseBody
 	public HashMap<String,Object> updateUser(User user){
 		Integer id = user.getId();
 		boolean flag = true;
@@ -158,9 +163,14 @@ public class UserAction extends BaseAction{
 		}
 	}
 
+	 @ApiOperation(value="用户列表", notes="用户列表接口")
+	    @ApiImplicitParams({
+	        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+	        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+	        @ApiImplicitParam(name = "userName", value = "根据用户名搜索", dataType = "String"),
+	    })
 	@RequiresPermissions("sys:user:list")
 	@PostMapping("/list")
-	@ResponseBody
 	public HashMap<String,Object> list(Page page,String userName){
 		Map<String,Object> map = page.getMap();
 		if(userName!=null){
@@ -170,9 +180,13 @@ public class UserAction extends BaseAction{
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
+	@ApiOperation(value="删除用户", notes="删除用户接口")
+    @ApiImplicitParams({
+          @ApiImplicitParam(name = "id", value = "用户id", required = true ,dataType = "Integer")
+    })
+	@Log("删除用户")
 	@RequiresPermissions("sys:user:delete")
 	@PostMapping("/delete")
-	@ResponseBody
 	public HashMap<String,Object> delete(Integer id){
 		try {
 			service.deleteById(id);

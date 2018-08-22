@@ -54,7 +54,7 @@ public class DeviceInfoAction extends BaseAction {
 		return "complex/device/device_edit";
 	}
 
-	@GetMapping("/updateParam")
+	@GetMapping("/update")
 	public String updateParam(Model model, Integer id) {
 		Deviceinfo info = service.findById(id);
 		Map<String, Object> map = new HashMap<>();
@@ -69,7 +69,7 @@ public class DeviceInfoAction extends BaseAction {
 	}
 
 	@RequiresPermissions("dev:info:edit")
-	@GetMapping("/goDeviceRegister")
+	@GetMapping("/toRegist")
 	public String goDeviceRegister(Model model, Integer id) {
 		Deviceinfo dev = service.findById(id);
 		List<Devicemodel> deviceModelList = dmService.list(new HashMap<>());

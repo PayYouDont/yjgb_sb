@@ -1,5 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.sys;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.MenuService;
@@ -55,6 +56,7 @@ public class MenuAction extends BaseAction{
 		List<Menu> menus = service.getTree(roleId);
 		return menus;
 	}
+	@Log("保存菜单")
 	@RequiresPermissions(value = {"sys:menu:edit","sys:menu:add"},logical= Logical.OR)
 	@PostMapping("/save")
 	@ResponseBody
@@ -67,6 +69,7 @@ public class MenuAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	@Log("删除菜单")
 	@RequiresPermissions("sys:menu:delete")
 	@PostMapping("/delete")
 	@ResponseBody

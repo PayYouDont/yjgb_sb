@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,7 @@ public class DisplayLanguageAction extends BaseAction{
 	public String toList() {
 		return "complex/param/displayLanguage_list";
 	}
+	@RequiresPermissions(value = {"param:language:edit","param:language:add"},logical= Logical.OR)
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id) {
 		Displaylanguage displayLanguage = new Displaylanguage();
@@ -60,6 +63,7 @@ public class DisplayLanguageAction extends BaseAction{
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
+	@RequiresPermissions(value = {"param:language:edit","param:language:add"},logical= Logical.OR)
 	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Displaylanguage language) {
@@ -81,6 +85,7 @@ public class DisplayLanguageAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	@RequiresPermissions("param:language:delete")
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id) {

@@ -27,16 +27,21 @@ html, body {
 <body id="body">
 	<div class="easyui-panel" title="播发方式列表"
 		style="padding: 1px; width: 100%;"
-		data-options="iconCls:'icon-extendlist',
-					  closable:true,
-					  collapsible:true,fit:true">
+		data-options="iconCls:'icon-extendlist',closable:true,collapsible:true,fit:true">
 		<div id="MyBtnDiv" style="height: 30px; padding: 3px 5px 0px 5px;">
-			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add"
-				onclick="add();">增加</a> <a href="#" class="easyui-linkbutton"
-				plain="true" iconCls="icon-edit" onclick="edit();">修改</a> <a
-				href="#" class="easyui-linkbutton" plain="true"
-				iconCls="icon-remove" onclick="remove();">删除</a> <input
-				id="searchText" class="easyui-searchbox"
+			<shiro:hasPermission name="param:method:add">
+				<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add"
+					onclick="add();">增加</a> 
+			</shiro:hasPermission>
+			<shiro:hasPermission name="param:method:edit">
+				<a href="#" class="easyui-linkbutton"
+					plain="true" iconCls="icon-edit" onclick="edit();">修改</a> 
+			</shiro:hasPermission>
+			<shiro:hasPermission name="param:method:delete">
+				<a href="#" class="easyui-linkbutton" plain="true"
+					iconCls="icon-remove" onclick="remove();">删除</a> 
+			</shiro:hasPermission>
+			<input id="searchText" class="easyui-searchbox"
 				data-options="prompt:'输入播发方式名称',searcher:doSearch"
 				style="width: 200px; height: 23px;">
 		</div>

@@ -21,21 +21,22 @@
 <!-- 百度地图 -->
 <script type="text/javascript"
 	src="http://api.map.baidu.com/api?v=2.0&ak=53oVIOgmSIejwV7EfphPgTynOZbIiVYu"></script>
-<!-- <script type="text/javascript" src="map_load.js"></script>	 -->
+<link rel="stylesheet" type="text/css" href="/css/map.css" />
 <script src="/js/common/commonUtil.js"></script>
-<script src="/js/common/map.js"></script>
+<script src="/js/common/map.js"></script> 
+<style type="text/css">
+</style>
 </head>
 <body id="body" class="easyui-layout">
-
 	<div data-options="region:'center',title:''"
 		style="padding: 0px; background: #eee;">
 		<input id="map_json" type="hidden" value=''> <input
 			id="connect" type="hidden" value="">
 		<button type="button" style="display: none;" onclick="">模拟测试websocket</button>
-		<div id="main_map"
-			style="width: calc(100% - 0px); height: calc(100% - 0px);"></div>
+		<div id="main_map" style="width:100%;height:100%"></div>
 	</div>
-	<div data-options="region:'east',title:'应急信息列表',split:true,iconCls:'icon-reload'" 
+	<div
+		data-options="region:'east',title:'应急信息列表',split:true,iconCls:'icon-reload'"
 		style="width: 350px;">
 		<div id="MyBtnDiv" style="height: auto;">
 			<div id="" style="height: 25px; padding: 1px 5px 3px 5px;">
@@ -45,7 +46,8 @@
 					style="width: 180px; height: 23px;">
 			</div>
 		</div>
-		<table id="mainTab" class="easyui-datagrid" toolbar="#MyBtnDiv" border="false" data-options="fit:true">
+		<table id="mainTab" class="easyui-datagrid" toolbar="#MyBtnDiv"
+			border="false" data-options="fit:true">
 		</table>
 	</div>
 	<script type="text/javascript">

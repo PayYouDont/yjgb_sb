@@ -19,6 +19,7 @@
 <!-- 百度地图 -->
 <script type="text/javascript"
 	src="http://api.map.baidu.com/api?v=2.0&ak=53oVIOgmSIejwV7EfphPgTynOZbIiVYu"></script>
+	<!-- <script type="text/javascript" src="/map_load.js"></script> -->
 <script src="/js/common/commonUtil.js"></script>
 <script src="/js/broadcast/broadcast_list.js"></script>
 
@@ -95,24 +96,13 @@ a:focus {
 					<button type="button" style="display:none;" onclick="reFreshMapAndList();">模拟测试websocket</button>
 					<div id="main_map" style="width:calc(100% - 0px);height:calc(100% - 0px);"></div>
 			</div>
-		    
-		       
-		   	<!-- <div data-options="region:'south',title:'',split:true" style="height:50px;padding:10px;">
-		   		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="send();">信息发送</a>
-		   		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="stopSend();">停止发送</a>
-		   	</div>   --> 
 		</div> 
     </div>   
-
-
-
  	<div data-options="region:'east',title:'应急信息',split:true" 
  		style="width:280px;ba">
 		<table id="mainTab" class="easyui-datagrid" border="false" fit="true">
 		</table>
     </div>  
-
-	
 	<!-- 地图信息窗口内容 3-->
 	<div id="mapWindowContent" style="display:none ;background-color: white;">
 		<div style="height:auto;min-height:135px;max-height:200px; width:220px;border:1px solid rgb(61,91,129);

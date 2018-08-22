@@ -49,18 +49,13 @@ a:FOCUS {
 				<option value="2">应急预案</option>
 			</select>
 		</div>
-
-
 	</div>
-
-
 	<div data-options="region:'center'" title="待审核信息列表"
 		iconCls="icon-extendlist" fit="true">
 		<table id="mainTab" class="easyui-datagrid" data-options="fit:true"
 			toolbar="#MyBtnDiv" border="false">
 		</table>
 	</div>
-
 	<div id="set_time_dialog" class="easyui-dialog" title="设置预案播发时间"
 		style="width:400px;height:200px;"
 		data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true">
@@ -70,12 +65,10 @@ a:FOCUS {
 				id="emer_name" value=""
 				data-options="required:true,showSeconds:true," style="width:143px">
 		</div>
-
 		<div id="" style="margin-top: 15px;margin-left: 30px;">
-			<font>开始播发时间：</font> <input
-				class="easyui-datetimebox easyui-validatebox" name="starttime"
-				id="start_time" value=""
-				data-options="required:true,showSeconds:true,editable:false"
+			<font>开始播发时间：</font> 
+			<input class="easyui-datetimebox easyui-validatebox" name="starttime"
+				id="start_time" data-options="required:true,showSeconds:true,editable:false"
 				style="width:143px">
 		</div>
 

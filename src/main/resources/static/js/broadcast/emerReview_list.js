@@ -11,7 +11,7 @@ $(function(){
 			param.pageIndex = page; // 这里就是重新命名了
 			param.pageSize = rows; // 这里就是重新命名了
 		},
-		url:'../emergencyInfoAction/queryReviewList',
+		url:'../emergencyInfoAction/reviewList',
 		queryParams:{queryParam:"emergency_info"},
 		autoRowHeight:false,
 		nowrap:true,

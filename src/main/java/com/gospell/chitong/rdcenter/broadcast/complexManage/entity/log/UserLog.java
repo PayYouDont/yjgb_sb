@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys;
+package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log;
 
 import java.io.Serializable;
 import java.util.Date;

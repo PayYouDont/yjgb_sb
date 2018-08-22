@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,7 @@ public class DeviceTypeAction extends BaseAction{
 	public String toList(Model model){
 		return "complex/device/deviceType_list";
 	}
+	@RequiresPermissions(value = {"dev:type:add,dev:type:edit"},logical = Logical.OR)
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id){
 		Devicetype deviceType = null;
@@ -49,6 +52,7 @@ public class DeviceTypeAction extends BaseAction{
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
+	@RequiresPermissions(value = {"dev:type:add,dev:type:edit"},logical = Logical.OR)
 	@RequestMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Devicetype deviceType){
@@ -59,6 +63,8 @@ public class DeviceTypeAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	
+	@RequiresPermissions("dev:type:delete")
 	@RequestMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id){

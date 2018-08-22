@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,7 @@ public class AccidentLevelAction extends BaseAction{
 		return "complex/param/accidentLevel_list";
 	}
 	@GetMapping("/toEdit")
+	@RequiresPermissions(value = {"param:level:edit","param:level:add"},logical= Logical.OR)
 	public String toEdit(Model model,Integer id) {
 		Accidentlevel accidentLevel = new Accidentlevel();
 		if(id!=null) {
@@ -59,7 +62,7 @@ public class AccidentLevelAction extends BaseAction{
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
-	
+	@RequiresPermissions(value = {"param:level:edit","param:level:add"},logical= Logical.OR)
 	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Accidentlevel level) {
@@ -83,6 +86,7 @@ public class AccidentLevelAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	@RequiresPermissions("param:level:delete")
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id) {

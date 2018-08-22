@@ -1,6 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.UserLog;
+import java.util.List;
+import java.util.Map;
+
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log.UserLog;
 
 public interface UserLogMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +19,8 @@ public interface UserLogMapper {
     int updateByPrimaryKeyWithBLOBs(UserLog record);
 
     int updateByPrimaryKey(UserLog record);
+    
+    List<UserLog> list(Map<String,Object> map);
+	
+	int count(Map<String,Object> map);
 }

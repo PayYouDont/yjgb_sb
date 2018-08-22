@@ -97,7 +97,7 @@ function refreshMyData(){
 
 //增加 （
 function add(){
-	window.location.href="../emergencyInfoAction/addEmer?type=plan"
+	window.location.href="../emergencyInfoAction/toEdit?type=plan"
 }
 
 

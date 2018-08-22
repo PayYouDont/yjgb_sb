@@ -128,7 +128,7 @@ function add(){
 		$.messager.alert('选择提示','请选择一个未注册设备！','info');
 		return;
 	}
-	$('#editIframe').attr('src','../deviceInfoAction/goDeviceRegister?id='+id);
+	$('#editIframe').attr('src','../deviceInfoAction/toRegist?id='+id);
 	$('#editModal').window('setTitle','设备信息注册');
 	$('#editModal').window('open');
 }
@@ -169,7 +169,7 @@ function send(){
 		$.messager.alert('选择提示','请选择一个已注册设备！','info');
 		return;
 	}
-	$('#editIframe').attr('src','../deviceInfoAction/updateParam?id='+id);
+	$('#editIframe').attr('src','../deviceInfoAction/update?id='+id);
 	$('#editModal').window('setTitle','设备参数设置');
 	$('#editModal').window('open');
 }

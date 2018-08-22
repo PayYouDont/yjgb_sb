@@ -396,7 +396,6 @@ function markMenu(polygon){
 	var markerMenu=new BMap.ContextMenu();
 	markerMenu.addItem(new BMap.MenuItem('删除',removePolygon.bind(polygon)));
 	markerMenu.addItem(new BMap.MenuItem('导出',exportPolygon.bind(polygon)));
-	//var polygon = app.Polygon;
 	map.addOverlay(polygon);
 	polygon.addContextMenu(markerMenu);
 }
@@ -422,17 +421,11 @@ function importPolygon(){
 	input.click();
 	input.addEventListener("change", function() {
 		var files = this.files;
-		for(var k=0;f=files[k];k++){
+		for(var i=0;f=files[i];i++){
 			var reader = new FileReader();
 			reader.readAsText(f, "UTF-8");// 读取文件
 			reader.onload = function(evt) { // 读取完文件之后会回来这里
 				var result = evt.target.result; // 读取文件内容
-				var fileResult = app.fileResult;
-				if(fileResult==result){
-					alert("该数据已经存在")
-					return;
-				}
-				app.fileResult = result;
 				try{
 					var data = JSON.parse(result);
 					add_overlayByData(data);
