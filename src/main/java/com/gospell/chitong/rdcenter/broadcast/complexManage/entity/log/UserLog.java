@@ -11,8 +11,14 @@ import lombok.Data;
  */
 @Data
 public class UserLog implements Serializable {
+	
     private Integer id;
 
+    /**
+     * 用户名
+     */
+    private String userName;
+    
     /**
      * 客户端ip
      */
@@ -47,12 +53,7 @@ public class UserLog implements Serializable {
      * 用户ID
      */
     private Integer userId;
-
-    /**
-     * 用户名
-     */
-    private String userName;
-
+    
     /**
      * 用户角色名
      */

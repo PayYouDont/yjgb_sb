@@ -16,11 +16,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidentlevel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.param.AccidentLevelService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 /** 
 * @ClassName: AccidentLevelAction 
@@ -29,6 +35,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 * @date 2018年7月27日 上午11:50:39 
 *  
 */
+@Api(tags = "事件级别管理")
 @Controller
 @RequestMapping("/accidentLevelAction")
 public class AccidentLevelAction extends BaseAction{
@@ -49,6 +56,12 @@ public class AccidentLevelAction extends BaseAction{
 		model.addAttribute("accidentLevel", accidentLevel);
 		return "complex/param/accidentLevel_edit";
 	}
+	@ApiOperation(value="事件等级列表", notes="事件等级列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "search", value = "搜索", dataType = "String"),
+	})
 	@PostMapping("/list")
 	@ResponseBody
 	public HashMap<String,Object> list(Page page,String search) {
@@ -62,7 +75,9 @@ public class AccidentLevelAction extends BaseAction{
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
+	@ApiOperation(value="保存事件等级", notes="保存事件等级接口")
 	@RequiresPermissions(value = {"param:level:edit","param:level:add"},logical= Logical.OR)
+	@Log("保存事件等级")
 	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Accidentlevel level) {
@@ -86,6 +101,11 @@ public class AccidentLevelAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	@ApiOperation(value="删除事件等级", notes="删除事件等级接口")
+    @ApiImplicitParams({
+          @ApiImplicitParam(name = "id", value = "角色id",required=true,dataType = "String")
+    })
+	@Log("删除事件等级")
 	@RequiresPermissions("param:level:delete")
 	@PostMapping("/delete")
 	@ResponseBody

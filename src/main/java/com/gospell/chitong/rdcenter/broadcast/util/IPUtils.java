@@ -1,13 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class IPUtils {
-	private static Logger logger = LoggerFactory.getLogger(IPUtils.class);
-
 	/**
 	 * 获取IP地址
 	 * 

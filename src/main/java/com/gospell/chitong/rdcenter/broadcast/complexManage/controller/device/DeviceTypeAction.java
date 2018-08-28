@@ -15,12 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicetype;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceTypeService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "设备类型管理")
 @Controller
 @RequestMapping("deviceTypeAction")
 public class DeviceTypeAction extends BaseAction{
@@ -44,6 +51,13 @@ public class DeviceTypeAction extends BaseAction{
 		model.addAttribute("deviceType", deviceType);
 		return "complex/device/deviceType_edit";
 	}
+	
+	@ApiOperation(value="设备类型列表", notes="设备类型列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "search", value = "搜索", dataType = "String"),
+	})
 	@PostMapping("/list")
 	@ResponseBody
 	public HashMap<String,Object> list(Page page){
@@ -53,6 +67,7 @@ public class DeviceTypeAction extends BaseAction{
 		return JsonWrapper.wrapperPage(list, total);
 	}
 	@RequiresPermissions(value = {"dev:type:add,dev:type:edit"},logical = Logical.OR)
+	@Log("保存设备类型")
 	@RequestMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Devicetype deviceType){
@@ -64,7 +79,12 @@ public class DeviceTypeAction extends BaseAction{
 		}
 	}
 	
+	@ApiOperation(value="事件等级列表", notes="事件等级列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "设备类型id", required = true ,dataType = "String")
+    })
 	@RequiresPermissions("dev:type:delete")
+	@Log("删除设备类型")
 	@RequestMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id){

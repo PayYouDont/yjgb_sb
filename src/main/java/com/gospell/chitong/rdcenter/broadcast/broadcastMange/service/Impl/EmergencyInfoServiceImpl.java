@@ -125,7 +125,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		Integer flag = info.getFlag();
 		if (flag == 0) {// 预案信息
 			if (startTime == null) {
-				new RuntimeException("开始时间不能为空");
+				return "开始时间不能为空";
 			} else {
 				info.setStartTime(startTime);
 				long endTimeMillion = startTime.getTime() + Long.valueOf(info.getDuration()) * 60 * 1000;

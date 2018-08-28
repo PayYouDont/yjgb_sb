@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-@Api(tags = {"角色管理接口"})
+@Api(tags = {"角色管理"})
 @RequestMapping("roleAction")
 @RestController
 public class RoleAction extends BaseAction {

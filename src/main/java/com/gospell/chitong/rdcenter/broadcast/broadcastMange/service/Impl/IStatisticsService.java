@@ -48,7 +48,6 @@ public class IStatisticsService implements StatisticsService{
 			Integer otherLevelCount = 0;
 
 			for (Emergencyinfo emergencyInfo : emergencyInfoList) {
-				System.out.println(emergencyInfo.getAccidentLevel());
 				if(emergencyInfo.getAccidentLevel().getLevelcode()==1){
 					firstLevelCount++;
 				}else if(emergencyInfo.getAccidentLevel().getLevelcode()==2){

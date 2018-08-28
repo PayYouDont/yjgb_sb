@@ -2,9 +2,14 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.User;
+
 public class ReflecUtil {
+	
+	//private static final Logger logger = LoggerFactory.getLogger(ReflecUtil.class);
 	
 	public static List<Field> getFields(Class<?> clazz) {
 		//属性集合
@@ -28,4 +33,19 @@ public class ReflecUtil {
 		return fieldList;
 	}
 	
+	public static Class<?> getGeneric(Collection<?> collection){
+		if(collection.size()>0) {
+			return collection.iterator().next().getClass();
+		}
+		return null;
+	}
+	public static List<Field> getFields(Collection<?> collection) {
+		return getFields(getGeneric(collection));
+	}
+	public static void main(String[] args) {
+		List<User> list = new ArrayList<>();
+		User user = new User();
+		list.add(user);
+		System.out.println(getFields(list));
+	}
 }

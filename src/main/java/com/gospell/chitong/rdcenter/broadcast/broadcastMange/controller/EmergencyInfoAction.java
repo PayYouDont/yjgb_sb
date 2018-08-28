@@ -12,17 +12,25 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "应急信息管理")
 @Controller
 @RequestMapping("/emergencyInfoAction")
 public class EmergencyInfoAction extends BaseAction{
@@ -102,7 +110,7 @@ public class EmergencyInfoAction extends BaseAction{
 	}
 	
 	@GetMapping("/toPlan")
-	public String goEmerPlan(Model model) {
+	public String toPlan(Model model) {
 		return "broadcast/emerPlan_list";
 	}
 	/**
@@ -119,11 +127,10 @@ public class EmergencyInfoAction extends BaseAction{
 	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,String type,Integer id) {
-		Emergencyinfo emer = null;
+		Emergencyinfo emer = new Emergencyinfo();
 		if(id!=null) {
 			emer = service.selectById(id);
 		}else {
-			emer = new Emergencyinfo();
 			emer.setStatus(2);
 			emer.setSound("60");
 			emer.setDuration("60");
@@ -161,7 +168,12 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月1日 下午5:14:20
 	 */
-	@RequestMapping("/list")
+	@ApiOperation(value="应急信息列表", notes="应急信息列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String")
+	})
+	@PostMapping("/list")
 	@ResponseBody
 	public HashMap<String,Object> list(Page page){
 		Map<String,Object> map = page.getMap();
@@ -183,7 +195,12 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月1日 下午5:14:20
 	 */
-	@RequestMapping("/queryBroadcastingEmer")
+	@ApiOperation(value="已播发应急信息列表", notes="已播发应急信息列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String")
+	})
+	@PostMapping("/queryBroadcastingEmer")
 	@ResponseBody
 	public HashMap<String,Object> queryBroadcastingEmer(Page page){
 		Map<String,Object> map = page.getMap();
@@ -205,7 +222,12 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月6日 下午12:20:37
 	 */
-	@RequestMapping("/queryEmerPlan")
+	@ApiOperation(value="预案应急信息列表", notes="预案应急信息列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String")
+	})
+	@PostMapping("/queryEmerPlan")
 	@ResponseBody
 	public HashMap<String,Object> queryEmerPlan(Page page){
 		Map<String,Object> map = page.getMap();
@@ -230,7 +252,13 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月5日 上午8:31:24
 	 */
-	@RequestMapping("/reviewList")
+	@ApiOperation(value="应急信息审核列表", notes="应急信息审核列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "queryParam", value = "搜索索引", dataType = "String"),
+	})
+	@PostMapping("/reviewList")
 	@ResponseBody
 	public HashMap<String,Object> queryReviewList(Page page,String queryParam){
 		int flag = queryParam.indexOf("plan")!=-1?0:1;
@@ -255,7 +283,9 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月5日 上午10:55:46
 	 */
-	@RequestMapping("/review")
+	@ApiOperation(value="应急信息审核", notes="应急信息审核接口")
+	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
+	@PostMapping("/review")
 	@ResponseBody
 	public HashMap<String,Object> review(Emergencyinfo emergencyInfo){
 		String msg="";
@@ -278,7 +308,9 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月27日 下午4:10:42
 	 */
-	@RequestMapping("/save")
+	@ApiOperation(value="保存应急信息", notes="保存应急信息接口")
+	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
+	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Emergencyinfo info){
 		try {
@@ -310,7 +342,13 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月6日 上午11:07:13
 	 */
-	@RequestMapping("/delete")
+	@ApiOperation(value="删除应急信息", notes="删除应急信息接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "ids", value = "应急信息id", required = true ,dataType = "String")
+	})
+	@RequiresPermissions("emer:info:delete")
+	@Log("删除应急信息")
+	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> deleteEmer(Integer[] ids){
 		try {
@@ -332,7 +370,12 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @author peiyongdong
 	 * @date 2018年6月27日 下午4:09:49
 	 */
-	@RequestMapping("/castList")
+	@ApiOperation(value="播发应急信息列表", notes="播发应急信息列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String")
+	})
+	@PostMapping("/castList")
 	@ResponseBody
 	public HashMap<String,Object> castList(Page page){
 		Map<String,Object> map = page.getMap();

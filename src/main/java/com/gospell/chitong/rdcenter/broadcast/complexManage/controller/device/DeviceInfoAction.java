@@ -1,14 +1,11 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.device;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DeviceParamVal;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceModelService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceParamValService;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -18,11 +15,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DeviceParamVal;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceModelService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceParamValService;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+@Api(tags = "设备信息管理")
 @Controller
 @RequestMapping("/deviceInfoAction")
 public class DeviceInfoAction extends BaseAction {
@@ -89,6 +97,10 @@ public class DeviceInfoAction extends BaseAction {
 		return "common/areaTree";
 	}
 
+	@ApiOperation(value="设备信息树", notes="设备信息树接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "code", value = "行政区划code", required = true ,dataType = "String")
+	})
 	@PostMapping("/findByCodes")
 	@ResponseBody
 	public HashMap<String, Object> findByCodes(String code) {
@@ -96,6 +108,12 @@ public class DeviceInfoAction extends BaseAction {
 		return JsonWrapper.successWrapper(list);
 	}
 
+	@ApiOperation(value="设备信息列表", notes="设备信息列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "devDsn", value = "搜索索引", dataType = "String"),
+	})
 	@RequestMapping("/list")
 	@ResponseBody
 	public HashMap<String, Object> list(Page page, String devDsn) {
@@ -109,7 +127,11 @@ public class DeviceInfoAction extends BaseAction {
 		int total = service.queryCount(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
-
+	@ApiOperation(value="删除设备信息", notes="删除设备信息接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "设备信息id", required = true ,dataType = "String")
+	})
+	@Log("删除设备信息")
 	@RequestMapping("/delete")
 	@ResponseBody
 	public HashMap<String, Object> delete(Integer id) {

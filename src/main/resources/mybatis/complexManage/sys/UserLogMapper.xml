@@ -28,7 +28,8 @@
 		<result column="des" jdbcType="LONGVARCHAR" property="des" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, clientIp, urlModule, urlFunction, create_time, update_time, url,
+		id, clientIp, urlModule, urlFunction, create_time,
+		update_time, url,
 		user_id, user_name,
 		role_name, role_id
 	</sql>
@@ -56,15 +57,19 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into user_log (clientIp, urlModule, urlFunction,
-		create_time, update_time, url,
+		create_time,
+		update_time, url,
 		user_id, user_name, role_name,
 		role_id, des)
-		values (#{clientip,jdbcType=VARCHAR}, #{urlmodule,jdbcType=VARCHAR},
+		values
+		(#{clientip,jdbcType=VARCHAR}, #{urlmodule,jdbcType=VARCHAR},
 		#{urlfunction,jdbcType=VARCHAR},
-		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{url,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP}, #{url,jdbcType=VARCHAR},
 		#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},
 		#{roleName,jdbcType=VARCHAR},
-		#{roleId,jdbcType=VARCHAR}, #{des,jdbcType=LONGVARCHAR})
+		#{roleId,jdbcType=VARCHAR},
+		#{des,jdbcType=LONGVARCHAR})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log.UserLog">
@@ -187,14 +192,20 @@
 	<update id="updateByPrimaryKeyWithBLOBs"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log.UserLog">
 		update user_log
-		set clientIp = #{clientip,jdbcType=VARCHAR},
-		urlModule = #{urlmodule,jdbcType=VARCHAR},
-		urlFunction = #{urlfunction,jdbcType=VARCHAR},
-		create_time = #{createTime,jdbcType=TIMESTAMP},
-		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		set clientIp =
+		#{clientip,jdbcType=VARCHAR},
+		urlModule =
+		#{urlmodule,jdbcType=VARCHAR},
+		urlFunction =
+		#{urlfunction,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
 		url = #{url,jdbcType=VARCHAR},
 		user_id = #{userId,jdbcType=INTEGER},
-		user_name = #{userName,jdbcType=VARCHAR},
+		user_name =
+		#{userName,jdbcType=VARCHAR},
 		role_name = #{roleName,jdbcType=VARCHAR},
 		role_id = #{roleId,jdbcType=VARCHAR},
 		des = #{des,jdbcType=LONGVARCHAR}
@@ -203,14 +214,20 @@
 	<update id="updateByPrimaryKey"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log.UserLog">
 		update user_log
-		set clientIp = #{clientip,jdbcType=VARCHAR},
-		urlModule = #{urlmodule,jdbcType=VARCHAR},
-		urlFunction = #{urlfunction,jdbcType=VARCHAR},
-		create_time = #{createTime,jdbcType=TIMESTAMP},
-		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		set clientIp =
+		#{clientip,jdbcType=VARCHAR},
+		urlModule =
+		#{urlmodule,jdbcType=VARCHAR},
+		urlFunction =
+		#{urlfunction,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
 		url = #{url,jdbcType=VARCHAR},
 		user_id = #{userId,jdbcType=INTEGER},
-		user_name = #{userName,jdbcType=VARCHAR},
+		user_name =
+		#{userName,jdbcType=VARCHAR},
 		role_name = #{roleName,jdbcType=VARCHAR},
 		role_id = #{roleId,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
@@ -255,18 +272,22 @@
 			<if test="des != null">
 				and des = #{des,jdbcType=LONGVARCHAR}
 			</if>
-			<choose>
-				<when test="sort != null and sort.trim() != ''">
-					order by ${order} ${sort}
-				</when>
-				<otherwise>
-					order by id desc
-				</otherwise>
-			</choose>
-			<if test="begin != null and pageSize != null">
-				limit #{begin},#{pageSize}
+			<if test="startTime != null and endTime !=null">
+				and create_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${order} ${sort}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+
 	</select>
 	<select id="count" resultType="int">
 		select count(*) from user_log
@@ -303,6 +324,9 @@
 			</if>
 			<if test="des != null">
 				and des = #{des,jdbcType=LONGVARCHAR}
+			</if>
+			<if test="startTime != null and endTime !=null">
+				and create_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
 	</select>

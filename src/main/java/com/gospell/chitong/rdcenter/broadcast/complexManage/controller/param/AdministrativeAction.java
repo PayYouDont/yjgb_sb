@@ -17,6 +17,12 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Adminis
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.param.AdministrativeService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "行政管理")
 @Controller
 @RequestMapping("/administrativeAction")
 public class AdministrativeAction extends BaseAction{
@@ -29,18 +35,27 @@ public class AdministrativeAction extends BaseAction{
 		return "complex/param/administrative_list";
 	}
 	
+	@ApiOperation(value="获取行政树", 
+					notes="根据登录用户的行政区域编码获取该区域范围内的行政树接口")
 	@RequestMapping("/getTreeByCode")
 	@ResponseBody
 	public String getTreeByCode() {
 		return service.getTreeStr(getUser().getAreaCode());
 	}
-	
+	@ApiOperation(value="获取行政树", 
+			notes="根据系统所在的行政区域编码获取该区域范围内的行政树接口")
 	//getTreeBySystem
 	@RequestMapping("/getTreeBySystem")
 	@ResponseBody
 	public String getTreeBySystem() {
 		return service.getTreeStr(serverProperties.getAreaCode());
 	}
+	@ApiOperation(value="行政区划列表", notes="行政区划接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "searchCondition", value = "搜索索引", dataType = "String")
+    })
 	@RequestMapping("/list")
 	@ResponseBody
 	public String list(String searchCondition) {

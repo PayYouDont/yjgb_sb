@@ -29,6 +29,12 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "节点管理")
 @Controller
 @RequestMapping("/nodeAction")
 public class NodeAction extends BaseAction{
@@ -64,9 +70,9 @@ public class NodeAction extends BaseAction{
 		Map<String,Object> map = page.getMap();
 		List<Node> list = service.list(map);
 		int total = service.count(page.getMap());
-		System.out.println(JsonWrapper.wrapperPage(list, total));
 		return JsonWrapper.wrapperPage(list, total);
 	}
+	@ApiOperation(value="保存节点", notes="保存节点")
 	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Node node){
@@ -78,6 +84,10 @@ public class NodeAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	@ApiOperation(value="删除节点", notes="删除节点接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String")
+	})
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer[] ids){
@@ -89,7 +99,10 @@ public class NodeAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
-	
+	@ApiOperation(value="检查节点", notes="检查节点状态接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "nodes", value = "待检测节点集合", required = true ,dataType = "String")
+	})
 	@RequestMapping("/checkNode")
 	@ResponseBody
 	public HashMap<String,Object> checkNode(@RequestBody List<Node> nodes){		
@@ -102,6 +115,7 @@ public class NodeAction extends BaseAction{
 			return JsonWrapper.failureWrapper();
 		}
 	}
+	@ApiOperation(value="上传文件", notes="上传文件接口")
 	@RequestMapping("/upload")
 	@ResponseBody
 	@Transactional

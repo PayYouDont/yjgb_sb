@@ -22,8 +22,8 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log.UserLog;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.User;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.log.SysLogService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.RoleService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.UserLogService;
 import com.gospell.chitong.rdcenter.broadcast.util.IPUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
@@ -41,7 +41,7 @@ public class SysLogAop {
 	@Resource
 	private RoleService roleService;
 	@Resource
-	private UserLogService logService;
+	private SysLogService logService;
 	
 	@Pointcut("@annotation(com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log)")
     public void logPointCut() {

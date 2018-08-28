@@ -16,6 +16,10 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PlatformVO;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "平台管理")
 @Controller
 @RequestMapping("/platformAction")
 public class PlatformAction extends BaseAction{
@@ -29,6 +33,7 @@ public class PlatformAction extends BaseAction{
 		return "complex/sys/platform";
 	}
 	
+	@ApiOperation(value="平台信息保存", notes="平台信息保存接口")
 	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(PlatformVO vo){

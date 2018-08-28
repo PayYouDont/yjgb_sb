@@ -35,7 +35,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-@Api(tags = "用户管理接口")
+@Api(tags = "用户管理")
 @RestController
 @RequestMapping("/userAction")
 public class UserAction extends BaseAction{
@@ -110,9 +110,9 @@ public class UserAction extends BaseAction{
 	 */
 	@Log("用户退出")
 	@GetMapping("/logout")
-	String logout() {
+	public ModelAndView logout() {
 		ShiroUtils.logout();
-		return "redirect:/login";
+		return new ModelAndView("redirect:/login");
 	}
 	
 	/**
@@ -164,11 +164,11 @@ public class UserAction extends BaseAction{
 	}
 
 	 @ApiOperation(value="用户列表", notes="用户列表接口")
-	    @ApiImplicitParams({
-	        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
-	        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
-	        @ApiImplicitParam(name = "userName", value = "根据用户名搜索", dataType = "String"),
-	    })
+	 @ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "userName", value = "根据用户名搜索", dataType = "String"),
+	})
 	@RequiresPermissions("sys:user:list")
 	@PostMapping("/list")
 	public HashMap<String,Object> list(Page page,String userName){

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>系统日志</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/complex/log/userLog.js"></script>
+<style type="text/css">
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color: white;
+}
+
+a:FOCUS {
+	outline: none;
+}
+
+.titlefont1 {
+	line-height: 40px;
+	height: 40px;
+	font-size: 14px;
+	font-weight: bold;
+	color:
+}
+
+.titlefont2 {
+	line-height: 35px;
+	height: 35px;
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+}
+
+.mybutton {
+	height: calc(100% - 4px);
+	width: 80px;
+	background-color: #666666;
+	float: right;
+	border: 2px solid #CCCCCC;
+	cursor: pointer;
+}
+
+.mybutton:HOVER {
+	background-color: #1A1A1A;
+}
+
+.buttonfont {
+	line-height: 26px;
+	height: 26px;
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+}
+
+.btn:HOVER {
+	background-color: black;
+}
+
+.pagefont {
+	color: #085d9b;
+}
+
+.table-bordered {
+	border: 1px solid rgb(65, 155, 214);
+	border-collapse: separate;
+	*border-collapse: collapse;
+	border-left: 0;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.table-bordered th, .table-bordered td {
+	border-left: 1px solid rgb(65, 155, 214);
+	border-top: 1px solid rgb(65, 155, 214);
+}
+</style>
+</head>
+<body id="body">
+	<!-- <div style="display:none;">
+		<input id="menuId" type="hidden" value="${menuId}">
+	</div> -->
+	<div id="MyBtnDiv" style="height: 30px; padding: 3px 5px 0px 5px;">
+		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="remove();">删除</a> 
+		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="exportExcel();">导出</a> 
+		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="openPanel();">更多</a>
+	</div>
+	<div class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'center',border:false">
+			<table id="mainTab" class="easyui-datagrid" data-options="fit:true"
+				toolbar="#MyBtnDiv" iconCls="icon-extendlist" collapsible="true"
+				title="操作日志记录列表">
+			</table>
+		</div>
+		<div id="tabRowDetail"data-options="region:'east',split:true,iconCls:'icon-extenduser'"
+			style="width: 510px; overflow: hidden;" title="更多操作" collapsed="true">
+			<div style="width: 100%; height: 30%; background-color:;">
+				<div style="width: 100%; height: 25px; line-height: 25px; background-color: #F5F5F5; border: 1px solid #DDDDDD;">
+					<font style="font-size: 12px;">>>按日期</font>
+				</div>
+				<div style="border: 1px solid #DDDDDD;">
+					&nbsp;开始时间&nbsp;
+					<input id="start_time" class="easyui-datetimebox" editable="false" read-only="read-only" style="width: 180px; height: 23px;" /> 
+					&nbsp;结束时间&nbsp; 
+					<input id="end_time" class="easyui-datetimebox" editable="false" style="width: 180px; height: 23px;" />
+				</div>
+				<div style="text-align: center; border: 1px solid #DDDDDD">
+					<a href="#" class="easyui-linkbutton" plain="true"
+						iconCls="icon-search" onclick="queryByDate();">查找</a> <a href="#"
+						class="easyui-linkbutton" plain="true" iconCls="icon-cancel"
+						onclick="deleteByDate();">删除</a> <a href="#"
+						class="easyui-linkbutton" plain="true" iconCls="icon-save"
+						onclick="exportByDate();">导出</a>
+				</div>
+			</div>
+
+			<!-- 按条件查找div -->
+			<div style="margin-top: 40px; width: 100%; height: 30%; background-color:;">
+				<div style="width: 100%; height: 25px; line-height: 25px; background-color: #F5F5F5; border: 1px solid #DDDDDD;">
+					<font style="font-size: 12px;">>>按字段</font>
+				</div>
+				<div style="border: 1px solid #DDDDDD;">
+						&nbsp;选择字段&nbsp; 
+					<select id="field_select" class="easyui-combobox" editable="false" style="width: 180px;">
+						<option value='userName'>操作用户</option>
+						<option value='userId'>用户IP</option>
+						<option value='urlmodule'>操作模块</option>
+						<option value='urlfunction'>操作事件</option>
+					</select>  
+					&nbsp;搜索内容&nbsp; 
+					<input id="field_input" class="easyui-searchbox" data-options="prompt:'',searcher:queryByField" style="width: 180px; height: 23px;">
+				</div>
+				<div style="text-align: center; border: 1px solid #DDDDDD">
+					<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel" onclick="deleteByField();">删除</a> 
+					<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" onclick="exportByField();">导出</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+</body>
+</html>

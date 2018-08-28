@@ -16,11 +16,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaylanguage;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.param.DisplayLanguageService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 /** 
 * @ClassName: DisplayLanguageAction 
@@ -29,6 +35,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 * @date 2018年7月27日 下午3:02:53 
 *  
 */
+@Api(tags = "播发语言管理")
 @Controller
 @RequestMapping("/displayLanguageAction")
 public class DisplayLanguageAction extends BaseAction{
@@ -50,6 +57,12 @@ public class DisplayLanguageAction extends BaseAction{
 		model.addAttribute("displayLanguage", displayLanguage);
 		return "complex/param/displayLanguage_toEdit";
 	}
+	@ApiOperation(value="播发语言列表", notes="播发语言列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "search", value = "搜索索引", dataType = "String")
+    })
 	@PostMapping("/list")
 	@ResponseBody
 	public HashMap<String,Object> list(Page page,String search) {
@@ -63,7 +76,9 @@ public class DisplayLanguageAction extends BaseAction{
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
+	@ApiOperation(value="保存播发语言", notes="保存播发语言接口")
 	@RequiresPermissions(value = {"param:language:edit","param:language:add"},logical= Logical.OR)
+	@Log("保存播发语言")
 	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String,Object> save(Displaylanguage language) {
@@ -85,7 +100,13 @@ public class DisplayLanguageAction extends BaseAction{
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	
+	@ApiOperation(value="删除播发语言", notes="删除播发语言接口")
+    @ApiImplicitParams({
+          @ApiImplicitParam(name = "id", value = "播发语言id",required=true, dataType = "String")
+    })
 	@RequiresPermissions("param:language:delete")
+	@Log("删除播发语言")
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id) {

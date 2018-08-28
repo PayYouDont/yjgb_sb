@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DevModelParamRelation;
@@ -25,6 +26,12 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.Devic
 import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.DevicemodelVO;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "设备型号管理")
 @Controller
 @RequestMapping("/deviceModelAction")
 public class DeviceModelAction extends BaseAction{
@@ -61,6 +68,12 @@ public class DeviceModelAction extends BaseAction{
 		model.addAttribute("deviceModelParamIds", deviceModelParamIds);
 		return "complex/device/deviceModel_edit";
 	}
+	@ApiOperation(value="设备型号列表", notes="设备型号列表接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String"),
+        @ApiImplicitParam(name = "search", value = "搜索", dataType = "String"),
+	})
 	@RequestMapping("/list")
 	@ResponseBody
 	public HashMap<String,Object> list(Page page){
@@ -71,8 +84,9 @@ public class DeviceModelAction extends BaseAction{
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
-	
+	@ApiOperation(value="保存设备型号", notes="保存设备型号接口")
 	@RequiresPermissions(value = { "dev:model:add", "dev:model:edit" }, logical = Logical.OR)
+	@Log("保存设备型号")
 	@PostMapping("/save")
 	@ResponseBody
 	public HashMap<String, Object> save(DevicemodelVO vo){
@@ -90,7 +104,12 @@ public class DeviceModelAction extends BaseAction{
 		}
 		
 	}
+	@ApiOperation(value="删除设备型号", notes="删除设备型号接口")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "设备型号id", required = true ,dataType = "String")
+    })
 	@RequiresPermissions("dev:model:delete")
+	@Log("删除设备型号")
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id){
