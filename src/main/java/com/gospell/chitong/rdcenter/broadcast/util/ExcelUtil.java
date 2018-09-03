@@ -1,10 +1,15 @@
 
 package com.gospell.chitong.rdcenter.broadcast.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -66,5 +71,29 @@ public class ExcelUtil {
 			}
 		}
 		return workbook;
+	}
+	public static void writeExcel(OutputStream out,HSSFWorkbook workbook) {
+		try {
+			workbook.write(out);
+		} catch (IOException e) {
+			logger.error(e.getMessage(),e);
+		}
+	}
+	public static void writeExcel(HttpServletResponse response,HSSFWorkbook workbook) {
+		try {
+			writeExcel(response.getOutputStream(), workbook);
+		} catch (IOException e) {
+			logger.error(e.getMessage(),e);
+		}
+	}
+	public static void writeExcel(HttpServletResponse response,List<?> list,Map<String,String> map) {
+		writeExcel(response, createExcel(list, map));
+	}
+	public static void writeExcel(File outFile,HSSFWorkbook workbook) {
+		try {
+			workbook.write(outFile);
+		} catch (IOException e) {
+			logger.error(e.getMessage(),e);
+		}
 	}
 }

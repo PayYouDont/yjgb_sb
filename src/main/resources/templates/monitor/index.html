@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" id="css" href="/css/monitor/index.css">
+<script src="/js/core/jquery.min.js"></script>
+<script src="/echarts/echarts.js"></script>
+<!-- 百度地图 -->
+<script src="/js/monitor/bmap.js"></script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=vAP0NUiuhP3zsCkjR4gSpp6AxmIH3csQ"></script>
+<script src="/js/monitor/mapData.js"></script>
+<script src="/js/monitor/index.js"></script>
+</head>
+<body class="row">
+	<div class="left col-md-3">
+		<div class="main">
+			<div class="main-div" id="todayMsg">
+				<div class="left-title">
+					<font style="margin-left:10px;">今日信息</font>
+				</div>
+				<div class="left-mid">
+					<div class="mid-top">
+						<font>0条</font>
+					</div>
+					<div class="mid-bottom">
+						<div>
+							<img alt="" src="/image/monitor/red1.png">
+							<font>0条 </font>
+						</div>
+						<div>
+							<img alt="" src="/image/monitor/orange1.png">
+							<font>0条 </font>
+						</div>
+						<div>
+							<img alt="" src="/image/monitor/yellow1.png">
+							<font>0条 </font>
+						</div>
+						<div>
+							<img alt="" src="/image/monitor/blue1.png">
+							<font>0条 </font>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="main-div" id="completion">
+				<div class="left-title">
+					<font style="margin-left:10px">完成情况</font>
+				</div>
+				<div class="left-mid">
+					<div class="progress">
+						<a>
+							<div class="progress-bar progress-bar-success" style="width:18%">
+								<h6>已完成:0</h6>
+							</div>
+						</a>
+						<a>
+							<div class="progress-bar" style="width:50%">
+								<h6>进行中:0</h6>
+							</div>
+						</a>
+						<a>
+							<div class="progress-bar progress-bar-warning" style="width:32%">
+								<h6>待处理:0</h6>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="main-div" id="coverDev">
+				<div class="left-title">
+					<font style="margin-left:10px">覆盖设备</font>
+				</div>
+				<div class="left-mid">
+					
+				</div>
+			</div>
+			<div class="main-div" id="detail">
+				<div class="left-title">
+					<font style="margin-left:10px">信息详情</font>
+				</div>
+				<div class="left-mid">
+					<textarea rows="11" cols="5">
+							点击右边应急信息列表，查看对应应急信息详情！
+					</textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="center col-md-6">
+		<div class="main">
+			<div class="main-div" id="main-map">
+				<div class="center-title">
+					<font style="color:yellow;font-size: 2rem;">应急广播监控指挥平台</font>
+				</div>
+				<div class="center-mid" id="map">
+					
+				</div>
+				<div class="center-bottom">
+					<button type="button" onclick="goModel2()">发送模式</button>	
+					<button type="button" onclick="goModel1()">覆盖模式</button>
+				</div>
+			</div>
+			<div class="main-div" id="todayEmer">
+				<div class="center-title">
+					<font style="font-size:1.5rem;">应急信息(今天)</font>
+				</div>
+				<div class="center-mid" id="mid-tab">
+					<table class="table">
+				      <thead >
+						<tr align="center" >
+				          <th style="font-size:1rem;"align="center">信息</th>
+				          <th style="font-size:1rem;">等级</th>
+				          <th style="font-size:1rem;">类型</th>
+				          <th style="font-size:1rem;">持续时间</th>
+				          <th style="font-size:1rem;">发送时间</th>
+				          <th style="font-size:1rem;">信息状态</th>
+				          <th style="font-size:1rem;">应急来源</th>
+				        </tr>
+				      </thead>
+				      <tbody style="font-size:1.2rem;">
+							 <tr class="mytr" align="center"  onclick="emerChange(this.id);">
+					          <td  style="background-color:rgba(255,255,255,0.01);color: rgb(255,255,255);" >1</td>
+					          <td  style="background-color:rgba(255,255,255,0.01);color: rgb(255,255,255);">2</td>
+		   			          <td  style="background-color:rgba(255,255,255,0.01);color: rgb(255,255,255);">3</td>
+		   			          <td  style="background-color:rgba(255,255,255,0.01);color: rgb(255,255,255);">分钟</td>
+		   			          <td  style="background-color:rgba(255,255,255,0.01);color: rgb(255,255,255);">4</td>
+		   			          <td  style="background-color:rgba(255,255,255,0.01);color: rgb(255,255,255);">5</td>
+		   			          <td  style="background-color:rgba(255,255,255,0.01);color: rgb(255,255,255);">6</td>
+					        </tr>    
+				      </tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="right col-md-3">
+		<div class="main">
+			<div class="main-div" id="count-title">
+				<div class="center-title">
+					<font style="font-size: 1.5rem;line-height:40px;margin-right: 50px">应急通信</font>
+					<select class="btn btn-info dropdown">
+						<option>本周</option>
+						<option>本月</option>
+						<option>今天</option>
+					</select>
+				</div>
+			</div>
+			<div class="main-div" id="count-quantity">
+				<div class="right-title">
+					<font style="margin-left:10px">数量统计</font>
+				</div>
+				<div class="right-mid">
+					
+				</div>
+			</div>
+			<div class="main-div" id="count-type">
+				<div class="right-title">
+					<font style="margin-left:10px">类型统计</font>
+				</div>
+				<div class="right-mid">
+					
+				</div>
+			</div>
+			<div class="main-div" id="count-source">
+				<div class="right-title">
+					<font style="margin-left:10px">来源统计</font>
+				</div>
+				<div class="right-mid">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

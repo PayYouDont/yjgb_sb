@@ -22,7 +22,7 @@ $(document).ready(function(){
 		          {field:'id',width:50, title:'日志id',hidden:true,align:'center'},
 		          {field:'userName',width:50,title:'操作用户',align:'center'},
 		          {field:'clientip',width:50,title:'用户IP',align:'center'},
-		          {field:'urlmodule',width:50,title:'操作模块',align:'center'},
+		          {field:'url',width:50,title:'操作模块',align:'center'},
 		          {field:'urlfunction',width:50,title:'操作事件',align:'center'},
 		          {field:'createTime',width:50,title:'访问时间',align:'center',sortable:true},
 		          ]]

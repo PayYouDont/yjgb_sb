@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log.UserLog;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.QueryVO;
 
@@ -33,8 +34,12 @@ public interface SysLogService {
 	
 	int count(Map<String,Object> map);
 	
+	int count(Page page,QueryVO vo);
+	
 	void export(HttpServletResponse response,QueryVO vo) throws IOException;
 	
 	List<UserLog> list(QueryVO vo);
+	
+	List<UserLog> list(Page page,QueryVO vo);
 	
 }

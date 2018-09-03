@@ -45,16 +45,19 @@ public class SysLogAction extends BaseAction{
 	public ModelAndView toList() {
 		return new ModelAndView("complex/log/sysLog_list");
 	}
+	@ApiOperation(value="日志列表", notes="日志列表接口")
 	@PostMapping("list")
 	public HashMap<String,Object> list(Page page,QueryVO vo) {
 		Map<String,Object> map = page.getMap();
 		List<UserLog> list;
-		if(vo!=null) {
-			list = service.list(vo);
+		int total;
+		if(!"".equals(vo.getCondition())) {
+			list = service.list(page,vo);
+			total = service.count(page,vo);
 		}else {
 			list = service.list(map);
+			total = service.count(map);
 		}
-		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
 	@ApiOperation(value="删除日志", notes="删除日志接口")
@@ -82,6 +85,9 @@ public class SysLogAction extends BaseAction{
 	@GetMapping("export")
 	public void export(HttpServletResponse response,QueryVO vo) {
 		try {
+			String fileName = new String("系统日志.xls".getBytes(), "iso-8859-1");
+			response.setContentType("application/vnd.ms-excel;charset=utf-8");
+			response.setHeader("Content-Disposition", "attachment;filename="+fileName); 
 			service.export(response, vo);
 		} catch (IOException e) {
 			logger.error(e.getMessage(),e);

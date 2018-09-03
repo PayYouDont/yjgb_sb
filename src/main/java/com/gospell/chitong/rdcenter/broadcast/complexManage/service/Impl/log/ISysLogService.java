@@ -9,10 +9,10 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.UserLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log.UserLog;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.log.SysLogService;
@@ -172,13 +172,10 @@ public class ISysLogService implements SysLogService{
 		Map<String,String> map = new HashMap<>();
 		map.put("userName","操作用户");
 		map.put("clientip","用户IP");
-		map.put("urlmodule","操作模块");
+		map.put("url","操作模块");
 		map.put("urlfunction","操作事件");
 		map.put("createTime","访问时间");
-		HSSFWorkbook workbook = ExcelUtil.createExcel(list, map);
-		response.setContentType("application/vnd.ms-excel;charset=utf-8");
-		response.setHeader("Content-Disposition", "attachment;filename="+ new String(("系统日志" + ".xls").getBytes(), "iso-8859-1")); 
-		workbook.write(response.getOutputStream());
+		ExcelUtil.writeExcel(response,list,map);
 	}
 
 	/** 
@@ -194,6 +191,9 @@ public class ISysLogService implements SysLogService{
 	@Override
 	public List<UserLog> list(QueryVO vo) {
 		Map<String,Object> map = new HashMap<>();
+		return list(map,vo);
+	}
+	public List<UserLog> list(Map<String,Object> map,QueryVO vo) {
 		if(vo!=null&&vo.getCondition().equals("date")) {
 			map.put("startTime", vo.getStartTime());
 			map.put("endTime", vo.getEndTime());
@@ -201,6 +201,44 @@ public class ISysLogService implements SysLogService{
 			map.put(vo.getField(), vo.getFieldValue());
 		}
 		return list(map);
+	}
+	/** 
+	 * <p>Title: list</p> 
+	 * <p>Description: </p> 
+	 * @param page
+	 * @param vo
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.complexManage.service.log.SysLogService#list(com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page, com.gospell.chitong.rdcenter.broadcast.complexManage.vo.QueryVO) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年8月28日 下午5:45:27
+	 */
+	@Override
+	public List<UserLog> list(Page page, QueryVO vo) {
+		return list(page.getMap(),vo);
+	}
+
+	/** 
+	 * <p>Title: count</p> 
+	 * <p>Description: </p> 
+	 * @param page
+	 * @param vo
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.complexManage.service.log.SysLogService#count(com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page, com.gospell.chitong.rdcenter.broadcast.complexManage.vo.QueryVO) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年8月28日 下午5:54:39
+	 */
+	@Override
+	public int count(Page page, QueryVO vo) {
+		Map<String,Object> map =page.getMap();
+		if(vo!=null&&vo.getCondition().equals("date")) {
+			map.put("startTime", vo.getStartTime());
+			map.put("endTime", vo.getEndTime());
+		}else if(vo!=null&&vo.getCondition().equals("field")) {
+			map.put(vo.getField(), vo.getFieldValue());
+		}
+		return count(map);
 	}
 
 }
