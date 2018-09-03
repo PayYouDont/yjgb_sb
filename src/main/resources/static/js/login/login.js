@@ -66,13 +66,11 @@ function login3(){
 		},
 		success: function(data){
 			$.messager.progress('close');
-			if (data=="ok"){
-//				window.location.href="../../m_yjgb/emergencyInfoAction/todayEmergencyInfo";
-				window.location.href="../menuAction/goMonitorSystem";
-			}else if(data="errorUserNull"){
-				$("font[class='tooltipFont']").html("登录提示：查无此用户！");
-			}else if(data="errorUserPassword"){
-				$("font[class='tooltipFont']").html("登录提示：密码错误！");
+			data = JSON.parse(data);
+			if (data.success){
+				window.location.href="../monitorAction/index";
+			}else {
+				$("font[class='tooltipFont']").html(data.data);
 			}
 		}
 	});
