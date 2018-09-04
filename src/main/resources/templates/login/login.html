@@ -45,12 +45,9 @@ a:focus {
 	<div id="win" class="easyui-window" title="应急广播综合管理系统"
 		style="width: 380px; height: 220px"
 		data-options="iconCls:'icon-save',draggable:false,resizable:false,minimizable:false,maximizable:false,collapsible:false,closable:false">
-
-
 		<div id="tt" class="easyui-tabs" fit="true" border="false">
-			<div title="应急播发系统"
-				style="padding-left: 10px; padding-right: 10px; padding-top: 0px; padding-buttom: 0px; display: none;">
-				<form id="dataForm1" class="easyui-form" method="post">
+			<div title="应急播发系统" data-options="" style="padding-left: 10px; padding-right: 10px; padding-top: 0px; padding-buttom: 0px; display: none;">
+				<form id="dataForm1" title="应急播发系统"  class="easyui-form" method="post">
 					<table class="tab" cellpadding="1" cellspacing="5">
 						<tr>
 							<td colspan="2"><font class="tooltipFont">&nbsp;</font></td>
@@ -70,18 +67,16 @@ a:focus {
 						</tr>
 					</table>
 				</form>
-				<div align="right"
-					style="padding: 10px; background-color:; margin-right: 45px;">
+				<div align="right" style="padding: 10px; background-color:; margin-right: 45px;">
 					<a id="btn1" href="javascript:void(0);" class="easyui-linkbutton"
-						onclick="login1();" data-options="iconCls:'icon-ok'">登录</a> <a
-						id="btn2" href="javascript:void(0);" class="easyui-linkbutton"
+						onclick="login(this);" data-options="iconCls:'icon-ok'">登录</a> 
+					<a id="btn2" href="javascript:void(0);" class="easyui-linkbutton"
 						onclick="myClearForm();" data-options="iconCls:'icon-reload'">重置</a>
 				</div>
 			</div>
 
-			<div title="综合网络管理系统" data-options=""
-				style="padding-left: 10px; padding-right: 10px; padding-top: 0px; padding-buttom: 0px; display: none;">
-				<form id="dataForm2" class="easyui-form" method="post">
+			<div title="综合网络管理系统" data-options="" style="padding-left: 10px; padding-right: 10px; padding-top: 0px; padding-buttom: 0px; display: none;">
+				<form id="dataForm2" title="综合网络管理系统" class="easyui-form" method="post">
 					<table class="tab" cellpadding="1" cellspacing="5">
 						<tr>
 							<td colspan="2"><font class="tooltipFont">&nbsp;</font></td>
@@ -104,7 +99,7 @@ a:focus {
 				<div align="right"
 					style="padding: 10px; background-color:; margin-right: 45px;">
 					<a id="btn1" href="javascript:void(0);" class="easyui-linkbutton"
-						onclick="login2();" data-options="iconCls:'icon-ok'">登录</a> <a
+						onclick="login(this);" data-options="iconCls:'icon-ok'">登录</a> <a
 						id="btn2" href="javascript:void(0);" class="easyui-linkbutton"
 						onclick="myClearForm();" data-options="iconCls:'icon-reload'">重置</a>
 				</div>
@@ -113,7 +108,7 @@ a:focus {
 
 			<div title="应急广播监控平台" data-options=""
 				style="padding-left: 10px; padding-right: 10px; padding-top: 0px; padding-buttom: 0px; display: none;">
-				<form id="dataForm3" class="easyui-form" method="post">
+				<form id="dataForm3" title="应急广播监控平台" class="easyui-form" method="post">
 					<table class="tab" cellpadding="1" cellspacing="5">
 						<tr>
 							<td colspan="2"><font class="tooltipFont">&nbsp;</font></td>
@@ -136,7 +131,7 @@ a:focus {
 				<div align="right"
 					style="padding: 10px; background-color:; margin-right: 45px;">
 					<a id="btn1" href="javascript:void(0);" class="easyui-linkbutton"
-						onclick="login3();" data-options="iconCls:'icon-ok'">登录</a> <a
+						onclick="login(this);" data-options="iconCls:'icon-ok'">登录</a> <a
 						id="btn2" href="javascript:void(0);" class="easyui-linkbutton"
 						onclick="myClearForm();" data-options="iconCls:'icon-reload'">重置</a>
 				</div>

@@ -115,7 +115,6 @@ font {
 	background: none;
 	height: calc(100% - 20px);
 }
-
 .mid-top {
 	width: 40px;
 	height: 50%;
@@ -141,7 +140,7 @@ font {
 }
 
 .progress {
-	height: 40%;
+	height: 50%;
 	margin-top: 10%;
 	margin-left: 5%;
 	margin-right: 5%;
@@ -353,4 +352,7 @@ th {
 
 .anchorBL {
 	display: none
+}
+.right .main-div{
+	background-color: rgba(0, 255, 255, 0.3);
 }

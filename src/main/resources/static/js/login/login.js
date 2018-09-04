@@ -5,77 +5,34 @@ function myClearForm(){
 	$("#dataForm2").form('clear');
 }
 
-
-
 //播发系统登录
-function login1(){
-	$.messager.progress({title:'系统提示',text:'正在登录...',interval:300});
-	$('#dataForm1').form('submit',{
+function login(a){
+	var $form = $(a).parent().prev();
+	var isValid= $form.form('enableValidation').form('validate');
+	if (!isValid){
+		$.messager.progress('close')
+		return;
+	}
+	var data = $form.serializeArray();
+	$.ajax({
 		url:'../userAction/login',
-		onSubmit:function(){
-			var isValid= $(this).form('enableValidation').form('validate');
-			if (!isValid){$.messager.progress('close');}
-			return isValid;	
-		},
-		success: function(data){
+		type:"post",
+		data:data,
+		dataType:"json",
+		success:function(json){
 			$.messager.progress('close');
-			data = JSON.parse(data);
-			if (data.success){
-				window.location.href="../emergencyInfoAction/index";
+			if(json.success){
+				var title = $form.attr("title");
+				if(title.indexOf("播发")!=-1){
+					window.location.href="../emergencyInfoAction/index";
+				}else if(title.indexOf("管理")!=-1){
+					window.location.href="../menuAction/index";
+				}else if(title.indexOf("监控")!=-1){
+					window.location.href="../monitorAction/index";
+				}
 			}else{
-				$("font[class='tooltipFont']").html(data.data);
+				$form.find(".tooltipFont").html(json.data);
 			}
 		}
-	});
+	})
 }
-
-
-
-//播发系统登录
-function login2(){
-	$.messager.progress({title:'系统提示',text:'正在登录...',interval:300});
-	$('#dataForm2').form('submit',{
-		url:'../userAction/login',
-		onSubmit:function(){
-			var isValid= $(this).form('enableValidation').form('validate');
-			if (!isValid){$.messager.progress('close');}
-			return isValid;	
-		},
-		success: function(data){
-			$.messager.progress('close');
-			data = JSON.parse(data);
-			if (data.success){
-				window.location.href="../menuAction/index";
-			}else{
-				$("font[class='tooltipFont']").html(data.data);
-			}
-		}
-	});
-}
-
-
-//登录应急广播监控平台
-function login3(){
-	$.messager.progress({title:'系统提示',text:'正在登录...',interval:300});
-	$('#dataForm3').form('submit',{
-		url:'../userAction/login',
-		onSubmit:function(){
-			var isValid= $(this).form('enableValidation').form('validate');
-			if (!isValid){$.messager.progress('close');}
-			return isValid;	
-		},
-		success: function(data){
-			$.messager.progress('close');
-			data = JSON.parse(data);
-			if (data.success){
-				window.location.href="../monitorAction/index";
-			}else {
-				$("font[class='tooltipFont']").html(data.data);
-			}
-		}
-	});
-}
-
-
-
-

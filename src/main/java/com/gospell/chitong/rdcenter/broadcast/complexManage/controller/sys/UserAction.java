@@ -96,7 +96,8 @@ public class UserAction extends BaseAction{
 			return JsonWrapper.successWrapper();
 		}catch(AuthenticationException e) {
 			logger.error(e.getMessage(),e);
-			return JsonWrapper.failureWrapper("登陆异常,请稍后再试");
+			return JsonWrapper.failureWrapper(e.getMessage());
+			
 		}
 	}
 	/**

@@ -268,5 +268,36 @@ public class IStatisticsService implements StatisticsService{
 		resultMapper.put("seriesData", result);
 		return resultMapper;
 	}
+
+	/** 
+	 * <p>Title: list</p> 
+	 * <p>Description: </p> 
+	 * @param map
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.StatisticsService#list(java.util.Map) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年9月4日 上午11:40:38
+	 */
+	@Override
+	public List<Emergencyinfo> list(Map<String, Object> map) {
+		return emerDao.list(map);
+	}
+
+	/** 
+	 * <p>Title: count</p> 
+	 * <p>Description: </p> 
+	 * @param map
+	 * @return 
+	 * @see com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.StatisticsService#count(java.util.Map) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年9月4日 上午11:40:38
+	 */
+	@Override
+	public int count(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return emerDao.count(map);
+	}
 	
 }

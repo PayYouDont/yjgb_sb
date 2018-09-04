@@ -144,10 +144,10 @@
 			<div class="main-div" id="count-title">
 				<div class="center-title">
 					<font style="font-size: 1.5rem;line-height:40px;margin-right: 50px">应急通信</font>
-					<select class="btn btn-info dropdown">
-						<option>本周</option>
-						<option>本月</option>
-						<option>今天</option>
+					<select class="btn btn-info dropdown" id="date">
+						<option value="week">本周</option>
+						<option value="month">本月</option>
+						<option value="day">今天</option>
 					</select>
 				</div>
 			</div>
@@ -155,15 +155,13 @@
 				<div class="right-title">
 					<font style="margin-left:10px">数量统计</font>
 				</div>
-				<div class="right-mid">
-					
-				</div>
+				<div class="right-mid" id="count-chart"></div>
 			</div>
 			<div class="main-div" id="count-type">
 				<div class="right-title">
 					<font style="margin-left:10px">类型统计</font>
 				</div>
-				<div class="right-mid">
+				<div class="right-mid" id="type-chart">
 					
 				</div>
 			</div>
@@ -171,7 +169,7 @@
 				<div class="right-title">
 					<font style="margin-left:10px">来源统计</font>
 				</div>
-				<div class="right-mid">
+				<div class="right-mid" id="source-chart">
 					
 				</div>
 			</div>
