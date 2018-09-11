@@ -740,4 +740,12 @@
 		</set>
 		where EBM_ID = #{ebmId,jdbcType=VARCHAR}
 	</update>
+	<select id="selectByDate" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from emergencyinfo
+		where create_time between  #{startTime,jdbcType=TIMESTAMP} and  #{endTime,jdbcType=TIMESTAMP}
+	</select>
 </mapper>

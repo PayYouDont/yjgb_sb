@@ -56,17 +56,17 @@ function initChart() {
 	var endTime = app.getDate().endTime;
 	var data  = {type:"count",startTime:startTime,endTime:endTime};
 	getData(data,initCount)
-	data.type = "type";
+	/*data.type = "type";
 	getData(data,initType)
 	data.type = "source";
-	getData(data, initSource)
+	getData(data, initSource)*/
 }
 function getData(data,func){
 	if(!func||typeof(func)!='function'){
 		return;
 	}
 	$.ajax({
-		url:"/statisticsAction/getData",
+		url:"/monitorAction/getData",
 		dataType:"json",
 		data:data,
 		type:"post",
@@ -79,22 +79,36 @@ function getData(data,func){
 	});
 }
 function initCount(data) {
+	console.log(data)
+	var startTime = app.getDate().startTime;
+	var endTime = app.getDate().endTime;
 	var myChart = echarts.init(document.getElementById('count-chart'));
 	var option = {
 		tooltip: {
 	        trigger: 'axis'
 	    },
 		legend: {
-	        data:['1级', '2级', '3级', '4级']
+			type:"scroll",
+	        left: 'left',
+	        data:["1级（特别重大）", '2级（重大）', '3级（较大）', '4级(一般)']
 	    },
 		xAxis : {
 			type : 'category',
-			data : [ '一', '二', '三', '四', '五', '六', '日' ]
+			data : [endTime]
 		},
 		yAxis : {
 			type : 'value'
 		},
-		series : data
+		series : []
+	}
+	for(var i=0;i<data.length;i++){
+		var time = data[i].createTime;
+		time = time.substring(0, 10);
+		option.series[i] = {
+				type:'bar',
+				name:data[i].level,
+				data:[data[i].count]
+			}
 	}
 	myChart.setOption(option);
 }
@@ -139,7 +153,7 @@ function initSource(data) {
 		        }
 		    },
 		    legend: {
-		        data: ['直接访问', '邮件营销','联盟广告','视频广告','搜索引擎']
+		        data: ['自平台', '上级转发','上级发布']
 		    },
 		    grid: {
 		        left: '3%',
@@ -152,11 +166,11 @@ function initSource(data) {
 		    },
 		    yAxis: {
 		        type: 'category',
-		        data: ['周一','周二','周三','周四','周五','周六','周日']
+		        data: ['一','二','三','四','五','六','日']
 		    },
 		    series: [
 		        {
-		            name: '直接访问',
+		            name: '自平台',
 		            type: 'bar',
 		            stack: '总量',
 		            label: {
@@ -168,7 +182,7 @@ function initSource(data) {
 		            data: [320, 302, 301, 334, 390, 330, 320]
 		        },
 		        {
-		            name: '邮件营销',
+		            name: '上级转发',
 		            type: 'bar',
 		            stack: '总量',
 		            label: {
@@ -180,7 +194,7 @@ function initSource(data) {
 		            data: [120, 132, 101, 134, 90, 230, 210]
 		        },
 		        {
-		            name: '联盟广告',
+		            name: '上级发布',
 		            type: 'bar',
 		            stack: '总量',
 		            label: {
@@ -190,30 +204,6 @@ function initSource(data) {
 		                }
 		            },
 		            data: [220, 182, 191, 234, 290, 330, 310]
-		        },
-		        {
-		            name: '视频广告',
-		            type: 'bar',
-		            stack: '总量',
-		            label: {
-		                normal: {
-		                    show: true,
-		                    position: 'insideRight'
-		                }
-		            },
-		            data: [150, 212, 201, 154, 190, 330, 410]
-		        },
-		        {
-		            name: '搜索引擎',
-		            type: 'bar',
-		            stack: '总量',
-		            label: {
-		                normal: {
-		                    show: true,
-		                    position: 'insideRight'
-		                }
-		            },
-		            data: [820, 832, 901, 934, 1290, 1330, 1320]
 		        }
 		    ]
 		};

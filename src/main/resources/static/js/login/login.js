@@ -1,8 +1,44 @@
 
+$(function(){
+	$(document).keydown(function(e) {
+		if(e.keyCode==13){//回车
+			keyDownLogin();
+		}else if(e.keyCode==37){//方向键←
+			var a = $(".tabs-inner");
+			for (var i = 1; i < a.length; i++) {
+				var li = $(a[i]).parent();
+				if(li.hasClass("tabs-selected")){
+					$(a[i-1]).click();
+					return;
+				}
+			}
+		}else if(e.keyCode==39){//方向键→
+			var a = $(".tabs-inner");
+			for (var i = 0; i < a.length-1; i++) {
+				var li = $(a[i]).parent();
+				if(li.hasClass("tabs-selected")){
+					$(a[i+1]).click();
+					return;
+				}
+			}
+		}
+	})
+})
+function keyDownLogin(){
+	var divs = $(".panel-htop").not(".window");
+	for (var i = 0; i < divs.length; i++) {
+		var div = divs[i];
+		if(!$(div).is(":hidden")){
+			var a = $(div).find(".easyui-linkbutton");
+			login(a)
+		}
+	}
+}
 //清除表单
 function myClearForm(){
 	$("#dataForm1").form('clear');
 	$("#dataForm2").form('clear');
+	$("#dataForm3").form('clear');
 }
 
 //播发系统登录

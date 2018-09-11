@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.DeviceJson;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DeviceParamVal;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
@@ -61,6 +63,7 @@ public class BackCommunicationAction extends BaseAction {
 	 *             peiyongdong
 	 * @date 2018年6月12日 下午4:00:59
 	 */
+	@Log("发送应急信息")
 	@RequestMapping("/sendEmer")
 	public String sendEmer(Integer emerId) {
 		Emergencyinfo emer = emerService.selectById(emerId);
@@ -126,7 +129,9 @@ public class BackCommunicationAction extends BaseAction {
 	 *             peiyongdong
 	 * @date 2018年6月12日 上午11:28:50
 	 */
+	@Log("注册设备")
 	@PostMapping("/baseSave")
+	@Transactional
 	public HashMap<String, Object> baseSave(Deviceinfo deviceInfo) {
 		String devHexcode = "";// 设备地址号 ==设备寻址号截取后4个字
 		String devCode = "";// 设备寻址号==资源类型（2字）+资源子类型（2字）+区域行政编码（12字）+设备编号（2字） 共18字
@@ -224,7 +229,9 @@ public class BackCommunicationAction extends BaseAction {
 	 *             peiyongdong
 	 * @date 2018年6月12日 下午4:01:36
 	 */
+	@Log("停止发送应急信息")
 	@PostMapping("/emerStopMessage")
+	@Transactional
 	public HashMap<String, Object> emerStopMessage(Integer emerId) {
 		Emergencyinfo info = emerService.selectById(emerId);
 		String ebm_ID = info.getEbmId();
@@ -252,8 +259,10 @@ public class BackCommunicationAction extends BaseAction {
 		System.out.println(registerDeviceJson);
 		return null;
 	}
+	@Log("设备参数设置")
 	@RequestMapping("/devParamSetting")
 	@ResponseBody
+	@Transactional
 	public HashMap<String, Object> devParamSetting(HttpServletRequest request) {
 		String id = request.getParameter("id");
 		Deviceinfo info = devService.findById(Integer.valueOf(id));

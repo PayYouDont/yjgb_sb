@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gospell.chitong.rdcenter.broadcast.monitorManage.dao.ViewEmerLevelMapper">
+  <resultMap id="BaseResultMap" type="com.gospell.chitong.rdcenter.broadcast.monitorManage.entity.ViewEmerLevel">
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+  </resultMap>
+  <select id="countByDate" resultMap="BaseResultMap">
+  	SELECT 
+		DATE(create_time) as create_time,level,COUNT(*) as count
+	FROM
+		view_emer_level 
+	WHERE
+		create_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+	GROUP BY 
+		DATE(create_time),level
+  </select>
+</mapper>

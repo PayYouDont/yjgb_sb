@@ -34,6 +34,8 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Device
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodelparam;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
+import com.gospell.chitong.rdcenter.broadcast.monitorManage.dao.ViewEmerLevelMapper;
+import com.gospell.chitong.rdcenter.broadcast.monitorManage.entity.ViewEmerLevel;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -192,6 +194,16 @@ public class DaoTest {
 		Map<String,Object> map = new HashMap<String, Object>();
 		//map.put("codeLike","445103100");
 		List<DeviceParamVal> list = dpvDao.list(map);
+		System.out.println(list);
+	}
+	@Resource
+	private ViewEmerLevelMapper viewEmerLevelDao;
+	@Test
+	public void test17() {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("startTime","2018-2-20");
+		map.put("endTime","2018-9-10");
+		List<ViewEmerLevel> list = viewEmerLevelDao.countByDate(map);
 		System.out.println(list);
 	}
 }

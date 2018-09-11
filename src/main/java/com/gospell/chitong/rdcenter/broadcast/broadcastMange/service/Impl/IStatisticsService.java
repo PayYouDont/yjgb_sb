@@ -299,5 +299,4 @@ public class IStatisticsService implements StatisticsService{
 		// TODO Auto-generated method stub
 		return emerDao.count(map);
 	}
-	
 }

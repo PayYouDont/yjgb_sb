@@ -126,6 +126,7 @@ public class EmergencyInfoAction extends BaseAction{
 	 */
 	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
 	@GetMapping("/toEdit")
+	@Log("应急信息编辑")
 	public String toEdit(Model model,String type,Integer id) {
 		Emergencyinfo emer = new Emergencyinfo();
 		if(id!=null) {
@@ -286,6 +287,7 @@ public class EmergencyInfoAction extends BaseAction{
 	@ApiOperation(value="应急信息审核", notes="应急信息审核接口")
 	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
 	@PostMapping("/review")
+	@Log("应急信息审核")
 	@ResponseBody
 	public HashMap<String,Object> review(Emergencyinfo emergencyInfo){
 		String msg="";
@@ -311,6 +313,7 @@ public class EmergencyInfoAction extends BaseAction{
 	@ApiOperation(value="保存应急信息", notes="保存应急信息接口")
 	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
 	@PostMapping("/save")
+	@Log("应急信息保存")
 	@ResponseBody
 	public HashMap<String,Object> save(Emergencyinfo info){
 		try {

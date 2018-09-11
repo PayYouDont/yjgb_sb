@@ -1,5 +1,5 @@
 
-package com.gospell.chitong.rdcenter.broadcast.broadcastMange.vo;
+package com.gospell.chitong.rdcenter.broadcast.monitorManage.controller.vo;
 
 import java.util.Date;
 
@@ -15,8 +15,6 @@ import lombok.Data;
 @Data
 public class StatisticsVO {
 	private String type;
-	
 	private Date startTime;
-	
 	private Date endTime;
 }

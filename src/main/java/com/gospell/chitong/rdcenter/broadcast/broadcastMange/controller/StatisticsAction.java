@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.StatisticsService;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.vo.StatisticsVO;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
@@ -88,17 +87,6 @@ public class StatisticsAction extends BaseAction{
 		try {
 			Map<String, Object> list = service.getTypeData(parameter);
 			return JsonWrapper.successWrapper(list);
-		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
-			return JsonWrapper.failureWrapper();
-		}
-	}
-	@PostMapping("/getData")
-	@ResponseBody
-	public HashMap<String,Object> getData(StatisticsVO vo) {
-		try {
-			
-			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper();

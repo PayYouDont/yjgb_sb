@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
@@ -88,6 +89,7 @@ public class NodeAction extends BaseAction{
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "pageIndex", value = "当前页数", required = true ,dataType = "String")
 	})
+	@Log("删除节点")
 	@PostMapping("/delete")
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer[] ids){
@@ -117,6 +119,7 @@ public class NodeAction extends BaseAction{
 	}
 	@ApiOperation(value="上传文件", notes="上传文件接口")
 	@RequestMapping("/upload")
+	@Log("上传文件")
 	@ResponseBody
 	@Transactional
 	public HashMap<String,Object> upload(HttpServletRequest request,HttpServletResponse response){		
@@ -130,10 +133,5 @@ public class NodeAction extends BaseAction{
 			logger.error("接收tar包异常:"+e);
 			return JsonWrapper.failureWrapper();
 		}
-	}
-	@RequestMapping("/showNodeNews")
-	@ResponseBody
-	public String showNodeNews(){
-		return null;
 	}
 }
