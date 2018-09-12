@@ -51,7 +51,7 @@ public class AccidentLevelAction extends BaseAction{
 	public String toEdit(Model model,Integer id) {
 		Accidentlevel accidentLevel = new Accidentlevel();
 		if(id!=null) {
-			accidentLevel = service.findById(id);
+			accidentLevel = service.selectById(id);
 		}
 		model.addAttribute("accidentLevel", accidentLevel);
 		return "complex/param/accidentLevel_edit";

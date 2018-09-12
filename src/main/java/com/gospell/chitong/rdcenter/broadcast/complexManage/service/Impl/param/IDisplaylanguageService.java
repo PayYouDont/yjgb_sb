@@ -30,7 +30,7 @@ public class IDisplaylanguageService implements DisplayLanguageService{
 	 * @date 2018年7月27日 下午3:00:37
 	 */
 	@Override
-	public Displaylanguage findById(Integer id) {
+	public Displaylanguage selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 
@@ -56,7 +56,7 @@ public class IDisplaylanguageService implements DisplayLanguageService{
 			entity.setCreateBy(userName);
 			return dao.insertSelective(entity);
 		}else {
-			Displaylanguage language = findById(entity.getId());
+			Displaylanguage language = selectById(entity.getId());
 			Map<String,Object> map = new HashMap<>();
 			if(!language.getLanguage().equals(entity.getLanguage())) {
 				map.put("language", entity.getLanguage());

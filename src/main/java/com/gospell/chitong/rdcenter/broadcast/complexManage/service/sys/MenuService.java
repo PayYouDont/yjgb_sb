@@ -1,18 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys;
 
+import java.util.List;
+
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
 
-import java.util.List;
-import java.util.Map;
-
-public interface MenuService {
-	int deleteById(Integer id) throws Exception;
-
-    Menu selectById(Integer id);
-    
+public interface MenuService extends BaseService<Menu>{
     List<Menu> getTree(Integer roleId);
-    
-    List<Menu> list(Map<String,Object> map);
-    
-    int save(Menu menu) throws Exception;
 }

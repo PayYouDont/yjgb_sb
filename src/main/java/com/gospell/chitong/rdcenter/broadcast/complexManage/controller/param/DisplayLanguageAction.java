@@ -52,7 +52,7 @@ public class DisplayLanguageAction extends BaseAction{
 	public String toEdit(Model model,Integer id) {
 		Displaylanguage displayLanguage = new Displaylanguage();
 		if(id!=null) {
-			displayLanguage = service.findById(id);
+			displayLanguage = service.selectById(id);
 		}
 		model.addAttribute("displayLanguage", displayLanguage);
 		return "complex/param/displayLanguage_toEdit";

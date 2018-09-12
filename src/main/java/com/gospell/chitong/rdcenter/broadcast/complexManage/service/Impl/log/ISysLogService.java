@@ -63,7 +63,7 @@ public class ISysLogService implements SysLogService{
 	 * @date 2018年8月22日 上午10:13:42
 	 */
 	@Override
-	public UserLog findByid(Integer id) {
+	public UserLog selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 
@@ -83,7 +83,7 @@ public class ISysLogService implements SysLogService{
 	public int delete(Integer[] ids) throws Exception {
 		int i = 0;
 		for (int j = 0; j < ids.length; j++) {
-			i += dao.deleteByPrimaryKey(ids[i]);
+			i += delete(ids[i]);
 		}
 		return i;
 	}
@@ -150,7 +150,7 @@ public class ISysLogService implements SysLogService{
 	public int delete(List<UserLog> list) throws Exception {
 		int i = 0;
 		for (UserLog log:list) {
-			i += dao.deleteByPrimaryKey(log.getId());
+			i += delete(log.getId());
 		}
 		return i;
 	}
@@ -239,6 +239,22 @@ public class ISysLogService implements SysLogService{
 			map.put(vo.getField(), vo.getFieldValue());
 		}
 		return count(map);
+	}
+
+	/** 
+	 * <p>Title: delete</p> 
+	 * <p>Description: </p> 
+	 * @param id
+	 * @return
+	 * @throws Exception 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService#delete(java.lang.Integer) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年9月11日 下午2:21:07
+	 */
+	@Override
+	public int delete(Integer id) throws Exception {
+		return dao.deleteByPrimaryKey(id);
 	}
 
 }

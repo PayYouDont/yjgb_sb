@@ -18,7 +18,7 @@ public class IDeviceParamValService implements DeviceParamValService{
 	private DeviceParamValMapper dao;
 
 	@Override
-	public DeviceParamVal findById(Integer id) {
+	public DeviceParamVal selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 

@@ -1,24 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.BaseDao;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaymethod;
 
-public interface DisplaymethodMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(Displaymethod record);
-
-    int insertSelective(Displaymethod record);
-
-    Displaymethod selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Displaymethod record);
-
-    int updateByPrimaryKey(Displaymethod record);
+public interface DisplaymethodMapper extends BaseDao<Displaymethod, Serializable>{
     
-    List<Displaymethod> list(Map<String,Object> map);
-    
-    int count(Map<String,Object> map);
 }

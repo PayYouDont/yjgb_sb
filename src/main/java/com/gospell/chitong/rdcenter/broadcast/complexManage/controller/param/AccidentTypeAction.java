@@ -52,7 +52,7 @@ public class AccidentTypeAction extends BaseAction{
 	public String toEdit(Model model,Integer id) {
 		Accidenttype accidentType = new Accidenttype();
 		if(id!=null) {
-			accidentType = service.findById(id);
+			accidentType = service.selectById(id);
 		}
 		model.addAttribute("accidentType", accidentType);
 		return "complex/param/accidentType_edit";

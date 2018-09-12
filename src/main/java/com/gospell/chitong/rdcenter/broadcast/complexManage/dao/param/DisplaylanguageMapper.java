@@ -1,24 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.BaseDao;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaylanguage;
 
-public interface DisplaylanguageMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(Displaylanguage record);
-
-    int insertSelective(Displaylanguage record);
-
-    Displaylanguage selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Displaylanguage record);
-
-    int updateByPrimaryKey(Displaylanguage record);
-    
-    List<Displaylanguage> list(Map<String,Object> map);
-    
-    int count(Map<String,Object> map);
+public interface DisplaylanguageMapper extends BaseDao<Displaylanguage, Serializable>{
+   
 }

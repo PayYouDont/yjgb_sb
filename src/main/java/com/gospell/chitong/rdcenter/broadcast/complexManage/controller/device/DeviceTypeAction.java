@@ -89,7 +89,7 @@ public class DeviceTypeAction extends BaseAction{
 	@ResponseBody
 	public HashMap<String,Object> delete(Integer id){
 		try {
-			int i = service.deleteById(id);
+			int i = service.delete(id);
 			if(i==-1) {
 				logger.info("设备类型id="+id+"删除失败，该类型下拥有多个设备型号，请先删除这些型号数据！");
 				return JsonWrapper.failureWrapper("该类型下拥有多个设备型号，请先删除这些型号数据！");

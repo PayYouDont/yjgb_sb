@@ -46,7 +46,7 @@ public class DeviceModelParamAction extends BaseAction{
 	public String toAdd(Model model,Integer id) {
 		Devicemodelparam  dmp= null;
 		if(id!=null) {
-			dmp = service.findById(id);
+			dmp = service.selectById(id);
 		}else {
 			dmp = new Devicemodelparam();
 		}
@@ -105,7 +105,7 @@ public class DeviceModelParamAction extends BaseAction{
 			if(list.size()>0) {
 				return JsonWrapper.failureWrapper("该型号参数正在使用");
 			}
-			service.deletById(id);
+			service.delete(id);
 			return JsonWrapper.successWrapper();
 		}catch(Exception e) {
 			logger.error(e.getMessage(),e);

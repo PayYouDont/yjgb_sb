@@ -47,7 +47,7 @@ public class IDeviceInfoService implements DeviceInfoService{
 	}
 
 	@Override
-	public Deviceinfo findById(Integer id) {
+	public Deviceinfo selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 
@@ -57,7 +57,7 @@ public class IDeviceInfoService implements DeviceInfoService{
 	}
 
 	@Override
-	public int queryCount(Map<String, Object> map) {
+	public int count(Map<String, Object> map) {
 		return dao.count(map);
 	}
 

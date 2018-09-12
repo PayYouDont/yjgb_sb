@@ -29,7 +29,7 @@ public class IDisplayMethodService implements DisplayMethodService{
 	 * @date 2018年7月27日 下午4:03:07
 	 */
 	@Override
-	public Displaymethod findById(Integer id) {
+	public Displaymethod selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 
@@ -55,7 +55,7 @@ public class IDisplayMethodService implements DisplayMethodService{
 			entity.setCreateBy(userName);
 			return dao.insertSelective(entity);
 		}else {
-			Displaymethod method = findById(entity.getId());
+			Displaymethod method = selectById(entity.getId());
 			Map<String,Object> map = new HashMap<>();
 			if(!method.getMethod().equals(entity.getMethod())) {
 				map.put("method", entity.getMethod());

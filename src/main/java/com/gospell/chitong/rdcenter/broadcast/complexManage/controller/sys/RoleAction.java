@@ -49,7 +49,7 @@ public class RoleAction extends BaseAction {
     public ModelAndView toEdit(Model model,Integer id){
         Role role = new Role ();
         if(id!=null){
-            role = service.findById (id);
+            role = service.selectById (id);
         }
         model.addAttribute ("role",role);
         return new ModelAndView("complex/sys/role_edit");

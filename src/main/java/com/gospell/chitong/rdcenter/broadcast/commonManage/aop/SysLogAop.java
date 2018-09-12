@@ -97,7 +97,7 @@ public class SysLogAop {
             userLog.setUserId(user.getId());
             userLog.setUserName(user.getName());
             userLog.setRoleId(user.getRoleId().toString());
-            Role role = roleService.findById(user.getRoleId());
+            Role role = roleService.selectById(user.getRoleId());
             userLog.setRoleName(role.getName());
         }
         // 保存系统日志

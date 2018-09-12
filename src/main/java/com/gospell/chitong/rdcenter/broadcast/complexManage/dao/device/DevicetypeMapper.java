@@ -1,24 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.BaseDao;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicetype;
 
-public interface DevicetypeMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(Devicetype record);
-
-    int insertSelective(Devicetype record);
-
-    Devicetype selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Devicetype record);
-
-    int updateByPrimaryKey(Devicetype record);
-    
-    List<Devicetype> list(Map<String,Object> map);
-    
-    int count(Map<String,Object> map);
+public interface DevicetypeMapper extends BaseDao<Devicetype, Serializable>{
+   
 }

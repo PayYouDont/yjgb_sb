@@ -265,7 +265,7 @@ public class BackCommunicationAction extends BaseAction {
 	@Transactional
 	public HashMap<String, Object> devParamSetting(HttpServletRequest request) {
 		String id = request.getParameter("id");
-		Deviceinfo info = devService.findById(Integer.valueOf(id));
+		Deviceinfo info = devService.selectById(Integer.valueOf(id));
 		Map<String,Object> map = new HashMap<>();
 		map.put("deviceInfoId",info.getId());
 		List<DeviceParamVal> devModelParamList = dpvService.list(map);

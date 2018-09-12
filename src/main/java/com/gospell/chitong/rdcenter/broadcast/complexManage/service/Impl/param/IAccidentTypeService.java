@@ -57,7 +57,7 @@ public class IAccidentTypeService implements AccidentTypeSevice{
 			if(count>0) {//正在被使用
 				return -1;
 			}
-			Accidenttype type = findById(entity.getId());
+			Accidenttype type = selectById(entity.getId());
 			if(!type.getName().equals(entity.getName())) {
 				map = new HashMap<>();
 				map.put("name", entity.getName());
@@ -133,7 +133,7 @@ public class IAccidentTypeService implements AccidentTypeSevice{
 	 * @date 2018年7月27日 上午9:50:01
 	 */
 	@Override
-	public Accidenttype findById(Integer id) {
+	public Accidenttype selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 

@@ -1,26 +1,12 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.BaseDao;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.User;
 
-public interface UserMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(User record);
-
-    int insertSelective(User record);
-
-    User selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(User record);
-
-    int updateByPrimaryKey(User record);
-    
-    User findByName(String name);
-    
-    List<User> list(Map<String,Object> map);
-    
-    int count(Map<String,Object> map);
+public interface UserMapper extends BaseDao<User, Serializable>{
+	
+	 User findByName(String name);
+	 
 }

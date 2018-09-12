@@ -23,7 +23,7 @@ public class IDeviceTypeService implements DeviceTypeService{
 	private DevicemodelMapper dmdao;
 
 	@Override
-	public int deleteById(Integer id) throws Exception{
+	public int delete(Integer id) throws Exception{
 		Map<String,Object> map = new HashMap<>();
 		map.put("devicetypeId", id);
 		List<Devicemodel> list = dmdao.list(map);

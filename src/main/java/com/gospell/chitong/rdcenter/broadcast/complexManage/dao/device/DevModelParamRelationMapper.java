@@ -1,22 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.BaseDao;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DevModelParamRelation;
 
-public interface DevModelParamRelationMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(DevModelParamRelation record);
-
-    int insertSelective(DevModelParamRelation record);
-
-    DevModelParamRelation selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(DevModelParamRelation record);
-
-    int updateByPrimaryKey(DevModelParamRelation record);
+public interface DevModelParamRelationMapper extends BaseDao<DevModelParamRelation, Serializable>{
     
-    List<DevModelParamRelation>list(Map<String,Object> map);
 }

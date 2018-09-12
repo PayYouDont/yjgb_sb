@@ -81,7 +81,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		return infodao.list(map);
 	}
 	@Override
-	public int deleteById(Integer id) throws Exception {
+	public int delete(Integer id) throws Exception {
 		int i = dao.deleteByPrimaryKey(id);
 		return i;
 	}

@@ -1,24 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.BaseDao;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DeviceParamVal;
 
-public interface DeviceParamValMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(DeviceParamVal record);
-
-    int insertSelective(DeviceParamVal record);
-
-    DeviceParamVal selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(DeviceParamVal record);
-
-    int updateByPrimaryKey(DeviceParamVal record);
+public interface DeviceParamValMapper extends BaseDao<DeviceParamVal, Serializable>{
     
-    List<DeviceParamVal> list(Map<String,Object> map);
-    
-    int count(Map<String,Object> map);
 }

@@ -3,20 +3,11 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.service.device;
 import java.util.List;
 import java.util.Map;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
 
-public interface DeviceInfoService {
-	
-	int save(Deviceinfo deviceinfo) throws Exception;
-	
-	int delete(Integer id) throws Exception;
-	
-	Deviceinfo findById(Integer id);
-	
-	List<Deviceinfo> list(Map<String,Object> map);
-	
-	int queryCount(Map<String,Object> map);
+public interface DeviceInfoService extends BaseService<Deviceinfo>{
 	
 	List<String> findByCodes(String code);
 	

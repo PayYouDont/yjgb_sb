@@ -51,7 +51,7 @@ public class DisplayMethodAction extends BaseAction{
 	public String toEdit(Model model,Integer id) {
 		Displaymethod displayMethod = new Displaymethod();
 		if(id!=null) {
-			displayMethod = service.findById(id);
+			displayMethod = service.selectById(id);
 		}
 		model.addAttribute("displayMethod", displayMethod);
 		return "complex/param/displayMethod_edit";

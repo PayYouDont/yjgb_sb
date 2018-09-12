@@ -29,7 +29,7 @@ public class IRoleService implements RoleService {
 	private MenuRoleRelationMapper mrrDao;
 
 	@Override
-	public Role findById(Integer id) {
+	public Role selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 
@@ -93,6 +93,26 @@ public class IRoleService implements RoleService {
 	@Override
 	public int count(Map<String, Object> map) {
 		return dao.count(map);
+	}
+
+	/** 
+	 * <p>Title: save</p> 
+	 * <p>Description: </p> 
+	 * @param record
+	 * @return
+	 * @throws Exception 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService#save(java.lang.Object) 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年9月11日 下午2:39:10
+	 */
+	@Override
+	public int save(Role record) throws Exception {
+		if (record.getId() == null) {
+			return dao.insertSelective(record);
+		} else {
+			return dao.updateByPrimaryKeySelective(record);
+		}
 	}
 
 }

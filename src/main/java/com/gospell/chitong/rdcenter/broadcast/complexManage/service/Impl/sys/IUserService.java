@@ -35,7 +35,7 @@ public class IUserService implements UserService{
 
 
 	@Override
-	public int deleteById(Integer id) throws Exception {
+	public int delete(Integer id) throws Exception {
 		return dao.deleteByPrimaryKey(id);
 	}
 

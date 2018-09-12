@@ -1,19 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.dao;
 
+import java.io.Serializable;
+
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Task;
 
-public interface TaskMapper {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(Task record);
-
-    int insertSelective(Task record);
-
-    Task selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(Task record);
-
-    int updateByPrimaryKey(Task record);
-    
+public interface TaskMapper extends BaseDao<Task, Serializable>{
     Task selectByJobName(String jobName);
 }

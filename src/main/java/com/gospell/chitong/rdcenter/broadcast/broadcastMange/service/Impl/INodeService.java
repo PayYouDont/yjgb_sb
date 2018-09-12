@@ -38,7 +38,7 @@ public class INodeService implements NodeService {
 	private NodeMapper dao;
 
 	@Override
-	public int deleteById(Integer id) throws Exception {
+	public int delete(Integer id) throws Exception {
 		return dao.deleteByPrimaryKey(id);
 	}
 
@@ -75,7 +75,7 @@ public class INodeService implements NodeService {
 	public int deleteByIds(Integer[] ids) throws Exception {
 		int count = 0;
 		for (int i = 0; i < ids.length; i++) {
-			count += deleteById(ids[i]);
+			count += delete(ids[i]);
 		}
 		return count;
 	}

@@ -190,7 +190,7 @@ public class UserAction extends BaseAction{
 	@PostMapping("/delete")
 	public HashMap<String,Object> delete(Integer id){
 		try {
-			service.deleteById(id);
+			service.delete(id);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);

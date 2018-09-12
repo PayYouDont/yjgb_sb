@@ -47,7 +47,7 @@ public class IDeviceModelpParamService implements DeviceModelParamService{
 	}
 
 	@Override
-	public int deletById(Integer id) throws Exception {
+	public int delete(Integer id) throws Exception {
 		return dao.deleteByPrimaryKey(id);
 	}
 
@@ -57,7 +57,7 @@ public class IDeviceModelpParamService implements DeviceModelParamService{
 	}
 
 	@Override
-	public Devicemodelparam findById(Integer id) {
+	public Devicemodelparam selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 	

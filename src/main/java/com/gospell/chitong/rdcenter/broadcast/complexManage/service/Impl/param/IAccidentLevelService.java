@@ -40,7 +40,7 @@ public class IAccidentLevelService implements AccidentLevelService{
 	 * @date 2018年7月27日 下午1:44:51
 	 */
 	@Override
-	public Accidentlevel findById(Integer id) {
+	public Accidentlevel selectById(Integer id) {
 		return dao.selectByPrimaryKey(id);
 	}
 

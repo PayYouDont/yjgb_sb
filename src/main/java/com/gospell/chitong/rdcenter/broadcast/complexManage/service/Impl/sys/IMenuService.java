@@ -22,7 +22,7 @@ public class IMenuService implements MenuService{
 	private MenuRoleRelationMapper mrrDao;
 
 	@Override
-	public int deleteById(Integer id) throws Exception{
+	public int delete(Integer id) throws Exception{
 		int i = dao.deleteByPrimaryKey(id);
 		Map<String,Object> map = new HashMap<>();
 		map.put("menuId", id);

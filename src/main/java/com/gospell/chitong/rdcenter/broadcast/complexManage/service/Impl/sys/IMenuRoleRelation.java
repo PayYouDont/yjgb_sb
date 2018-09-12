@@ -20,41 +20,25 @@ public class IMenuRoleRelation implements MenuRoleRelationService{
 	private MenuMapper menuDao;
 	
 	@Override
-	public int deleteByPrimaryKey(Integer id) {
+	public int delete(Integer id) {
 		int i = dao.deleteByPrimaryKey(id);
 		return i;
 	}
-
+	
 	@Override
-	public int insert(MenuRoleRelation record) {
-		int i = dao.insert(record);
-		return i;
+	public int save(MenuRoleRelation record) {
+		if(record.getId()==null) {
+			return dao.insertSelective(record);
+		}else {
+			return dao.updateByPrimaryKeySelective(record);
+		}
 	}
 
 	@Override
-	public int insertSelective(MenuRoleRelation record) {
-		int i = dao.insertSelective(record);
-		return i;
-	}
-
-	@Override
-	public MenuRoleRelation selectByPrimaryKey(Integer id) {
+	public MenuRoleRelation selectById(Integer id) {
 		MenuRoleRelation mrr = dao.selectByPrimaryKey(id);
 		return mrr;
 	}
-
-	@Override
-	public int updateByPrimaryKeySelective(MenuRoleRelation record) {
-		int i = dao.updateByPrimaryKeySelective(record);
-		return i;
-	}
-
-	@Override
-	public int updateByPrimaryKey(MenuRoleRelation record) {
-		int i = dao.updateByPrimaryKey(record);
-		return i;
-	}
-
 	@Override
 	public List<MenuRoleRelation> findByRoleId(Integer roleId) {
 		Map<String,Object> map = new HashMap<> ();

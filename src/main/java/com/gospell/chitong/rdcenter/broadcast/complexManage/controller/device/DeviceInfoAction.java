@@ -53,7 +53,7 @@ public class DeviceInfoAction extends BaseAction {
 	public String toEdit(Model model, Integer id) {
 		Deviceinfo deviceInfo = new Deviceinfo();
 		if (id != null) {
-			deviceInfo = service.findById(id);
+			deviceInfo = service.selectById(id);
 		}
 		Map<String, Object> map = new HashMap<>();
 		List<Devicemodel> deviceModelList = service.getDeviceModelList(map);
@@ -64,7 +64,7 @@ public class DeviceInfoAction extends BaseAction {
 
 	@GetMapping("/update")
 	public String updateParam(Model model, Integer id) {
-		Deviceinfo info = service.findById(id);
+		Deviceinfo info = service.selectById(id);
 		Map<String, Object> map = new HashMap<>();
 		map.put("deviceInfoId", info.getId());
 		List<DeviceParamVal> params = dpvService.list(map);
@@ -79,7 +79,7 @@ public class DeviceInfoAction extends BaseAction {
 	@RequiresPermissions("dev:info:edit")
 	@GetMapping("/toRegist")
 	public String goDeviceRegister(Model model, Integer id) {
-		Deviceinfo dev = service.findById(id);
+		Deviceinfo dev = service.selectById(id);
 		List<Devicemodel> deviceModelList = dmService.list(new HashMap<>());
 		model.addAttribute("device", dev);
 		model.addAttribute("deviceModelList", deviceModelList);
@@ -124,7 +124,7 @@ public class DeviceInfoAction extends BaseAction {
 			map.put("devdsnLike", devDsn);
 		}
 		List<Deviceinfo> list = service.list(map);
-		int total = service.queryCount(map);
+		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
 	@ApiOperation(value="删除设备信息", notes="删除设备信息接口")
