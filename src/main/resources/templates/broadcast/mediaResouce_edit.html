@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>资源上传</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/broadcast/mediaResource_edit.js"></script>
+<style type="text/css">
+a:FOCUS {
+	outline: none;
+}
+.play{
+	background-image: url("/image/play.svg");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position:5px 2px; 
+}
+.play .l-btn-icon-left .l-btn-icon{
+	left:inherit;
+}
+.play:hover {
+    background-image: url("/image/play.svg");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position:5px 2px; 
+    color: #000000;
+    border: 1px solid #b7d2ff;
+    filter: none;
+}
+.pause{
+	background-image: url("/image/pause.svg");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position:5px 2px; 
+}
+.pause .l-btn-icon-left .l-btn-icon{
+	left:inherit;
+}
+.pause:hover {
+    background-image: url("/image/pause.svg");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position:5px 2px; 
+    color: #000000;
+    border: 1px solid #b7d2ff;
+    filter: none;
+}
+</style>
+<script type="text/javascript">
+	var type = '[[${type}]]';
+</script>
+<body class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'top'">
+         <div class="easyui-panel"  style="height: 27px;" data-options="border:false">
+           	 <a th:if="${type}=='manage'" class="easyui-linkbutton" type="file" data-options="iconCls:'icon-add'" 
+           	 style="height: 27px;width: 100px;" onclick="selectFile();">选择文件</a>
+             <a th:if="${type}=='manage'" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" 
+             style="height: 27px;width: 100px;" onclick="removeFile();">移除文件</a>
+             <a th:if="${type}=='review'" class="easyui-linkbutton play" data-options="iconCls:'icon-remove'" 
+             style="height: 27px;width: 100px;" id="player" onclick="playFile();">播放资源</a>
+          	 <span th:if="${type}=='review'" class="duration">00:00</span>
+          	 <audio th:if="${type}=='review'" id="audio" src=""></audio>
+          </div>
+    </div>
+	<form id="dataForm" data-options="region:'center'" class="easyui-form" method="post">
+		<input id="souceId" type="hidden" name="id" th:value="${souce.id}">
+		<input id="status" type="hidden" name="status" th:value="${souce.status}==null?0:${souce.status}">
+		<table class="tab" cellpadding="1" cellspacing="5"
+			style="width: calc(100% - 2px); margin-top: 10px;">
+			<tr>
+				<td style="text-align: center; width: 80px;">资源名称</td>
+				<td><input class="easyui-textbox easyui-validatebox"
+					placeholder="必填" id="fileName" name="fileName"
+					th:readonly="${type}=='review'"
+					th:value='${souce.fileName}' data-options="required:true"
+					style="width: 194px;"></td>
+			</tr>
+			<tr>
+				<td style="text-align: center; width: 80px;">资源大小</td>
+				<td><input class="easyui-textbox easyui-validatebox"
+					placeholder="只读" id="fileSize" name="fileSize"
+					th:value='${souce.fileSize}' 
+					data-options="required:true,readonly:'true'" style="width: 194px;">
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center; width: 80px;">资源来源</td>
+				<td><input class="easyui-textbox easyui-validatebox"
+					placeholder="必填" id="source" name="source"
+					th:readonly="${type}=='review'"
+					th:value='${souce.source}' data-options="required:true"
+					style="width: 194px;"></td>
+			</tr>
+			<tr>
+				<td style="text-align: center; width: 80px;">资源类型</td>
+				<td><input class="easyui-textbox easyui-validatebox"
+					placeholder="只读" id="fileType" name="fileType" th:value='${souce.fileType}'
+					data-options="required:true,readonly:'true'" style="width: 194px;">
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center; width: 80px;">资源简介</td>
+				<td><input class="easyui-textbox easyui-validatebox"
+					placeholder="必填" id="introduction" name="introduction"
+					th:readonly="${type}=='review'"
+					th:value='${souce.introduction}' data-options="required:true"
+					style="width: 194px;"></td>
+			</tr>
+		</table>
+	</form>
+	<div data-options="region:'south',border:false"
+		style="text-align: right; padding: 5px 0 0;">
+		<a th:text="${type}=='manage'?保存:通过" class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+			href="javascript:void(0)" onclick="saveOrReview();" style="width: 80px">保存</a>
+		<a th:text="${type}=='manage'?关闭:不通过"class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
+			href="javascript:void(0)" onclick="closeOrReview();"
+			style="width: 80px">关闭</a>
+	</div>
+</body>
+</html>

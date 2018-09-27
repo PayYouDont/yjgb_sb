@@ -79,7 +79,6 @@ function getData(data,func){
 	});
 }
 function initCount(data) {
-	console.log(data)
 	var startTime = app.getDate().startTime;
 	var endTime = app.getDate().endTime;
 	var myChart = echarts.init(document.getElementById('count-chart'));

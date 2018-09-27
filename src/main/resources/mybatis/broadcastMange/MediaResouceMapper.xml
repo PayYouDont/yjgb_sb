@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.MediaResouceMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="file_name" jdbcType="VARCHAR"
+			property="fileName" />
+		<result column="file_path" jdbcType="VARCHAR"
+			property="filePath" />
+		<result column="file_type" jdbcType="VARCHAR"
+			property="fileType" />
+		<result column="file_size" jdbcType="BIGINT"
+			property="fileSize" />
+		<result column="source" jdbcType="VARCHAR" property="source" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="create_by" jdbcType="VARCHAR"
+			property="createBy" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+		<result column="update_by" jdbcType="VARCHAR"
+			property="updateBy" />
+		<result column="introduction" jdbcType="VARCHAR"
+			property="introduction" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, file_name, file_path, file_type, file_size, `source`, `status`,
+		create_time,
+		create_by, update_time, update_by, introduction
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from media_resouce
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from media_resouce
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce">
+		insert into media_resouce (id, file_name, file_path,
+		file_type, file_size, `source`,
+		`status`, create_time, create_by,
+		update_time, update_by, introduction
+		)
+		values (#{id,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR},
+		#{filePath,jdbcType=VARCHAR},
+		#{fileType,jdbcType=VARCHAR}, #{fileSize,jdbcType=BIGINT}, #{source,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+		#{createBy,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce">
+		insert into media_resouce
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="fileName != null">
+				file_name,
+			</if>
+			<if test="filePath != null">
+				file_path,
+			</if>
+			<if test="fileType != null">
+				file_type,
+			</if>
+			<if test="fileSize != null">
+				file_size,
+			</if>
+			<if test="source != null">
+				`source`,
+			</if>
+			<if test="status != null">
+				`status`,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="introduction != null">
+				introduction,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="fileName != null">
+				#{fileName,jdbcType=VARCHAR},
+			</if>
+			<if test="filePath != null">
+				#{filePath,jdbcType=VARCHAR},
+			</if>
+			<if test="fileType != null">
+				#{fileType,jdbcType=VARCHAR},
+			</if>
+			<if test="fileSize != null">
+				#{fileSize,jdbcType=BIGINT},
+			</if>
+			<if test="source != null">
+				#{source,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="introduction != null">
+				#{introduction,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce">
+		update media_resouce
+		<set>
+			<if test="fileName != null">
+				file_name = #{fileName,jdbcType=VARCHAR},
+			</if>
+			<if test="filePath != null">
+				file_path = #{filePath,jdbcType=VARCHAR},
+			</if>
+			<if test="fileType != null">
+				file_type = #{fileType,jdbcType=VARCHAR},
+			</if>
+			<if test="fileSize != null">
+				file_size = #{fileSize,jdbcType=BIGINT},
+			</if>
+			<if test="source != null">
+				`source` = #{source,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				`status` = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="introduction != null">
+				introduction = #{introduction,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce">
+		update media_resouce
+		set file_name = #{fileName,jdbcType=VARCHAR},
+		file_path = #{filePath,jdbcType=VARCHAR},
+		file_type = #{fileType,jdbcType=VARCHAR},
+		file_size = #{fileSize,jdbcType=BIGINT},
+		`source` = #{source,jdbcType=VARCHAR},
+		`status` = #{status,jdbcType=INTEGER},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		create_by = #{createBy,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		update_by = #{updateBy,jdbcType=VARCHAR},
+		introduction = #{introduction,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="list" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from media_resouce
+		<where>
+			<if test="fileName != null">
+				and file_name = #{fileName,jdbcType=VARCHAR}
+			</if>
+			<if test="filePath != null">
+				and file_path = #{filePath,jdbcType=VARCHAR}
+			</if>
+			<if test="fileType != null">
+				and file_type = #{fileType,jdbcType=VARCHAR}
+			</if>
+			<if test="fileSize != null">
+				and file_size = #{fileSize,jdbcType=BIGINT}
+			</if>
+			<if test="source != null">
+				and `source` = #{source,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+				and create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				and update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+				and update_by = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="introduction != null">
+				and introduction = #{introduction,jdbcType=VARCHAR}
+			</if>
+			<if test="fileNameLike != null">
+				and file_name like "%" #{fileNameLike,jdbcType=VARCHAR} "%"
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from media_resouce
+		<where>
+			<if test="fileName != null">
+				and file_name = #{fileName,jdbcType=VARCHAR}
+			</if>
+			<if test="filePath != null">
+				and file_path = #{filePath,jdbcType=VARCHAR}
+			</if>
+			<if test="fileType != null">
+				and file_type = #{fileType,jdbcType=VARCHAR}
+			</if>
+			<if test="fileSize != null">
+				and file_size = #{fileSize,jdbcType=BIGINT}
+			</if>
+			<if test="source != null">
+				and `source` = #{source,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+				and create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				and update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+				and update_by = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="introduction != null">
+				and introduction = #{introduction,jdbcType=VARCHAR}
+			</if>
+			<if test="fileNameLike != null">
+				and file_name like "%" #{fileNameLike,jdbcType=VARCHAR} "%"
+			</if>
+		</where>
+	</select>
+</mapper>

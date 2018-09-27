@@ -77,6 +77,7 @@ public class SysLogAop {
         	if(args.length>0&&args[0]!=null) {
                 params = JSON.toJSONString(args[0]);
         	}
+        	params = params.length()>255?params.substring(0,255):params;
             userLog.setDes(params);
         } catch (Exception e) {
         	logger.error(e.getMessage(),e);

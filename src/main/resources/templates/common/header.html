@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>导航</title>
+<!--easyui控件css -->
+<link id="easyuiTheme" rel="stylesheet" type="text/css"
+	href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script src="/js/core/jquery.min.js"></script>
+<script src="/easyui/changeTheme.js"></script>
+<!--easyui控件js -->
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="/js/common/header.js"></script>
+</head>
+<body class="easyui-layout">
+	<div id="nav" data-options="region:'north',border:false"
+		style="height: 50px; background: #B3DFDA;">
+		<input id="unit_json" type="hidden" th:value="${server.getLocation()}">
+		<input id="server_ip" type="hidden" th:value="${server.server_ip}">
+		<input id="server_port" type="hidden" th:value="${server.server_port}">
+
+		<div style="float: left; height: 100%;">
+			<img alt="logo" style="margin-top: 2px;"
+				th:src="${server.broadcastLogo}">
+		</div>
+		<div style="float: left; height: 100%;">
+			<font id="myunitName" th:text="${server.manageName}"
+				style="height: 50px; line-height: 48px; font-size: 20px; color: white; font-weight: bold;"></font>
+		</div>
+		<!-- 登录后获取用户名称 -->
+		<div style="padding: 10px; float: right; height: 30px;">
+			<a th:text="${user.name}" id="btn-edit" href="#"
+				class="easyui-menubutton" style="min-width: 150px;"
+				data-options="menu:'#mm1',iconCls:'icon-extenduser',menuAlign:'right'">
+			</a>
+		</div>
+
+		<div id="mm1" style="width: 150px;" data-options="onClick:menuHandler">
+			<div data-options="iconCls:'icon-edit',name:'edit'">修改信息</div>
+			<div data-options="iconCls:'icon-key',name:'password'">修改密码</div>
+			<div data-options="iconCls:'icon-tip'">
+				<span>主题应用</span>
+				<div style="width: 150px;">
+					<div id="default" onclick="changeTheme(this.id)">
+						<b>默认</b>
+					</div>
+					<div id="black" onclick="changeTheme(this.id)">黑色</div>
+					<div id="gray" onclick="changeTheme(this.id)">灰色</div>
+					<div id="metro-blue" onclick="changeTheme(this.id)">metro蓝色</div>
+					<div id="metro-gray" onclick="changeTheme(this.id)">metro灰色</div>
+					<div id="metro-green" onclick="changeTheme(this.id)">metro绿色</div>
+					<div id="metro-orange" onclick="changeTheme(this.id)">metro橘色</div>
+					<div id="metro-red" onclick="changeTheme(this.id)">metro红色</div>
+				</div>
+			</div>
+			<div data-options="iconCls:'icon-exit',name:'logout'">退出系统</div>
+		</div>
+	</div>
+	<div id="editInfo" class="easyui-window" title="用户基础信息修改"
+		data-options="iconCls:'icon-extenduser',shadow:false,modal:true,closed:true"
+		style="width: 400px; height: 300px; padding: 5px;">
+		<div class="easyui-layout" data-options="fit:true"
+			style="padding: 10px">
+			<form id="info_form" data-options="novalidate:true,fit:true">
+				<div>
+					<label for="userName">用户姓名:&nbsp;&nbsp;</label> <input
+						class="easyui-textbox easyui-validatebox" style="width: 180px"
+						type="text" data-options="required:true" id="name" name="name"
+						th:value="${user.name}">
+				</div>
+				<br>
+
+				<div>
+					<label for="phoneNum">联系方式:&nbsp;&nbsp;</label> <input
+						class="easyui-textbox" type="text" style="width: 180px;"
+						data-options="validType:'phoneNum',required:true" id="phone"
+						name="phone" th:value="${user.phone}">
+				</div>
+				<br>
+				<div>
+					<label for="userSex">用户性别:&nbsp;&nbsp;</label> <span id="sex"
+						class="easyui-radio"> <input type="radio" name="sex"
+						value="1" th:checked="${user.sex == 1}" />男 <input type="radio"
+						name="sex" value="0" th:checked="${user.sex == 0}" />女
+					</span>
+				</div>
+				<br> <input id="edit_info_id" name="id" type="hidden"
+					th:value="${user.id}" />
+				<div data-options="region:'south',border:false"
+					style="text-align: right; padding: 5px 0 0;">
+					<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+						href="javascript:void(0)" onclick="mysave();" style="width: 80px">保存</a>
+					<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
+						href="javascript:void(0)" onclick="closeModal();"
+						style="width: 80px">取消</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- 修改账号密码 -->
+	<div id="editPassword" class="easyui-window" title="修改账户密码"
+		data-options="iconCls:'icon-key',shadow:false,modal:true,closed:true"
+		style="width: 400px; height: 300px; padding: 5px;">
+		<div class="easyui-layout" data-options="fit:true"
+			style="padding: 10px;">
+			<form id="password_form" data-options="novalidate:true,fit:true">
+				<div>
+					<label for="oldpassword">&emsp;&emsp;旧密码:&nbsp;&nbsp;</label> <input
+						class="easyui-textbox easyui-validatebox" style="width: 180px"
+						data-options="validType:'pass',required:true" id="oldpassword"
+						type="password" name="oldPwd" value=''>
+				</div>
+				<br>
+
+				<div>
+					<label for="newpassword">&emsp;&emsp;新密码:&nbsp;&nbsp;</label> <input
+						class="easyui-textbox easyui-validatebox" style="width: 180px"
+						data-options="validType:'pass',required:true" id="newpassword"
+						type="password" name="newPwd" value=''>
+				</div>
+				<br>
+
+				<div>
+					<label for="repnewpassword">重复新密码:&nbsp;&nbsp;</label> <input
+						class="easyui-textbox easyui-validatebox" style="width: 180px"
+						data-options="required:true" validType="equals['#newpassword']"
+						type="password">
+				</div>
+				<br> <input id="edit_password_id" name="userId" type="hidden"
+					th:value="${user.id}" />
+				<div data-options="region:'south',border:false"
+					style="text-align: right; padding: 5px 0 0;">
+					<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+						href="javascript:void(0)" onclick="changePWD();"
+						style="width: 80px">保存</a> <a class="easyui-linkbutton"
+						data-options="iconCls:'icon-cancel'" href="javascript:void(0)"
+						onclick="closeModal();" style="width: 80px">取消</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
