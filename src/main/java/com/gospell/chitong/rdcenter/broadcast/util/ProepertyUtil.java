@@ -40,8 +40,9 @@ public class ProepertyUtil {
 		String path = PropUtil.class.getClassLoader().getResource(propertyPath).getFile();
 		try {
 			File file = null;
-			if(getPath()!=null) {
-				file = new File(getPath());
+			String configFilePath = getPath();
+			if(configFilePath!=null&&!"".equals(configFilePath)) {
+				file = new File(configFilePath);
 			}else {
 				file = new File(path);
 			}

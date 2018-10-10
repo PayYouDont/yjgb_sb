@@ -1,14 +1,18 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +28,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Device
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodelparam;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.User;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceModelService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceParamValService;
@@ -32,6 +37,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @RestController
@@ -65,6 +71,7 @@ public class BackCommunicationAction extends BaseAction {
 	 */
 	@Log("发送应急信息")
 	@RequestMapping("/sendEmer")
+	@ResponseBody
 	public String sendEmer(Integer emerId) {
 		Emergencyinfo emer = emerService.selectById(emerId);
 		String url = serverProperties.getEmerSendIpAddress();
@@ -103,6 +110,7 @@ public class BackCommunicationAction extends BaseAction {
 	 * @date 2018年6月12日 下午4:00:31
 	 */
 	@PostMapping("/getProgrameJson")
+	@ResponseBody
 	public HashMap<String, Object> getProgrameJson() {
 		String url = serverProperties.getProgramAddress();
 		try {
@@ -131,6 +139,7 @@ public class BackCommunicationAction extends BaseAction {
 	 */
 	@Log("注册设备")
 	@PostMapping("/baseSave")
+	@ResponseBody
 	@Transactional
 	public HashMap<String, Object> baseSave(Deviceinfo deviceInfo) {
 		String devHexcode = "";// 设备地址号 ==设备寻址号截取后4个字
@@ -194,7 +203,7 @@ public class BackCommunicationAction extends BaseAction {
 			if (sendPost.equals("OK")) {
 				deviceInfo.setStatus("00000001");// 注册
 				deviceInfo.setCreateBy(getUserName());
-				devService.save(info);
+				devService.save(deviceInfo);
 				//初始化的时候把设备型号下的参数设置得到参数值表中（只是这时候值为null）
 				Devicemodel deviceModel = dmService.selectById(deviceInfo.getDevicemodelId());
 				List<Devicemodelparam> dmps = dmService.getDevParmByDevicemodel(deviceModel);
@@ -214,7 +223,82 @@ public class BackCommunicationAction extends BaseAction {
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
+	@Log("注册设备")
+	@RequestMapping("/baseUpdate")
+	@ResponseBody
+	@Transactional
+	public HashMap<String, Object> baseUpdate(Deviceinfo deviceInfo) {
+		User curruser = getUser();
 
+		String devHexcode = "";//设备地址号  ==设备寻址号截取后4个字
+		String devCode = "";//设备寻址号==资源类型（2字）+资源子类型（2字）+区域行政编码（12字）+设备编号（2字）  共18字
+		Deviceinfo info = devService.selectById(deviceInfo.getId());
+		//查询此区域下设备
+		Map<String,Object> map = new HashMap<>();
+		map.put("Devaddresscode", deviceInfo.getDevaddresscode());
+		List<Deviceinfo> lists = devService.list(map);
+        List<Long> nums = new ArrayList<Long>();//初始化数组
+        if(lists.size()==0){nums.add(0L);}
+        else{
+        	for (Deviceinfo deviceinfo : lists) {
+				nums.add(Long.valueOf(deviceinfo.getDevhexcode()));
+			}	
+        }
+		Long Max = Collections.max(nums);//设置最大值Max
+		String devnum="";
+		if(Max <= 8){
+			devnum="0"+String.valueOf(Max+1);
+		}else{
+			devnum=String.valueOf(Max+1);
+		}
+		
+		String myareacode="";
+		if(deviceInfo.getDevaddresscode().length() == 12){
+			myareacode=deviceInfo.getDevaddresscode();}
+		else{
+			myareacode=deviceInfo.getDevaddresscode()+"000000";
+		}
+		devCode="0000"+myareacode+devnum;
+		devHexcode=devCode.substring(devCode.length()-2);//截取后4位
+		
+		String currentCode = deviceInfo.getDevaddresscode();
+		map = new HashMap<>();
+		map.put("code",currentCode );
+		List<Administrative> list = adService.list(map);
+		if(list!=null) {
+			Administrative admin = adService.list(map).get(0);
+			deviceInfo.setParentpath(admin.getParentPath());
+		}
+		//设置一些参数到设备信息对象中
+		info.setDevhexcode(devHexcode);//设备地址号
+		info.setDevcode(devCode);//设备寻址号
+		
+		//参数
+		DeviceJson  deviceJson= new DeviceJson();
+		deviceJson.setDevDsn(info.getDevdsn());
+		deviceJson.setDevHexcode(info.getDevhexcode());
+		deviceJson.setDevCode(info.getDevcode());
+		String json = JsonUtil.toJson(deviceJson);
+		String url = serverProperties.getSetParasAddress();
+		String sendPost;
+		try {
+			sendPost = HttpClientUtil.sendPostDataByJson(url, json, "utf8");
+			if(sendPost.equals("OK")){
+				info.setUpdateBy(curruser.getName());
+				info.setDevname(deviceInfo.getDevname());
+				info.setDevaddresscode(deviceInfo.getDevaddresscode());
+				info.setDevaddress(deviceInfo.getDevaddress());
+				info.setLng(deviceInfo.getLng());
+				info.setLat(deviceInfo.getLat());
+				info.setDeviceModel(deviceInfo.getDeviceModel());
+		    	devService.save(info);
+		    }
+			return JsonWrapper.successWrapper();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonWrapper.failureWrapper(e.getMessage(),e);
+		}
+	}
 	/**
 	 * 停止播发应急信息
 	 * 
@@ -253,11 +337,104 @@ public class BackCommunicationAction extends BaseAction {
 		return JsonWrapper.failureWrapper("ebm_ID为空");
 	}
 
+	@RequestMapping("/deviceHeart")
+	public void deviceHeart(HttpServletResponse response,String reJson){
+		JSONArray jsonArray = JSONArray.fromObject(reJson);
+        JSONObject returnObject = new JSONObject();
+        List<String> errorDev = new ArrayList<>();
+        Deviceinfo info = null;
+        try {
+	        for (Object object : jsonArray) {
+	        	
+				JSONObject jo= (JSONObject) object;
+		        String DEV_ID=jo.getString("DEV_ID");
+		        String Stat1=jo.getString("Stat");
+		        String Stat = StringUtils.leftPad(Integer.toBinaryString(Integer.valueOf(Stat1)),8,"0");//10进制转换为2进制
+		        String Script=jo.getString("Script");
+		        String emerEBM_ID=jo.getString("EBM_ID");
+				Map<String,Object> map = new HashMap<>();
+				map.put("devdsn", DEV_ID);
+				//info = devService.get(" devDsn = :devDsn", DEV_ID);
+				List<Deviceinfo> list = devService.list(map);
+				if(list.size()>0) {
+					info = list.get(0);
+				}
+				if(info!=null){
+					//String preStatus = info.getStatus();
+		        	info.setStatus(Stat);
+		            info.setStatusscript(Script);
+		            if(!"".equals(emerEBM_ID)) {
+			        	Integer EBM_ID = new Integer(emerEBM_ID);
+			        	info.setMessageid(EBM_ID);
+		            }
+		           /* deviceLogService.addDeviceLogDao(info.getDevName(), info.getDevDsn(), info.getStatus(), preStatus);
+		            deviceInfoService.updateDeviceInfo(info);*/
+		        }else{
+		        	errorDev.add(DEV_ID);
+					continue;
+		        }
+			}
+	        if(errorDev.size() > 0){
+	        	returnObject.element("Result", "NO_DEVICE"+errorDev.toString());
+	        }else{
+	        	returnObject.element("Result", "OK");
+	        }
+	        JSONObject myjson = new JSONObject(); 
+			myjson.element("name", "device");
+			response.setContentType("text/html;charset=UTF-8");
+			response.getWriter().print(returnObject.toString());
+        } catch (Exception e) {
+			e.printStackTrace();
+			returnObject.element("Result", "ERROR");
+			response.setContentType("text/html;charset=UTF-8");
+			try {
+				response.getWriter().print(returnObject.toString());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
 	@RequestMapping("/getRegisterDevice")
 	@ResponseBody
-	public HashMap<String, Object> getRegisterDevice(String registerDeviceJson) {
-		System.out.println(registerDeviceJson);
-		return null;
+	public void getRegisterDevice(HttpServletResponse response,String registerDeviceJson) {
+		//将json字符串转化为JSONObject 
+        JSONObject jsonObject = JSONObject.fromObject(registerDeviceJson);      
+        //获取json对象中某个key的属性值
+        String registerDevDsn=jsonObject.getString("DevDsn");  
+        //把所有的设备的序列号装入list集合中
+        List<String> devDsnList = new ArrayList<String>();
+        Map<String,Object> map = new HashMap<>();
+        List<Deviceinfo> deviceInfoList = devService.list(map);
+        if(deviceInfoList.size()!=0){
+        	for (Deviceinfo deviceInfo : deviceInfoList) {
+            	devDsnList.add(deviceInfo.getDevdsn());
+    		}
+        }
+        JSONObject returnData = new JSONObject(); 
+        //判断list集合中是否已经有了传入过来的序列号
+        if(devDsnList.contains(registerDevDsn)){
+			returnData.element("Devdsn", registerDevDsn);
+			returnData.element("Messsage", "Exist");//存在
+        }else{
+			Deviceinfo registerDeviceInfo=new Deviceinfo();
+			registerDeviceInfo.setDevdsn(registerDevDsn);
+			registerDeviceInfo.setTimefind(new Date());
+			registerDeviceInfo.setStatus("00000000");
+			try {
+				devService.save(registerDeviceInfo);
+			} catch (Exception e) {
+				logger.error(e.getMessage(),e);
+			}//保存
+			returnData.element("Devdsn", registerDevDsn);
+			returnData.element("Message", "OK");//不存在已保存
+			//devService.addDeviceLogDao(registerDeviceInfo.getDevName(), registerDeviceInfo.getDevDsn(), registerDeviceInfo.getStatus(), "");
+        }
+        try {
+			response.getWriter().write(returnData.toString());
+		} catch (IOException e) {
+			logger.error(e.getMessage(),e);
+		}
 	}
 	@Log("设备参数设置")
 	@RequestMapping("/devParamSetting")

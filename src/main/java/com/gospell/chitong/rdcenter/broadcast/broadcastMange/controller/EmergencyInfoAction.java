@@ -178,12 +178,12 @@ public class EmergencyInfoAction extends BaseAction{
 	@ResponseBody
 	public HashMap<String,Object> list(Page page){
 		Map<String,Object> map = page.getMap();
-		map.put("areacode",getUser().getAreaCode());
+		map.put("areacode",getUserAreaCode());
 		map.put("flag", 1);
 		map.put("sort", "start_time");
 		map.put("order", "DESC");
-		List<Emergencyinfo> list = service.queryPage(map);
-		int count = service.countPage(map);
+		List<Emergencyinfo> list = service.list(map);
+		int count = service.count(map);
 		return JsonWrapper.wrapperPage(list,count);
 	}
 	/**
@@ -208,8 +208,8 @@ public class EmergencyInfoAction extends BaseAction{
 		map.put("areacode", getUser().getAreaCode());
 		//设置状态为已播发(status=6)
 		map.put("status", 6);
-		List<Emergencyinfo> list = service.queryPage(map);
-		int count = service.countPage(map);
+		List<Emergencyinfo> list = service.list(map);
+		int count = service.count(map);
 		return JsonWrapper.wrapperPage(list,count);
 	}
 	/**
@@ -237,8 +237,8 @@ public class EmergencyInfoAction extends BaseAction{
 		map.put("flag", 0);
 		map.put("sort", "id");
 		map.put("order", "ASC");
-		List<Emergencyinfo> list = service.queryPage(map);
-		int count = service.countPage(map);
+		List<Emergencyinfo> list = service.list(map);
+		int count = service.count(map);
 		return JsonWrapper.wrapperPage(list,count);
 	}
 	/**
@@ -269,8 +269,8 @@ public class EmergencyInfoAction extends BaseAction{
 		map.put("flag",flag);
 		map.put("sort", "id");
 		map.put("order", "ASC");
-		List<Emergencyinfo> list = service.queryPage(map);
-		int count = service.countPage(map);
+		List<Emergencyinfo> list = service.list(map);
+		int count = service.count(map);
 		return JsonWrapper.wrapperPage(list,count);
 	}
 	/**
@@ -387,8 +387,8 @@ public class EmergencyInfoAction extends BaseAction{
 		map.put("orStatus",6);
 		map.put("sort", "status");
 		map.put("order", "ASC");
-		List<Emergencyinfo> list = service.queryPage(map);
-		int total = service.countPage(map);
+		List<Emergencyinfo> list = service.list(map);
+		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
 	}
 }

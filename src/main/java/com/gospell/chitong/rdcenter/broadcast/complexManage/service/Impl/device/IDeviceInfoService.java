@@ -17,7 +17,6 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Device
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
-import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 @Service
 public class IDeviceInfoService implements DeviceInfoService{
@@ -34,10 +33,8 @@ public class IDeviceInfoService implements DeviceInfoService{
 	@Override
 	public int save(Deviceinfo deviceinfo) throws Exception {
 		if(deviceinfo.getId()!=null) {
-			deviceinfo.setUpdateBy(ShiroUtils.getUser().getName());
 			return dao.updateByPrimaryKeySelective(deviceinfo);
 		}
-		deviceinfo.setCreateBy(ShiroUtils.getUser().getName());
 		return dao.insertSelective(deviceinfo);
 	}
 

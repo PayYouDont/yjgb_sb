@@ -106,13 +106,13 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 	}
 
 	@Override
-	public List<Emergencyinfo> queryPage(Map<String, Object> map) {
+	public List<Emergencyinfo> list(Map<String, Object> map) {
 		List<Emergencyinfo> list = dao.list(map);
 		return list;
 	}
 
 	@Override
-	public int countPage(Map<String, Object> map) {
+	public int count(Map<String, Object> map) {
 		int i = dao.count(map);
 		return i;
 	}

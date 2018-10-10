@@ -107,7 +107,13 @@ public class IMediaResouceService implements MediaResouceService{
 	@Transactional
 	public int save(MediaResouceVO vo) throws Exception {
 		MediaResouce resouce = vo.getMediaResouce();
+		Integer id = resouce.getId();
 		MultipartFile file = vo.getFile();
+		if(id!=null&&file!=null) {
+			MediaResouce media = selectById(id);
+			String filePath = media.getFilePath();
+			FileUtil.delete(filePath);
+		}
 		if(file!=null) {
 			InputStream in = file.getInputStream();
 			String outFileName = resouce.getFileName();

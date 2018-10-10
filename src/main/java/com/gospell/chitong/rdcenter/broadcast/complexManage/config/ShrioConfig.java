@@ -46,6 +46,7 @@ public class ShrioConfig {
 		filterChainDefinitionMap.put("/image/**", "anon");
 		filterChainDefinitionMap.put("/nodeAction/upload", "anon");
 		filterChainDefinitionMap.put("/EBM_media/*", "anon");
+		filterChainDefinitionMap.put("/backCommunicationAction/*", "anon");
 		//filterChainDefinitionMap.put("/docs/**", "anon");
 		//filterChainDefinitionMap.put("/upload/**", "anon");
 		//filterChainDefinitionMap.put("/files/**", "anon");

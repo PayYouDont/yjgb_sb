@@ -60,13 +60,14 @@ function baseUpdate(){
 		},
 		success: function(data){
 			$.messager.progress('close');	// hide progress bar while submit successfully
-			if (data=="ok"){
+			data = JSON.parse(data);
+			if (data.success){
 				$.messager.alert('系统提示', '修改成功!','info',function(){
 					window.parent.closeMyModal();
 					window.parent.refreshPage();
 				});
 			}else{
-				$.messager.alert('异常', '修改失败!','error');
+				$.messager.alert('异常', '修改失败!'+data.data,'error');
 			}
 		}
 	});

@@ -168,7 +168,7 @@ function initEmerInfo() {
 		}, ] ],
 		columns : [ [ {
 			field : 'accidentTypeName',
-			title : '事件类型',
+			title : '信息类型',
 			width : 150,
 			align : 'center',
 			sortable : "true",
@@ -177,7 +177,7 @@ function initEmerInfo() {
 			}
 		}, {
 			field : 'accidentLevelName',
-			title : '事件等级',
+			title : '信息等级',
 			width : 150,
 			align : 'center',
 			sortable : "true",
@@ -295,6 +295,9 @@ function setMap(unitLng, unitLat, level, myStyle) {
 	customOverlay();
 	//创建导入菜单
 	createBMapMenu();
+	//添加喇叭图标
+	addSpeaker(map)
+	
 }
 /****************自定义覆盖物************************/
 //初始化app覆盖物属性
@@ -456,6 +459,48 @@ function add_overlayByData(data){
 	polygon.enableEditing();
 	map.addOverlay(polygon);
 	markMenu(polygon);
+}
+function ComplexCustomOverlay(point, text, mouseoverText){
+    this._point = point;
+    this._text = text;
+    this._overText = mouseoverText;
+}
+//添加喇叭图标
+function addSpeaker(map,lng,lat) {
+	ComplexCustomOverlay.prototype = new BMap.Overlay();
+	ComplexCustomOverlay.prototype.initialize = function(map) {
+		this._map = map;
+		var div = this._div = document.createElement("div");
+		div.style.position = "absolute";
+		div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);
+		div.style.backgroundImage = "url('../image/speaker.svg')";
+		div.style.backgroundSize = "25px";
+		div.style.color = "white";
+		div.style.height = "25px";
+		div.style.width = "25px";
+		var that = this;
+		var arrow = this._arrow = document.createElement("div");
+		arrow.style.position = "absolute";
+		arrow.style.width = "11px";
+		arrow.style.height = "10px";
+		arrow.style.top = "22px";
+		arrow.style.left = "10px";
+		arrow.style.overflow = "hidden";
+		div.appendChild(arrow);
+
+		map.getPanes().labelPane.appendChild(div);
+
+		return div;
+	}
+	ComplexCustomOverlay.prototype.draw = function() {
+		var map = this._map;
+		var pixel = map.pointToOverlayPixel(this._point);
+		this._div.style.left = pixel.x - parseInt(this._arrow.style.left)
+				+ "px";
+		this._div.style.top = pixel.y - 30 + "px";
+	}
+	var myCompOverlay = new ComplexCustomOverlay(new BMap.Point(lng,lat),"","");
+	map.addOverlay(myCompOverlay);
 }
 /*******************************************************************************
  * 获得区域边界，并覆盖

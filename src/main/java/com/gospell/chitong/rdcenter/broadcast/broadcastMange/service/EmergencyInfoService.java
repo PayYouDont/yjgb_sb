@@ -13,10 +13,6 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Display
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaymethod;
 
 public interface EmergencyInfoService extends BaseService<Emergencyinfo>{
-	
-    List<Emergencyinfo> queryPage(Map<String,Object> map);
-    
-    int countPage(Map<String,Object> map);
     
     String review(Emergencyinfo info) throws Exception;
     
