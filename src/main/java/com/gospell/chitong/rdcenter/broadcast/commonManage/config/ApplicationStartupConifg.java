@@ -25,7 +25,11 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		// 正式运行时开启此功能
+		/**
+		 * 正式运行时开启此功能（启动时将配置文件中
+		 * config/server.properties中的
+		 * server.connectionCheck设为true即可）
+		 */
 		startHeartJob(server.isConnectionCheck());// 项目启动时候执行心跳包发送
 	}
 	public void startHeartJob(boolean isCheck){

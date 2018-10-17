@@ -44,13 +44,19 @@ $(document).ready(function(){
 
 		        {field:'deviceModel',title:'设备型号',width:120,align:'center',sortable:"true",
 		        	formatter: function(value,row,index){
-		        		return row.devname
+		        		var devmodel = row.deviceModel;
+		        		if(devmodel){
+		        			devmodel = row.deviceModel.devmodel;
+		        			return devmodel;
+		        		}else{
+		        			return "";
+		        		}
 		        	}
 		        },
 		        {field:'createBy',title:'注册用户',width:120,align:'center',sortable:"true"}, 
 		        {field:'createTime',title:'注册时间',width:120,align:'center',sortable:"true"}, 
-		        {field:'updateTime',title:'修改用户',width:120,align:'center',sortable:"true"}, 
-		        {field:'updateBy',title:'修改时间',width:120,align:'center',sortable:"true"}, 
+		        {field:'updateBy',title:'修改用户',width:120,align:'center',sortable:"true"}, 
+		        {field:'updateTime',title:'修改时间',width:120,align:'center',sortable:"true"}, 
 		    ]]    
 		});
 

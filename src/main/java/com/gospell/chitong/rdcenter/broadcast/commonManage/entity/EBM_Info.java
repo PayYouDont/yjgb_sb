@@ -21,6 +21,7 @@ public class EBM_Info implements Serializable{
 	private String EBM_type; 
 	@JsonProperty
 	private Integer EBM_level;
+	@JsonProperty
 	private Integer EBM_vocie;
 	@JsonProperty
 	private Integer Detail_ProgramNum;
@@ -99,6 +100,4 @@ public class EBM_Info implements Serializable{
 	public void setEBM_resource_code(List<String> eBM_resource_code) {
 		EBM_resource_code = eBM_resource_code;
 	}
-	
-	
 }

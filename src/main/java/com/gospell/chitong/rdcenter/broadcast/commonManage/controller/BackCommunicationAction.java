@@ -60,13 +60,10 @@ public class BackCommunicationAction extends BaseAction {
 	 * 
 	 * @Title: sendEmer
 	 * @Description: TODO(这里用一句话描述这个方法的作用)
-	 * @param @param
-	 *            emerId
-	 * @param @return
-	 *            设定文件
+	 * @param @param emerId
+	 * @param @return 设定文件
 	 * @return String 返回类型
-	 * @throws @author
-	 *             peiyongdong
+	 * @throws @author peiyongdong
 	 * @date 2018年6月12日 下午4:00:59
 	 */
 	@Log("发送应急信息")
@@ -84,7 +81,7 @@ public class BackCommunicationAction extends BaseAction {
 				if (jsonResult.getString("Result").equals("success")) {
 					emer.setEbmId(jsonResult.getString("EBM_ID"));
 					// 停止时 判断是否为预案
-					if (0 == emer.getFlag()) {
+					if (0 == emer.getFlag()) {  
 						emer.setStatus(2);
 					}
 					emer.setStatus(6);// 已发送
@@ -102,11 +99,9 @@ public class BackCommunicationAction extends BaseAction {
 	 * 
 	 * @Title: getProgrameJson
 	 * @Description: TODO(这里用一句话描述这个方法的作用)
-	 * @param @return
-	 *            设定文件
+	 * @param @return 设定文件
 	 * @return HashMap<String,Object> 返回类型
-	 * @throws @author
-	 *             peiyongdong
+	 * @throws @author peiyongdong
 	 * @date 2018年6月12日 下午4:00:31
 	 */
 	@PostMapping("/getProgrameJson")
@@ -128,13 +123,10 @@ public class BackCommunicationAction extends BaseAction {
 	 * 
 	 * @Title: baseSave
 	 * @Description: TODO(注册设备，参考旧项目，后期优化)
-	 * @param @param
-	 *            deviceInfo
-	 * @param @return
-	 *            设定文件
+	 * @param @param deviceInfo
+	 * @param @return 设定文件
 	 * @return HashMap<String,Object> 返回类型
-	 * @throws @author
-	 *             peiyongdong
+	 * @throws @author peiyongdong
 	 * @date 2018年6月12日 上午11:28:50
 	 */
 	@Log("注册设备")
@@ -182,11 +174,10 @@ public class BackCommunicationAction extends BaseAction {
 		// 设置parentPath字段值,方便通过区域码 范围 查找
 		String currentCode = deviceInfo.getDevaddresscode();
 		map = new HashMap<>();
-		map.put("code", currentCode);
+		map.put("codeLike", currentCode);
 		Administrative admin = adService.list(map).size() > 0 ? adService.list(map).get(0) : new Administrative();
-
+		deviceInfo.setDevaddress(admin.getName());
 		deviceInfo.setParentpath(admin.getParentPath());
-
 		// 设置一些参数到设备信息对象中
 		deviceInfo.setId(info.getId());
 		deviceInfo.setDevhexcode(devHexcode);// 设备地址号
@@ -204,77 +195,79 @@ public class BackCommunicationAction extends BaseAction {
 				deviceInfo.setStatus("00000001");// 注册
 				deviceInfo.setCreateBy(getUserName());
 				devService.save(deviceInfo);
-				//初始化的时候把设备型号下的参数设置得到参数值表中（只是这时候值为null）
+				// 初始化的时候把设备型号下的参数设置得到参数值表中（只是这时候值为null）
 				Devicemodel deviceModel = dmService.selectById(deviceInfo.getDevicemodelId());
 				List<Devicemodelparam> dmps = dmService.getDevParmByDevicemodel(deviceModel);
 				for (Devicemodelparam deviceModelParam : dmps) {
 					DeviceParamVal val = new DeviceParamVal();
 					val.setDeviceInfo(deviceInfo);
-		    		val.setParamFormCheck(deviceModelParam.getParamFormCheck());
-		    		val.setParamName(deviceModelParam.getParamName());
-		    		dpvService.save(val);
+					val.setParamFormCheck(deviceModelParam.getParamFormCheck());
+					val.setParamName(deviceModelParam.getParamName());
+					dpvService.save(val);
 				}
-				//注冊后创建对应的tar包
-				//EBRDTInfo.createTar(deviceInfo);
+				// 注冊后创建对应的tar包
+				// EBRDTInfo.createTar(deviceInfo);
 			}
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
-			logger.error("注册设备失败",e);
+			logger.error("注册设备失败", e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
-	@Log("注册设备")
+
+	@Log("修改设备")
 	@RequestMapping("/baseUpdate")
 	@ResponseBody
 	@Transactional
 	public HashMap<String, Object> baseUpdate(Deviceinfo deviceInfo) {
 		User curruser = getUser();
 
-		String devHexcode = "";//设备地址号  ==设备寻址号截取后4个字
-		String devCode = "";//设备寻址号==资源类型（2字）+资源子类型（2字）+区域行政编码（12字）+设备编号（2字）  共18字
+		String devHexcode = "";// 设备地址号 ==设备寻址号截取后4个字
+		String devCode = "";// 设备寻址号==资源类型（2字）+资源子类型（2字）+区域行政编码（12字）+设备编号（2字） 共18字
 		Deviceinfo info = devService.selectById(deviceInfo.getId());
-		//查询此区域下设备
-		Map<String,Object> map = new HashMap<>();
+		// 查询此区域下设备
+		Map<String, Object> map = new HashMap<>();
 		map.put("Devaddresscode", deviceInfo.getDevaddresscode());
 		List<Deviceinfo> lists = devService.list(map);
-        List<Long> nums = new ArrayList<Long>();//初始化数组
-        if(lists.size()==0){nums.add(0L);}
-        else{
-        	for (Deviceinfo deviceinfo : lists) {
+		List<Long> nums = new ArrayList<Long>();// 初始化数组
+		if (lists.size() == 0) {
+			nums.add(0L);
+		} else {
+			for (Deviceinfo deviceinfo : lists) {
 				nums.add(Long.valueOf(deviceinfo.getDevhexcode()));
-			}	
-        }
-		Long Max = Collections.max(nums);//设置最大值Max
-		String devnum="";
-		if(Max <= 8){
-			devnum="0"+String.valueOf(Max+1);
-		}else{
-			devnum=String.valueOf(Max+1);
+			}
 		}
-		
-		String myareacode="";
-		if(deviceInfo.getDevaddresscode().length() == 12){
-			myareacode=deviceInfo.getDevaddresscode();}
-		else{
-			myareacode=deviceInfo.getDevaddresscode()+"000000";
+		Long Max = Collections.max(nums);// 设置最大值Max
+		String devnum = "";
+		if (Max <= 8) {
+			devnum = "0" + String.valueOf(Max + 1);
+		} else {
+			devnum = String.valueOf(Max + 1);
 		}
-		devCode="0000"+myareacode+devnum;
-		devHexcode=devCode.substring(devCode.length()-2);//截取后4位
-		
+
+		String myareacode = "";
+		if (deviceInfo.getDevaddresscode().length() == 12) {
+			myareacode = deviceInfo.getDevaddresscode();
+		} else {
+			myareacode = deviceInfo.getDevaddresscode() + "000000";
+		}
+		devCode = "0000" + myareacode + devnum;
+		devHexcode = devCode.substring(devCode.length() - 2);// 截取后4位
+
 		String currentCode = deviceInfo.getDevaddresscode();
 		map = new HashMap<>();
-		map.put("code",currentCode );
+		map.put("code", currentCode);
 		List<Administrative> list = adService.list(map);
-		if(list!=null) {
+		if (list != null) {
 			Administrative admin = adService.list(map).get(0);
 			deviceInfo.setParentpath(admin.getParentPath());
 		}
-		//设置一些参数到设备信息对象中
-		info.setDevhexcode(devHexcode);//设备地址号
-		info.setDevcode(devCode);//设备寻址号
-		
-		//参数
-		DeviceJson  deviceJson= new DeviceJson();
+		// 设置一些参数到设备信息对象中
+		info.setDevhexcode(devHexcode);// 设备地址号
+		info.setDevcode(devCode);// 设备寻址号
+
+		// 参数
+		DeviceJson deviceJson = new DeviceJson();
 		deviceJson.setDevDsn(info.getDevdsn());
 		deviceJson.setDevHexcode(info.getDevhexcode());
 		deviceJson.setDevCode(info.getDevcode());
@@ -283,7 +276,7 @@ public class BackCommunicationAction extends BaseAction {
 		String sendPost;
 		try {
 			sendPost = HttpClientUtil.sendPostDataByJson(url, json, "utf8");
-			if(sendPost.equals("OK")){
+			if (sendPost.equals("OK")) {
 				info.setUpdateBy(curruser.getName());
 				info.setDevname(deviceInfo.getDevname());
 				info.setDevaddresscode(deviceInfo.getDevaddresscode());
@@ -291,26 +284,24 @@ public class BackCommunicationAction extends BaseAction {
 				info.setLng(deviceInfo.getLng());
 				info.setLat(deviceInfo.getLat());
 				info.setDeviceModel(deviceInfo.getDeviceModel());
-		    	devService.save(info);
-		    }
+				devService.save(info);
+			}
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JsonWrapper.failureWrapper(e.getMessage(),e);
+			return JsonWrapper.failureWrapper(e.getMessage(), e);
 		}
 	}
+
 	/**
 	 * 停止播发应急信息
 	 * 
 	 * @Title: emerStopMessage
 	 * @Description: TODO(这里用一句话描述这个方法的作用)
-	 * @param @param
-	 *            emerId
-	 * @param @return
-	 *            设定文件
+	 * @param @param emerId
+	 * @param @return 设定文件
 	 * @return HashMap<String,Object> 返回类型
-	 * @throws @author
-	 *             peiyongdong
+	 * @throws @author peiyongdong
 	 * @date 2018年6月12日 下午4:01:36
 	 */
 	@Log("停止发送应急信息")
@@ -322,7 +313,7 @@ public class BackCommunicationAction extends BaseAction {
 		if (ebm_ID != "" && !ebm_ID.equals("")) {
 			String url = serverProperties.getEmerStopAddress();
 			try {
-				String sendGet = HttpClientUtil.sendGetData(url, "EBM_ID=" + ebm_ID);
+				String sendGet = HttpClientUtil.sendGetData(url,ebm_ID);
 				if (sendGet == "OK" || sendGet.equals("OK")) {
 					info.setStatus(11);// 播发结束
 					emerService.save(info);
@@ -338,52 +329,54 @@ public class BackCommunicationAction extends BaseAction {
 	}
 
 	@RequestMapping("/deviceHeart")
-	public void deviceHeart(HttpServletResponse response,String reJson){
+	public void deviceHeart(HttpServletResponse response, String reJson) {
 		JSONArray jsonArray = JSONArray.fromObject(reJson);
-        JSONObject returnObject = new JSONObject();
-        List<String> errorDev = new ArrayList<>();
-        Deviceinfo info = null;
-        try {
-	        for (Object object : jsonArray) {
-	        	
-				JSONObject jo= (JSONObject) object;
-		        String DEV_ID=jo.getString("DEV_ID");
-		        String Stat1=jo.getString("Stat");
-		        String Stat = StringUtils.leftPad(Integer.toBinaryString(Integer.valueOf(Stat1)),8,"0");//10进制转换为2进制
-		        String Script=jo.getString("Script");
-		        String emerEBM_ID=jo.getString("EBM_ID");
-				Map<String,Object> map = new HashMap<>();
+		JSONObject returnObject = new JSONObject();
+		List<String> errorDev = new ArrayList<>();
+		Deviceinfo info = null;
+		try {
+			for (Object object : jsonArray) {
+
+				JSONObject jo = (JSONObject) object;
+				String DEV_ID = jo.getString("DEV_ID");
+				String Stat1 = jo.getString("Stat");
+				String Stat = StringUtils.leftPad(Integer.toBinaryString(Integer.valueOf(Stat1)), 8, "0");// 10进制转换为2进制
+				String Script = jo.getString("Script");
+				String emerEBM_ID = jo.getString("EBM_ID");
+				Map<String, Object> map = new HashMap<>();
 				map.put("devdsn", DEV_ID);
-				//info = devService.get(" devDsn = :devDsn", DEV_ID);
+				// info = devService.get(" devDsn = :devDsn", DEV_ID);
 				List<Deviceinfo> list = devService.list(map);
-				if(list.size()>0) {
+				if (list.size() > 0) {
 					info = list.get(0);
 				}
-				if(info!=null){
-					//String preStatus = info.getStatus();
-		        	info.setStatus(Stat);
-		            info.setStatusscript(Script);
-		            if(!"".equals(emerEBM_ID)) {
-			        	Integer EBM_ID = new Integer(emerEBM_ID);
-			        	info.setMessageid(EBM_ID);
-		            }
-		           /* deviceLogService.addDeviceLogDao(info.getDevName(), info.getDevDsn(), info.getStatus(), preStatus);
-		            deviceInfoService.updateDeviceInfo(info);*/
-		        }else{
-		        	errorDev.add(DEV_ID);
+				if (info != null) {
+					// String preStatus = info.getStatus();
+					info.setStatus(Stat);
+					info.setStatusscript(Script);
+					if (!"".equals(emerEBM_ID)) {
+						Integer EBM_ID = new Integer(emerEBM_ID);
+						info.setMessageid(EBM_ID);
+					}
+					/*
+					 * deviceLogService.addDeviceLogDao(info.getDevName(), info.getDevDsn(),
+					 * info.getStatus(), preStatus); deviceInfoService.updateDeviceInfo(info);
+					 */
+				} else {
+					errorDev.add(DEV_ID);
 					continue;
-		        }
+				}
 			}
-	        if(errorDev.size() > 0){
-	        	returnObject.element("Result", "NO_DEVICE"+errorDev.toString());
-	        }else{
-	        	returnObject.element("Result", "OK");
-	        }
-	        JSONObject myjson = new JSONObject(); 
+			if (errorDev.size() > 0) {
+				returnObject.element("Result", "NO_DEVICE" + errorDev.toString());
+			} else {
+				returnObject.element("Result", "OK");
+			}
+			JSONObject myjson = new JSONObject();
 			myjson.element("name", "device");
 			response.setContentType("text/html;charset=UTF-8");
 			response.getWriter().print(returnObject.toString());
-        } catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			returnObject.element("Result", "ERROR");
 			response.setContentType("text/html;charset=UTF-8");
@@ -394,48 +387,50 @@ public class BackCommunicationAction extends BaseAction {
 			}
 		}
 	}
-	
+
 	@RequestMapping("/getRegisterDevice")
 	@ResponseBody
-	public void getRegisterDevice(HttpServletResponse response,String registerDeviceJson) {
-		//将json字符串转化为JSONObject 
-        JSONObject jsonObject = JSONObject.fromObject(registerDeviceJson);      
-        //获取json对象中某个key的属性值
-        String registerDevDsn=jsonObject.getString("DevDsn");  
-        //把所有的设备的序列号装入list集合中
-        List<String> devDsnList = new ArrayList<String>();
-        Map<String,Object> map = new HashMap<>();
-        List<Deviceinfo> deviceInfoList = devService.list(map);
-        if(deviceInfoList.size()!=0){
-        	for (Deviceinfo deviceInfo : deviceInfoList) {
-            	devDsnList.add(deviceInfo.getDevdsn());
-    		}
-        }
-        JSONObject returnData = new JSONObject(); 
-        //判断list集合中是否已经有了传入过来的序列号
-        if(devDsnList.contains(registerDevDsn)){
+	public void getRegisterDevice(HttpServletResponse response, String registerDeviceJson) {
+		// 将json字符串转化为JSONObject
+		JSONObject jsonObject = JSONObject.fromObject(registerDeviceJson);
+		// 获取json对象中某个key的属性值
+		String registerDevDsn = jsonObject.getString("DevDsn");
+		// 把所有的设备的序列号装入list集合中
+		List<String> devDsnList = new ArrayList<String>();
+		Map<String, Object> map = new HashMap<>();
+		List<Deviceinfo> deviceInfoList = devService.list(map);
+		if (deviceInfoList.size() != 0) {
+			for (Deviceinfo deviceInfo : deviceInfoList) {
+				devDsnList.add(deviceInfo.getDevdsn());
+			}
+		}
+		JSONObject returnData = new JSONObject();
+		// 判断list集合中是否已经有了传入过来的序列号
+		if (devDsnList.contains(registerDevDsn)) {
 			returnData.element("Devdsn", registerDevDsn);
-			returnData.element("Messsage", "Exist");//存在
-        }else{
-			Deviceinfo registerDeviceInfo=new Deviceinfo();
+			returnData.element("Messsage", "Exist");// 存在
+		} else {
+			Deviceinfo registerDeviceInfo = new Deviceinfo();
 			registerDeviceInfo.setDevdsn(registerDevDsn);
 			registerDeviceInfo.setTimefind(new Date());
 			registerDeviceInfo.setStatus("00000000");
 			try {
 				devService.save(registerDeviceInfo);
 			} catch (Exception e) {
-				logger.error(e.getMessage(),e);
-			}//保存
+				logger.error(e.getMessage(), e);
+			} // 保存
 			returnData.element("Devdsn", registerDevDsn);
-			returnData.element("Message", "OK");//不存在已保存
-			//devService.addDeviceLogDao(registerDeviceInfo.getDevName(), registerDeviceInfo.getDevDsn(), registerDeviceInfo.getStatus(), "");
-        }
-        try {
+			returnData.element("Message", "OK");// 不存在已保存
+			// devService.addDeviceLogDao(registerDeviceInfo.getDevName(),
+			// registerDeviceInfo.getDevDsn(), registerDeviceInfo.getStatus(), "");
+		}
+		try {
 			response.getWriter().write(returnData.toString());
 		} catch (IOException e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 		}
 	}
+
 	@Log("设备参数设置")
 	@RequestMapping("/devParamSetting")
 	@ResponseBody
@@ -443,20 +438,20 @@ public class BackCommunicationAction extends BaseAction {
 	public HashMap<String, Object> devParamSetting(HttpServletRequest request) {
 		String id = request.getParameter("id");
 		Deviceinfo info = devService.selectById(Integer.valueOf(id));
-		Map<String,Object> map = new HashMap<>();
-		map.put("deviceInfoId",info.getId());
+		Map<String, Object> map = new HashMap<>();
+		map.put("deviceInfoId", info.getId());
 		List<DeviceParamVal> devModelParamList = dpvService.list(map);
-		//参数
-		Map<String, Object> paramMap = new HashMap<String, Object>();		
+		// 参数
+		Map<String, Object> paramMap = new HashMap<String, Object>();
 		for (DeviceParamVal deviceParamVal : devModelParamList) {
 			String parameter = request.getParameter(deviceParamVal.getParamVariable());
-			if(deviceParamVal.getVal()==null){
+			if (deviceParamVal.getVal() == null) {
 				paramMap.put(deviceParamVal.getParamVariable(), parameter);
-			}else if(!deviceParamVal.getVal().equals(parameter)){
+			} else if (!deviceParamVal.getVal().equals(parameter)) {
 				paramMap.put(deviceParamVal.getParamVariable(), parameter);
 			}
 		}
-		DeviceJson  deviceJson= new DeviceJson();
+		DeviceJson deviceJson = new DeviceJson();
 		deviceJson.setDevDsn(info.getDevdsn());
 		deviceJson.setDevHexcode(info.getDevhexcode());
 		deviceJson.setDevCode(info.getDevcode());
@@ -464,11 +459,11 @@ public class BackCommunicationAction extends BaseAction {
 		String json = JsonUtil.toJson(deviceJson);
 		String url = serverProperties.getSetParasAddress();
 		try {
-			String sendPost = HttpClientUtil.sendPostDataByJson(url, json,"utf8");
-			if(sendPost.equals("OK")){
+			String sendPost = HttpClientUtil.sendPostDataByJson(url, json, "utf8");
+			if (sendPost.equals("OK")) {
 				for (DeviceParamVal deviceParamVal : devModelParamList) {
 					String parameter = request.getParameter(deviceParamVal.getParamVariable());
-					if(parameter!=null){
+					if (parameter != null) {
 						deviceParamVal.setVal(parameter);
 						dpvService.save(deviceParamVal);
 					}
@@ -476,7 +471,7 @@ public class BackCommunicationAction extends BaseAction {
 			}
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}

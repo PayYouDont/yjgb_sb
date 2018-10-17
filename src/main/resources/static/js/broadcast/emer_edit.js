@@ -5,7 +5,7 @@ $(document).ready(function(){
 	easyuiInitTree("treeDemo","../administrativeAction/getTreeByCode",addresscodeArray);	
 	$('#programDescription').tooltip({
 		content: $('<div></div>'),
-		position:'right',
+		//position:'right',
 		showEvent: 'click',
 		onUpdate: function(content){
 			content.panel({
@@ -16,7 +16,7 @@ $(document).ready(function(){
 				href: ''
 			});
 		},
-		onShow: function(){
+		onShow: function(e){
 			var t = $(this);
 			t.tooltip('tip').unbind().bind('mouseenter', function(){
 				t.tooltip('show');
@@ -25,18 +25,19 @@ $(document).ready(function(){
 			});
 		}
 	});
-	
+	$('#mediaId').combobox({
+		onSelect:function(option){
+			var text = option.text;
+			$("#dispalyText").textbox("setValue",text);
+		}
+	})
 })
-
-
-
 
 //1获取输入资源
 function queryInnChannel(){
 	$.post("../backCommunicationAction/getProgrameJson",function(json){
 		var data = json.data;
 		data = JSON.parse(data);
-		console.log(data);
 		if(data==""||typeof(data)=="undefined"||data==null){
 			$.messager.progress('close');
 			$('#programDescription').tooltip("update",$('<div>获取输入资源失败</div>'));
@@ -116,5 +117,4 @@ function mysave(){
 			}
 		}
 	});
-	
 }

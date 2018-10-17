@@ -9,9 +9,6 @@ $(document).ready(function(){
 				param.pageSize = rows; //这里就是重新命名了
 			},
 			url:'../emergencyInfoAction/list',
-			queryParams: {
-				emergencyName: '',
-			},
 		    autoRowHeight:false,
 		    nowrap:true,
 			pagination:true,
@@ -104,7 +101,7 @@ function soundFun(value,rowData,rowIndex){
 //搜索
 function doSearch(value){
 	$('#mainTab').datagrid('load',{
-		emergencyName:value
+		search:value
 	});
 }
 
@@ -135,10 +132,20 @@ function add(){
 	window.location.href="../emergencyInfoAction/toEdit?type=add"
 }
 
-
-
-
-
+//2应急预案修改
+function edit(){
+	var checkedData =$('#mainTab').datagrid("getChecked");
+	if(checkedData.length!=1|| typeof(checkedData)=="undefined"){
+		$.messager.alert('选择提示','请选择一条应急信息！','info');
+		return;
+	}
+	if(checkedData[0].status!=2){
+		$.messager.alert('选择提示','只能修改待审核的应急信息！','warning');
+		return;
+	}
+	var v_id=checkedData[0].id;
+	window.location.href="../emergencyInfoAction/toEdit?type=add&id="+v_id;
+}
 
 /**
  * 删除应急信息

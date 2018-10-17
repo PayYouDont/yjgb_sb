@@ -111,7 +111,7 @@ function edit(){
 		return;
 	}
 	var v_id=checkedData[0].id;
-	window.location.href="../emergencyInfoAction/addEmer?type=plan&id="+v_id;
+	window.location.href="../emergencyInfoAction/toEdit?type=plan&id="+v_id;
 }
 
 
@@ -130,7 +130,7 @@ function remove(){
 
 	$.messager.confirm('系统提示', '删除后将无法恢复，请谨慎操作！', function(r){
 		if (r){
-		    $.post("../emergencyInfoAction/deleteEmer",{ids:v_id},function(json){
+		    $.post("../emergencyInfoAction/delete",{ids:v_id},function(json){
 		    	if(json.success){
 		    		 $.messager.alert('系统提示','删除成功！','info',function(){
 		    			 refreshMyData();

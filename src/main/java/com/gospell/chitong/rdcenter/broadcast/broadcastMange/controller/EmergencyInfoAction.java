@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.MediaResouceService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
@@ -40,6 +41,9 @@ public class EmergencyInfoAction extends BaseAction{
 	
 	@Resource
 	private AreaCodeChineseService accService;
+	
+	@Resource
+	private MediaResouceService mrService;
 	
 	/**
 	 * 应急信息播发主页
@@ -156,6 +160,8 @@ public class EmergencyInfoAction extends BaseAction{
 		model.addAttribute("displayMethodList", service.DisplaymethodList(map));
 		 //展示语言
 		model.addAttribute("displayLanguageList", service.DisplaylanguageList(map));
+		//媒体资源
+		model.addAttribute("mediaResouce",mrService.list(new HashMap<>()));
 		return "broadcast/emer_edit";
 	}
 	
@@ -176,8 +182,11 @@ public class EmergencyInfoAction extends BaseAction{
 	})
 	@PostMapping("/list")
 	@ResponseBody
-	public HashMap<String,Object> list(Page page){
+	public HashMap<String,Object> list(Page page,String search){
 		Map<String,Object> map = page.getMap();
+		if(search!=null) {
+			map.put("nameLike", search);
+		}
 		map.put("areacode",getUserAreaCode());
 		map.put("flag", 1);
 		map.put("sort", "start_time");

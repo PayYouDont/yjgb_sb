@@ -183,7 +183,7 @@ public class HttpClientUtil {
 
        
         List<NameValuePair> list = new ArrayList<NameValuePair>();
-        list.add(new BasicNameValuePair("param1", param));
+        list.add(new BasicNameValuePair("EBM_ID", param));
         @SuppressWarnings("deprecation")
 		String getParams = EntityUtils.toString(new UrlEncodedFormEntity(list, HTTP.UTF_8));
         // 创建get方式请求对象

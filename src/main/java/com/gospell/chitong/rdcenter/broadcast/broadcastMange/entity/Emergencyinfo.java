@@ -90,6 +90,8 @@ public class Emergencyinfo implements Serializable {
 
 	private Integer emergencylocationId;
 	
+	private Integer mediaId;
+	
 	private Accidenttype accidentType;//事件等级类型（多对一）
 
 	private Accidentlevel accidentLevel;//事件等级对象（多对一）
@@ -99,7 +101,6 @@ public class Emergencyinfo implements Serializable {
 	private Displaymethod displayMethod;//展示方式  （多对一）
 	
 	private Displaylanguage displayLanguage;//展示语言  （多对一）
-	
 	/**
 	 * 修改人
 	 */

@@ -34,6 +34,8 @@
 			property="displaylanguageId" />
 		<result column="emergencyLocation_id" jdbcType="INTEGER"
 			property="emergencylocationId" />
+		<result column="media_id" jdbcType="INTEGER"
+			property="mediaId" />
 		<result column="update_by" jdbcType="VARCHAR"
 			property="updateBy" />
 		<result column="update_time" jdbcType="TIMESTAMP"
@@ -81,7 +83,7 @@
 		id, emergencyName, emergencyCode, start_time, end_time, sound, duration,
 		addressCode,
 		program_id, programDescription, infoSource_id, accidentLevel_id, accidentType_id,
-		displayMethod_id, displayLanguage_id, emergencyLocation_id, update_by,
+		displayMethod_id, displayLanguage_id, emergencyLocation_id, media_id, update_by,
 		update_time,
 		create_by, create_time, status, unitName, EBM_ID, areaCode, flag,
 		addressCodeName
@@ -113,7 +115,7 @@
 		end_time, sound, duration,
 		addressCode, program_id, programDescription,
 		infoSource_id, accidentLevel_id, accidentType_id,
-		displayMethod_id, displayLanguage_id, emergencyLocation_id,
+		displayMethod_id, displayLanguage_id, emergencyLocation_id, media_id
 		update_by, update_time, create_by,
 		create_time, status, unitName,
 		EBM_ID, areaCode, flag,
@@ -129,6 +131,7 @@
 		#{displaymethodId,jdbcType=INTEGER},
 		#{displaylanguageId,jdbcType=INTEGER},
 		#{emergencylocationId,jdbcType=INTEGER},
+		#{mediaId,jdbcType=INTEGER},
 		#{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
 		#{unitname,jdbcType=VARCHAR},
@@ -187,6 +190,9 @@
 			</if>
 			<if test="emergencylocationId != null">
 				emergencyLocation_id,
+			</if>
+			<if test="mediaId != null">
+				media_id,
 			</if>
 			<if test="updateBy != null">
 				update_by,
@@ -267,6 +273,9 @@
 			</if>
 			<if test="emergencylocationId != null">
 				#{emergencylocationId,jdbcType=INTEGER},
+			</if>
+			<if test="mediaId != null">
+				#{mediaId,jdbcType=INTEGER},
 			</if>
 			<if test="updateBy != null">
 				#{updateBy,jdbcType=VARCHAR},
@@ -352,6 +361,9 @@
 			<if test="emergencylocationId != null">
 				emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER},
 			</if>
+			<if test="mediaId != null">
+				media_id = #{mediaId,jdbcType=INTEGER},
+			</if>
 			<if test="updateBy != null">
 				update_by = #{updateBy,jdbcType=VARCHAR},
 			</if>
@@ -406,6 +418,7 @@
 		displayMethod_id = #{displaymethodId,jdbcType=INTEGER},
 		displayLanguage_id = #{displaylanguageId,jdbcType=INTEGER},
 		emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER},
+		media_id = #{mediaId,jdbcType=INTEGER},
 		update_by = #{updateBy,jdbcType=VARCHAR},
 		update_time = #{updateTime,jdbcType=TIMESTAMP},
 		create_by = #{createBy,jdbcType=VARCHAR},
@@ -437,6 +450,7 @@
 		displayMethod_id = #{displaymethodId,jdbcType=INTEGER},
 		displayLanguage_id = #{displaylanguageId,jdbcType=INTEGER},
 		emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER},
+		media_id = #{mediaId,jdbcType=INTEGER},
 		update_by = #{updateBy,jdbcType=VARCHAR},
 		update_time = #{updateTime,jdbcType=TIMESTAMP},
 		create_by = #{createBy,jdbcType=VARCHAR},
@@ -501,6 +515,9 @@
 			<if test="emergencylocationId != null">
 				and emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER}
 			</if>
+			<if test="mediaId != null">
+				and media_id = #{mediaId,jdbcType=INTEGER}
+			</if>
 			<if test="updateBy != null">
 				and update_by = #{updateBy,jdbcType=VARCHAR}
 			</if>
@@ -536,6 +553,9 @@
 			</if>
 			<if test="content != null">
 				and content = #{content,jdbcType=LONGVARCHAR}
+			</if>
+			<if test="nameLike != null">
+				and emergencyName like "%" #{nameLike,jdbcType=VARCHAR} "%"
 			</if>
 		</where>
 		<choose>
@@ -598,6 +618,9 @@
 			<if test="emergencylocationId != null">
 				and emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER}
 			</if>
+			<if test="mediaId != null">
+				and media_id = #{mediaId,jdbcType=INTEGER}
+			</if>
 			<if test="updateBy != null">
 				and update_by = #{updateBy,jdbcType=VARCHAR}
 			</if>
@@ -633,6 +656,9 @@
 			</if>
 			<if test="content != null">
 				and content = #{content,jdbcType=LONGVARCHAR}
+			</if>
+			<if test="nameLike != null">
+				and emergencyName like "%" #{nameLike,jdbcType=VARCHAR} "%"
 			</if>
 		</where>
 	</select>
@@ -703,6 +729,9 @@
 			</if>
 			<if test="emergencylocationId != null">
 				emergencyLocation_id = #{emergencylocationId,jdbcType=INTEGER},
+			</if>
+			<if test="mediaId != null">
+				media_id = #{mediaId,jdbcType=INTEGER},
 			</if>
 			<if test="updateBy != null">
 				update_by = #{updateBy,jdbcType=VARCHAR},

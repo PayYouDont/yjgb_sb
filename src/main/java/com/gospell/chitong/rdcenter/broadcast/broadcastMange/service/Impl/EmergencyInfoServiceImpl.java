@@ -94,7 +94,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 			i = dao.updateByPrimaryKeySelective(emer);
 		} else {
 			emer.setUpdateBy(ShiroUtils.getUser().getName());
-			i = dao.insert(emer);
+			i = dao.insertSelective(emer);
 		}
 		return i;
 	}
