@@ -124,9 +124,18 @@ public class NodeAction extends BaseAction{
 	@Transactional
 	public HashMap<String,Object> upload(HttpServletRequest request,HttpServletResponse response){		
 		try {
-			String outTarPath = service.receiveTar(request);
+			Map<String,Object> map = service.receiveTar(request);
+			/*boolean isTar = (boolean)map.get("isTar");
+			if(!isTar) {
+				return JsonWrapper.failureWrapper("该文件不是tar格式文件");
+			}*/
+			boolean isSign = (boolean)map.get("isSign");
+			if(!isSign) {
+				return JsonWrapper.failureWrapper("签名文件验证未通过");
+			}
+			String tarPath = map.get("tarPath").toString();
 			OutputStream out = response.getOutputStream();
-			InputStream in = new FileInputStream(new File(outTarPath));
+			InputStream in = new FileInputStream(new File(tarPath));
 			FileUtil.wirteFile(in, out);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {

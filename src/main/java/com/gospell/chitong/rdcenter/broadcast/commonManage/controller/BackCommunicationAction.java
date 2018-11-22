@@ -137,11 +137,14 @@ public class BackCommunicationAction extends BaseAction {
 		String devHexcode = "";// 设备地址号 ==设备寻址号截取后4个字
 		String devCode = "";// 设备寻址号==资源类型（2字）+资源子类型（2字）+区域行政编码（12字）+设备编号（2字） 共18字
 		Map<String, Object> map = new HashMap<>();
-		map.put("devDsn", deviceInfo.getDevdsn());
-		Deviceinfo info = devService.list(map).size() > 0 ? devService.list(map).get(0) : new Deviceinfo();
+		map.put("devdsn", deviceInfo.getDevdsn());
+		Deviceinfo info = new Deviceinfo();
+		if(devService.list(map).size()>0) {
+			info = devService.list(map).get(0);
+		}
 		// 查询此区域下设备
 		map = new HashMap<>();
-		map.put("Devaddresscode", deviceInfo.getDevaddresscode());
+		map.put("devaddresscode", deviceInfo.getDevaddresscode());
 		List<Deviceinfo> Deviceinfos = devService.list(map);
 		List<Long> nums = new ArrayList<Long>();// 初始化数组
 		if (Deviceinfos.size() == 0) {
@@ -172,35 +175,37 @@ public class BackCommunicationAction extends BaseAction {
 		devHexcode = devCode.substring(devCode.length() - 2);// 截取后4位
 
 		// 设置parentPath字段值,方便通过区域码 范围 查找
-		String currentCode = deviceInfo.getDevaddresscode();
 		map = new HashMap<>();
-		map.put("codeLike", currentCode);
+		map.put("codeLike", deviceInfo.getDevaddresscode());
 		Administrative admin = adService.list(map).size() > 0 ? adService.list(map).get(0) : new Administrative();
-		deviceInfo.setDevaddress(admin.getName());
-		deviceInfo.setParentpath(admin.getParentPath());
-		// 设置一些参数到设备信息对象中
-		deviceInfo.setId(info.getId());
-		deviceInfo.setDevhexcode(devHexcode);// 设备地址号
-		deviceInfo.setDevcode(devCode);// 设备寻址号
+		info.setDevaddress(admin.getName());
+		info.setParentpath(admin.getParentPath());
+		info.setDevhexcode(devHexcode);// 设备地址号
+		info.setDevcode(devCode);// 设备寻址号
+		info.setDevname(deviceInfo.getDevname());
+		info.setDevaddresscode(deviceInfo.getDevaddresscode());
+		info.setCoordinate(deviceInfo.getCoordinate());
+		info.setDevicemodelId(deviceInfo.getDevicemodelId());
 		// 参数
 		DeviceJson deviceJson = new DeviceJson();
-		deviceJson.setDevDsn(deviceInfo.getDevdsn());
-		deviceJson.setDevHexcode(deviceInfo.getDevhexcode());
-		deviceJson.setDevCode(deviceInfo.getDevcode());
+		deviceJson.setDevDsn(info.getDevdsn());
+		deviceJson.setDevHexcode(info.getDevhexcode());
+		deviceJson.setDevCode(info.getDevcode());
 		String json = JsonUtil.toJson(deviceJson);
 		String url = serverProperties.getSetParasAddress();
 		try {
 			String sendPost = HttpClientUtil.sendPostDataByJson(url, json, "utf8");
 			if (sendPost.equals("OK")) {
-				deviceInfo.setStatus("00000001");// 注册
-				deviceInfo.setCreateBy(getUserName());
-				devService.save(deviceInfo);
+				//info.setStatus("00000001");// 注册
+				info.setCreateBy(getUserName());
+				info.setOnregister(1);//将设备信息注册状态改为1(已注册)
+				devService.save(info);
 				// 初始化的时候把设备型号下的参数设置得到参数值表中（只是这时候值为null）
 				Devicemodel deviceModel = dmService.selectById(deviceInfo.getDevicemodelId());
 				List<Devicemodelparam> dmps = dmService.getDevParmByDevicemodel(deviceModel);
 				for (Devicemodelparam deviceModelParam : dmps) {
 					DeviceParamVal val = new DeviceParamVal();
-					val.setDeviceInfo(deviceInfo);
+					val.setDeviceInfo(info);
 					val.setParamFormCheck(deviceModelParam.getParamFormCheck());
 					val.setParamName(deviceModelParam.getParamName());
 					dpvService.save(val);
@@ -221,7 +226,6 @@ public class BackCommunicationAction extends BaseAction {
 	@Transactional
 	public HashMap<String, Object> baseUpdate(Deviceinfo deviceInfo) {
 		User curruser = getUser();
-
 		String devHexcode = "";// 设备地址号 ==设备寻址号截取后4个字
 		String devCode = "";// 设备寻址号==资源类型（2字）+资源子类型（2字）+区域行政编码（12字）+设备编号（2字） 共18字
 		Deviceinfo info = devService.selectById(deviceInfo.getId());
@@ -345,23 +349,18 @@ public class BackCommunicationAction extends BaseAction {
 				String emerEBM_ID = jo.getString("EBM_ID");
 				Map<String, Object> map = new HashMap<>();
 				map.put("devdsn", DEV_ID);
-				// info = devService.get(" devDsn = :devDsn", DEV_ID);
 				List<Deviceinfo> list = devService.list(map);
 				if (list.size() > 0) {
-					info = list.get(0);
+					info = list.get(0);  
 				}
 				if (info != null) {
 					// String preStatus = info.getStatus();
 					info.setStatus(Stat);
 					info.setStatusscript(Script);
 					if (!"".equals(emerEBM_ID)) {
-						Integer EBM_ID = new Integer(emerEBM_ID);
-						info.setMessageid(EBM_ID);
+						info.setMessageid(emerEBM_ID);
 					}
-					/*
-					 * deviceLogService.addDeviceLogDao(info.getDevName(), info.getDevDsn(),
-					 * info.getStatus(), preStatus); deviceInfoService.updateDeviceInfo(info);
-					 */
+					devService.save(info);
 				} else {
 					errorDev.add(DEV_ID);
 					continue;
@@ -377,13 +376,13 @@ public class BackCommunicationAction extends BaseAction {
 			response.setContentType("text/html;charset=UTF-8");
 			response.getWriter().print(returnObject.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			returnObject.element("Result", "ERROR");
 			response.setContentType("text/html;charset=UTF-8");
 			try {
 				response.getWriter().print(returnObject.toString());
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				logger.error(e1.getMessage(),e1);
 			}
 		}
 	}

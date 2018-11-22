@@ -45,11 +45,10 @@ public class ShrioConfig {
 		//filterChainDefinitionMap.put("/fonts/**", "anon");
 		filterChainDefinitionMap.put("/image/**", "anon");
 		filterChainDefinitionMap.put("/nodeAction/upload", "anon");
+		filterChainDefinitionMap.put("/nodeAction/postTar", "anon");
 		filterChainDefinitionMap.put("/EBM_media/*", "anon");
 		filterChainDefinitionMap.put("/backCommunicationAction/*", "anon");
 		//filterChainDefinitionMap.put("/docs/**", "anon");
-		//filterChainDefinitionMap.put("/upload/**", "anon");
-		//filterChainDefinitionMap.put("/files/**", "anon");
 		filterChainDefinitionMap.put("/", "authc");
 		//filterChainDefinitionMap.put("/static/**", "anon");// 静态资源不拦截
 		filterChainDefinitionMap.put("/**", "authc");

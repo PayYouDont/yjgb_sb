@@ -72,7 +72,7 @@ public class StatisticsAction extends BaseAction{
 	}
 	/**
 	 * 获取应急信息类型统计数据
-	 * @Title: getTypeData 
+	 * @Title: getTypeData 、
 	 * @Description: TODO(获取应急信息类型统计数据) 
 	 * @param @param parameter
 	 * @param @return    设定文件 

@@ -2,6 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,7 +18,7 @@ public interface NodeService extends BaseService<Node>{
     
     List<Node> checkNodes(List<Node> nodes);
     
-    String receiveTar(HttpServletRequest request) throws Exception;
+    Map<String,Object> receiveTar(HttpServletRequest request) throws Exception;
     
     EBM getEbmFromTar(File tarfile);
 }

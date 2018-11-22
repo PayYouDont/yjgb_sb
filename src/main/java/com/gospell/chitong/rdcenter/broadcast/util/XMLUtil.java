@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.Signature;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRDTInfo;
 
 public class XMLUtil {
@@ -71,6 +72,28 @@ public class XMLUtil {
 		}
 		outPath = XmlWriter(document, outPath,xmlName);
 		return outPath;
+	}
+	/**
+	 * @Title: createSignature 
+	 * @Description: TODO(生成签名) 
+	 * @param map
+	 * @param outPath
+	 * @param name
+	 * @return    设定文件 
+	 * @return String    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年11月21日 下午3:57:32
+	 */
+	public static String createSignature(Map<String, Object> map,String outPath,String name) {
+		Signature sign = new Signature();
+		sign.setRelatedEBD_EBDID(map.get("EBDID").toString());
+		sign.setCertSN(SignatureUtil.getCertSN());
+		sign.setSignature_SignatureValue(SignatureUtil.signature(SignatureUtil.MESSAGE_DATA));
+		name = "EBDS_"+name;
+		String xmlpath = createXML(sign.getMap(), outPath, name);
+		File file = new File(xmlpath);
+		return file.getPath();
 	}
 	/**
 	 * 重写方法，为标元素签添加属性
@@ -186,10 +209,10 @@ public class XMLUtil {
 	 */
 	public static void deleteNullElement(Element elem) {
 		String text = elem.getText();
-		Element pe = elem.getParent();
-		if(!pe.getName().equals("EBD")&&text.equals("")) {
-			pe.remove(elem);
-			deleteNullElement(pe);
+		Element parent = elem.getParent();
+		if(!"EBD".equals(parent.getName())&&"".equals(text)) {
+			parent.remove(elem);
+			deleteNullElement(parent);
 		}
 	}
 	/**
@@ -213,7 +236,9 @@ public class XMLUtil {
         	if(!file.exists()) {
         		file.mkdirs();
         	}
-        	xmlName = xmlName+".xml";
+        	if(xmlName.indexOf(".xml")==-1) {
+        		xmlName = xmlName+".xml";
+        	}
     		outPath = outPath + File.separatorChar+xmlName;
     		file = new File(outPath);
     		//生成输出路径+名字
@@ -228,36 +253,51 @@ public class XMLUtil {
             //关闭XMLWriter对象
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("创建XML错误:creatFixedXML error");
-            logger.error(e.getMessage(),e);
+            logger.error("创建XML错误:creatFixedXML error",e);
         }
         return outPath;
 	}
 	/**
-	 * 读取xml文件内容，并生成对应实体类
+	 * 
 	 * @Title: readXML 
-	 * @Description: TODO(读取xml文件内容，并生成对应实体类) 
-	 * @param @param xmlFile
-	 * @param @return    设定文件 
-	 * @return BaseXML    返回类型 
+	 * @Description: TODO(重写方法：根据xml路径读取xml文件内容，并生成对应实体类) 
+	 * @param clazz
+	 * @param xmlPath
+	 * @return    设定文件 
+	 * @return T    返回类型 
 	 * @throws 
 	 * @author peiyongdong
-	 * @date 2018年6月25日 下午4:16:22
+	 * @date 2018年11月22日 上午10:48:45
 	 */
-	public static BaseXML readXML(File xmlFile,Class<? extends BaseXML> clazz) {
+	public static <T>T readXML(Class<T> clazz,String xmlPath) {
+		File xmlFile = new File(xmlPath);
+		return readXML(clazz, xmlFile);
+	}
+	/**
+	 * 读取xml文件内容，并生成对应实体类
+	 * @Title: readXML 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param clazz
+	 * @param xmlFile
+	 * @return    设定文件 
+	 * @return T    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年11月22日 上午10:47:57
+	 */
+	public static <T>T readXML(Class<T> clazz,File xmlFile) {
 		SAXReader reader = new SAXReader();
 		try {
 			// 通过reader对象的read方法加载xml文件，获取document对象  
 			Document document = reader.read(xmlFile);
 			// 通过document对象获取根节点bookstore  
-            Element EBD = document.getRootElement();  
+            Element root = document.getRootElement();  
             //通过反射创建对象
-            BaseXML xml = clazz.newInstance();
+            T xml = clazz.newInstance();
    		 	//属性集合
 	   		List<Field> fieldList = new ArrayList<>();
 	   		fieldList = ReflecUtil.getFields(clazz);
-	   		xml = writeToEntity(EBD, fieldList,xml);
+	   		xml = writeToEntity(xml,root, fieldList);
 	   		return xml;
 		}catch(Exception e) {
 			logger.error("解析xml错误：",e);
@@ -265,97 +305,80 @@ public class XMLUtil {
 		}
 	}
 	/**
-	 * 根据xml路径读取xml文件内容，并生成对应实体类
-	 * @Title: readXML 
-	 * @Description: TODO(重写方法：根据xml路径读取xml文件内容，并生成对应实体类) 
-	 * @param @param xmlPath
-	 * @param @param clazz
-	 * @param @return    设定文件 
-	 * @return BaseXML    返回类型 
-	 * @throws 
-	 * @author peiyongdong
-	 * @date 2018年6月25日 下午4:19:04
-	 */
-	public static BaseXML readXML(String xmlPath,Class<? extends BaseXML> clazz) {
-		File xmlFile = new File(xmlPath);
-		return readXML(xmlFile, clazz);
-	}
-	/**
-	 * 将属性值写入实体类
 	 * @Title: writeToEntity 
-	 * @Description: TODO(这里用一句话描述这个方法的作用) 
-	 * @param @param elem
-	 * @param @param fieldList
-	 * @param @param xml
-	 * @param @return
-	 * @param @throws Exception    设定文件 
-	 * @return BaseXML    返回类型 
+	 * @Description: TODO(将属性值写入实体类) 
+	 * @param xml
+	 * @param elem
+	 * @param fieldList
+	 * @return
+	 * @throws Exception    设定文件 
+	 * @return T    返回类型 
 	 * @throws 
 	 * @author peiyongdong
-	 * @date 2018年6月21日 下午4:28:46
+	 * @date 2018年11月22日 上午10:49:13
 	 */
 	@SuppressWarnings("unchecked")
-	public static BaseXML writeToEntity(Element elem,List<Field> fieldList,BaseXML xml) throws Exception{
+	public static <T>T writeToEntity(T xml,Element elem,List<Field> fieldList) throws Exception{
 		 List<Element> elements = elem.elements();
 		 if(elements.size()>0) {
 			 for (Element element : elements) {
-				String parentName = element.getParent().getName();
-				String elemName = element.getName();
-				String text = element.getText();
-				for (Field field : fieldList) {
-					String fieldName = field.getName();
-					String ename = parentName+"_"+elemName;
-					if(fieldName.equals(ename)) {
+				 String parentName = element.getParent().getName();
+				 String elemName = element.getName();
+				 String text = element.getText();
+				 for (Field field : fieldList) {
+					 String fieldName = field.getName();
+					 String ename = parentName+"_"+elemName;
+					 if(fieldName.equals(ename)) {
 						//如果是数组类型
 						if(field.getType().isInstance(new ArrayList<Object>())) {
-							List<BaseXML> list = new ArrayList<>();
+							List<T> list = new ArrayList<>();
 							if(field.get(xml)!=null) {
-								list = (List<BaseXML>)field.get(xml);
+								list = (List<T>)field.get(xml);
 							}
-							list.addAll(writeArrayToEntrty(field,element));
+							list.addAll(writeArrayToEntrty(element,field));
 							field.set(xml, list);
 						}else {
 							field.set(xml, text);
 						}
-					}
-				}
-				writeToEntity(element, fieldList,xml);
+					 }
+				 }
+				 writeToEntity(xml,element, fieldList);
 			 }
 		 }
 		return xml;
 	}
 	/**
-	 * 将xml元素中的数组类型值写入到对象数组属性中
 	 * @Title: writeArrayToEntrty 
-	 * @Description: TODO(这里用一句话描述这个方法的作用) 
-	 * @param field
+	 * @Description: TODO(将xml元素中的数组类型值写入到对象数组属性中) 
 	 * @param elem
+	 * @param field
 	 * @return
 	 * @throws Exception    设定文件 
-	 * @return List<BaseXML>    返回类型 
+	 * @return List<T>    返回类型 
 	 * @throws 
 	 * @author peiyongdong
-	 * @date 2018年7月19日 下午4:40:57
+	 * @date 2018年11月22日 上午10:49:36
 	 */
-	public static List<BaseXML> writeArrayToEntrty(Field field,Element elem) throws Exception {
-		List<BaseXML> list = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> writeArrayToEntrty(Element elem,Field field) throws Exception {
+		List<T> list = new ArrayList<>();
 		Type type = field.getGenericType();
 		if(ParameterizedType.class.isAssignableFrom(type.getClass())) {
-			BaseXML xml = null;
+			T xml = null;
 			for(Type t:((ParameterizedType) type).getActualTypeArguments()) {
 				Class<?> clazz = (Class<?>)t;
 				List<Field> fieldList = ReflecUtil.getFields(clazz);
-				xml = (BaseXML) clazz.newInstance();
-				xml = writeToEntity(elem, fieldList, xml);
+				xml = (T) clazz.newInstance();
+				xml = writeToEntity(xml,elem, fieldList);
 				list.add(xml);
 			}
-			
 		}
 		return list;
 	}
 	public static void main(String[] args) {
 		String xmlPath = "D:\\tar\\out\\EBDE_10444510300000001030101012018071900000001.xml";
-		BaseXML xml = XMLUtil.readXML(xmlPath, EBRDTInfo.class);
+		File file = new File(xmlPath);
+		BaseXML xml = XMLUtil.readXML(EBRDTInfo.class,file);
 		System.out.println(xml);
 	}
 }

@@ -12,14 +12,14 @@ import java.util.Map;
 * @date 2018年9月11日 上午11:19:58 
 *  
 */
-public interface BaseDao<T, E extends Serializable> {
-    int deleteByPrimaryKey(E id);
+public interface BaseDao<T extends Serializable, K> {
+    int deleteByPrimaryKey(K id);
 
     int insert(T record);
 
     int insertSelective(T record);
 
-    T selectByPrimaryKey(E id);
+    T selectByPrimaryKey(K id);
 
     int updateByPrimaryKeySelective(T record);
 

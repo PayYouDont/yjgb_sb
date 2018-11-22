@@ -2,6 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.Impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +133,8 @@ public class INodeService implements NodeService {
 	}
 
 	@Override
-	public String receiveTar(HttpServletRequest request) throws Exception{
+	public Map<String,Object> receiveTar(HttpServletRequest request) throws Exception{
+		Map<String,Object> map = new HashMap<>();
 		MultipartHttpServletRequest mhsRequest = (MultipartHttpServletRequest) request;
 		Iterator<String> iter = mhsRequest.getFileNames();
 		String fileName = "";
@@ -140,17 +142,20 @@ public class INodeService implements NodeService {
 			fileName = iter.next(); 
 		}
 		MultipartFile mfile= mhsRequest.getFile(fileName);
-		String contentType = mfile.getContentType();
-		if(!contentType.equals("application/x-tar")) {
-			new RuntimeException("上传的文件不是x-tar类型");
-		}
+		/*String contentType = mfile.getContentType();
+		boolean isTar = contentType.indexOf("tar")!=-1;
+		map.put("isTar", isTar);
+		if(!isTar) {
+			return map;
+		}*/
 		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
-		String getPath = prop.getTarInPath();
+		String basePath = prop.getTarInPath();
 		//将接收到的tar包写入指定tar文件夹
-        String tarPath = FileUtil.copyFile(mfile.getInputStream(), getPath, mfile.getOriginalFilename());
-        //解析接收到的tar包并生成对应的回复tar包
+        String tarPath = FileUtil.copyFile(mfile.getInputStream(), basePath, mfile.getOriginalFilename());
         String outPath = prop.getTarOutPath();
-        return TarUtil.getTarByInTar(tarPath,outPath);
+        //解析接收到的tar包并生成对应的回复tar包
+        map.putAll(TarUtil.getTarByPath(tarPath,outPath));
+        return map;
 	}
 	
 	/**
@@ -165,7 +170,7 @@ public class INodeService implements NodeService {
 		//String outPath = filepath.substring(0,filepath.lastIndexOf("\\"));
 		TarUtil.archive(filepath,outPath);
 		String xmlPath = refreshFileList(outPath);
-		BaseXML xml = XMLUtil.readXML(xmlPath, EBM.class);
+		BaseXML xml = XMLUtil.readXML(EBM.class,xmlPath);
 		FileUtil.delete(outPath);
 		return (EBM) xml;
 	}

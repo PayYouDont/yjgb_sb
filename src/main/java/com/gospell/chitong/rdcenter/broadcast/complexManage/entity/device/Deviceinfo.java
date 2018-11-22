@@ -64,7 +64,7 @@ public class Deviceinfo implements Serializable {
     /**
      * 当前应急消息挂载的应急消息的id
      */
-    private Integer messageid;
+    private String messageid;
 
     /**
      * 设备型号id
@@ -105,46 +105,46 @@ public class Deviceinfo implements Serializable {
 
     private String parentpath;
     
+	private Integer onregister;//是否注册
     /***********不存数据库的属性*****************/
     //坐标
     private String coordinate;
-    
+    /*@Setter
+	private String onregister;//是否注册 （第7位）*/
+	@Setter
+	private String online;	  //是否在线 （第6位）
     @Setter
-	private String onregister;//是否注册
+	private String onwork;	  //是否工作	 （第5位）
     @Setter
-	private String online;	  //是否在线
-    @Setter
-	private String onwork;	  //是否工作
-    @Setter
-	private String onwarning; //是否报警
+	private String onwarning; //是否报警 （第4位）
     
     private Devicemodel deviceModel;//设备型号
     
     private static final long serialVersionUID = 1L;
     
-    public String getOnregister() {
-    	if(getStatus()!=null&&!"".equals(getStatus())) {
+   /* public String getOnregister() {
+    	if(status!=null&&!"".equals(status)) {
         	return getStatus().substring(7,8);
     	}
     	return null;
-    }
+    }*/
     public String getOnline() {
-    	if(getStatus()!=null&&!"".equals(getStatus())) {
+    	if(status!=null&&!"".equals(status)) {
         	return getStatus().substring(6,7);
     	}
-    	return null;
+    	return status;
     }
     public String getOnwork() {
-    	if(getStatus()!=null&&!"".equals(getStatus())) {
+    	if(status!=null&&!"".equals(status)) {
         	return getStatus().substring(5,6);
     	}
-    	return null;
+    	return status;
     }
     public String getOnwarning() {
-    	if(getStatus()!=null&&!"".equals(getStatus())) {
+    	if(status!=null&&!"".equals(status)) {
         	return getStatus().substring(4,5);
     	}
-    	return null;
+    	return status;
     }
     //获取纬度
     public String getLat() {
