@@ -6,7 +6,7 @@
 
 	<groupId>com.gospell.chitong.rdcenter.broadcast</groupId>
 	<artifactId>yjgb-sb</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>yjgb-sb</name>
@@ -187,12 +187,37 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>cn.tass.yingjgb</groupId>
+			<artifactId>YingJGBCALLDLL</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/lib/YingJGBCALLDLL20170605.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>cn.tass.exceptions</groupId>
+			<artifactId>YJException</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/lib/jna-4.2.2.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -228,18 +253,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<!-- 主要配置：将引用的 jar 包打进生成的 jar 文件的 BOOT-INF/lib 目录中 -->
-    <resources>
-        <resource>
-            <directory>src/main/resources/lib</directory>
-            <targetPath>BOOT-INF/lib</targetPath>
-            <includes>
-                <include>**/*.jar</include>
-            </includes>
-        </resource>
-        <resource>
-            <directory>src/main/resources</directory>
-        </resource>
-    </resources>
 	</build>
 </project>

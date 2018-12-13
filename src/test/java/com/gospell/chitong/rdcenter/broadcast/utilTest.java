@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRPSInfo;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -23,6 +24,10 @@ public class utilTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	@Test
+	public void Test() {
+		System.out.println(EBDcodeUtil.getEBMID());
 	}
 	/*@Test
 	public void test() {

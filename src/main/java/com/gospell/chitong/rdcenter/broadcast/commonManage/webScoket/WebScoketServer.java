@@ -122,7 +122,7 @@ public class WebScoketServer {
     public static String showNodeNews(String path){
         File tarfile = new File(path);
         EBM ebm = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(tarfile);
-        Map<String, Object> map = ebm.getEMBMap();
+        Map<String, Object> map = ebm.getEBMMap();
         List<Map<String, Object>> list = new LinkedList<>();
         list.add(map);
         int i=0;

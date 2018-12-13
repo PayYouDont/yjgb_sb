@@ -33,16 +33,29 @@ public class EBDcodeUtil {
 	public static String getConnectionCheckCode() {
 		return StringUtil.patch("0", 16, 0);
 	}
+	
+	private static String createBaseDateCode() {
+		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
+		return prop.getSRC_EBRID()+DateUtils.getDate("yyyyMMdd");
+	}
+	
+	public static String getEBMID() {
+		EBDID++;
+		return createBaseDateCode()+StringUtil.patch("0",4, EBDID);
+	}
 	public static String getEBDID(Object object) {
 		if(object instanceof BaseXML) {
-			ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 			if(object instanceof ConnectionCheck) {
-				return "01"+prop.getSRC_EBRID()+EBDcodeUtil.getConnectionCheckCode();
-			}else {
-				return "10"+prop.getSRC_EBRID()+DateUtils.getDate("yyyyMMdd")+EBDcodeUtil.getEBDIDCode();
+				ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
+				return "01"+prop.getSRC_EBRID()+getConnectionCheckCode();
 			}
+			return getBaseEBDID();
+			
 		}
 		return null;
+	}
+	public static String getBaseEBDID() {
+		return "10"+createBaseDateCode()+getEBDIDCode();
 	}
 	public static String getEBRID(Deviceinfo deviceInfo,String lastCode) {
 		String code = deviceInfo.getDevaddresscode();

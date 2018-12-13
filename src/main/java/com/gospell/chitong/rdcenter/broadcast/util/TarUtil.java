@@ -105,16 +105,21 @@ public class TarUtil {
 	 * @date 2018年11月21日 下午4:04:33
 	 */
 	public static String createXMLTar(Map<String, Object> map, String outPath, String name) {
+		String tempPath = outPath+File.separatorChar+"temp";
 		// 生成xml
-		String xmlpath = XMLUtil.createXML(map, outPath, name);
+		String xmlpath = XMLUtil.createXML(map,tempPath,"EBD","EBDB_"+name);
 		// 生成签名xml
-		String signPath = XMLUtil.createSignature(map, outPath, name);
-		String basePath = outPath;
+		byte[] inData = {};
+		try {
+			inData = FileUtil.readFile(new File(xmlpath));
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		XMLUtil.createSignature(EBDcodeUtil.getBaseEBDID(),tempPath,name,inData);
 		name = name.indexOf(".tar") == -1 ? name + ".tar" : name;
 		outPath += File.separatorChar + "EBDT_" + name;
-		pack(basePath, outPath);
-		FileUtil.delete(xmlpath);
-		FileUtil.delete(signPath);
+		pack(tempPath,outPath);
+		FileUtil.delete(tempPath);
 		return outPath;
 	}
 
@@ -132,14 +137,21 @@ public class TarUtil {
 	public static Map<String,Object> getTarByPath(String inTarPath, String outTarPath) {
 		Map<String,Object> map = new HashMap<>();
 		//读取签名文件，并验证
-		Signature sign = readSignature(inTarPath);
-		boolean isSign = SignatureUtil.verifySignature(sign.getSignature_SignatureValue(), SignatureUtil.MESSAGE_DATA);
-		map.put("isSign", isSign);
-		if(!isSign) {
-			return map;
-		}
+		Signature signature = readSignature(inTarPath);
+		String sign = signature.getSignature_SignatureValue();
 		//读取xml内容并生成实体类
-		BaseXML xml = readXML(inTarPath);
+		File file = readXML(inTarPath);
+		try {
+			byte[] inData = FileUtil.readFile(file);
+			boolean isSign = SignatureUtil.verifySignature(inData,sign);
+			map.put("isSign", isSign);
+			if(!isSign) {
+				return map;
+			}
+		}catch(Exception e) {
+			logger.error(e.getMessage(),e);
+		}
+		BaseXML xml = readXML(file);
 		if (xml != null) {
 			// 将tar包信息保存至数据库
 			saveReceiveTar(xml);
@@ -197,7 +209,7 @@ public class TarUtil {
 	 * @throws @author peiyongdong
 	 * @date 2018年7月17日 下午2:30:14
 	 */
-	public static BaseXML readXML(String tarPath) {
+	public static File readXML(String tarPath) {
 		File tempFile = archiveToTemp(tarPath);
 		// 获取临时目录
 		File[] files = tempFile.listFiles();
@@ -208,7 +220,7 @@ public class TarUtil {
 				String fileName = file.getName();
 				// 获取非签名xml文件
 				if (fileName.indexOf("EBDB") != -1 && fileName.indexOf("EBDS") == -1) {
-					// 获取BaseXML
+					/*// 获取BaseXML
 					BaseXML xml = XMLUtil.readXML(BaseXML.class,file);
 					// 获取EBDType
 					String EBDType = xml.getEBD_EBDType();
@@ -219,11 +231,24 @@ public class TarUtil {
 					xml = XMLUtil.readXML(clazz,xmlPath);
 					// 删除临时文件
 					FileUtil.delete(tempFile);
-					return xml;
+					return xml;*/
+					return file;
 				}
 			}
 		}
 		return null;
+	}
+	public static BaseXML readXML(File file) {
+		// 获取BaseXML
+		BaseXML xml = XMLUtil.readXML(BaseXML.class,file);
+		// 获取EBDType
+		String EBDType = xml.getEBD_EBDType();
+		// 获取实际属于哪个子类
+		Class<? extends BaseXML> clazz = BaseXML.getClassByEBDType(EBDType);
+		String xmlPath = file.getAbsolutePath();
+		// 获取实际xml实体类
+		xml = XMLUtil.readXML(clazz,xmlPath);
+		return xml;
 	}
 	/**
 	 * @Title: readSignature 
@@ -268,7 +293,8 @@ public class TarUtil {
 	 * @date 2018年7月17日 下午2:27:10
 	 */
 	public static int saveReceiveTar(String tarPath) {
-		BaseXML xml = readXML(tarPath);
+		File file = readXML(tarPath);
+		BaseXML xml = readXML(file);
 		return saveReceiveTar(xml);
 	}
 
@@ -321,7 +347,8 @@ public class TarUtil {
 	 * @date 2018年7月17日 下午2:28:21
 	 */
 	public static int saveSendTar(String tarPath) {
-		BaseXML xml = readXML(tarPath);
+		File file = readXML(tarPath);
+		BaseXML xml = readXML(file);
 		return saveSendTar(xml);
 	}
 
@@ -379,10 +406,30 @@ public class TarUtil {
 	 */
 	public static void pack(String inPath, String outPath) {
 		File inputFile = new File(inPath);
-		if (inputFile.isDirectory()) {
-			packDir(inputFile, outPath);
-		} else {
-			packFile(inputFile, outPath);
+		OutputStream out = null;
+		TarOutputStream tarOut = null;
+		try {
+			out = new FileOutputStream(outPath);
+			tarOut = new TarOutputStream(out);
+			if (inputFile.isDirectory()) {
+				packDir(tarOut,inputFile);
+			} else {
+				packFile(tarOut,inputFile);
+			}
+		}catch(IOException e) {
+			logger.error(e.getMessage(),e);
+		}finally {
+			try {
+				if(tarOut!=null) {
+					tarOut.close();
+				}
+				if(out!=null) {
+					out.close();
+				}
+			}catch(IOException e) {
+				logger.error(e.getMessage(),e);
+			}
+			
 		}
 	}
 
@@ -395,33 +442,10 @@ public class TarUtil {
 	 * @throws @author peiyongdong
 	 * @date 2018年11月21日 下午3:58:40
 	 */
-	public static void packDir(File file, String outPath) {
+	public static void packDir(TarOutputStream tarOut,File file) {
 		File[] files = file.listFiles();
-		TarOutputStream tarOut = null;
-		OutputStream out = null;
-		InputStream in = null;
-		try {
-			out = new FileOutputStream(outPath);
-			tarOut = new TarOutputStream(out);
-			for (File f : files) {
-				tarOut.putNextEntry(new TarEntry(f, f.getName()));
-				in = new FileInputStream(f);
-				FileUtil.wirteFile(in, tarOut, false);
-			}
-		} catch (Exception e) {
-			logger.error("创建tar包出错：" + e);
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-				if (in != null) {
-					in.close();
-				}
-			} catch (Exception e) {
-				logger.error("关闭流error", e);
-			}
-
+		for (File f : files) {
+			packFile(tarOut,f);
 		}
 	}
 
@@ -434,16 +458,22 @@ public class TarUtil {
 	 * @throws @author peiyongdong
 	 * @date 2018年11月21日 下午3:59:01
 	 */
-	public static void packFile(File file, String outPath) {
-		OutputStream out = null;
-		TarOutputStream tarOut = null;
+	public static void packFile(TarOutputStream tarOut,File file) {
+		InputStream in = null;
 		try {
-			out = new FileOutputStream(outPath);
-			tarOut = new TarOutputStream(out);
 			tarOut.putNextEntry(new TarEntry(file, file.getName()));
-			FileUtil.wirteFile(new FileInputStream(file), tarOut);
+			in = new FileInputStream(file);
+			FileUtil.wirteFile(in, tarOut,false);
 		} catch (IOException e) {
 			logger.error("创建tar包出错：" + e);
+		}finally {
+			if(in!=null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					logger.error(e.getMessage(),e);
+				}
+			}
 		}
 	}
 }

@@ -9,12 +9,12 @@ import javax.annotation.Resource;
 
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
@@ -24,6 +24,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 import io.swagger.annotations.Api;
@@ -32,7 +33,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "应急信息管理")
-@Controller
+@RestController
 @RequestMapping("/emergencyInfoAction")
 public class EmergencyInfoAction extends BaseAction{
 	
@@ -58,11 +59,11 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @date 2018年6月5日 上午11:43:23
 	 */
 	@GetMapping("/index")  
-    public String page(Model model) throws Exception{  
+    public ModelAndView page(Model model) throws Exception{  
 		model.addAttribute("server",serverProperties);
 		model.addAttribute("user",getUser());
 		model.addAttribute("nvaMenuType","应急播发管理系统");
-        return "common/index";  
+        return new ModelAndView("common/index");  
     }
 	/***
 	 * 信息管理
@@ -76,9 +77,9 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @date 2018年6月5日 上午11:41:57
 	 */
 	@GetMapping("/toList") 
-	public String toList(Model model) {
+	public ModelAndView toList(Model model) {
 		model.addAttribute("emerType", "信息管理");
-		return "broadcast/emer_list";
+		return new ModelAndView("broadcast/emer_list");
 	}
 	/**
 	 * 信息审核
@@ -92,9 +93,9 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @date 2018年6月5日 上午11:41:46
 	 */
 	@GetMapping("/toReviewList") 
-	public String toReviewList(Model model) {
+	public ModelAndView toReviewList(Model model) {
 		model.addAttribute("emerType", "信息审核");
-		return "broadcast/emerReview_list";
+		return new ModelAndView("broadcast/emerReview_list");
 	}
 	/**
 	 * 信息播发
@@ -108,14 +109,14 @@ public class EmergencyInfoAction extends BaseAction{
 	 * @date 2018年6月6日 上午11:08:48
 	 */
 	@GetMapping("/toCastList") 
-	public String toCastList(Model model) {
+	public ModelAndView toCastList(Model model) {
 		model.addAttribute("emerType", "信息播发");
-		return "broadcast/broadcast_list";
+		return new ModelAndView("broadcast/broadcast_list");
 	}
 	
 	@GetMapping("/toPlan")
-	public String toPlan(Model model) {
-		return "broadcast/emerPlan_list";
+	public ModelAndView toPlan(Model model) {
+		return new ModelAndView("broadcast/emerPlan_list");
 	}
 	/**
 	 * 新增/编辑应急信息
@@ -131,7 +132,7 @@ public class EmergencyInfoAction extends BaseAction{
 	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
 	@GetMapping("/toEdit")
 	@Log("应急信息编辑")
-	public String toEdit(Model model,String type,Integer id) {
+	public ModelAndView toEdit(Model model,String type,Integer id) {
 		Emergencyinfo emer = new Emergencyinfo();
 		if(id!=null) {
 			emer = service.selectById(id);
@@ -162,7 +163,7 @@ public class EmergencyInfoAction extends BaseAction{
 		model.addAttribute("displayLanguageList", service.DisplaylanguageList(map));
 		//媒体资源
 		model.addAttribute("mediaResouce",mrService.list(new HashMap<>()));
-		return "broadcast/emer_edit";
+		return new ModelAndView("broadcast/emer_edit");
 	}
 	
 	/**
@@ -181,7 +182,6 @@ public class EmergencyInfoAction extends BaseAction{
         @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String")
 	})
 	@PostMapping("/list")
-	@ResponseBody
 	public HashMap<String,Object> list(Page page,String search){
 		Map<String,Object> map = page.getMap();
 		if(search!=null) {
@@ -211,7 +211,6 @@ public class EmergencyInfoAction extends BaseAction{
         @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String")
 	})
 	@PostMapping("/queryBroadcastingEmer")
-	@ResponseBody
 	public HashMap<String,Object> queryBroadcastingEmer(Page page){
 		Map<String,Object> map = page.getMap();
 		map.put("areacode", getUser().getAreaCode());
@@ -238,7 +237,6 @@ public class EmergencyInfoAction extends BaseAction{
         @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String")
 	})
 	@PostMapping("/queryEmerPlan")
-	@ResponseBody
 	public HashMap<String,Object> queryEmerPlan(Page page){
 		Map<String,Object> map = page.getMap();
 		map.put("areacode", getUser().getAreaCode());
@@ -269,7 +267,6 @@ public class EmergencyInfoAction extends BaseAction{
         @ApiImplicitParam(name = "queryParam", value = "搜索索引", dataType = "String"),
 	})
 	@PostMapping("/reviewList")
-	@ResponseBody
 	public HashMap<String,Object> queryReviewList(Page page,String queryParam){
 		int flag = queryParam.indexOf("plan")!=-1?0:1;
 		Map<String,Object> map = page.getMap();
@@ -295,9 +292,8 @@ public class EmergencyInfoAction extends BaseAction{
 	 */
 	@ApiOperation(value="应急信息审核", notes="应急信息审核接口")
 	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
-	@PostMapping("/review")
 	@Log("应急信息审核")
-	@ResponseBody
+	@PostMapping("/review")
 	public HashMap<String,Object> review(Emergencyinfo emergencyInfo){
 		String msg="";
 		try {
@@ -321,9 +317,8 @@ public class EmergencyInfoAction extends BaseAction{
 	 */
 	@ApiOperation(value="保存应急信息", notes="保存应急信息接口")
 	@RequiresPermissions(value = {"emer:info:add","emer:info:edit"},logical = Logical.OR)
-	@PostMapping("/save")
 	@Log("应急信息保存")
-	@ResponseBody
+	@PostMapping("/save")
 	public HashMap<String,Object> save(Emergencyinfo info){
 		try {
 			Date startTime = info.getStartTime();
@@ -361,7 +356,6 @@ public class EmergencyInfoAction extends BaseAction{
 	@RequiresPermissions("emer:info:delete")
 	@Log("删除应急信息")
 	@PostMapping("/delete")
-	@ResponseBody
 	public HashMap<String,Object> deleteEmer(Integer[] ids){
 		try {
 			service.deleteByIds(ids);
@@ -388,7 +382,6 @@ public class EmergencyInfoAction extends BaseAction{
         @ApiImplicitParam(name = "pageSize", value = "每页显示条数", required = true ,dataType = "String")
 	})
 	@PostMapping("/castList")
-	@ResponseBody
 	public HashMap<String,Object> castList(Page page){
 		Map<String,Object> map = page.getMap();
 		map.put("areacode", getUser().getAreaCode());
@@ -399,5 +392,17 @@ public class EmergencyInfoAction extends BaseAction{
 		List<Emergencyinfo> list = service.list(map);
 		int total = service.count(map);
 		return JsonWrapper.wrapperPage(list, total);
+	}
+	
+	@PostMapping("/sendEmer")
+	public HashMap<String,Object> sendEmer(Integer emerId){
+		String sendUrl = serverProperties.getEmerSendIpAddress();
+		String tarPath = service.createEBMTar(emerId);
+		try {
+			HttpClientUtil.sendPostFile(sendUrl, tarPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

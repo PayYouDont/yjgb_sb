@@ -2,6 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,9 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 
 public class HttpClientUtil {
 
@@ -91,6 +94,9 @@ public class HttpClientUtil {
 	        response = httpClient.execute(httpPost); 
 	        HttpEntity resEntity = response.getEntity();
 	        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+	            InputStream in = response.getEntity().getContent();
+	            String tarInPath = ApplicationContextRegister.getBean(ServerProperties.class).getTarInPath();
+	            FileUtil.copyFile(in, tarInPath, "test.tar");
 	            result = EntityUtils.toString(response.getEntity(), "utf-8");
 	        }
 	        EntityUtils.consume(resEntity); 

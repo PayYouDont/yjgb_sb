@@ -136,6 +136,15 @@ public class FileUtil {
 
 	}
 
+	public static byte[] readFile(File file) throws IOException {
+		FileInputStream input = new FileInputStream(file);
+		byte[] inData = new byte[(int) file.length()];
+		while (input.read(inData) != -1) {
+		}
+		input.close();
+		return inData;
+	}
+	
 	public static boolean deleteFile(File file) {
 		if (file.exists() && file.isFile()) {
 			if (file.delete()) {

@@ -1,5 +1,17 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.Impl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
@@ -9,6 +21,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Content;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Info;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EmerJson;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.InfosourceMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidentlevelMapper;
@@ -23,16 +36,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Display
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 @Service
 public class EmergencyInfoServiceImpl implements EmergencyInfoService {
@@ -158,6 +162,15 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		return result;
 	}
 
+	public String createEBMTar(Integer emerId) {
+		Emergencyinfo emer = selectById(emerId);
+		EBM ebm = (EBM)BaseXML.createBaseXML(EBM.class);
+		ebm.setEBM(emer, serverProperties);
+		String outPath = serverProperties.getTarOutPath();
+		String tarPath = TarUtil.createXMLTar(ebm,outPath,ebm.getEBD_EBDID());
+		return tarPath;
+	}
+	
 	/**
 	 * 将Emergencyinfo类转成json对象(搬运的旧项目，后期优化)
 	 * <p>
@@ -166,7 +179,6 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 	 * <p>
 	 * Description:
 	 * </p>
-	 * 
 	 * @param emer
 	 * @return
 	 * @throws Exception

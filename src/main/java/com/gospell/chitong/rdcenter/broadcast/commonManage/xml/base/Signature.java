@@ -27,12 +27,10 @@ public class Signature {
 		Map<String,Object> RelatedEBD = new LinkedHashMap<>();
 		RelatedEBD.put("EBDID", getRelatedEBD_EBDID());
 		root.put("RelatedEBD",RelatedEBD);
-		Map<String,Object> Signature = new LinkedHashMap<>();
-		Signature.put("Version", getSignature_Version());
-		Signature.put("CertSN",getCertSN());
-		Signature.put("SignatureAlgorithm",getSignature_SignatureAlgorithm());
-		Signature.put("SignatureValue",getSignature_SignatureValue());
-		Signature.put("Signature", Signature);
-		return Signature;
+		root.put("Version", getSignature_Version());
+		root.put("CertSN",getCertSN());
+		root.put("SignatureAlgorithm",getSignature_SignatureAlgorithm());
+		root.put("SignatureValue",getSignature_SignatureValue());
+		return root;
 	}
 }

@@ -83,7 +83,7 @@ function send(){
          text : '指令发送中，请稍后。。。',
          interval:300
      });
-	 $.post("../backCommunicationAction/sendEmer",{emerId:v_id},function(data){
+	 $.post("../emergencyInfoAction/sendEmer",{emerId:v_id},function(data){
 			$.messager.progress('close');
 	    	if(data.Result=="success"){
 	    		 $.messager.alert('系统提示','发送成功！','info',function(){

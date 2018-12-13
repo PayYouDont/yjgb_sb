@@ -31,4 +31,6 @@ public interface EmergencyInfoService extends BaseService<Emergencyinfo>{
     List<Accidentlevel> AccidentlevelList(Map<String,Object> map);
     
     List<Infosource> InfosourceList(Map<String,Object> map);
+    
+    String createEBMTar(Integer emerId);
 }

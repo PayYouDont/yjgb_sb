@@ -2,6 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -13,6 +14,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Task;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.quartz.QuartzManager;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.task.HeartJob;
 import com.gospell.chitong.rdcenter.broadcast.util.ScheduleJobUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.SignatureUtil;
 
 @Configuration
 public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent> {
@@ -22,7 +24,8 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 	private ServerProperties server;
 	@Resource
 	private TaskMapper taskDao;
-	
+	@Value("${deviceType}")
+	private Integer deviceType;
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		/**
@@ -31,11 +34,28 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 		 * server.connectionCheck设为true即可）
 		 */
 		startHeartJob(server.isConnectionCheck());// 项目启动时候执行心跳包发送
+		startSignature();
+	}
+	public void startSignature() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(!SignatureUtil.isStart) {
+					SignatureUtil.start(deviceType);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
 	}
 	public void startHeartJob(boolean isCheck){
 		if(!isCheck) {
 			return;
 		}
+		startSignature();
 		Task task = taskDao.selectByJobName("heartJob");
 		if(task==null) {
 			task = new Task();

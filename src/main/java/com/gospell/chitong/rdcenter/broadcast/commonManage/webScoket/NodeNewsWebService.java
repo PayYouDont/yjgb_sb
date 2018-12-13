@@ -52,7 +52,7 @@ public class NodeNewsWebService extends BaseService {
 	public String showNodeNews(){
 		File tarfile = new File(this.path);
 		EBM ebm = service.getEbmFromTar(tarfile);
-		Map<String, Object> map = ebm.getEMBMap();
+		Map<String, Object> map = ebm.getEBMMap();
 		List<Map<String, Object>> list = new LinkedList<>();
 		list.add(map);
 		return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));

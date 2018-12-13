@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.Signature;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRDTInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 
 public class XMLUtil {
 
@@ -42,9 +42,9 @@ public class XMLUtil {
 	 * @author peiyongdong
 	 * @date 2018年6月28日 上午9:00:06
 	 */
-	public static String createXML(BaseXML entity,String outPath,String xmlName) {
+	public static String createXML(BaseXML entity,String outPath,String rootName,String xmlName) {
 		Map<String,Object> map = entity.getMap();
-		return createXML(map, outPath, xmlName);
+		return createXML(map, outPath,rootName,xmlName);
 	}
 	/**
 	 * 根Map创建XML
@@ -59,11 +59,11 @@ public class XMLUtil {
 	 * @author peiyongdong
 	 * @date 2018年6月15日 下午4:34:42
 	 */
-	public static String createXML(Map<String,Object> map,String outPath,String xmlName) {
+	public static String createXML(Map<String,Object> map,String outPath,String rootName,String xmlName) {
 		//创建Document对象
 		Document document = DocumentHelper.createDocument();
 		//创建根节点
-		Element EBD = document.addElement("EBD");
+		Element EBD = document.addElement(rootName);
 		//递归创建子节点
 		try {
 			setElem(EBD, map);
@@ -85,13 +85,13 @@ public class XMLUtil {
 	 * @author peiyongdong
 	 * @date 2018年11月21日 下午3:57:32
 	 */
-	public static String createSignature(Map<String, Object> map,String outPath,String name) {
+	public static String createSignature(String RelatedEBD_EBD_EBDID,String outPath,String name,byte[] inData) {
 		Signature sign = new Signature();
-		sign.setRelatedEBD_EBDID(map.get("EBDID").toString());
+		sign.setRelatedEBD_EBDID(RelatedEBD_EBD_EBDID);
 		sign.setCertSN(SignatureUtil.getCertSN());
-		sign.setSignature_SignatureValue(SignatureUtil.signature(SignatureUtil.MESSAGE_DATA));
-		name = "EBDS_"+name;
-		String xmlpath = createXML(sign.getMap(), outPath, name);
+		sign.setSignature_SignatureValue(SignatureUtil.signature(inData));
+		name = "EBDS_EBDB_"+name;
+		String xmlpath = createXML(sign.getMap(),outPath,"Signature",name);
 		File file = new File(xmlpath);
 		return file.getPath();
 	}
@@ -252,10 +252,11 @@ public class XMLUtil {
 
             //关闭XMLWriter对象
             writer.close();
+            return file.getPath();
         } catch (IOException e) {
             logger.error("创建XML错误:creatFixedXML error",e);
         }
-        return outPath;
+        return null;
 	}
 	/**
 	 * 
@@ -324,10 +325,9 @@ public class XMLUtil {
 			 for (Element element : elements) {
 				 String parentName = element.getParent().getName();
 				 String elemName = element.getName();
-				 String text = element.getText();
+				 String ename = parentName+"_"+elemName;
 				 for (Field field : fieldList) {
 					 String fieldName = field.getName();
-					 String ename = parentName+"_"+elemName;
 					 if(fieldName.equals(ename)) {
 						//如果是数组类型
 						if(field.getType().isInstance(new ArrayList<Object>())) {
@@ -338,6 +338,7 @@ public class XMLUtil {
 							list.addAll(writeArrayToEntrty(element,field));
 							field.set(xml, list);
 						}else {
+							String text = element.getText();
 							field.set(xml, text);
 						}
 					 }
@@ -376,9 +377,9 @@ public class XMLUtil {
 		return list;
 	}
 	public static void main(String[] args) {
-		String xmlPath = "D:\\tar\\out\\EBDE_10444510300000001030101012018071900000001.xml";
+		String xmlPath = "D:\\tar\\get\\EBDB_10344510300000001030101012018121200000001.xml";
 		File file = new File(xmlPath);
-		BaseXML xml = XMLUtil.readXML(EBRDTInfo.class,file);
+		BaseXML xml = XMLUtil.readXML(EBM.class,file);
 		System.out.println(xml);
 	}
 }
