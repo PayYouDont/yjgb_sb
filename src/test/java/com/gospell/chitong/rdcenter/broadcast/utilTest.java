@@ -8,15 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRPSInfo;
-import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil2;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class utilTest {
 	@Resource
 	protected ServerProperties serverProperties;
-	@Test
+	/*@Test
 	public void httpUtilTest() {
 		try {
 			EBRPSInfo.sendEBRPSInfo(serverProperties);
@@ -24,10 +23,11 @@ public class utilTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	@Test
 	public void Test() {
-		System.out.println(EBDcodeUtil.getEBMID());
+		String xmlPath = "C:\\Users\\pay\\Desktop\\测试\\test3.xml";
+		System.out.println(XMLUtil2.readXMLToBean(xmlPath).creatResponse());	
 	}
 	/*@Test
 	public void test() {

@@ -19,6 +19,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.ReceiveTarMapper;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.SendTarMapper;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.ReceiveTar;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
@@ -76,6 +77,24 @@ public class TarUtil {
 		}
 	}
 
+	public static String createXMLTarByBean(EBD entity, String outPath, String name) {
+		String tempPath = outPath+File.separatorChar+"temp";
+		// 生成xml
+		String xmlpath = XMLUtil2.createXMLByBean(entity, tempPath, name);
+		// 生成签名xml
+		byte[] inData = {};
+		try {
+			inData = FileUtil.readFile(new File(xmlpath));
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		XMLUtil.createSignature(EBDcodeUtil.getBaseEBDID(),tempPath,name,inData);
+		name = name.indexOf(".tar") == -1 ? name + ".tar" : name;
+		outPath += File.separatorChar + "EBDT_" + name;
+		pack(tempPath,outPath);
+		FileUtil.delete(tempPath);
+		return outPath;
+	}
 	/**
 	 * 将实体类生成xml文件并打成tar包
 	 * 
@@ -88,8 +107,8 @@ public class TarUtil {
 	 * @throws @author peiyongdong
 	 * @date 2018年6月28日 上午9:10:40
 	 */
-	public static String createXMLTar(BaseXML entity, String outPath, String name) {
-		return createXMLTar(entity.getMap(), outPath, name);
+	public static String createXMLTarByMap(BaseXML entity, String outPath, String name) {
+		return createXMLTarByMap(entity.getMap(), outPath, name);
 	}
 
 	/**
@@ -104,7 +123,7 @@ public class TarUtil {
 	 * @throws @author peiyongdong
 	 * @date 2018年11月21日 下午4:04:33
 	 */
-	public static String createXMLTar(Map<String, Object> map, String outPath, String name) {
+	public static String createXMLTarByMap(Map<String, Object> map, String outPath, String name) {
 		String tempPath = outPath+File.separatorChar+"temp";
 		// 生成xml
 		String xmlpath = XMLUtil.createXML(map,tempPath,"EBD","EBDB_"+name);
@@ -165,7 +184,7 @@ public class TarUtil {
 			BaseXML resultEntity = xml.getResponseByClass(xml);
 			String resultEntityName = resultEntity.getEBD_EBDID();
 			// 创建回执tar包返回路径
-			outTarPath = createXMLTar(resultEntity, outTarPath, resultEntityName);
+			outTarPath = createXMLTarByMap(resultEntity, outTarPath, resultEntityName);
 			// 保存发送tar包信息
 			saveSendTar(resultEntity);
 			map.put("tarPath", outTarPath);

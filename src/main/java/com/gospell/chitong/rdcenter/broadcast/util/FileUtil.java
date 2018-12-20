@@ -26,7 +26,7 @@ public class FileUtil {
 			out.write(msg);
 			out.flush();
 		} catch (FileNotFoundException e) {
-			logger.error("写出文件失败", e);
+			logger.error("文件不存在", e);
 		} catch (IOException e) {
 			logger.error("写出文件失败", e);
 		} finally {
@@ -36,7 +36,20 @@ public class FileUtil {
 		}
 		return file.getAbsolutePath();
 	}
-
+	public static String writeString(String msg, OutputStream out) {
+		try {
+			out.write(msg.getBytes());
+		} catch (IOException e) {
+			logger.error(e.getMessage(),e);
+		}finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				logger.error(e.getMessage(),e);
+			}
+		}
+		return null;
+	}
 	/**
 	 * @Title: copyFile
 	 * @Description: TODO(复制文件)

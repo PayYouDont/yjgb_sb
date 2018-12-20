@@ -80,7 +80,7 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 */
 	public static String createTar(ServerProperties prop){
 		EBRPSInfo info = createEntity(prop);
-		return TarUtil.createXMLTar(info,prop.getTarOutPath(), info.getEBD_EBDID());
+		return TarUtil.createXMLTarByMap(info,prop.getTarOutPath(), info.getEBD_EBDID());
 	}
 	/**
 	 * 根据配置文件创建平台信息

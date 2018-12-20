@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
@@ -77,5 +78,9 @@ public class EBDcodeUtil {
 			EBRPSStateDesc = "运行正常";
 		}
 		return EBRPSStateDesc;
+	}
+	
+	public static void setEBDHeader(Class<? extends EBD> entity) {
+		
 	}
 }

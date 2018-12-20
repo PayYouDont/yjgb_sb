@@ -27,6 +27,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil2;
 import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
 
 import net.sf.json.JSONArray;
@@ -154,7 +155,7 @@ public class INodeService implements NodeService {
         String tarPath = FileUtil.copyFile(mfile.getInputStream(), basePath, mfile.getOriginalFilename());
         String outPath = prop.getTarOutPath();
         //解析接收到的tar包并生成对应的回复tar包
-        map.putAll(TarUtil.getTarByPath(tarPath,outPath));
+        map.putAll(TarUtil2.getTarByPath(tarPath,outPath));
         return map;
 	}
 	

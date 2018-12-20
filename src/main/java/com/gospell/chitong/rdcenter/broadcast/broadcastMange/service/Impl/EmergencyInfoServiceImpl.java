@@ -20,8 +20,8 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Auxiliary;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Content;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Info;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EmerJson;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.InfosourceMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidentlevelMapper;
@@ -36,7 +36,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Display
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
-import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil2;
 
 @Service
 public class EmergencyInfoServiceImpl implements EmergencyInfoService {
@@ -164,10 +164,12 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 
 	public String createEBMTar(Integer emerId) {
 		Emergencyinfo emer = selectById(emerId);
-		EBM ebm = (EBM)BaseXML.createBaseXML(EBM.class);
-		ebm.setEBM(emer, serverProperties);
+		/*EBM ebm = (EBM)BaseXML.createBaseXML(EBM.class);
+		ebm.setEBM(emer, serverProperties);*/
+		EBD_EBD ebd = new EBD_EBD();
+		ebd.setEmergencyinfo(emer, serverProperties);
 		String outPath = serverProperties.getTarOutPath();
-		String tarPath = TarUtil.createXMLTar(ebm,outPath,ebm.getEBD_EBDID());
+		String tarPath = TarUtil2.createXMLTarByBean(ebd,outPath,ebd.getEBD().getEBDID());
 		return tarPath;
 	}
 	

@@ -37,6 +37,6 @@ public class ConnectionCheck extends BaseXML{
 		ConnectionCheck xml = (ConnectionCheck)createBaseXML(ConnectionCheck.class);
 		xml.setConnectionCheck_RptTime(xml.getEBD_EBDTime());
 		String tarName = xml.getEBD_EBDID();
-		return TarUtil.createXMLTar(xml,prop.getTarOutPath(),tarName);
+		return TarUtil.createXMLTarByMap(xml,prop.getTarOutPath(),tarName);
 	}
 }
