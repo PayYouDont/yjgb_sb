@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,14 +8,14 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-/**
+*//**
  * 播发记录XML
 * @ClassName: BroadcastRecordXML 
 * @Description: TODO(用于生成播发记录xml) 
 * @author peiyongdong
 * @date 2018年6月15日 下午4:27:19 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBMBrdLog extends BaseXML implements ResponseXML{
@@ -130,3 +130,4 @@ public class EBMBrdLog extends BaseXML implements ResponseXML{
 		return root;
 	}
 }
+*/

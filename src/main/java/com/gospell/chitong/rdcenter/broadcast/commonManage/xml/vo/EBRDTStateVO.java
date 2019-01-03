@@ -1,4 +1,4 @@
-
+/*
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo;
 
 import java.util.ArrayList;
@@ -14,13 +14,13 @@ import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/** 
+*//** 
 * @ClassName: EBRDTStateVO 
 * @Description: TODO(     ) 
 * @author peiyongdong
 * @date 2018年7月23日 上午9:23:09 
 *  
-*/
+*//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRDTStateVO {
@@ -51,3 +51,4 @@ public class EBRDTStateVO {
 		return list;
 	}
 }
+*/

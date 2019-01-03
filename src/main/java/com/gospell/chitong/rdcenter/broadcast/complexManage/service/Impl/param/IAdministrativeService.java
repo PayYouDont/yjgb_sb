@@ -30,7 +30,7 @@ public class IAdministrativeService implements AdministrativeService{
 		Map<String,Object> map = new HashMap<>();
 		map.put("code", areaCode);
 		List<Administrative> list = list(map);
-		String jsonstr=JsonUtil.toJsonArray(list).replaceAll("name", "text").replaceAll("id", "areaId").replaceAll("code", "id");
+		String jsonstr=JsonUtil.toJson(list).replaceAll("name", "text").replaceAll("id", "areaId").replaceAll("code", "id");
 		return jsonstr;
 	}
 	public Administrative getChildList(Administrative ad){

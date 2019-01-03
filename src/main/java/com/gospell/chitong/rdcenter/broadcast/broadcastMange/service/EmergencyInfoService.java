@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Infosource;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidentlevel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidenttype;
@@ -20,7 +20,7 @@ public interface EmergencyInfoService extends BaseService<Emergencyinfo>{
     
     String getEmerJson(Emergencyinfo emer) throws Exception;
     
-    int saveXML(EBM ebmxml) throws Exception;
+    int saveXML(EBD ebd) throws Exception;
     
     List<Displaylanguage> DisplaylanguageList(Map<String,Object> map);
     
@@ -32,5 +32,5 @@ public interface EmergencyInfoService extends BaseService<Emergencyinfo>{
     
     List<Infosource> InfosourceList(Map<String,Object> map);
     
-    String createEBMTar(Integer emerId);
+    void sendEBDByEmer(Integer emerId,String msgType) throws Exception;
 }

@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -11,14 +11,14 @@ import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-/**
+*//**
  * 平台状态信息
 * @ClassName: EBRPSState 
 * @Description: TODO(  平台状态信息   ) 
 * @author peiyongdong
 * @date 2018年7月9日 上午9:26:17 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRPSState extends BaseXML implements ResponseXML{
@@ -45,7 +45,7 @@ public class EBRPSState extends BaseXML implements ResponseXML{
 		root.put("EBRPSState", getEBRPSStateMap());
 		return root;
 	}
-	/** 
+	*//** 
 	 * <p>Title: createFullEntity</p> 
 	 * <p>Description: </p> 
 	 * @return 
@@ -53,7 +53,7 @@ public class EBRPSState extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月17日 上午11:55:17
-	 */
+	 *//*
 	@Override
 	public BaseXML createFullEntity() {
 		EBRPSState state = (EBRPSState)createBaseXML(EBRPSState.class);
@@ -65,7 +65,7 @@ public class EBRPSState extends BaseXML implements ResponseXML{
 		return state;
 	}
 
-	/** 
+	*//** 
 	 * <p>Title: createIncrementalEntity</p> 
 	 * <p>Description: </p> 
 	 * @return 
@@ -73,13 +73,13 @@ public class EBRPSState extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月17日 上午11:55:17
-	 */
+	 *//*
 	@Override
 	public BaseXML createIncrementalEntity() {
 		return (EBRPSState)createBaseXML(EBRPSState.class);
 	}
 
-	/** 
+	*//** 
 	 * <p>Title: getResultCode</p> 
 	 * <p>Description: </p> 
 	 * @return 
@@ -87,14 +87,14 @@ public class EBRPSState extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月17日 上午11:55:17
-	 */
+	 *//*
 	@Override
 	public String getResultCode() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/** 
+	*//** 
 	 * <p>Title: getResultDesc</p> 
 	 * <p>Description: </p> 
 	 * @return 
@@ -102,7 +102,7 @@ public class EBRPSState extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月17日 上午11:55:17
-	 */
+	 *//*
 	@Override
 	public String getResultDesc() {
 		// TODO Auto-generated method stub
@@ -110,3 +110,4 @@ public class EBRPSState extends BaseXML implements ResponseXML{
 	}
 
 }
+*/

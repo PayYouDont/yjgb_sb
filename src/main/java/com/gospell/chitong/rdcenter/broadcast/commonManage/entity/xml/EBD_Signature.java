@@ -7,6 +7,8 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
 
+import com.gospell.chitong.rdcenter.broadcast.util.SignatureUtil;
+
 /**
  * @ClassName: EBD_Signature
  * @Description: TODO(签名)
@@ -28,6 +30,18 @@ public class EBD_Signature implements EBD{
 		private String SignatureValue;
 	}
 
+	public EBD_Signature() {
+		
+	}
+	public EBD_Signature(String EBDID,byte[] inData) {
+		Signature = new Signature();
+		Signature.RelatedEBD = new RelatedEBD();
+		Signature.RelatedEBD.EBDID = EBDID;
+		Signature.CertSN = SignatureUtil.getCertSN();
+		Signature.SignatureValue = SignatureUtil.signature(inData);
+		Signature.SignatureAlgorithm = "SM2-SM3";
+	}
+	
 	@lombok.Data
 	public static class RelatedEBD {
 		private String EBDID;

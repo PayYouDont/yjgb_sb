@@ -24,7 +24,6 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 import io.swagger.annotations.Api;
@@ -396,13 +395,23 @@ public class EmergencyInfoAction extends BaseAction{
 	
 	@PostMapping("/sendEmer")
 	public HashMap<String,Object> sendEmer(Integer emerId){
-		String sendUrl = serverProperties.getEmerSendIpAddress();
-		String tarPath = service.createEBMTar(emerId);
 		try {
-			HttpClientUtil.sendPostFile(sendUrl, tarPath);
+			service.sendEBDByEmer(emerId,"3");
+			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
+			return JsonWrapper.failureWrapper(e.getMessage());
 		}
-		return null;
+		
+	}
+	@PostMapping("/stopEmer")
+	public HashMap<String,Object> stopEmer(Integer emerId){
+		try {
+			service.sendEBDByEmer(emerId,"2");
+			return JsonWrapper.successWrapper();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return JsonWrapper.failureWrapper(e.getMessage());
+		}
 	}
 }

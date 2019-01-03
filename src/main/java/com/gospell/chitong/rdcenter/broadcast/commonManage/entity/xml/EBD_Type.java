@@ -27,6 +27,8 @@ public class EBD_Type {
 			return  EBD_EBMStateRequest.class;
 		case "EBMStateRequest":
 			return  EBD_EBMStateResponse.class;
+		case "EBD_EBDResponse":
+			return  EBD_EBDResponse.class;
 		case "EBRASInfo":
 			return  EBD_EBRASInfo.class;
 		case "EBRBSInfo":

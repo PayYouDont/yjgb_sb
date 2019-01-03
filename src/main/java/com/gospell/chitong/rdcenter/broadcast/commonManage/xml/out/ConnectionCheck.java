@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,14 +9,14 @@ import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-/**
+*//**
  * 心跳检测XML
 * @ClassName: ConnectionCheck 
 * @Description: TODO(用于生成心跳检测XML) 
 * @author peiyongdong
 * @date 2018年6月15日 下午4:28:11 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class ConnectionCheck extends BaseXML{
@@ -40,3 +40,4 @@ public class ConnectionCheck extends BaseXML{
 		return TarUtil.createXMLTarByMap(xml,prop.getTarOutPath(),tarName);
 	}
 }
+*/

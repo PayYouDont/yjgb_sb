@@ -55,7 +55,6 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 		if(!isCheck) {
 			return;
 		}
-		startSignature();
 		Task task = taskDao.selectByJobName("heartJob");
 		if(task==null) {
 			task = new Task();
@@ -73,3 +72,4 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 		quartzManager.addJob(job);
 	}
 }
+

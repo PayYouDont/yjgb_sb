@@ -7,6 +7,9 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+
 import lombok.EqualsAndHashCode;
 
 /**
@@ -74,5 +77,26 @@ public class EBD_EBRPSInfo implements EBD{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public EBD_EBRPSInfo() {
+		
+	}
+	public EBD_EBRPSInfo(ServerProperties prop) {
+		EBD = new EBD();
+		EBD.setEBDHeader();
+		EBD.setEBDType("EBRPSInfo");
+		EBD.EBRPSInfo = new EBRPSInfo();
+		EBD.EBRPSInfo.EBRPS = new EBRPS();
+		EBD.EBRPSInfo.EBRPS.RptTime = DateUtils.getDateTime();
+		EBD.EBRPSInfo.EBRPS.RptType = "Sync";
+		EBD.EBRPSInfo.EBRPS.EBRID = prop.getDEST_EBRID();
+		EBD.EBRPSInfo.EBRPS.EBRID = prop.getSRC_EBRID();
+		EBD.EBRPSInfo.EBRPS.EBRName = prop.getManageName();
+		EBD.EBRPSInfo.EBRPS.Address = prop.getUnitName();
+		EBD.EBRPSInfo.EBRPS.Contact ="管理员";
+		EBD.EBRPSInfo.EBRPS.PhoneNumber = "15111111111";
+		EBD.EBRPSInfo.EBRPS.Longitude = prop.getAreaLongitude();
+		EBD.EBRPSInfo.EBRPS.Latitude = prop.getAreaLatitude();
+		EBD.EBRPSInfo.EBRPS.URL = prop.getServer_ip()+prop.getServer_port()+"/nodeAction/upload";
+	}
 }

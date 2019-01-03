@@ -11,9 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.ConnectionCheck;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRPSInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_EBRPSInfo;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 /** 
 * @ClassName: HeartJob 
@@ -44,13 +45,17 @@ public class HeartJob implements Job{
 	 */
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		String tarPath = ConnectionCheck.createTar(server);
-		String url = server.getSendUrl();
-		String outPath = server.getTarInPath();
+		EBD_ConnectionCheck check = new EBD_ConnectionCheck();
+		check.init();
+		String tarPath = TarUtil.createXMLTarByBean(check, server.getTarOutPath(), check.getEBD().getEBDID());
+		String url = server.getSuperiorUrl();
 		try {
-			String result = HttpClientUtil.sendPostTar(url, tarPath, outPath);
-			if(!flag&&!"".equals(result)) {
-				EBRPSInfo.sendEBRPSInfo();
+			String result = HttpClientUtil.sendPostFile(url, tarPath);
+			if(!flag) {
+				TarUtil.checkEBDResponse(result);
+				EBD_EBRPSInfo info = new EBD_EBRPSInfo(server);
+				tarPath = TarUtil.createXMLTarByBean(info, server.getTarOutPath(), info.getEBD().getEBDID());
+				HttpClientUtil.sendPostFile(url, tarPath);
 				flag = true;
 			}
 		} catch (Exception e) {

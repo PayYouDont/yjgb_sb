@@ -7,8 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 
 public interface NodeService extends BaseService<Node>{
 
@@ -20,5 +20,5 @@ public interface NodeService extends BaseService<Node>{
     
     Map<String,Object> receiveTar(HttpServletRequest request) throws Exception;
     
-    EBM getEbmFromTar(File tarfile);
+    EBD getEbmFromTar(File tarfile);
 }

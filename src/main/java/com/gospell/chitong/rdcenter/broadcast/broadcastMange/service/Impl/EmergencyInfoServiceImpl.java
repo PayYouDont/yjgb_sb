@@ -20,9 +20,9 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Auxiliary;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Content;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Info;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EmerJson;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.InfosourceMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidentlevelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidenttypeMapper;
@@ -34,9 +34,10 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Acciden
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaylanguage;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaymethod;
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
-import com.gospell.chitong.rdcenter.broadcast.util.TarUtil2;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 @Service
 public class EmergencyInfoServiceImpl implements EmergencyInfoService {
@@ -162,15 +163,14 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		return result;
 	}
 
-	public String createEBMTar(Integer emerId) {
+	public void sendEBDByEmer(Integer emerId,String msgType) throws Exception {
 		Emergencyinfo emer = selectById(emerId);
-		/*EBM ebm = (EBM)BaseXML.createBaseXML(EBM.class);
-		ebm.setEBM(emer, serverProperties);*/
 		EBD_EBD ebd = new EBD_EBD();
-		ebd.setEmergencyinfo(emer, serverProperties);
+		ebd.setEmergencyinfo(emer, serverProperties,msgType);
 		String outPath = serverProperties.getTarOutPath();
-		String tarPath = TarUtil2.createXMLTarByBean(ebd,outPath,ebd.getEBD().getEBDID());
-		return tarPath;
+		String tarPath = TarUtil.createXMLTarByBean(ebd,outPath,ebd.getEBD().getEBDID());
+		String result = HttpClientUtil.sendPostFile(serverProperties.getSupporterUrl(), tarPath);
+		TarUtil.checkEBDResponse(result);
 	}
 	
 	/**
@@ -259,17 +259,21 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 	 * @date 2018年6月27日 下午4:08:54
 	 */
 	@Override
-	public int saveXML(EBM ebmxml) throws Exception {
+	public int saveXML(EBD ebd) throws Exception {
 		Emergencyinfo info = new Emergencyinfo();
-		info.setAreacode(ebmxml.getMsgContent_AreaCode());
+		if(!(ebd instanceof EBD_EBD)) {
+			return -1;
+		}
+		EBD_EBD.EBM ebmxml = ((EBD_EBD)ebd).getEBD().getEBM();
+		info.setAreacode(ebmxml.getMsgContent().getAreaCode());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		info.setStartTime(sdf.parse(ebmxml.getMsgBasicInfo_StartTime()));
-		info.setEndTime(sdf.parse(ebmxml.getMsgBasicInfo_EndTime()));
-		info.setContent(ebmxml.getMsgContent_MsgDesc());
-		info.setEmergencyname(ebmxml.getMsgContent_MsgTitle());
-		info.setEbmId(ebmxml.getEBM_EBMID());
-		info.setProgramdescription(ebmxml.getAuxiliary_AuxiliaryDesc());
-		String language = ebmxml.getMsgContent_LanguageCode();
+		info.setStartTime(sdf.parse(ebmxml.getMsgBasicInfo().getStartTime()));
+		info.setEndTime(sdf.parse(ebmxml.getMsgBasicInfo().getEndTime()));
+		info.setContent(ebmxml.getMsgContent().getMsgDesc());
+		info.setEmergencyname(ebmxml.getMsgContent().getMsgTitle());
+		info.setEbmId(ebmxml.getEBMID());
+		info.setProgramdescription(ebmxml.getMsgContent().getAuxiliary().getAuxiliaryDesc());
+		String language = ebmxml.getMsgContent().getLanguageCode();
 		long between=(info.getStartTime().getTime()-info.getEndTime().getTime())/(1000*60);//除以1000是为了转换成秒
 		info.setDuration(String.valueOf(Math.abs(between)));  //持续时间
 
@@ -299,7 +303,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setDisplaylanguageId(dl.getId());
 		// 事件类型
 		Accidenttype at = null;
-		String eventType = ebmxml.getMsgBasicInfo_EventType();
+		String eventType = ebmxml.getMsgBasicInfo().getEventType();
 		if(eventType!=null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", eventType);
@@ -317,7 +321,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setAccidenttypeId(at.getId());
 		//事件等级
 		Accidentlevel level = null;
-		String servrity = ebmxml.getMsgBasicInfo_Severity();
+		String servrity = ebmxml.getMsgBasicInfo().getSeverity();
 		if(servrity!=null) {
 			//levelcode
 			Map<String, Object> map = new HashMap<>();
@@ -336,7 +340,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setAccidentlevelId(level.getId());
 		// String EventType =
 		// 是否用MP3播发
-		String code = ebmxml.getAuxiliary_AuxiliaryType();
+		String code = ebmxml.getMsgContent().getAuxiliary().getAuxiliaryType();
 		Displaymethod dm = null;
 		if (code != null) {
 			Map<String, Object> map = new HashMap<>();
@@ -364,7 +368,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		//System.out.println(ShiroUtils.getUser().getAreaCodeName());
 		//info.setAddresscodename(ShiroUtils.getUser().getAreaCodeName());
 		if (info.getId() == null) {
-			info.setCreateBy(ebmxml.getMsgBasicInfo_SenderName());
+			info.setCreateBy(ebmxml.getMsgBasicInfo().getSenderName());
 		} else {
 			info.setUpdateBy(ShiroUtils.getUser().getName());
 		}

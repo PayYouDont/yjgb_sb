@@ -1,4 +1,4 @@
-
+/*
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo;
 
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/** 
+*//** 
 * @ClassName: EBRAS 
 * @Description: TODO(     ) 
 * @author peiyongdong
 * @date 2018年7月19日 上午10:47:40 
 *  
-*/
+*//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRASInfoVO extends BaseXML{
@@ -85,3 +85,4 @@ public class EBRASInfoVO extends BaseXML{
 		return list;
 	}
 }
+*/

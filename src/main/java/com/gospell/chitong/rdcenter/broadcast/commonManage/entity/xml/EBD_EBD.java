@@ -91,9 +91,10 @@ public class EBD_EBD implements EBD{
 		return null;
 	}
 	
-	public void setEmergencyinfo(Emergencyinfo emerInfo,ServerProperties properties) {
+	public void setEmergencyinfo(Emergencyinfo emerInfo,ServerProperties properties,String msgType) {
 		EBD = new EBD();
 		EBD.setEBDHeader();
+		EBD.setEBDType("EBD");
 		EBD.RelatedEBD = new RelatedEBD();
 		EBD.RelatedEBD.EBDID = EBDcodeUtil.getBaseEBDID();
 		EBD.EBM = new EBM();
@@ -104,7 +105,7 @@ public class EBD_EBD implements EBD{
 		 * 4：前端演练播发,5：终端演练播发
 		 */
 		EBD.EBM.MsgBasicInfo = new MsgBasicInfo();
-		EBD.EBM.MsgBasicInfo.MsgType = "3";
+		EBD.EBM.MsgBasicInfo.MsgType = msgType;
 		EBD.EBM.MsgBasicInfo.SenderName = properties.getBroadcastName();
 		EBD.EBM.MsgBasicInfo.SenderCode =properties.getSRC_EBRID();
 		EBD.EBM.MsgBasicInfo.SendTime = DateUtils.getDateTime();

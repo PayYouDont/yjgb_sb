@@ -32,6 +32,13 @@ public class EBD_ConnectionCheck implements EBD{
 	public static class ConnectionCheck {
 		private String RptTime;
 	}
+	public void init() {
+		EBD = new EBD();
+		EBD.setEBDHeader();
+		EBD.setEBDType("ConnectionCheck");
+		EBD.ConnectionCheck = new ConnectionCheck();
+		EBD.ConnectionCheck.RptTime = DateUtils.getDateTime();
+	}
 	/** 
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
@@ -42,13 +49,7 @@ public class EBD_ConnectionCheck implements EBD{
 	 * @date 2018年12月17日 上午9:19:53
 	 */
 	@Override
-	public EBD_ConnectionCheck creatResponse() {
-		EBD.setEBDHeader();
-		EBD.setEBDType("ConnectionCheck");
-		EBD.ConnectionCheck = new ConnectionCheck();
-		EBD.ConnectionCheck.RptTime = DateUtils.getDateTime();
-		EBD_ConnectionCheck check = new EBD_ConnectionCheck();
-		check.EBD = EBD;
-		return check;
+	public EBD_EBDResponse creatResponse() {
+		return null;
 	}
 }

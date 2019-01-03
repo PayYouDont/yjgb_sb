@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,14 +15,14 @@ import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-/**
+*//**
  * 信息播发
 * @ClassName: EBM 
 * @Description: TODO(  信息播发   ) 
 * @author peiyongdong
 * @date 2018年7月9日 上午9:28:45 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBM extends BaseXML{
@@ -53,10 +53,10 @@ public class EBM extends BaseXML{
 		RelatedEBD_EBDID = EBDcodeUtil.getBaseEBDID();
 		EBM_EBMVersion = "1";
 		EBM_EBMID = EBDcodeUtil.getEBMID();
-		/*
+		
 		 * 1：实际播发,2：取消播发,3：平台演练播发,
 		 * 4：前端演练播发,5：终端演练播发
-		 */
+		 
 		MsgBasicInfo_MsgType = "3";
 		MsgBasicInfo_SenderName = properties.getBroadcastName();
 		MsgBasicInfo_SenderCode =properties.getSRC_EBRID();
@@ -131,7 +131,7 @@ public class EBM extends BaseXML{
 		}
 		return MsgContent;
 	}
-	/**
+	*//**
 	 * 根据实体类生成回执实体
 	 * @Title: getResponseByClass 
 	 * @Description: TODO(具体回执暂未处理，目前只写了统一回复方式) 
@@ -141,7 +141,7 @@ public class EBM extends BaseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年6月28日 上午8:45:18
-	 */
+	 *//*
 	@Override
 	public BaseXML getResponseByClass(BaseXML entity) {
 		EBDResponse response = (EBDResponse) super.getResponseByClass(entity);
@@ -150,3 +150,4 @@ public class EBM extends BaseXML{
 		return response;
 	}
 }
+*/

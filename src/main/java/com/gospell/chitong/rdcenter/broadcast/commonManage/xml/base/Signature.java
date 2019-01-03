@@ -1,4 +1,4 @@
-
+/*
 package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base;
 
 import java.util.LinkedHashMap;
@@ -6,13 +6,13 @@ import java.util.Map;
 
 import lombok.Data;
 
-/** 
+*//** 
 * @ClassName: Signature 
 * @Description: TODO(应急广播消息签名文件) 
 * @author peiyongdong
 * @date 2018年11月20日 上午11:50:15 
 *  
-*/
+*//*
 @Data
 public class Signature {
 	
@@ -34,3 +34,4 @@ public class Signature {
 		return root;
 	}
 }
+*/

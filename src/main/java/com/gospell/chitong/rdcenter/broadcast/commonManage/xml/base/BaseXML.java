@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,11 +22,11 @@ import lombok.Data;
 public class BaseXML {
 	// 命名规则为"上级节点名_下级节点名"格式，如下：
 	protected String EBD_EBDVersion;
-	/*
+	
 	 * 41位数字码，格式为：类型码（2位数字码）+数据包来源对象ID（23位数字码）+顺序码（16位数字码）。 数据包来源对象ID见GY/T
 	 * XXX—XXXX《应急广播资源分类及编码规范》 心跳检测的类型码为01，16位顺序码始终为0。 其他数据包的类型码为10，顺序码从0开始递增。
 	 * 
-	 */
+	 
 	protected String EBD_EBDID;
 	protected String EBD_EBDType;
 	protected String SRC_EBRID;
@@ -106,3 +106,4 @@ public class BaseXML {
 		return null;
 	}
 }
+*/

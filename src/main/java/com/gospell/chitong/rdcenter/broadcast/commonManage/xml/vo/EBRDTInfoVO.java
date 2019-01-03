@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.vo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,13 +15,13 @@ import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/** 
+*//** 
 * @ClassName: EBRID 
 * @Description: TODO(     ) 
 * @author peiyongdong
 * @date 2018年7月19日 下午4:51:14 
 *  
-*/
+*//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRDTInfoVO extends BaseXML{
@@ -63,3 +63,4 @@ public class EBRDTInfoVO extends BaseXML{
 		return list;
 	}
 }
+*/

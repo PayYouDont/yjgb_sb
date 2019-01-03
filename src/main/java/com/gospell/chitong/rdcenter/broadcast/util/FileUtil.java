@@ -69,7 +69,7 @@ public class FileUtil {
 		File outFile = new File(outPaht + File.separatorChar + fileName);
 		try {
 			wirteFile(in, new FileOutputStream(outFile));
-			logger.info("写出文件完毕!路径:" + outFile.getPath());
+			logger.debug("写出文件完毕!路径:" + outFile.getPath());
 			return outFile.getPath();
 		} catch (IOException e) {
 			logger.error("复制文件错误:", e);
@@ -93,7 +93,7 @@ public class FileUtil {
 		try {
 			InputStream in = new FileInputStream(file);
 			wirteFile(in, new FileOutputStream(outFile));
-			logger.info("写出文件完毕!路径:" + outFile.getPath());
+			logger.debug("写出文件完毕!路径:" + outFile.getPath());
 		} catch (IOException e) {
 			logger.error("复制文件错误:", e);
 		}

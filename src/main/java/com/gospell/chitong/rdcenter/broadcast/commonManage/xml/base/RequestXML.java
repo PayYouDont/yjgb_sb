@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base;
 
 public interface RequestXML {
 
@@ -6,3 +6,4 @@ public interface RequestXML {
 	
 	BaseXML queryIncremental(String OMDType);
 }
+*/

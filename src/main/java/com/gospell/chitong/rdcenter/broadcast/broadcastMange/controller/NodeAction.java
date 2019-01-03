@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +26,11 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService
 import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -119,28 +121,38 @@ public class NodeAction extends BaseAction{
 	}
 	@ApiOperation(value="上传文件", notes="上传文件接口")
 	@RequestMapping("/upload")
-	@Log("上传文件")
 	@ResponseBody
-	@Transactional
-	public HashMap<String,Object> upload(HttpServletRequest request,HttpServletResponse response){		
+	public void upload(HttpServletRequest request,HttpServletResponse response){		
 		try {
 			Map<String,Object> map = service.receiveTar(request);
-			/*boolean isTar = (boolean)map.get("isTar");
+			OutputStream out = response.getOutputStream();
+			boolean isTar = (boolean)map.get("isTar");
 			if(!isTar) {
-				return JsonWrapper.failureWrapper("该文件不是tar格式文件");
-			}*/
+				FileUtil.writeString("该文件不是tar格式文件",out);
+				return;
+			}
 			boolean isSign = (boolean)map.get("isSign");
 			if(!isSign) {
-				return JsonWrapper.failureWrapper("签名文件验证未通过");
+				FileUtil.writeString("签名文件验证未通过",out);
+				return;
 			}
 			String tarPath = map.get("tarPath").toString();
-			OutputStream out = response.getOutputStream();
 			InputStream in = new FileInputStream(new File(tarPath));
 			FileUtil.wirteFile(in, out);
-			return JsonWrapper.successWrapper();
+			FileUtil.delete(tarPath);
+			EBD ebd = (EBD)map.get("ebd");
+			EBD responseEBD = ebd.creatResponse();
+			if(responseEBD == null) {
+				return;
+			}
+			String tarName = responseEBD.getEBD().getEBDID();
+			tarPath = TarUtil.createXMLTarByBean(responseEBD,serverProperties.getTarOutPath(),tarName);
+			String result = HttpClientUtil.sendPostFile(serverProperties.getSuperiorUrl(), tarPath);
+			// 保存发送tar包信息
+			TarUtil.saveSendTar(responseEBD);
+			TarUtil.checkEBDResponse(result);
 		} catch (Exception e) {
 			logger.error("接收tar包异常:"+e);
-			return JsonWrapper.failureWrapper();
 		}
 	}
 }

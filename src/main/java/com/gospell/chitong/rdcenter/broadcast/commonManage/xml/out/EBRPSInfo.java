@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,14 +16,14 @@ import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-/**
+*//**
  * 平台信息
 * @ClassName: EBRPSInfo 
 * @Description: TODO(  平台信息   ) 
 * @author peiyongdong
 * @date 2018年7月9日 上午9:22:13 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRPSInfo extends BaseXML implements ResponseXML{
@@ -67,7 +67,7 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 		root.put("EBRPSInfo", getEBRPSInfoMap());
 		return root;
 	}
-	/**
+	*//**
 	 * 创建平台信息tar包
 	 * @Title: createTar 
 	 * @Description: TODO(这里用一句话描述这个方法的作用) 
@@ -77,12 +77,12 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月5日 下午5:05:39
-	 */
+	 *//*
 	public static String createTar(ServerProperties prop){
 		EBRPSInfo info = createEntity(prop);
 		return TarUtil.createXMLTarByMap(info,prop.getTarOutPath(), info.getEBD_EBDID());
 	}
-	/**
+	*//**
 	 * 根据配置文件创建平台信息
 	 * @Title: createEntity 
 	 * @Description: TODO(这里用一句话描述这个方法的作用) 
@@ -92,7 +92,7 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月5日 下午5:05:18
-	 */
+	 *//*
 	public static EBRPSInfo createEntity(ServerProperties prop){
 		EBRPSInfo info = (EBRPSInfo)BaseXML.createBaseXML(EBRPSInfo.class);
 		info.setEBRPS_RptTime(DateUtils.getDateTime());
@@ -108,7 +108,7 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 		info.setEBRPS_URL(prop.getServer_ip()+prop.getServer_port()+"/nodeAction/upload");
 		return info;
 	}
-	/**
+	*//**
 	 * 发送平台信息
 	 * @Title: sendEBRPSInfo 
 	 * @Description: TODO(这里用一句话描述这个方法的作用) 
@@ -118,14 +118,14 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月5日 下午5:04:58
-	 */
+	 *//*
 	public static void sendEBRPSInfo(ServerProperties prop) throws Exception {
 		String tarPath = EBRPSInfo.createTar(prop);
 		String url = prop.getSendUrl();
 		String outPath = prop.getTarInPath();
 		HttpClientUtil.sendPostTar(url, tarPath, outPath);
 	}
-	/**
+	*//**
 	 * 发送平台信息
 	 * @Title: sendEBRPSInfo 
 	 * @Description: TODO(这里用一句话描述这个方法的作用) 
@@ -134,7 +134,7 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月18日 下午5:44:39
-	 */
+	 *//*
 	public static void sendEBRPSInfo(){
 		try {
 			ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
@@ -143,7 +143,7 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 			logger.error("发送平台信息错误！",e);
 		}
 	}
-	/**
+	*//**
 	 * 获取平台全量信息
 	 * <p>Title: createFullEntity</p> 
 	 * <p>Description: </p> 
@@ -152,13 +152,13 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月5日 下午5:04:25
-	 */
+	 *//*
 	@Override
 	public BaseXML createFullEntity() {
 		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 		return createEntity(prop);
 	}
-	/**
+	*//**
 	 * 获取平台增量信息
 	 * <p>Title: createIncrementalEntity</p> 
 	 * <p>Description: </p> 
@@ -167,9 +167,10 @@ public class EBRPSInfo extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月5日 下午5:04:43
-	 */
+	 *//*
 	@Override
 	public BaseXML createIncrementalEntity() {
 		return (EBRPSInfo)BaseXML.createBaseXML(EBRPSInfo.class);
 	}
 }
+*/

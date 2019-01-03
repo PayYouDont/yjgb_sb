@@ -6,9 +6,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.UnitJosn;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 
 import lombok.Data;
-import net.sf.json.JSONObject;
 
 @Configuration
 @ConfigurationProperties(prefix = "server")
@@ -37,16 +37,6 @@ public class ServerProperties {
 	private String server_ip;
 	// 服务器端口
 	private String server_port;
-	// 项目名称
-	// private String system_root;
-	// 应急信息发送地址
-	private String emerSendIpAddress;
-	// 应急信息获取频点资源
-	private String programAddress;
-	// 应急信息停止发送地址
-	private String emerStopAddress;
-	// 设备注册发送地址
-	private String setParasAddress;
 	// 平台名称
 	private String UnitName;
 	// 平台管辖区域等级 1省 2 市 3县/区 4镇 5村
@@ -61,8 +51,10 @@ public class ServerProperties {
 	private String tarInPath;
 	// 输出的tar包路径
 	private String tarOutPath;
-	// 发送心跳节点路径
-	private String sendUrl;
+	//后台信息地址
+	private String supporterUrl;
+	//上级平台地址
+	private String superiorUrl;
 	// 上级平台区域等级
 	private String SuperAreaLevel;
 	// 上级平台区域编码
@@ -90,7 +82,7 @@ public class ServerProperties {
 		unitjson.setLongitude(AreaLongitude);
 		unitjson.setLatitude(AreaLatitude);
 		unitjson.setLevel(AreaLevel);
-		String json = JSONObject.fromObject(unitjson).toString();
+		String json = JsonUtil.toJson(unitjson);
 		return json;
 	}
 }

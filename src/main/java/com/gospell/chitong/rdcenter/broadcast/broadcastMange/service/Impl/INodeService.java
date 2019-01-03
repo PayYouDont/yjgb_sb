@@ -15,23 +15,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.DateJsonValueProcessor;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.NodeMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.util.FileToolsUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.TarUtil2;
 import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
 
 @Service
 public class INodeService implements NodeService {
@@ -109,9 +105,7 @@ public class INodeService implements NodeService {
 			}
 			node.setLinkStatus(status);
 		}
-		JsonConfig jsonConfig = new JsonConfig();
-		jsonConfig.registerJsonValueProcessor(java.util.Date.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
-		return JSONArray.fromObject(nodes,jsonConfig).toString();
+		return JsonUtil.toJson(nodes);
 	}
 
 	@Override
@@ -143,19 +137,19 @@ public class INodeService implements NodeService {
 			fileName = iter.next(); 
 		}
 		MultipartFile mfile= mhsRequest.getFile(fileName);
-		/*String contentType = mfile.getContentType();
-		boolean isTar = contentType.indexOf("tar")!=-1;
-		map.put("isTar", isTar);
-		if(!isTar) {
-			return map;
-		}*/
+		
 		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 		String basePath = prop.getTarInPath();
 		//将接收到的tar包写入指定tar文件夹
         String tarPath = FileUtil.copyFile(mfile.getInputStream(), basePath, mfile.getOriginalFilename());
+        boolean isTar = FileToolsUtil.getFileType(tarPath).indexOf("tar")!=-1;
+		map.put("isTar", isTar);
+		if(!isTar) {
+			return map;
+		}
         String outPath = prop.getTarOutPath();
         //解析接收到的tar包并生成对应的回复tar包
-        map.putAll(TarUtil2.getTarByPath(tarPath,outPath));
+        map.putAll(TarUtil.getTarByPath(tarPath,outPath));
         return map;
 	}
 	
@@ -165,15 +159,14 @@ public class INodeService implements NodeService {
 	 * @return EBM
 	 */
 	@Override
-	public EBM getEbmFromTar(File tarfile){
+	public EBD getEbmFromTar(File tarfile){
 		String filepath = tarfile.getPath();
 		String outPath = filepath.substring(0,filepath.lastIndexOf('.'));
-		//String outPath = filepath.substring(0,filepath.lastIndexOf("\\"));
 		TarUtil.archive(filepath,outPath);
 		String xmlPath = refreshFileList(outPath);
-		BaseXML xml = XMLUtil.readXML(EBM.class,xmlPath);
+		EBD ebd = XMLUtil.readXMLToBean(xmlPath);
 		FileUtil.delete(outPath);
-		return (EBM) xml;
+		return ebd;
 	}
 	/**
 	 * 循环文件夹找xml文件

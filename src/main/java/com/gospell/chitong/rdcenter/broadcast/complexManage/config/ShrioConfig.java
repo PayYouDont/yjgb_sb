@@ -66,8 +66,6 @@ public class ShrioConfig {
 	@Bean
 	public UserRealm UserRealm(){
 		UserRealm userRealm = new UserRealm();
-		userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-		
 		return userRealm;
 	}
 	@Bean

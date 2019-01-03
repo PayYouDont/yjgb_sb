@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
@@ -121,13 +121,13 @@ public class WebScoketServer {
      */
     public static String showNodeNews(String path){
         File tarfile = new File(path);
-        EBM ebm = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(tarfile);
-        Map<String, Object> map = ebm.getEBMMap();
+        EBD ebd = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(tarfile);
+       // Map<String, Object> map = ebd.getEBMMap();
         List<Map<String, Object>> list = new LinkedList<>();
-        list.add(map);
+        //list.add(map);
         int i=0;
         try {
-           i = ApplicationContextRegister.getBean(EmergencyInfoService.class).saveXML(ebm);
+           i = ApplicationContextRegister.getBean(EmergencyInfoService.class).saveXML(ebd);
         } catch (Exception e) {
             e.printStackTrace();
         }

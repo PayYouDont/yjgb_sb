@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,14 +8,14 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.ResponseXML;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-/**
+*//**
  * 播发状态回执
 * @ClassName: EBMStateResponse 
 * @Description: TODO(  播发状态回执   ) 
 * @author peiyongdong
 * @date 2018年7月9日 上午9:20:31 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBMStateResponse extends BaseXML implements ResponseXML{
@@ -74,7 +74,7 @@ public class EBMStateResponse extends BaseXML implements ResponseXML{
 		root.put("EBMStateResponse", getEBMStateResponseMap());
 		return root;
 	}
-	/** 
+	*//** 
 	 * <p>Title: createFullEntity</p> 
 	 * <p>Description: </p> 
 	 * @return 
@@ -82,13 +82,13 @@ public class EBMStateResponse extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月17日 下午4:32:29
-	 */
+	 *//*
 	@Override
 	public BaseXML createFullEntity() {
 		// TODO Auto-generated method stub
 		return ResponseXML.super.createFullEntity();
 	}
-	/** 
+	*//** 
 	 * <p>Title: createIncrementalEntity</p> 
 	 * <p>Description: </p> 
 	 * @return 
@@ -96,10 +96,11 @@ public class EBMStateResponse extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月17日 下午4:32:33
-	 */
+	 *//*
 	@Override
 	public BaseXML createIncrementalEntity() {
 		// TODO Auto-generated method stub
 		return ResponseXML.super.createIncrementalEntity();
 	}
 }
+*/

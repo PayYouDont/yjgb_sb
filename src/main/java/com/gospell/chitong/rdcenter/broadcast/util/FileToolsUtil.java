@@ -55,7 +55,6 @@ public class FileToolsUtil {
 		FILE_TYPE_MAP.put("asf", "3026B2758E66CF11"); // Windows Media
 		FILE_TYPE_MAP.put("mid", "4D546864"); // MIDI (mid)
 	}
-
 	public static String getFileType(File file) throws Exception {
 		getAllFileType();
 		String fileExtendName = null;
@@ -65,7 +64,6 @@ public class FileToolsUtil {
 			byte[] b = new byte[16];
 			is.read(b, 0, b.length);
 			String filetypeHex = String.valueOf(byteToHexString(b));
-			System.out.println(filetypeHex);
 			Iterator<Entry<String, String>> entryiterator = FILE_TYPE_MAP.entrySet().iterator();
 			while (entryiterator.hasNext()) {
 				Entry<String, String> entry = entryiterator.next();

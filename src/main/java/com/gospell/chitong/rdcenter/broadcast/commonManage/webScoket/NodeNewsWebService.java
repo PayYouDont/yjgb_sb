@@ -1,9 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.websocket.OnClose;
@@ -17,10 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in.EBM;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 
 /**
@@ -51,11 +47,8 @@ public class NodeNewsWebService extends BaseService {
 	 */
 	public String showNodeNews(){
 		File tarfile = new File(this.path);
-		EBM ebm = service.getEbmFromTar(tarfile);
-		Map<String, Object> map = ebm.getEBMMap();
-		List<Map<String, Object>> list = new LinkedList<>();
-		list.add(map);
-		return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
+		EBD ebd = service.getEbmFromTar(tarfile);
+		return JsonUtil.toJson(JsonUtil.toJson(ebd));
 	}
 	@OnOpen
 	@Override

@@ -4,16 +4,16 @@ import lombok.Data;
 
 @Data
 public class PermissionsVO {
-    private boolean isView = false;
-    private boolean isModify = false;
-    private boolean isAdd = false;
-    private boolean isDelete = false;
+    private boolean view = false;
+    private boolean modify = false;
+    private boolean add = false;
+    private boolean delete = false;
 
     public boolean hasPermission(){
-        return isView||isModify||isAdd||isDelete;
+        return view||modify||add||delete;
     }
 
     public boolean hasPermissionAll(){
-        return isView&&isModify&&isAdd&&isDelete;
+        return view&&modify&&add&&delete;
     }
 }

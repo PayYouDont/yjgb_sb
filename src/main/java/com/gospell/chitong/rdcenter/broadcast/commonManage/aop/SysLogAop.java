@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.alibaba.fastjson.JSON;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.log.UserLog;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
@@ -25,6 +24,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.User;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.log.SysLogService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.RoleService;
 import com.gospell.chitong.rdcenter.broadcast.util.IPUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 
 /** 
@@ -75,7 +75,7 @@ public class SysLogAop {
         	// 请求的参数
             Object[] args = joinPoint.getArgs();
         	if(args.length>0&&args[0]!=null) {
-                params = JSON.toJSONString(args[0]);
+                params = JsonUtil.toJson(args[0]);
         	}
         	params = params.length()>255?params.substring(0,255):params;
             userLog.setDes(params);

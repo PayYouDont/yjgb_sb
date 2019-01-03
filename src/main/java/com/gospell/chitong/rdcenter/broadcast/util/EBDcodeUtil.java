@@ -7,8 +7,7 @@ import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base.BaseXML;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
@@ -45,8 +44,8 @@ public class EBDcodeUtil {
 		return createBaseDateCode()+StringUtil.patch("0",4, EBDID);
 	}
 	public static String getEBDID(Object object) {
-		if(object instanceof BaseXML) {
-			if(object instanceof ConnectionCheck) {
+		if(object instanceof EBD) {
+			if(object instanceof EBD_ConnectionCheck) {
 				ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 				return "01"+prop.getSRC_EBRID()+getConnectionCheckCode();
 			}

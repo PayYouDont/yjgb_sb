@@ -85,18 +85,16 @@ function send(){
      });
 	 $.post("../emergencyInfoAction/sendEmer",{emerId:v_id},function(data){
 			$.messager.progress('close');
-	    	if(data.Result=="success"){
+	    	if(data.success){
 	    		 $.messager.alert('系统提示','发送成功！','info',function(){
 	    			 $('#mainTab').datagrid("load");
 	    			 //发送成功后将按钮 -> 停止发送
 	    			 var newElement = '<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="stopSend();">停止发送</a>';
 	    			 $("#ctrl_btn_div").html(newElement);
 	    			 $.parser.parse($("#ctrl_btn_div"));
-	    			 
-	    			 
 	    		 });
 	    	}else{
-	    		 $.messager.alert('系统提示','发送失败,'+data.Err,'error');
+	    		$.messager.alert('系统提示','发送失败');
 	    	}
 	    },'json').error(function(data){
 	    	$.messager.progress('close');
@@ -124,7 +122,7 @@ function stopSend(){
          interval:300
      });
 	 $.ajax({
-		 url:"../backCommunicationAction/emerStopMessage",
+		 url:"../emergencyInfoAction/stopEmer",
 		 type:"post",
 		 dataType:"json",
 		 data:{emerId:v_id},

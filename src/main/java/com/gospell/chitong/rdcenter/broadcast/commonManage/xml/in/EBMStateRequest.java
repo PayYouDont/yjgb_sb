@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,14 +8,14 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBDResponse;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-/**
+*//**
  * 播发状态请求
 * @ClassName: EBMStateRequest 
 * @Description: TODO(  播发状态请求   ) 
 * @author peiyongdong
 * @date 2018年7月9日 上午9:28:22 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBMStateRequest extends BaseXML{
@@ -30,7 +30,7 @@ public class EBMStateRequest extends BaseXML{
 		root.put("EBMStateRequest", EBMStateRequest);
 		return root;
 	}
-	/**
+	*//**
 	 * 根据实体类生成回执实体
 	 * @Title: getResponseByClass 
 	 * @Description: TODO(具体回执暂未处理，目前只写了统一回复方式) 
@@ -40,7 +40,7 @@ public class EBMStateRequest extends BaseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年6月28日 上午8:45:18
-	 */
+	 *//*
 	@Override
 	public BaseXML getResponseByClass(BaseXML entity) {
 		EBDResponse response = (EBDResponse) super.getResponseByClass(entity);
@@ -49,3 +49,4 @@ public class EBMStateRequest extends BaseXML{
 		return response;
 	}
 }
+*/

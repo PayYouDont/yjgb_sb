@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,14 +14,14 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.Devic
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
+*//**
  * 适配器状态
 * @ClassName: EBRASState 
 * @Description: TODO(  适配器状态   ) 
 * @author peiyongdong
 * @date 2018年7月9日 上午9:33:35 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class EBRASState extends BaseXML implements ResponseXML{
@@ -42,7 +42,7 @@ public class EBRASState extends BaseXML implements ResponseXML{
 		root.put("EBRASState", getEBRASStateMap());
 		return root;
 	}
-	/** 
+	*//** 
 	 * <p>Title: createFullEntity</p> 
 	 * <p>Description: </p> 
 	 * @return 
@@ -50,7 +50,7 @@ public class EBRASState extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月17日 下午4:30:59
-	 */
+	 *//*
 	@Override
 	public BaseXML createFullEntity() {
 		EBRASState state = (EBRASState)createBaseXML(EBRASState.class);
@@ -59,7 +59,7 @@ public class EBRASState extends BaseXML implements ResponseXML{
 		state.setEBRASState_EBRAS(EBRASStateVO.getList(deviceinfos, state));
 		return state;
 	}
-	/** 
+	*//** 
 	 * <p>Title: createIncrementalEntity</p> 
 	 * <p>Description: </p> 
 	 * @return 
@@ -67,9 +67,10 @@ public class EBRASState extends BaseXML implements ResponseXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月17日 下午4:31:01
-	 */
+	 *//*
 	@Override
 	public BaseXML createIncrementalEntity() {
 		return (EBRASState)createBaseXML(EBRASState.class);
 	}
 }
+*/

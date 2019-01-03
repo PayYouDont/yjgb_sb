@@ -2,8 +2,6 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.config;
 
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -65,15 +63,4 @@ public class UserRealm extends AuthorizingRealm {
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
 		return info;
 	}
-
-	/**
-	 * 设定Password校验.
-	 */
-	@PostConstruct
-	public void initCredentialsMatcher() {
-		// 该句作用是重写shiro的密码验证，让shiro用我自己的验证
-		setCredentialsMatcher(new CustomCredentialsMatcher());
-
-	}
-
 }

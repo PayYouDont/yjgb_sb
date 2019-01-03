@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.controller;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class BackCommunicationAction extends BaseAction {
 	@Resource
 	private DeviceParamValService dpvService;
 
-	/**
+	*//**
 	 * 播发应急信息
 	 * 
 	 * @Title: sendEmer
@@ -65,7 +65,7 @@ public class BackCommunicationAction extends BaseAction {
 	 * @return String 返回类型
 	 * @throws @author peiyongdong
 	 * @date 2018年6月12日 下午4:00:59
-	 */
+	 *//*
 	@Log("发送应急信息")
 	@RequestMapping("/sendEmer")
 	@ResponseBody
@@ -94,7 +94,7 @@ public class BackCommunicationAction extends BaseAction {
 		return sendPost;
 	}
 
-	/**
+	*//**
 	 * 获取输入资源
 	 * 
 	 * @Title: getProgrameJson
@@ -103,7 +103,7 @@ public class BackCommunicationAction extends BaseAction {
 	 * @return HashMap<String,Object> 返回类型
 	 * @throws @author peiyongdong
 	 * @date 2018年6月12日 下午4:00:31
-	 */
+	 *//*
 	@PostMapping("/getProgrameJson")
 	@ResponseBody
 	public HashMap<String, Object> getProgrameJson() {
@@ -118,7 +118,7 @@ public class BackCommunicationAction extends BaseAction {
 
 	}
 
-	/**
+	*//**
 	 * 注册设备
 	 * 
 	 * @Title: baseSave
@@ -128,7 +128,7 @@ public class BackCommunicationAction extends BaseAction {
 	 * @return HashMap<String,Object> 返回类型
 	 * @throws @author peiyongdong
 	 * @date 2018年6月12日 上午11:28:50
-	 */
+	 *//*
 	@Log("注册设备")
 	@PostMapping("/baseSave")
 	@ResponseBody
@@ -297,7 +297,7 @@ public class BackCommunicationAction extends BaseAction {
 		}
 	}
 
-	/**
+	*//**
 	 * 停止播发应急信息
 	 * 
 	 * @Title: emerStopMessage
@@ -307,7 +307,7 @@ public class BackCommunicationAction extends BaseAction {
 	 * @return HashMap<String,Object> 返回类型
 	 * @throws @author peiyongdong
 	 * @date 2018年6月12日 下午4:01:36
-	 */
+	 *//*
 	@Log("停止发送应急信息")
 	@PostMapping("/emerStopMessage")
 	@Transactional
@@ -475,3 +475,4 @@ public class BackCommunicationAction extends BaseAction {
 		}
 	}
 }
+*/

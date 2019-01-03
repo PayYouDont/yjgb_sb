@@ -68,6 +68,6 @@ public class AdministrativeAction extends BaseAction{
 		map.put("sort","code_level");
 		map.put("order","ASC");
 		List<Administrative> list = service.list(map);
-		return JsonUtil.toJsonArray(list);
+		return JsonUtil.toJson(list);
 	}
 }

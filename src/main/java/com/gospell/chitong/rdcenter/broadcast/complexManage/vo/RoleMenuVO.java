@@ -1,13 +1,13 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.vo;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
-import lombok.Data;
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+
+import lombok.Data;
 
 @Data
 public class RoleMenuVO {
@@ -17,28 +17,19 @@ public class RoleMenuVO {
     private String menus;
 
     public List<Menu> getMenusList(){
-        JSONArray array = JSONArray.fromObject (getMenus ());
-        List<Menu> list = new ArrayList<> ();
-        list =  getChildren(array,list);
-        return list;
+    	List<Menu> list  = JsonUtil.toJsonArray(getMenus (),Menu.class);
+    	List<Menu> menus = new ArrayList<>();
+        return  getChildren(list,menus);
     }
 
-    @SuppressWarnings("unchecked")
-	public static List<Menu> getChildren(JSONArray array,List<Menu> list){
-           for(int i=0;i<array.size ();i++){
-               List<Menu> menus = JSONArray.toList (array,new Menu(),new JsonConfig ());
-               list.addAll (menus);
-               Object obj =  array.getJSONObject (i).get ("children");
-               if(obj instanceof JSONArray){
-                   JSONArray arr = (JSONArray)obj;
-                   if(arr.size ()>0){
-                       getChildren(arr,list);
-                   }
-               }
-
-           }
-
-        return  list;
+	private static List<Menu> getChildren(List<Menu> list,List<Menu> menus){
+		for (Menu menu : list) {
+			menus.add(menu);
+			if(menu.getChildren().size()>0) {
+				getChildren(menu.getChildren(), menus);
+			}
+		}
+        return  menus;
     }
 
     public Role getRole(){

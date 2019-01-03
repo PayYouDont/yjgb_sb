@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.in;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,14 +16,14 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.xml.out.EBRPSState;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-/**
+*//**
  * 查询请求
 * @ClassName: OMDRequest 
 * @Description: TODO(  查询请求   ) 
 * @author peiyongdong
 * @date 2018年7月9日 上午9:35:11 
 *
- */
+ *//*
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class OMDRequest extends BaseXML implements RequestXML{
@@ -47,7 +47,7 @@ public class OMDRequest extends BaseXML implements RequestXML{
 		root.put("OMDRequest", OMDRequest);
 		return root;
 	}
-	/**
+	*//**
 	 * 根据查询类生成对应的回执类
 	 * @Title: getResponseByClass 
 	 * @Description: TODO() 
@@ -57,7 +57,7 @@ public class OMDRequest extends BaseXML implements RequestXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年6月28日 上午8:45:18
-	 */
+	 *//*
 	@Override
 	public BaseXML getResponseByClass(BaseXML entity) {
 		OMDRequest request = (OMDRequest)entity;
@@ -71,7 +71,7 @@ public class OMDRequest extends BaseXML implements RequestXML{
 		}
 		return xml;
 	}
-	/**
+	*//**
 	 * 
 	 * @Title: getFull 
 	 * @Description: TODO(这里用一句话描述这个方法的作用) 
@@ -81,7 +81,7 @@ public class OMDRequest extends BaseXML implements RequestXML{
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年7月5日 上午9:25:15
-	 */
+	 *//*
 	@Override
 	public BaseXML queryFull(String OMDType) {
 		Class<? extends BaseXML> clazz = getResponseClass(OMDType);
@@ -125,3 +125,4 @@ public class OMDRequest extends BaseXML implements RequestXML{
 		}
 	}
 }
+*/

@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base;
+/*package com.gospell.chitong.rdcenter.broadcast.commonManage.xml.base;
 
 public interface ResponseXML{
 	
@@ -18,3 +18,4 @@ public interface ResponseXML{
 		return "";
 	};
 }
+*/

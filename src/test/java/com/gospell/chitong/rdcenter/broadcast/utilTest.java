@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil2;
+import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -27,7 +27,7 @@ public class utilTest {
 	@Test
 	public void Test() {
 		String xmlPath = "C:\\Users\\pay\\Desktop\\测试\\test3.xml";
-		System.out.println(XMLUtil2.readXMLToBean(xmlPath).creatResponse());	
+		System.out.println(XMLUtil.readXMLToBean(xmlPath).creatResponse());	
 	}
 	/*@Test
 	public void test() {
