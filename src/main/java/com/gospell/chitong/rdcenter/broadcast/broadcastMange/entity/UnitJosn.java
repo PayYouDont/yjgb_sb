@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity;
+package com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

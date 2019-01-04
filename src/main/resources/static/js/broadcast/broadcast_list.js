@@ -94,7 +94,7 @@ function send(){
 	    			 $.parser.parse($("#ctrl_btn_div"));
 	    		 });
 	    	}else{
-	    		$.messager.alert('系统提示','发送失败');
+	    		$.messager.alert('系统提示','发送失败!'+data.data);
 	    	}
 	    },'json').error(function(data){
 	    	$.messager.progress('close');
@@ -134,7 +134,7 @@ function stopSend(){
 					$("#ctrl_btn_div").html("");
 				});
 			} else {
-				$.messager.alert('系统提示', '停止失败', 'error');
+				$.messager.alert('系统提示', '停止失败!'+json.data, 'error');
 			}
 		 },error:function(json){
 			 $.messager.progress('close');

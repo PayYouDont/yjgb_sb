@@ -5,7 +5,10 @@
 * @author peiyongdong  
 * @date 2018年12月13日 下午6:01:44 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state;
+
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
 import lombok.EqualsAndHashCode;
 
@@ -45,6 +48,13 @@ public class EBD_EBRPSState implements EBD{
 	@lombok.Data
 	public static class EBRPS {
 		private String RptTime;
+		/*
+		 * 1：开机/运行正常
+		 * 2：关机/停止运行
+		 * 3：故障
+		 * 4：故障恢复
+		 * 5：播发中
+		 */
 		private String StateCode;
 		private String StateDesc;
 	}
@@ -53,7 +63,7 @@ public class EBD_EBRPSState implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:36:46

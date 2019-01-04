@@ -18,7 +18,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.QueryVO;
 * @date 2018年8月20日 下午3:11:56 
 *  
 */
-public interface SysLogService extends BaseService<UserLog>{
+public interface SysLogService extends BaseService<UserLog,Integer>{
 	
 	int delete(Integer[] ids) throws Exception;
 	

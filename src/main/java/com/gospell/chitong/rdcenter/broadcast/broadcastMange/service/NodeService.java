@@ -7,10 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 
-public interface NodeService extends BaseService<Node>{
+public interface NodeService extends BaseService<Node,Integer>{
 
 	int deleteByIds(Integer[] ids) throws Exception;
     

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.UnitJosn;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.UnitJosn;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 
 import lombok.Data;

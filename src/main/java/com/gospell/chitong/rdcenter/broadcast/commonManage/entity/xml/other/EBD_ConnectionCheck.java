@@ -5,8 +5,11 @@
 * @author peiyongdong  
 * @date 2018年12月13日 下午4:47:41 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 
 import lombok.EqualsAndHashCode;
@@ -43,7 +46,7 @@ public class EBD_ConnectionCheck implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:19:53

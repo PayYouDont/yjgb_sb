@@ -5,7 +5,7 @@
 * @author peiyongdong  
 * @date 2018年12月17日 上午11:18:04 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
@@ -32,6 +32,7 @@ public class BaseEBD{
 	@lombok.Data
 	public static class SRC {
 		private String EBRID;
+		private String URL;
 	}
 
 	@lombok.Data

@@ -15,7 +15,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 * @date 2018年9月25日 下午4:42:27 
 *  
 */
-public interface MediaResouceService extends BaseService<MediaResouce>{
+public interface MediaResouceService extends BaseService<MediaResouce,Integer>{
 	public int save(MediaResouceVO vo) throws Exception;
 	List<MediaResouce> list(Map<String,Object> map);
 	int count(Map<String,Object> map);

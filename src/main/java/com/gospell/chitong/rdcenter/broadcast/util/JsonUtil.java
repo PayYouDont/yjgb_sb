@@ -7,7 +7,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.config.SensorTypeAdapter;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
 public class JsonUtil {
 

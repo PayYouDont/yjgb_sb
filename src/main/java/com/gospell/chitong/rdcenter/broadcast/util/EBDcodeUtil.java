@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;

@@ -5,8 +5,10 @@
 * @author peiyongdong  
 * @date 2018年12月13日 下午5:46:44 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.util.SignatureUtil;
 
 /**
@@ -51,7 +53,7 @@ public class EBD_Signature implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:37:00
@@ -66,7 +68,7 @@ public class EBD_Signature implements EBD{
 	 * <p>Title: getEBD</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD#getEBD() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#getEBD() 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月19日 上午11:01:58

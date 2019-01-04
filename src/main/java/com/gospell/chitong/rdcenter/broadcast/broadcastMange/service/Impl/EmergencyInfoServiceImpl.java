@@ -1,8 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.Impl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,13 +14,12 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProper
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Auxiliary;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Content;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBM_Info;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EmerJson;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.InfosourceMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidentlevelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidenttypeMapper;
@@ -35,7 +32,6 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Display
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaymethod;
 import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
@@ -170,80 +166,15 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		String outPath = serverProperties.getTarOutPath();
 		String tarPath = TarUtil.createXMLTarByBean(ebd,outPath,ebd.getEBD().getEBDID());
 		String result = HttpClientUtil.sendPostFile(serverProperties.getSupporterUrl(), tarPath);
-		TarUtil.checkEBDResponse(result);
-	}
-	
-	/**
-	 * 将Emergencyinfo类转成json对象(搬运的旧项目，后期优化)
-	 * <p>
-	 * Title: getEmerJson
-	 * </p>
-	 * <p>
-	 * Description:
-	 * </p>
-	 * @param emer
-	 * @return
-	 * @throws Exception
-	 * @see com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService#getEmerJson(com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo)
-	 * @throws @author
-	 *             peiyongdong
-	 * @date 2018年6月12日 上午9:58:46
-	 */
-	@Override
-	public String getEmerJson(Emergencyinfo emer) throws Exception {
-		// EmergencyInfoJson是一个通过jackjson框架，把对象转换为我们需要（自定义内容）的json
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		EmerJson eJson = new EmerJson();
-		// EBM_Info=======================
-		EBM_Info EBM_Info = new EBM_Info();
-
-		EBM_Info.setEBM_innerIndex(emer.getId());
-		EBM_Info.setEBM_type(emer.getAccidentType().getCode());
-		EBM_Info.setEBM_level(emer.getAccidentLevel().getId());
-		EBM_Info.setEBM_start_time(sdf.format(emer.getStartTime()));
-		EBM_Info.setEBM_end_time(sdf.format(emer.getEndTime()));
-
-		EBM_Info.setEBM_vocie(new Integer(emer.getSound()));
-		EBM_Info.setEBM_class(2);// 操作类型
-		if (emer.getProgramId() != null) {
-			EBM_Info.setDetail_ProgramNum(emer.getProgramId());
+		EBD_EBDResponse response = TarUtil.getEBDResponse(result);
+		ApplicationContextRegister.getBean(SendTarService.class).saveSendTar(ebd,response);
+		if(response == null) {
+			throw new NullPointerException("The result returned is not a response file!");
 		}
-		List<String> EBM_resource_code = new ArrayList<String>();
-
-		String v_addressCode = emer.getAddresscode();
-		if (!v_addressCode.equals("") && v_addressCode != null) {
-			String[] addressCodeArray = v_addressCode.split(";");
-			for (int i = 0; i < addressCodeArray.length; i++) {
-				//addressCodeArray[i] = "0000" + addressCodeArray[i] + "00";
-				addressCodeArray[i] = "4" + addressCodeArray[i] + "0101"+"01"+"01"+"01";
-			}
-			EBM_resource_code = Arrays.asList(addressCodeArray);
-			EBM_Info.setEBM_resource_code(EBM_resource_code);
-
+		String resultCode = response.getEBD().getEBDResponse().getResultCode();
+		if(EBD_EBDResponse.SUCCESS.equals(resultCode)) {
+			throw new RuntimeException(response.getEBD().getEBDResponse().getResultDesc());
 		}
-
-		// EBM_Content=================================================
-		List<EBM_Content> EBM_ContentList = new ArrayList<EBM_Content>();
-		EBM_Content EBM_Content = new EBM_Content();
-		EBM_Content.setLanguage_code(emer.getDisplayLanguage().getShortname());
-		EBM_Content.setAgency_name(serverProperties.getUnitName());
-		EBM_Content.setCode_character_set(0L);
-		EBM_Content.setMessage_text(emer.getContent());
-
-		List<Auxiliary> auxiliaryList = new ArrayList<Auxiliary>();
-		Auxiliary auxiliary1 = new Auxiliary();
-		auxiliary1.setAuxiliary_data("1辅助数据资源地址url");
-		auxiliary1.setAuxiliary_data_type(0L);
-		Auxiliary auxiliary2 = new Auxiliary();
-		auxiliary2.setAuxiliary_data("2辅助数据资源地址url");
-		auxiliary2.setAuxiliary_data_type(0L);
-		auxiliaryList.add(auxiliary1);
-		auxiliaryList.add(auxiliary2);
-		EBM_Content.setAuxiliary(auxiliaryList);
-		EBM_ContentList.add(EBM_Content);
-		eJson.setEBM_Info(EBM_Info);
-		eJson.setEBM_Content(EBM_ContentList);
-		return JsonUtil.toJson(eJson);
 	}
 
 	/**

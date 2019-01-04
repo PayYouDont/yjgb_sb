@@ -5,7 +5,10 @@
 * @author peiyongdong  
 * @date 2019年1月2日 下午2:41:16 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response;
+
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
 import lombok.EqualsAndHashCode;
 
@@ -29,12 +32,12 @@ public class EBD_EBDResponse implements EBD{
 	 * 4：签名验证失败
 	 * 5：其他错误
 	 */
-	public static final int UNPROCESSED = 0;
-	public static final int SUCCESS = 1;
-	public static final int PARS_FAILED = 2;
-	public static final int MISSING_DATA = 3;
-	public static final int SIGN_VERIF_FAILED = 4;
-	public static final int OTHER_ERROR = 5;
+	public static final String UNPROCESSED = "0";
+	public static final String SUCCESS = "1";
+	public static final String PARS_FAILED = "2";
+	public static final String MISSING_DATA = "3";
+	public static final String SIGN_VERIF_FAILED = "4";
+	public static final String OTHER_ERROR = "5";
 	@lombok.Data
 	@EqualsAndHashCode(callSuper=false)
 	public static class EBD extends BaseEBD{
@@ -61,7 +64,7 @@ public class EBD_EBDResponse implements EBD{
 	 * <p>Title: creatResponse</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD#creatResponse() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponse() 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2019年1月2日 下午2:42:22

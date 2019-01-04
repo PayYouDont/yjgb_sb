@@ -11,8 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_ConnectionCheck;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_EBRPSInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info.EBD_EBRPSInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
@@ -52,11 +53,14 @@ public class HeartJob implements Job{
 		try {
 			String result = HttpClientUtil.sendPostFile(url, tarPath);
 			if(!flag) {
-				TarUtil.checkEBDResponse(result);
-				EBD_EBRPSInfo info = new EBD_EBRPSInfo(server);
-				tarPath = TarUtil.createXMLTarByBean(info, server.getTarOutPath(), info.getEBD().getEBDID());
-				HttpClientUtil.sendPostFile(url, tarPath);
-				flag = true;
+				EBD_EBDResponse response = TarUtil.getEBDResponse(result);
+				String resultCode = response.getEBD().getEBDResponse().getResultCode();
+				if(response!=null&&EBD_EBDResponse.SUCCESS.equals(resultCode)) {
+					EBD_EBRPSInfo info = new EBD_EBRPSInfo(server);
+					tarPath = TarUtil.createXMLTarByBean(info, server.getTarOutPath(), info.getEBD().getEBDID());
+					HttpClientUtil.sendPostFile(url, tarPath);
+					flag = true;
+				}
 			}
 		} catch (Exception e) {
 			logger.error("发送心跳包错误！",e);

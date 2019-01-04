@@ -16,15 +16,16 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
+import org.springframework.util.StringUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_Signature;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_Type;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Signature;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Type;
 /** 
 * @ClassName: XMLUtil O
 * @Description: TODO(     ) 
@@ -117,13 +118,27 @@ public class XMLUtil {
 		return sb;
 	}
 	public static String createXMLByBean(EBD ebd,String outPath,String xmlName) {
-		String jsonStr = JsonUtil.toJson(ebd,ebd.getClass());
+		if(ebd==null) {
+			return null;
+		}
+		String jsonStr;
+		if(ebd instanceof EBD_Signature) {
+			jsonStr = JsonUtil.toJson(ebd);
+		}else {
+			jsonStr = JsonUtil.toJson(ebd,ebd.getClass());
+		}
 		return createXMLByJson(jsonStr, outPath, xmlName);
 	}
 	public static String createXMLByJson(String jsonStr,String outPath,String xmlName) {
+		if(StringUtils.isEmpty(jsonStr)) {
+			return null;
+		}
 		return createXMLByJson(jsonStr, null, outPath, xmlName);
 	}
 	public static String createXMLByJson(String jsonStr,String rootName,String outPath,String xmlName) {
+		if(StringUtils.isEmpty(jsonStr)) {
+			return null;
+		}
 		//创建Document对象
 		Document document = DocumentHelper.createDocument();
 		Branch root = document;

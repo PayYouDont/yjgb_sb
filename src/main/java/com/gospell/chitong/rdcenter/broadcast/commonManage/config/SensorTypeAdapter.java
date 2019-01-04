@@ -13,8 +13,8 @@ import java.lang.reflect.Field;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.BaseEBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
 /** 
 * @ClassName: SensorTypeAdapter 

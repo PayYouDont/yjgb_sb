@@ -5,7 +5,10 @@
 * @author peiyongdong  
 * @date 2018年12月13日 下午5:59:02 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response;
+
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
 import lombok.EqualsAndHashCode;
 
@@ -91,7 +94,7 @@ public class EBD_EBMStateResponse implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:35:28

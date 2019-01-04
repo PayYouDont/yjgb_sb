@@ -26,7 +26,10 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService
 import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.ReceiveTarService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
@@ -123,9 +126,11 @@ public class NodeAction extends BaseAction{
 	@RequestMapping("/upload")
 	@ResponseBody
 	public void upload(HttpServletRequest request,HttpServletResponse response){		
+		OutputStream out = null;
+		InputStream in = null;
 		try {
 			Map<String,Object> map = service.receiveTar(request);
-			OutputStream out = response.getOutputStream();
+			out = response.getOutputStream();
 			boolean isTar = (boolean)map.get("isTar");
 			if(!isTar) {
 				FileUtil.writeString("该文件不是tar格式文件",out);
@@ -137,10 +142,12 @@ public class NodeAction extends BaseAction{
 				return;
 			}
 			String tarPath = map.get("tarPath").toString();
-			InputStream in = new FileInputStream(new File(tarPath));
+			in = new FileInputStream(new File(tarPath));
 			FileUtil.wirteFile(in, out);
 			FileUtil.delete(tarPath);
 			EBD ebd = (EBD)map.get("ebd");
+			// 将tar包信息保存至数据库
+			ApplicationContextRegister.getBean(ReceiveTarService.class).saveReceiveTar(ebd);
 			EBD responseEBD = ebd.creatResponse();
 			if(responseEBD == null) {
 				return;
@@ -149,8 +156,7 @@ public class NodeAction extends BaseAction{
 			tarPath = TarUtil.createXMLTarByBean(responseEBD,serverProperties.getTarOutPath(),tarName);
 			String result = HttpClientUtil.sendPostFile(serverProperties.getSuperiorUrl(), tarPath);
 			// 保存发送tar包信息
-			TarUtil.saveSendTar(responseEBD);
-			TarUtil.checkEBDResponse(result);
+			ApplicationContextRegister.getBean(SendTarService.class).saveSendTar(responseEBD,TarUtil.getEBDResponse(result));
 		} catch (Exception e) {
 			logger.error("接收tar包异常:"+e);
 		}

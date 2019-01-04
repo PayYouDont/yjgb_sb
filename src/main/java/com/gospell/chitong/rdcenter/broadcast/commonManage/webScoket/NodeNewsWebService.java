@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 

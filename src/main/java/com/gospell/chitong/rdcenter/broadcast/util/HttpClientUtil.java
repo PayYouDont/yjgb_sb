@@ -100,7 +100,9 @@ public class HttpClientUtil {
 				InputStream in = response.getEntity().getContent();
 				String tarInPath = ApplicationContextRegister.getBean(ServerProperties.class).getTarInPath();
 				String filename = getFileName(response);
-				result = FileUtil.copyFile(in, tarInPath, filename);
+				if(filename!=null) {
+					result = FileUtil.copyFile(in, tarInPath, filename);
+				}
 			}
 			EntityUtils.consume(resEntity);
 		} catch (Exception e) {

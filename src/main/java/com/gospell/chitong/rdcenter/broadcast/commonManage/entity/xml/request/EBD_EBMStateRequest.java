@@ -5,9 +5,10 @@
 * @author peiyongdong  
 * @date 2018年12月13日 下午5:58:26 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.request;
 
-import lombok.EqualsAndHashCode;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
 /**
  * @ClassName: EBD_EBMStateRequest
@@ -22,28 +23,33 @@ public class EBD_EBMStateRequest implements EBD{
 	private EBD EBD;
 
 	@lombok.Data
-	@EqualsAndHashCode(callSuper=false)
+	@lombok.EqualsAndHashCode(callSuper=false)
 	public static class EBD extends BaseEBD{
 		private EBMStateRequest EBMStateRequest;
 	}
-	
+
 	@lombok.Data
 	public static class EBMStateRequest {
-		private String EBMID;
+		private EBM EBM;
 	}
 
+	@lombok.Data
+	public static class EBM {
+		private String EBMID;
+	}
 	/** 
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:35:16
 	 */
 	@Override
 	public EBD_EBMStateRequest creatResponse() {
-		// TODO Auto-generated method stub
+		//String ebmid = EBD.EBMStateRequest.EBM.EBMID;
+		
 		return null;
 	}
 

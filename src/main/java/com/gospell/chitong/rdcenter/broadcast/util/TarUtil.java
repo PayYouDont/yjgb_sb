@@ -16,17 +16,12 @@ import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.ReceiveTarMapper;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.SendTarMapper;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.ReceiveTar;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_ConnectionCheck;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_EBDResponse;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD_Signature;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Signature;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 
 public class TarUtil {
 
@@ -42,6 +37,9 @@ public class TarUtil {
 	 * @date 2018年11月21日 下午3:58:11
 	 */
 	public static void pack(String inPath, String outPath) {
+		if(StringUtils.isEmpty(inPath)) {
+			return;
+		}
 		File inputFile = new File(inPath);
 		OutputStream out = null;
 		TarOutputStream tarOut = null;
@@ -115,7 +113,9 @@ public class TarUtil {
 	}
 	
 	public static void archive(String inPath, String outPath) {
-		// outPath = outPath.lastIndexOf("\\")==outPath.length()?outPath:outPath+"\\";
+		if(StringUtils.isEmpty(inPath)) {
+			return;
+		}
 		File file = new File(inPath);
 		TarInputStream in = null;
 		try {
@@ -149,6 +149,9 @@ public class TarUtil {
 		}
 	}
 	public static File archiveToTemp(String tarPath) {
+		if(StringUtils.isEmpty(tarPath)) {
+			return null;
+		}
 		// d:/tar/xxxxx.tar
 		String temDir = tarPath.substring(0, tarPath.lastIndexOf(File.separatorChar));
 		// 临时文件夹名称
@@ -162,99 +165,56 @@ public class TarUtil {
 		archive(tarPath, temPath);
 		return tempFile;
 	}
-	public static File readEBD(String tarPath) {
-		return readEBD(tarPath,null);
+	public static File readTar(String tarPath) {
+		return readTar(tarPath,null);
 	}
-	public static File readEBD(String tarPath,String EBDType) {
+	public static File readTar(String tarPath,String EBDType) {
 		File tempFile = archiveToTemp(tarPath);
-		// 获取临时目录
-		File[] files = tempFile.listFiles();
-		EBDType = EBDType!=null&&EBDType.indexOf("sign")!=-1?"EBDS":"EBDB";
-		for (int i = 0; i < files.length; i++) {
-			// 获取临时目录里面的文件
-			File file = files[i];
-			if (!file.isDirectory()) {
-				String fileName = file.getName();
-				// 获取签名xml文件
-				if (EBDType.equals("EBDS")&&fileName.indexOf("EBDS") != -1) {
-					return file;
-				}else if (EBDType.equals("EBDB")
-						&&fileName.indexOf("EBDB") != -1 
-						&& fileName.indexOf("EBDS") == -1) {
-					return file;
+		if(tempFile==null) {
+			return null;
+		}
+		if(tempFile.isDirectory()) {
+			// 获取临时目录
+			File[] files = tempFile.listFiles();
+			EBDType = EBDType!=null&&EBDType.indexOf("sign")!=-1?"EBDS":"EBDB";
+			for (int i = 0; i < files.length; i++) {
+				// 获取临时目录里面的文件
+				File file = files[i];
+				if (!file.isDirectory()) {
+					String fileName = file.getName();
+					// 获取签名xml文件
+					if (EBDType.equals("EBDS")&&fileName.indexOf("EBDS") != -1) {
+						return file;
+					}else if (EBDType.equals("EBDB")
+							&&fileName.indexOf("EBDB") != -1 
+							&& fileName.indexOf("EBDS") == -1) {
+						return file;
+					}
 				}
 			}
 		}
 		return null;
 	}
-	public static int saveReceiveTar(EBD ebd) {
-		try {
-			ReceiveTarMapper dao = ApplicationContextRegister.getBean(ReceiveTarMapper.class);
-			ReceiveTar tar = dao.selectByPrimaryKey(ebd.getEBD().getEBDID());
-			boolean isAdd = false;
-			if (tar == null) {
-				isAdd = true;
-				tar = new ReceiveTar();
-				tar.setId(ebd.getEBD().getEBDID());
-			}
-			tar.setResourceCode(ebd.getEBD().getSRC().getEBRID());
-			tar.setStatus(1);
-			tar.setType(1);
-			tar.setEbdType(ebd.getEBD().getEBDType());
-			// tar.setResourceId();
-			if (isAdd) {
-				return dao.insertSelective(tar);
-			} else {
-				return dao.updateByPrimaryKeySelective(tar);
-			}
-		} catch (Exception e) {
-			logger.error("接收tar包信息保存失败", e);
-			return 0;
-		}
-	}
-	public static int saveSendTar(EBD ebd) {
-		try {
-			SendTarMapper dao = ApplicationContextRegister.getBean(SendTarMapper.class);
-			SendTar tar = dao.selectByPrimaryKey(ebd.getEBD().getEBDID());
-			SendTar selectTar = tar;
-			if (tar == null) {
-				tar = new SendTar();
-			}
-			tar.setEbdid(ebd.getEBD().getEBDID());
-			tar.setEbdType(ebd.getEBD().getEBDType());
-			tar.setDestId(ebd.getEBD().getDEST().getEBRID());
-			/*if (xml instanceof ResponseXML) {
-				ResponseXML response = (ResponseXML) xml;
-				String code = response.getResultCode();
-				if (code != null && !"".equals(code)) {
-					tar.setResultCode(new Integer(code));
-				}
-				if (code != null && !"".equals(response.getResultDesc())) {
-					tar.setResultDesc(response.getResultDesc());
-				}
-			}*/
-			if (selectTar == null) {
-				return dao.insertSelective(tar);
-			} else {
-				return dao.updateByPrimaryKeySelective(tar);
-			}
-		} catch (Exception e) {
-			logger.error("发送tar包信息保存失败", e);
-			return 0;
-		}
-	}
 	public static Map<String,Object> getTarByPath(String inTarPath, String outTarPath) {
+		if(StringUtils.isEmpty(inTarPath)) {
+			return null;
+		}
 		Map<String,Object> map = new HashMap<>();
+		map.put("isSign", false);
 		//读取xml内容并生成实体类
-		File ebdFile = readEBD(inTarPath);
+		File ebdFile = readTar(inTarPath);
 		EBD ebd = XMLUtil.readXMLToBean(ebdFile);
+		if(ebd == null) {
+			return map;
+		}
 		EBD_EBDResponse response = new EBD_EBDResponse();
 		if(!(ebd instanceof EBD_ConnectionCheck)) {
 			//读取签名文件，并验证
-			File signFile = readEBD(inTarPath,"sign");
+			File signFile = readTar(inTarPath,"sign");
 			// 获取Signature
 			EBD_Signature signature = (EBD_Signature) XMLUtil.readXMLToBean(signFile);
 			String sign = signature.getSignature().getSignatureValue();
+			//验证签名
 			try {
 				byte[] inData = FileUtil.readFile(ebdFile);
 				boolean isSign = SignatureUtil.verifySignature(inData,sign);
@@ -268,22 +228,18 @@ public class TarUtil {
 				response.getEBD().getEBDResponse().setResultCode(""+EBD_EBDResponse.OTHER_ERROR);
 				response.getEBD().getEBDResponse().setResultDesc("签名错误");
 			}
-		}else{
+		}else {
 			map.put("isSign", true);
+		}
+		if(ebd instanceof EBD_EBD) {
+			try {
+				WebScoketServer.startpush(inTarPath);
+			} catch (Exception e) {
+				logger.error("播发节点消息失败", e);
+			}
 		}
 		// 删除临时文件
 		FileUtil.delete(ebdFile.getParent());
-		if(ebd != null) {
-			// 将tar包信息保存至数据库
-			saveReceiveTar(ebd);
-			if(ebd instanceof EBD_EBD) {
-				try {
-					WebScoketServer.startpush(inTarPath);
-				} catch (Exception e) {
-					logger.error("播发节点消息失败", e);
-				}
-			}
-		}
 		map.put("tarPath", TarUtil.createXMLTarByBean(response, outTarPath, response.getEBD().getEBDID()));
 		map.put("ebd", ebd);
 		return map;
@@ -307,20 +263,16 @@ public class TarUtil {
 		return outPath;
 	}
 	
-	public static void checkEBDResponse(String result) throws Exception{
+	public static EBD_EBDResponse getEBDResponse(String result){
 		if(StringUtils.isEmpty(result)) {
-			throw new NullPointerException("result is null");
+			return null;
 		}
-		File xmlFile = readEBD(result);
+		File xmlFile = readTar(result);
 		EBD ebd = XMLUtil.readXMLToBean(xmlFile);
 		if(ebd instanceof EBD_EBDResponse){
 			EBD_EBDResponse response = (EBD_EBDResponse)ebd;
-			Integer resultCode = new Integer(response.getEBD().getEBDResponse().getResultCode());
-			if(resultCode!=EBD_EBDResponse.SUCCESS) {
-				throw new RuntimeException(response.getEBD().getEBDResponse().getResultDesc());
-			}
-		}else {
-			throw new ClassCastException("This file is not EBDResponse file");
+			return response;
 		}
+		return null;
 	}
 }

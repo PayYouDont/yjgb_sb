@@ -5,7 +5,7 @@
 * @author peiyongdong  
 * @date 2018年12月17日 上午9:17:34 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base;
 
 /** 
 * @ClassName: EBD 

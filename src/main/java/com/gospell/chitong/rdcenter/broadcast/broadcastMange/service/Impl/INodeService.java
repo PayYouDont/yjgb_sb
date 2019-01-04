@@ -19,7 +19,7 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProper
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.NodeMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.FileToolsUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;

@@ -9,7 +9,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Device
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodelparam;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicetype;
 
-public interface DeviceModelService extends BaseService<Devicemodel>{
+public interface DeviceModelService extends BaseService<Devicemodel,Integer>{
 	
 	List<Devicemodelparam> deviceModelParamList(Map<String, Object> map);
 	

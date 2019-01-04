@@ -7,7 +7,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
 
-public interface DeviceInfoService extends BaseService<Deviceinfo>{
+public interface DeviceInfoService extends BaseService<Deviceinfo,Integer>{
 	
 	List<String> findByCodes(String code);
 	

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Infosource;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidentlevel;
@@ -12,13 +12,11 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Acciden
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaylanguage;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaymethod;
 
-public interface EmergencyInfoService extends BaseService<Emergencyinfo>{
+public interface EmergencyInfoService extends BaseService<Emergencyinfo,Integer>{
     
     String review(Emergencyinfo info) throws Exception;
     
     int deleteByIds(Integer[] ids) throws Exception;
-    
-    String getEmerJson(Emergencyinfo emer) throws Exception;
     
     int saveXML(EBD ebd) throws Exception;
     

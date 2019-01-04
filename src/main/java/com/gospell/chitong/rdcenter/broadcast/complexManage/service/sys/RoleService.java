@@ -4,7 +4,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Role;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.RoleMenuVO;
 
-public interface RoleService extends BaseService<Role>{
+public interface RoleService extends BaseService<Role,Integer>{
 
 	int save(RoleMenuVO vo) throws Exception;
 	

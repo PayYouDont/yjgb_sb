@@ -7,7 +7,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DevModelParamRelation;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodelparam;
 
-public interface DeviceModelParamService extends BaseService<Devicemodelparam>{
+public interface DeviceModelParamService extends BaseService<Devicemodelparam,Integer>{
 	
 	List<DevModelParamRelation> findByMap(Map<String,Object> map);
 }

@@ -5,12 +5,14 @@
 * @author peiyongdong  
 * @date 2018年12月13日 下午5:31:14 
 */
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.MediaResouceService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
@@ -80,7 +82,7 @@ public class EBD_EBD implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:34:44
@@ -100,11 +102,12 @@ public class EBD_EBD implements EBD{
 		EBD.EBM = new EBM();
 		EBD.EBM.EBMVersion = "1";
 		EBD.EBM.EBMID = EBDcodeUtil.getEBMID();
-		/*
-		 * 1：实际播发,2：取消播发,3：平台演练播发,
-		 * 4：前端演练播发,5：终端演练播发
-		 */
 		EBD.EBM.MsgBasicInfo = new MsgBasicInfo();
+		/*
+		 * MsgType:
+		 * 	1：实际播发,2：取消播发,3：平台演练播发,
+		 * 	4：前端演练播发,5：终端演练播发
+		 */
 		EBD.EBM.MsgBasicInfo.MsgType = msgType;
 		EBD.EBM.MsgBasicInfo.SenderName = properties.getBroadcastName();
 		EBD.EBM.MsgBasicInfo.SenderCode =properties.getSRC_EBRID();
