@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction.CmdResourceCodeMapper">
+  <resultMap id="BaseResultMap" type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CMDResourceCode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="tag" jdbcType="INTEGER" property="tag" />
+    <result column="length" jdbcType="INTEGER" property="length" />
+    <result column="terminal_address_length" jdbcType="INTEGER" property="terminalAddressLength" />
+    <result column="terminal_address" jdbcType="VARCHAR" property="terminalAddress" />
+    <result column="reserved" jdbcType="INTEGER" property="reserved" />
+    <result column="resource_code" jdbcType="VARCHAR" property="resourceCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `name`, tag, `length`, terminal_address_length, terminal_address, reserved, resource_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cmd_resource_code
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cmd_resource_code
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CMDResourceCode">
+    insert into cmd_resource_code (id, `name`, tag, 
+      `length`, terminal_address_length, terminal_address, 
+      reserved, resource_code)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tag,jdbcType=INTEGER}, 
+      #{length,jdbcType=INTEGER}, #{terminalAddressLength,jdbcType=INTEGER}, #{terminalAddress,jdbcType=VARCHAR}, 
+      #{reserved,jdbcType=INTEGER}, #{resourceCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CMDResourceCode">
+    insert into cmd_resource_code
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="tag != null">
+        tag,
+      </if>
+      <if test="length != null">
+        `length`,
+      </if>
+      <if test="terminalAddressLength != null">
+        terminal_address_length,
+      </if>
+      <if test="terminalAddress != null">
+        terminal_address,
+      </if>
+      <if test="reserved != null">
+        reserved,
+      </if>
+      <if test="resourceCode != null">
+        resource_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        #{tag,jdbcType=INTEGER},
+      </if>
+      <if test="length != null">
+        #{length,jdbcType=INTEGER},
+      </if>
+      <if test="terminalAddressLength != null">
+        #{terminalAddressLength,jdbcType=INTEGER},
+      </if>
+      <if test="terminalAddress != null">
+        #{terminalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved != null">
+        #{reserved,jdbcType=INTEGER},
+      </if>
+      <if test="resourceCode != null">
+        #{resourceCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CMDResourceCode">
+    update cmd_resource_code
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        tag = #{tag,jdbcType=INTEGER},
+      </if>
+      <if test="length != null">
+        `length` = #{length,jdbcType=INTEGER},
+      </if>
+      <if test="terminalAddressLength != null">
+        terminal_address_length = #{terminalAddressLength,jdbcType=INTEGER},
+      </if>
+      <if test="terminalAddress != null">
+        terminal_address = #{terminalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved != null">
+        reserved = #{reserved,jdbcType=INTEGER},
+      </if>
+      <if test="resourceCode != null">
+        resource_code = #{resourceCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CMDResourceCode">
+    update cmd_resource_code
+    set `name` = #{name,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=INTEGER},
+      `length` = #{length,jdbcType=INTEGER},
+      terminal_address_length = #{terminalAddressLength,jdbcType=INTEGER},
+      terminal_address = #{terminalAddress,jdbcType=VARCHAR},
+      reserved = #{reserved,jdbcType=INTEGER},
+      resource_code = #{resourceCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -7,6 +7,8 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /** 
@@ -17,7 +19,12 @@ import lombok.Data;
 *  
 */
 @Data
-public abstract class CMD {
+public abstract class CMD implements Serializable{
+	/** 
+	* @Fields serialVersionUID : TODO(     ) 
+	*/ 
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 
     /**
