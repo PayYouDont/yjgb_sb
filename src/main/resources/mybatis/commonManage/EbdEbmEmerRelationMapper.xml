@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.commonManage.dao.EBD_EBM_EmerRelationMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="emer_id" jdbcType="INTEGER" property="emerId" />
+		<result column="ebm_id" jdbcType="VARCHAR" property="ebmId" />
+		<result column="ebd_id" jdbcType="VARCHAR" property="ebdId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, emer_id, ebm_id, ebd_id
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ebd_ebm_emer_relation
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from ebd_ebm_emer_relation
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation">
+		insert into ebd_ebm_emer_relation (id, emer_id, ebm_id,
+		ebd_id)
+		values (#{id,jdbcType=INTEGER}, #{emerId,jdbcType=INTEGER},
+		#{ebmId,jdbcType=VARCHAR},
+		#{ebdId,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation">
+		insert into ebd_ebm_emer_relation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="emerId != null">
+				emer_id,
+			</if>
+			<if test="ebmId != null">
+				ebm_id,
+			</if>
+			<if test="ebdId != null">
+				ebd_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="emerId != null">
+				#{emerId,jdbcType=INTEGER},
+			</if>
+			<if test="ebmId != null">
+				#{ebmId,jdbcType=VARCHAR},
+			</if>
+			<if test="ebdId != null">
+				#{ebdId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation">
+		update ebd_ebm_emer_relation
+		<set>
+			<if test="emerId != null">
+				emer_id = #{emerId,jdbcType=INTEGER},
+			</if>
+			<if test="ebmId != null">
+				ebm_id = #{ebmId,jdbcType=VARCHAR},
+			</if>
+			<if test="ebdId != null">
+				ebd_id = #{ebdId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation">
+		update ebd_ebm_emer_relation
+		set emer_id = #{emerId,jdbcType=INTEGER},
+		ebm_id = #{ebmId,jdbcType=VARCHAR},
+		ebd_id = #{ebdId,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="list" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ebd_ebm_emer_relation
+		<where>
+			<if test="emerId != null">
+				and emer_id = #{emerId,jdbcType=INTEGER}
+			</if>
+			<if test="ebmId != null">
+				and ebm_id = #{ebmId,jdbcType=VARCHAR}
+			</if>
+			<if test="ebdId != null">
+				and ebd_id = #{ebdId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${order} ${sort}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from ebd_ebm_emer_relation
+		<where>
+			<if test="emerId != null">
+				and emer_id = #{emerId,jdbcType=INTEGER}
+			</if>
+			<if test="ebmId != null">
+				and ebm_id = #{ebmId,jdbcType=VARCHAR}
+			</if>
+			<if test="ebdId != null">
+				and ebd_id = #{ebdId,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+</mapper>

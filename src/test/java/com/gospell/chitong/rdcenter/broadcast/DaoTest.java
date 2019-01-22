@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.EBD_EBM_EmerRelationMapper;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceLogMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceParamValMapper;
@@ -20,6 +21,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.Deviceinf
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicemodelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicemodelparamMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicetypeMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction.CmdConfigMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidentlevelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidenttypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
@@ -205,5 +207,17 @@ public class DaoTest {
 		map.put("endTime","2018-9-10");
 		List<ViewEmerLevel> list = viewEmerLevelDao.countByDate(map);
 		System.out.println(list);
+	}
+	@Resource
+	private EBD_EBM_EmerRelationMapper eeerdao;
+	@Test
+	public void test18() {
+		System.out.println(eeerdao.selectByPrimaryKey(0));
+	}
+	@Resource
+	private CmdConfigMapper ccdao;
+	@Test
+	public void test19() {
+		System.out.println(ccdao.count(new HashMap<String,Object>()));
 	}
 }

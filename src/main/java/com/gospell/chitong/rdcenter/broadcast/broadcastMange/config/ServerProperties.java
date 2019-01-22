@@ -3,7 +3,6 @@ package com.gospell.chitong.rdcenter.broadcast.broadcastMange.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.UnitJosn;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
@@ -21,7 +20,6 @@ import lombok.Data;
 		"file:${config.path}" }, ignoreResourceNotFound = true, 
 		encoding = "utf-8")
 @Data
-@Component
 public class ServerProperties {
 	// 后台管理系统名称
 	private String manageName;

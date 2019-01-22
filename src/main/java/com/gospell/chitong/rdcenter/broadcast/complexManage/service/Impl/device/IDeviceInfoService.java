@@ -133,6 +133,7 @@ public class IDeviceInfoService implements DeviceInfoService{
 	 * @author peiyongdong
 	 * @date 2018年7月19日 上午10:37:23
 	 */
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public List<Deviceinfo> getRegistListByType(String devtype) {
 		List<Deviceinfo> deviceinfos = dao.list(null);

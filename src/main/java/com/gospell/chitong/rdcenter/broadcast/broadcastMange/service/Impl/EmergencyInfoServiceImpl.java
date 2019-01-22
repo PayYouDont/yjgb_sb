@@ -14,10 +14,12 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProper
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.EBD_EBM_EmerRelationService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.InfosourceMapper;
@@ -161,13 +163,23 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 
 	public void sendEBDByEmer(Integer emerId,String msgType) throws Exception {
 		Emergencyinfo emer = selectById(emerId);
+		if(emer == null) {
+			throw new NullPointerException("This id can't find emergency! EmergencyInfo is null!");
+		}
 		EBD_EBD ebd = new EBD_EBD();
 		ebd.setEmergencyinfo(emer, serverProperties,msgType);
 		String outPath = serverProperties.getTarOutPath();
 		String tarPath = TarUtil.createXMLTarByBean(ebd,outPath,ebd.getEBD().getEBDID());
 		String result = HttpClientUtil.sendPostFile(serverProperties.getSupporterUrl(), tarPath);
 		EBD_EBDResponse response = TarUtil.getEBDResponse(result);
+		//保存发送的tar包
 		ApplicationContextRegister.getBean(SendTarService.class).saveSendTar(ebd,response);
+		//保存关系表
+		EBD_EBM_EmerRelation eeer = new EBD_EBM_EmerRelation();
+		eeer.setEmerId(emerId);
+		eeer.setEbmId(ebd.getEBD().getEBM().getEBMID());
+		eeer.setEbdId(ebd.getEBD().getEBDID());
+		ApplicationContextRegister.getBean(EBD_EBM_EmerRelationService.class).save(eeer);
 		if(response == null) {
 			throw new NullPointerException("The result returned is not a response file!");
 		}
@@ -203,12 +215,14 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setContent(ebmxml.getMsgContent().getMsgDesc());
 		info.setEmergencyname(ebmxml.getMsgContent().getMsgTitle());
 		info.setEbmId(ebmxml.getEBMID());
-		info.setProgramdescription(ebmxml.getMsgContent().getAuxiliary().getAuxiliaryDesc());
+		if(ebmxml.getMsgContent().getAuxiliary()!=null) {
+			info.setProgramdescription(ebmxml.getMsgContent().getAuxiliary().getAuxiliaryDesc());
+		}
 		String language = ebmxml.getMsgContent().getLanguageCode();
 		long between=(info.getStartTime().getTime()-info.getEndTime().getTime())/(1000*60);//除以1000是为了转换成秒
 		info.setDuration(String.valueOf(Math.abs(between)));  //持续时间
 
-	/*	Date date=sdf.parse(sdf.format(new Date())); //当前系统时间
+		/*Date date=sdf.parse(sdf.format(new Date())); //当前系统时间
 		if (info.getStartTime().getTime()>date.getTime()){ //如果开始时间大于系统当前时间
 			info.setStatus(5);  //初始化为待发送
 		}else {
@@ -271,7 +285,10 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 		info.setAccidentlevelId(level.getId());
 		// String EventType =
 		// 是否用MP3播发
-		String code = ebmxml.getMsgContent().getAuxiliary().getAuxiliaryType();
+		String code = null;
+		if(ebmxml.getMsgContent().getAuxiliary()!=null) {
+			code = ebmxml.getMsgContent().getAuxiliary().getAuxiliaryType();
+		}
 		Displaymethod dm = null;
 		if (code != null) {
 			Map<String, Object> map = new HashMap<>();

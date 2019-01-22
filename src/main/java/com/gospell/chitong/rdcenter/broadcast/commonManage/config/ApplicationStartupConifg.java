@@ -2,6 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.ScheduleJobUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.SignatureUtil;
 
 @Configuration
-public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent> {
+public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent>,DisposableBean{
 	@Resource
 	private QuartzManager quartzManager;
 	@Resource
@@ -52,24 +53,36 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 		}).start();
 	}
 	public void startHeartJob(boolean isCheck){
-		if(!isCheck) {
-			return;
+		if(isCheck) {
+			Task task = taskDao.selectByJobName("heartJob");
+			if(task==null) {
+				task = new Task();
+				task.setCronExpression("0/5 * * * * ?");
+				task.setBeanClass(HeartJob.class.getName());
+				task.setMethodName("run2");
+				task.setIsConcurrent(ScheduleJob.CONCURRENT_IS);
+				task.setDescription("心跳检测任务");
+				task.setJobGroup("group1");
+				task.setJobName("heartJob");
+				task.setJobStatus(ScheduleJob.STATUS_RUNNING);
+				taskDao.insertSelective(task);
+			}
+			ScheduleJob job = ScheduleJobUtils.entityToData(task);
+			quartzManager.addJob(job);
 		}
-		Task task = taskDao.selectByJobName("heartJob");
-		if(task==null) {
-			task = new Task();
-			task.setCronExpression("0/5 * * * * ?");
-			task.setBeanClass(HeartJob.class.getName());
-			task.setMethodName("run2");
-			task.setIsConcurrent(ScheduleJob.CONCURRENT_IS);
-			task.setDescription("心跳检测任务");
-			task.setJobGroup("group1");
-			task.setJobName("heartJob");
-			task.setJobStatus(ScheduleJob.STATUS_RUNNING);
-			taskDao.insertSelective(task);
-		}
-		ScheduleJob job = ScheduleJobUtils.entityToData(task);
-		quartzManager.addJob(job);
+	}
+	/** 
+	 * <p>Title: destroy</p> 
+	 * <p>Description: </p> 
+	 * @throws Exception 
+	 * @see org.springframework.beans.factory.DisposableBean#destroy() 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2019年1月16日 上午9:01:59
+	 */
+	@Override
+	public void destroy() throws Exception {
+		
 	}
 }
 

@@ -2,9 +2,8 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.OnClose;
@@ -18,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.NodeNews;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
@@ -31,7 +31,7 @@ public class WebScoketServer {
     //与某个客户端的连接会话，需要通过它来给客户端发送数据  
     private static Session session; 
     
-    public final Logger logger = LoggerFactory.getLogger(this.getClass());
+    public final static Logger logger = LoggerFactory.getLogger(WebScoketServer.class);
     
     private static CopyOnWriteArraySet<WebScoketServer> webSocketSet = new CopyOnWriteArraySet<WebScoketServer>();
 
@@ -121,20 +121,24 @@ public class WebScoketServer {
      */
     public static String showNodeNews(String path){
         File tarfile = new File(path);
-        EBD ebd = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(tarfile);
-       // Map<String, Object> map = ebd.getEBMMap();
-        List<Map<String, Object>> list = new LinkedList<>();
-        //list.add(map);
+        EBD ebd = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(tarfile);        
         int i=0;
         try {
-           i = ApplicationContextRegister.getBean(EmergencyInfoService.class).saveXML(ebd);
+        	EmergencyInfoService emerService = ApplicationContextRegister.getBean(EmergencyInfoService.class);
+            i = emerService.saveXML(ebd);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
-        if (i == -200)
-            return Status.timeError.getStatus();
-        else
-            return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
+       /* ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
+        File dirFile = new File(prop.getTarInPath());*/
+        List<NodeNews> list = new ArrayList<>();
+        list.add(NodeNews.parseEBD(ebd));
+        if (i == -200) {
+        	return Status.timeError.getStatus();
+        }else {
+        	return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
+        }
+            
     }
 
     /**
