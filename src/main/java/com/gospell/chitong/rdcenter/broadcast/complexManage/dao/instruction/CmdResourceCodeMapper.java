@@ -1,17 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.BaseDao;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CMDResourceCode;
 
-public interface CmdResourceCodeMapper {
-    int deleteByPrimaryKey(Integer id);
+public interface CmdResourceCodeMapper extends BaseDao<CMDResourceCode, Integer> {
 
-    int insert(CMDResourceCode record);
-
-    int insertSelective(CMDResourceCode record);
-
-    CMDResourceCode selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(CMDResourceCode record);
-
-    int updateByPrimaryKey(CMDResourceCode record);
 }

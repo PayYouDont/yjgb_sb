@@ -39,4 +39,7 @@ public class StringUtil {
 		patchStr = patchStr.substring(index,patchStr.length());
 		return patchStr;
 	}
+	public static String UpCaseFirstLetter(String str){
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
 }

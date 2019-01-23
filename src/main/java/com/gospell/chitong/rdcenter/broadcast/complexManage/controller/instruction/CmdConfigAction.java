@@ -7,12 +7,11 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.instruction;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdConfigService;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdConfigService;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 
 * @ClassName: CmdConfigAction 
@@ -45,7 +43,7 @@ public class CmdConfigAction extends BaseAction{
 	}
 	@PostMapping("list")
 	public HashMap<String,Object> list(Page page){
-		 Map<String,Object> map = page.getMap ();
+		Map<String,Object> map = page.getMap ();
 		List<CmdConfig> list = service.list(map);
 		int count = service.count(map);
 		return JsonWrapper.wrapperPage(list, count);

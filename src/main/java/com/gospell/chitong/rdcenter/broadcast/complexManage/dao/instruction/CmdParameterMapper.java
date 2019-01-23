@@ -1,17 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.BaseDao;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CMDParameter;
 
-public interface CmdParameterMapper {
-    int deleteByPrimaryKey(Integer id);
+public interface CmdParameterMapper extends BaseDao<CMDParameter, Integer> {
 
-    int insert(CMDParameter record);
-
-    int insertSelective(CMDParameter record);
-
-    CMDParameter selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(CMDParameter record);
-
-    int updateByPrimaryKey(CMDParameter record);
 }
