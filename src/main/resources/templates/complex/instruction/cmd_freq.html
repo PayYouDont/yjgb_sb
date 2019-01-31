@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>指令编辑</title>
+    <!--easyui控件css -->
+    <link id="easyuiTheme" rel="stylesheet" type="text/css"
+          href="/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+    <script src="/js/core/jquery.min.js"></script>
+    <!--easyui控件js -->
+    <script src="/easyui/jquery.easyui.min.js"></script>
+    <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+   	<script src="/js/complex/instruction/cmd_edit.js"></script>
+    <script type="text/javascript">
+    	var cmdType="[[${cmdType}]]";
+    </script>
+<body class="easyui-layout">
+
+<div data-options="region:'center'">
+    <form id="dataForm" class="easyui-form" method="post">
+        <input id="id" type="hidden" name="id" th:value='${cmd.id}'>
+
+        <table class="tab" cellpadding="1" cellspacing="5"
+               style="width: calc(100% - 2px); margin-top: 10px;">
+            <tr>
+                <td style="text-align: center;">指令名称</td>
+                <td><input class="easyui-textbox" id="name" name="name"
+                           th:value='${cmd.name}' data-options="required:true"></td>
+                <td style="text-align: center;">指令标识符</td>
+                <td><input id="tag" name="tag"  class="easyui-textbox" readonly="readonly"	value="3"></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">指令长度</td>
+                <td>
+                    <input type="number" class="easyui-textbox" id="length"
+                    name="length" th:value='${cmd.length}' >
+                </td>
+                <td style="text-align: center;">主频频率（kHz）</td>
+                <td>
+                	<input type="number" class="easyui-textbox" id="freq" 
+                	name="freq" data-options="required:true" 
+                	th:value='${cmd.freq}' >
+				</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">符号率(kBPS)</td>
+                <td>
+                    <input type="number" class="easyui-textbox" id="symbolRate"
+                    name="symbolRate" data-options="required:true" 
+                    th:value='${cmd.symbolRate}' >
+                </td>
+                <td style="text-align: center;">映射</td>
+                <td>
+                	<select class="easyui-combobox easyui-validatebox"
+							panelHeight="150" style="width: 173px;"
+							data-options="required:true"
+							name="constellationMapping" id="constellationMapping"
+							>
+						 	<option th:checked="${cmd.constellationMapping}==0" value="0">未定义</option>
+						 	<option th:checked="${cmd.constellationMapping}==1" value="1">QAM16</option>
+						 	<option th:checked="${cmd.constellationMapping}==2" value="2">QAM32</option>
+						 	<option th:checked="${cmd.constellationMapping}==3" value="3">QAM64</option>
+						 	<option th:checked="${cmd.constellationMapping}==4" value="4">QAM128</option>
+						 	<option th:checked="${cmd.constellationMapping}==5" value="5">QAM256</option>
+					</select>
+				</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">资源个数</td>
+                <td>
+                    <input type="number" class="easyui-textbox" id="terminalNumber"
+                    name="terminalNumber" data-options="required:true" 
+                    th:value='${cmd.terminalNumber}' >
+                </td>
+                <td style="text-align: center;">资源地址</td>
+                <td>
+                	<input class="easyui-textbox" id="resourceAddress" 
+                	name="resourceAddress" data-options="required:true" 
+                	th:value='${cmd.resourceAddress}' >
+				</td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div data-options="region:'south',border:false"
+     style="text-align: right; padding: 5px 0 0;">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+       href="javascript:void(0)" onclick="mysave();" style="width: 80px">提交</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
+       href="javascript:void(0)" onclick="closeParentModal();"
+       style="width: 80px">关闭</a>
+</div>
+
+
+</body>
+</html>

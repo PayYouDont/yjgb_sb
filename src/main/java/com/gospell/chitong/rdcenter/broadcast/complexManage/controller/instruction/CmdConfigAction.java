@@ -7,11 +7,12 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.instruction;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdConfigService;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdConfigService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdTypeService;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 /** 
 * @ClassName: CmdConfigAction 
@@ -36,6 +39,8 @@ import java.util.Map;
 public class CmdConfigAction extends BaseAction{
 	@Resource
 	private CmdConfigService service;
+	@Resource
+	private CmdTypeService typeService;
 	
 	@GetMapping("toList")
 	public ModelAndView toList() {
@@ -58,6 +63,7 @@ public class CmdConfigAction extends BaseAction{
 			cmd = new CmdConfig();
 		}
 		model.addAttribute("cmd",cmd);
+		model.addAttribute("typeList",typeService.list(new HashMap<String,Object>()));
 		return new ModelAndView("complex/instruction/cmdConfig_edit");
 	}
 	@PostMapping("delete")
@@ -71,9 +77,9 @@ public class CmdConfigAction extends BaseAction{
 		}
 	}
 	@PostMapping("save")
-	public HashMap<String,Object> save(CmdConfig cmd){
+	public HashMap<String,Object> save(CmdConfig cmdConfig){
 		try {
-			service.save(cmd);
+			service.save(cmdConfig);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);

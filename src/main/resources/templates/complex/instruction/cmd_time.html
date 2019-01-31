@@ -16,9 +16,9 @@
     <!--easyui控件js -->
     <script src="/easyui/jquery.easyui.min.js"></script>
     <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script src="/js/complex/instruction/cmdConfig_edit.js"></script>
-    <script>
-        console.log("[[${cmd}]]")
+    <script src="/js/complex/instruction/cmd_edit.js"></script>
+    <script type="text/javascript">
+    	var cmdType="[[${cmdType}]]";
     </script>
 <body class="easyui-layout">
 
@@ -38,18 +38,16 @@
             <tr>
                 <td style="text-align: center;">指令长度</td>
                 <td>
-                    <input id="length" name="length" th:value='${cmd.length}' >
+                    <input type="number" id="length" name="length" th:value='${cmd.length}' >
                 </td>
                 <td style="text-align: center;">时间</td>
                 <td>
-                    <input id="length" name="length" th:value='${cmd.time}' >
-                </td>
+                	<input class="easyui-datetimebox" name="time" id="time" 
+                	th:value='${#dates.format(cmd.time,"yyyy-MM-dd hh:mm:ss")}'
+					data-options="required:true,showSeconds:true,editable:false"/>
+				</td>
             </tr>
         </table>
-      <!--  <div data-options="split:true,iconCls:'icon-extendlist'"  title="指令内容" style="width:91%;height:200px;margin-left:10px;" border="true">
-            <table id="mainTab" class="easyui-datagrid" style="width:100%;height:auto;" toolbar="#MyBtnDiv" fit="true" border="true">
-            </table>
-        </div>-->
     </form>
 </div>
 <div data-options="region:'south',border:false"

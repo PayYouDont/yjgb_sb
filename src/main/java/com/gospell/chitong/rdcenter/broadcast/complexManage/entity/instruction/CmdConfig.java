@@ -31,6 +31,5 @@ public class CmdConfig implements Serializable {
      * 指令内容
      */
     private String cmd;
-
     private static final long serialVersionUID = 1L;
 }

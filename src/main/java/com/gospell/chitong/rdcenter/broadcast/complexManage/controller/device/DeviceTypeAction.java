@@ -39,7 +39,7 @@ public class DeviceTypeAction extends BaseAction{
 	public String toList(Model model){
 		return "complex/device/deviceType_list";
 	}
-	@RequiresPermissions(value = {"dev:type:add,dev:type:edit"},logical = Logical.OR)
+	@RequiresPermissions(value = {"dev:type:add","dev:type:edit"},logical = Logical.OR)
 	@GetMapping("/toEdit")
 	public String toEdit(Model model,Integer id){
 		Devicetype deviceType = null;

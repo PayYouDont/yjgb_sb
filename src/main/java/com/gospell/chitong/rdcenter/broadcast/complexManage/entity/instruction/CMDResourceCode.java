@@ -25,7 +25,7 @@ public class CMDResourceCode extends CMD {
      * 保留，取值均为“1”；
 
      */
-    private Integer reserved;
+    private Integer reserved = 1;
 
     private String resourceCode;
 

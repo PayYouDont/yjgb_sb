@@ -17,6 +17,13 @@
     <script src="/easyui/jquery.easyui.min.js"></script>
     <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script src="/js/complex/instruction/cmdConfig_edit.js"></script>
+	<script type="text/javascript">
+		var cmd = '[(${cmd.cmd})]';
+		if(cmd!=''){
+			cmd = JSON.parse(cmd);
+		}
+		
+	</script>
 <body class="easyui-layout">
 
 	<div data-options="region:'center'">
@@ -38,23 +45,20 @@
 					<td>
 						<input id="length" name="length" th:value='${cmd.length}' >
 					</td>
-					<!-- <td style="text-align: center;">指令类型</td>
+					<td style="text-align: center;">属性类型</td>
 					<td>
-						<select class="easyui-combobox easyui-validatebox"
-							panelHeight="150"
-							data-options="required:true"
-							name="type" id="type" style="width: 200px;"
-							>
-						 	<option th:each="type,typeStat:${typeList}"
-								th:text="${type.text}" 
-								th:checked="${deviceInfo.id}==${deviceModel.id}"
-								th:value="${deviceModel.id}"/>
-						</select> -->
+						<select class="easyui-combobox" editable="false"
+							id="type" name="type" style="width: 165px;">
+								<option></option>
+								<option th:each="type,typeStat:${typeList}"
+									th:text="${type.nameCh}"
+									th:value="${type.boxType}" />
+						</select>
 					</td>
 				</tr>
 			</table>
 			<div data-options="split:true,iconCls:'icon-extendlist'"  title="指令内容" style="width:91%;height:200px;margin-left:10px;" border="true">
-			    <table id="mainTab" class="easyui-datagrid" style="width:100%;height:auto;" toolbar="#MyBtnDiv" fit="true" border="true">
+			    <table id="cmdTab" class="easyui-datagrid" style="width:100%;height:auto;" toolbar="#MyBtnDiv" fit="true" border="true">
 			    </table>
 			</div>
 		</form>
@@ -67,7 +71,5 @@
 			href="javascript:void(0)" onclick="closeParentModal();"
 			style="width: 80px">关闭</a>
 	</div>
-
-
 </body>
 </html>

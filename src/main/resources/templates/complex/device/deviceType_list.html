@@ -28,18 +28,18 @@ a:FOCUS {
 <body class="easyui-layout">
 
 	<div id="MyBtnDiv" style="height: 30px; padding: 1px 5px 3px 5px;">
-		<shiro:haspermisson name="dev:type:add">
+		<shiro:hasPermission name="dev:type:add">
 			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add"
 				onclick="add();">增加</a>
-		</shiro:haspermisson>
-		<shiro:haspermisson name="dev:type:edit">
+		</shiro:hasPermission>
+		<shiro:hasPermission name="dev:type:edit">
 			<a href="#" class="easyui-linkbutton"
 				plain="true" iconCls="icon-edit" onclick="edit();">修改</a>
-		</shiro:haspermisson>
-		<shiro:haspermisson name="dev:type:delete">
+		</shiro:hasPermission>
+		<shiro:hasPermission name="dev:type:delete">
 			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove"
 				onclick="remove();">删除</a>
-		</shiro:haspermisson> 
+		</shiro:hasPermission> 
 		<font style="height: 30px; line-height: 30px;">&emsp;&emsp;搜索:</font> 
 		<input class="easyui-searchbox" id="searchValue" name="searchValue" value=''
 			data-options="prompt:'请输入类型名称',searcher:doSearch"

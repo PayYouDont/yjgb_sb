@@ -1,5 +1,6 @@
+var datagrid;
 $(document).ready(function(){
-		$('#mainTab').datagrid({   
+	datagrid = $('#mainTab').datagrid({   
 			onBeforeLoad : function(param){  
 				var page = param.page; //保存下值
 				var rows = param.rows;

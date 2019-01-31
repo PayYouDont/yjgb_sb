@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>指令列表</title>
+    <!--easyui控件css -->
+    <link id="easyuiTheme" rel="stylesheet" type="text/css"
+          href="/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+    <script src="/js/core/jquery.min.js"></script>
+    <!--easyui控件js -->
+    <script src="/easyui/jquery.easyui.min.js"></script>
+    <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/complex/instruction/cmdType_list.js"></script>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        a:FOCUS {
+            outline: none;
+        }
+
+        .ztree * {
+            padding: 0;
+            margin: 0;
+            font-size: 12px;
+            color: rgb(0, 136, 204);
+            font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif
+        }
+    </style>
+</head>
+<body class="easyui-layout">
+<div id="MyBtnDiv" style="height: 30px; padding: 1px 5px 3px 5px;">
+    <shiro:hasPermission name="cmd:type:add">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="add();">新增</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="cmd:type:edit">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="edit();">修改</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="cmd:type:delete">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="remove();">删除</a>
+    </shiro:hasPermission>
+    <font style="height: 30px; line-height: 30px;">&emsp;&emsp;搜索:</font>
+    <input class="easyui-searchbox" id="searchValue" name="searchValue" value=''
+           data-options="prompt:'请输入设备序列',searcher:doSearch" style="width: 180px; height: 23px;">
+</div>
+<div data-options="region:'center',border:true" title="指令列表"
+     iconCls="icon-extendlist">
+    <table id="mainTab" class="easyui-datagrid" data-options="fit:true"
+           toolbar="#MyBtnDiv" collapsible="true" border="false">
+    </table>
+</div>
+<div id="editModal" class="easyui-window" title="新增指令"
+     data-options="iconCls:'icon-extenduser',shadow:false,modal:true,closed:true"
+     style="width: 650px; height: 370px; padding: 5px;">
+    <iframe id="editIframe" scrolling="auto" frameborder="0" src="" style="width: 100%; height: 100%;"></iframe>
+</div>
+</body>
+</html>

@@ -1,10 +1,12 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.util.Calendar;
 import java.util.Date;
+
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.GsonIgnore;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * cmd_time
@@ -44,8 +46,10 @@ public class CMDTime extends CMD {
      */
     private Integer isecond;
     //以下不保存数据库
-    private Date time;
-    private Calendar calendar = Calendar.getInstance ();
+    @GsonIgnore
+    protected Date time;
+    @GsonIgnore
+    protected Calendar calendar = Calendar.getInstance ();
 
     public Date getTime(){
         if(wyear!=null){

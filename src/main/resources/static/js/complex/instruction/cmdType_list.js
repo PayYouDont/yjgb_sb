@@ -7,11 +7,8 @@ $(document).ready(function() {
 			delete param.page; // 删掉
 			param.pageIndex = page; // 这里就是重新命名了
 			param.pageSize = rows; // 这里就是重新命名了
-			if (param.sort == "devModel") {
-				param.sort = "deviceModel.id";
-			}
 		},
-		url : '../' + cmdType + '/list',
+		url : '../cmdTypeAction/list',
 		autoRowHeight : false,
 		nowrap : true,
 		pagination : true,
@@ -30,36 +27,73 @@ $(document).ready(function() {
 		}, {
 			title : 'id',
 			field : 'id',
-			width : 200,
+			width : 100,
 			hidden : true
 		}, {
-			title : '指令名称',
-			field : 'name',
-			width : 200,
+			title : '中文名称',
+			field : 'nameCh',
+			width : 150,
 			align : 'left',
 			halign : 'center'
 		}, ] ],
 		columns : [ [ {
-			title : '指令标识符',
-			field : 'tag',
-			width : 100,
+			title : '英文名称',
+			field : 'nameEn',
+			width : 150,
 			align : 'center'
 		}, {
-			title : '指令长度',
-			field : 'length',
+			title : '输入框类型',
+			field : 'boxType',
+			width : 100,
+			align : 'center',
+			formatter:function(val){
+				var text = '';
+				if(val==0){
+					text = '文本框';
+				}else if(val==1){
+					text = '数组框';
+				}else if(val==2){
+					text = '日期框';
+				}else if(val==3){
+					text = '资源框';
+				}
+				return text;
+			}
+		}, {
+			title : '资源路径',
+			field : 'sourceUrl',
+			width : 200,
+			align : 'center',
+			formatter:formatSourceUrl
+		}, {
+			title : '资源字段名',
+			field : 'sourceFields',
 			width : 200,
 			align : 'center'
-		}, {
-			title : '内容配置',
-			field : 'cmd',
-			width : 600,
-			align : 'left',
-			halign : 'center'
 		}, ] ]
 	});
 });
 
-
+function formatSourceUrl(value,rowData,rowIndex){
+	var text = '';
+	if(value){
+		$.ajax({
+			url:'../menuAction/get',
+			type:'post',
+			dataType:'json',
+			data:{id:value},
+			async:false,
+			success:function(json){
+				if(json.success){
+					url = json.data.text;
+				}else{
+					url = json.data
+				}
+			}
+		});
+	}
+	return text;
+}
 
 //搜索
 function doSearch(value){
@@ -89,7 +123,7 @@ function refreshPage(){
 
 //增加 （打开模态框）
 function add(){
-	$('#editIframe').attr('src','../'+cmdType+'/toEdit');
+	$('#editIframe').attr('src','../cmdTypeAction/toEdit');
 	$('#editModal').window('setTitle','添加指令');
 	$('#editModal').window('open');
 }
@@ -104,7 +138,7 @@ function edit(){
 		return;
 	}
 	var v_id=checkedData[0].id;
-	$('#editIframe').attr('src','../'+cmdType+'/toEdit?id='+v_id);
+	$('#editIframe').attr('src','../cmdTypeAction/toEdit?id='+v_id);
 	$('#editModal').window('setTitle','修改指令');
 	$('#editModal').window('open');
 }
@@ -134,7 +168,7 @@ function deleteData(id){
 	    type: "post",
 	    data: {id:id},
 	    //contentType: "application/json",
-	    url: '../'+cmdType+'/delete',
+	    url: '../cmdTypeAction/delete',
 	    beforeSend: function () {
 	    	 $.messager.progress({
 	             title : '系统提示',
