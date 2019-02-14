@@ -22,7 +22,6 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.Devicemod
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicemodelparamMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicetypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction.CmdConfigMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction.CmdFreqMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidentlevelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidenttypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
@@ -220,11 +219,5 @@ public class DaoTest {
 	@Test
 	public void test19() {
 		System.out.println(ccdao.count(new HashMap<String,Object>()));
-	}
-	@Resource
-	private CmdFreqMapper CFdao;
-	@Test
-	public void test20() {
-		System.out.println(CFdao.selectByPrimaryKey(0));
 	}
 }

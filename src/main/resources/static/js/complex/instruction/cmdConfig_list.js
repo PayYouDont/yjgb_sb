@@ -19,7 +19,7 @@ $(document).ready(function() {
 		pageList : [ 10, 20, 30, 40, 100 ],
 		fitColumns : false,
 		checkOnSelect : true,
-		singleSelect : true,
+		singleSelect : false,
 		// onSelect:function(rowIndex,rowData){//选择表格行触发
 		// getDetail(rowIndex,rowData);
 		// },
@@ -116,26 +116,29 @@ function edit(){
 //删除
 function remove(){
 	var checkedData =$('#mainTab').datagrid("getChecked");
-	if(checkedData.length!=1|| typeof(checkedData)=="undefined"){
+	if(checkedData.length<1|| typeof(checkedData)=="undefined"){
 		$.messager.alert('选择提示','请选择一条记录！','info');
 		return;
 	}
-	var v_id=checkedData[0].id;
 	$.messager.confirm('删除提示', '删除后无法恢复,请谨慎操作！', function(r){
 		if (r){
-			deleteData(v_id);
+			var arr = new Array(checkedData.length);
+			for(i in checkedData){
+				arr[i] = checkedData[i].id;
+			}
+			deleteData(arr);
 		}
 	});
 }
 
 
 
-function deleteData(id){
+function deleteData(ids){
 	$.ajax({
+		url: '../cmdConfigAction/delete',
 	    type: "post",
-	    data: {id:id},
-	    //contentType: "application/json",
-	    url: '../cmdConfigAction/delete',
+	    traditional:true,//用于传递数组
+	    data: {ids:ids},
 	    beforeSend: function () {
 	    	 $.messager.progress({
 	             title : '系统提示',
@@ -151,11 +154,43 @@ function deleteData(id){
 				$.messager.alert('删除提示','删除失败！'+data,'error');
 			}
 	    },
-//	    complete: function () {//完成响应
-//	        $("#submit").removeAttr("disabled");
-//	    },
 	    error: function (data) {
 	    	$.messager.alert('系统提示','异常：'+data,'error')
+	    }
+	});
+}
+
+
+function send(){
+	var checkedData =$('#mainTab').datagrid("getChecked");
+	if(checkedData.length<1|| typeof(checkedData)=="undefined"){
+		$.messager.alert('选择提示','请至少选择一条记录！','info');
+		return;
+	}
+	var arr = new Array(checkedData.length);
+	for(i in checkedData){
+		arr[i] = checkedData[i].id;
+	}
+	sendCMD(arr)
+}
+function sendCMD(ids){
+	$.ajax({
+		type: "post",
+	    data: {ids:ids},
+	    url: "../cmdConfigAction/send",
+	    traditional:true,//用于传递数组
+	    dataType:"json",
+	    success: function (json) {
+			if(json.success){
+				$.messager.alert('发送提示','发送成功！','info',
+					function(){
+						refreshPage();
+				});
+			}
+			else {$.messager.alert('发送提示','发送失败！','error');}
+	    },
+	    error: function (json) {
+	    	$.messager.alert('系统提示','异常：'+json.data,'error')
 	    }
 	});
 }

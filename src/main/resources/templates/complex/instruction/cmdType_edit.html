@@ -50,17 +50,19 @@
 				</tr>
 				<tr id ="resource_tr" style="display: none;">
 					<td style="text-align: center;">资源路径</td>
-					<td><select class="easyui-combotree easyui-validatebox"
-						panelHeight="150" style="width: 173px;"id="sourceUrl"
-						name="sourceUrl" th:value='${cmdType.sourceUrl}'
-						url="../menuAction/list" data-options="required:true">
+					<td>
+						<select class="easyui-combotree easyui-validatebox"
+							panelHeight="150" style="width: 173px;"id="sourceUrl"
+							name="sourceUrl" th:value='${cmdType.sourceUrl}'
+							url="../menuAction/list" data-options="required:true">
 						</select>
 					</td>
 					<td style="text-align: center;display:none" class="resource-field">资源字段名</td>
-					<td style="display:none" class="resource-field"><select class="easyui-combobox easyui-validatebox"
-						panelHeight="150" style="width: 173px;display:none"id="sourceFields"
-						name="sourceFields" th:value='${cmdType.sourceFields}'
-						data-options="required:true">
+					<td style="display:none" class="resource-field">
+						<select class="easyui-combobox easyui-validatebox"
+							panelHeight="150" style="width: 173px;display:none"id="sourceFields"
+							name="sourceFields" th:value='${cmdType.sourceFields}'
+							data-options="required:true">
 						</select>
 					</td>
 				</tr>

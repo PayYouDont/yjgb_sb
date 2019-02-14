@@ -2,7 +2,10 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -11,9 +14,24 @@ import com.google.gson.GsonBuilder;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.GsonIgnore;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.config.SensorTypeAdapter;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.EsayuiData;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.EsayuiData.Rows;
 
 public class JsonUtil {
 
+	public static String toCMDChar(String cmd) {
+		EsayuiData data = toBean(cmd, EsayuiData.class);
+		ArrayList<Rows> rows = data.getRows();
+		Map<String,String> map = new HashMap<>();
+		for (Rows row : rows) {
+			String key = row.getAttrName();
+			String value = row.getAttrValue();
+			map.put(key, value);
+		}
+		String CMDChar = toJson(map);
+		return CMDChar;
+	}
+	
 	public static String toJson(Object object) {
 		GsonBuilder builder = new GsonBuilder();
 		builder.setExclusionStrategies(new GsonIgnoreExclusionStrategy());

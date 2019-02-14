@@ -67,9 +67,9 @@ public class CmdConfigAction extends BaseAction{
 		return new ModelAndView("complex/instruction/cmdConfig_edit");
 	}
 	@PostMapping("delete")
-	public HashMap<String,Object> delete(Integer id){
+	public HashMap<String,Object> delete(Integer[] ids){
 		try {
-			service.delete(id);
+			service.delete(ids);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
@@ -80,6 +80,16 @@ public class CmdConfigAction extends BaseAction{
 	public HashMap<String,Object> save(CmdConfig cmdConfig){
 		try {
 			service.save(cmdConfig);
+			return JsonWrapper.successWrapper();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return JsonWrapper.failureWrapper(e.getMessage());
+		}
+	}
+	@PostMapping("send")
+	public HashMap<String,Object> send(Integer[] ids){
+		try {
+			service.send(ids);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);

@@ -8,10 +8,12 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="tag" jdbcType="INTEGER" property="tag" />
 		<result column="length" jdbcType="INTEGER" property="length" />
+		<result column="cmd_type_id" jdbcType="INTEGER"
+			property="cmdTypeId" />
 		<result column="cmd" jdbcType="VARCHAR" property="cmd" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, `name`, tag, length, cmd
+		id, `name`, tag, `length`, cmd_type_id, cmd
 	</sql>
 	<select id="selectByPrimaryKey"
 		parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -28,10 +30,12 @@
 	<insert id="insert"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig">
 		insert into cmd_config (id, `name`, tag,
-		length, cmd)
+		`length`, cmd_type_id, cmd
+		)
 		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
 		#{tag,jdbcType=INTEGER},
-		#{length,jdbcType=INTEGER}, #{cmd,jdbcType=VARCHAR})
+		#{length,jdbcType=INTEGER}, #{cmdTypeId,jdbcType=INTEGER}, #{cmd,jdbcType=VARCHAR}
+		)
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig">
@@ -47,7 +51,10 @@
 				tag,
 			</if>
 			<if test="length != null">
-				length,
+				`length`,
+			</if>
+			<if test="cmdTypeId != null">
+				cmd_type_id,
 			</if>
 			<if test="cmd != null">
 				cmd,
@@ -66,6 +73,9 @@
 			<if test="length != null">
 				#{length,jdbcType=INTEGER},
 			</if>
+			<if test="cmdTypeId != null">
+				#{cmdTypeId,jdbcType=INTEGER},
+			</if>
 			<if test="cmd != null">
 				#{cmd,jdbcType=VARCHAR},
 			</if>
@@ -82,7 +92,10 @@
 				tag = #{tag,jdbcType=INTEGER},
 			</if>
 			<if test="length != null">
-				length = #{length,jdbcType=INTEGER},
+				`length` = #{length,jdbcType=INTEGER},
+			</if>
+			<if test="cmdTypeId != null">
+				cmd_type_id = #{cmdTypeId,jdbcType=INTEGER},
 			</if>
 			<if test="cmd != null">
 				cmd = #{cmd,jdbcType=VARCHAR},
@@ -95,7 +108,8 @@
 		update cmd_config
 		set `name` = #{name,jdbcType=VARCHAR},
 		tag = #{tag,jdbcType=INTEGER},
-		length = #{length,jdbcType=INTEGER},
+		`length` = #{length,jdbcType=INTEGER},
+		cmd_type_id = #{cmdTypeId,jdbcType=INTEGER},
 		cmd = #{cmd,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -116,13 +130,16 @@
 			<if test="length != null">
 				and #{length,jdbcType=INTEGER}
 			</if>
+			<if test="cmdTypeId != null">
+				and #{cmdTypeId,jdbcType=INTEGER}
+			</if>
 			<if test="cmd != null">
 				and #{cmd,jdbcType=VARCHAR}
 			</if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
-				order by ${order} ${sort}
+				order by ${sort} ${order}
 			</when>
 			<otherwise>
 				order by id desc
@@ -133,7 +150,7 @@
 		</if>
 	</select>
 	<select id="count" resultType="int">
-		select count(*) from cmd_config
+		select count(id) from cmd_config
 		<where>
 			<if test="id != null">
 				and #{id,jdbcType=INTEGER}
@@ -146,6 +163,9 @@
 			</if>
 			<if test="length != null">
 				and #{length,jdbcType=INTEGER}
+			</if>
+			<if test="cmdTypeId != null">
+				and #{cmdTypeId,jdbcType=INTEGER}
 			</if>
 			<if test="cmd != null">
 				and #{cmd,jdbcType=VARCHAR}

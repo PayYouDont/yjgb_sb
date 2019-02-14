@@ -27,6 +27,19 @@ $.extend($.fn.datagrid.methods, {
     }
 });
 $(document).ready(function(){
+	$("#cmdTypeId").combobox({
+		onLoadSuccess : function() {
+			var value = $("#cmdTypeId").combobox("getValue");
+			if(value.trim()!=''){
+				setResourceData(value);
+			}
+		},
+		onChange:function(value){
+			if(value.trim()!=''){
+				setResourceData(value);
+			}
+		}
+	});
 	initTab();
 });
 function initTab() {
@@ -73,17 +86,8 @@ function initTab() {
             		required:true
             	}
             }},
-	    	{title:'属性值',field:'attrValue',width:150,align:'center',editor:{
-	    		type:'textbox',
-            	options:{
-            		required:true
-            	}
-	    	}},
-	        {title:'说明',field:'explain',width:250,align:'center',editor:{type:'validatebox',
-            	options:{
-            		required:false
-            	}
-	    	}}
+	    	{title:'属性值',field:'attrValue',width:150,align:'center'},
+	        {title:'说明',field:'explain',width:250,align:'center'}
 	    ]],
 	    onClickCell:onClickCell,
 	    onDblClickCell:onDblClickCell,
@@ -126,7 +130,7 @@ function onDblClickCell(index){
 	}
 }
 function append(){
-	var text = $("#type").combobox("getText");
+	var text = $("#cmdTypeId").combobox("getText");
 	if(text.trim()==''){
 		$.messager.alert('警告', '请选择属性类!','warning');
 		return;
@@ -167,10 +171,9 @@ function getChanges(){
 }
 
 function onBeforeEdit(rowIndex, rowData){
-	var type = $("#type").combobox("getValue");
-	$("#cmdTab").datagrid('removeEditor','attrValue');//这里的cardNo是需要移除editor的列的field值
-	if(type==0){//文本
-		$("#cmdTab").datagrid('addEditor',[ //添加cardNo列editor
+	var type = rowData.attrType;
+	if(type=='文本'){//文本
+		$("#cmdTab").datagrid('addEditor',[
             {field:'attrValue',editor:{
                 type:'textbox',
                 options:{
@@ -178,16 +181,17 @@ function onBeforeEdit(rowIndex, rowData){
                 }
             }
         }]);
-	}else if(type==1){//数字
+	}else if(type=='数字'){//数字
 		$("#cmdTab").datagrid('addEditor',[ //添加cardNo列editor
             {field:'attrValue',editor:{
                 type:'numberbox',
                 options:{
                     required:true,
+                    type:'number'
                 }
             }
         }]);
-	}else if(type==2){//日期
+	}else if(type=='日期'){//日期
 		$("#cmdTab").datagrid('addEditor',[ //添加cardNo列editor
             {field:'attrValue',editor:{
                 type:'datetimebox',
@@ -196,16 +200,52 @@ function onBeforeEdit(rowIndex, rowData){
                 }
             }
         }]);
-	}else if(type==3){//资源
+	}else{//资源
 		$("#cmdTab").datagrid('addEditor',[ //添加cardNo列editor
             {field:'attrValue',editor:{
                 type:'combobox',
                 options:{
                     required:true,
+                    data:resourceData.data,
+                    valueField : resourceData.field,
+        			textField : resourceData.field,
                 }
             }
         }]);
 	}
+}
+var resourceData;
+function setResourceData(resourceId){
+	resourceData = {};
+	$.ajax({
+		url:'../cmdTypeAction/get',
+		type:'post',
+		dataType:'json',
+		data:{id:resourceId},
+		async:false,
+		success:function(json){
+			if(json.success){
+				var url = json.data.sourceUrl;
+				resourceData.field = json.data.sourceFields;
+				if(url!=null){
+					$("#resourceFrame").attr('src', url);
+					var iframe = document.getElementById("resourceFrame");
+					var datagrid;
+					var content = iframe.contentWindow;
+					if (iframe.attachEvent) {
+						iframe.attachEvent("onload", function() {//ie 
+							datagrid = content.$("#mainTab");
+						});
+					} else {
+						iframe.onload = function() {
+							datagrid = content.$("#mainTab");
+							resourceData.data = datagrid.datagrid('getData').rows;
+						};
+					}
+				}
+			}
+		}
+	});
 }
 
 //关闭父级页面模态框

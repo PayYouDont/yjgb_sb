@@ -13,16 +13,28 @@ $(function() {
 			var val = $("#boxType option:selected").val();
 			if (val == 3) {
 				$("#resource_tr").show();
+				$('#sourceUrl').combotree({ required: true });
+				$("#sourceFields").combobox({ required: true })
 			} else {
 				$("#resource_tr").hide();
+				$('#sourceUrl').combotree({ required: false });
+				$('#sourceUrl').combotree('clear')
+				$("#sourceFields").combobox({ required: false })
+				$('#sourceFields').combobox('clear')
 			}
 		},
 		onChange : function() {
 			var val = $("#boxType option:selected").val();
 			if (val == 3) {
 				$("#resource_tr").show();
+				$('#sourceUrl').combotree({ required: true });
+				$("#sourceFields").combobox({ required: true })
 			} else {
 				$("#resource_tr").hide();
+				$('#sourceUrl').combotree({ required: false });
+				$('#sourceUrl').combotree('clear')
+				$("#sourceFields").combobox({ required: false })
+				$('#sourceFields').combobox('clear')
 			}
 		}
 	})
@@ -103,11 +115,16 @@ function mysave() {
 	$('#dataForm').form('submit', {
 		url : '../cmdTypeAction/save',
 		onSubmit : function() {
-			if($('#resource_tr').is(':hidden')){
-				$('#sourceUrl,#sourceFields').combobox({ required: false });
+			/*if($('#resource_tr').is(':hidden')){
+				//$('#sourceUrl,#sourceFields').combo({ required: false });
+				$('#sourceUrl').combotree({ required: false });
+				$('#sourceFields').combotree({ required: false });
+				
 			}else{
-				$('#sourceUrl,#sourceFields').combobox({ required: true });
-			}
+				//$('#sourceUrl,#sourceFields').combo({ required: true });
+				$('#sourceUrl').combotree({ required: true });
+				$('#sourceFields').combotree({ required: false });
+			}*/
 			var isValid = $(this).form('enableValidation').form('validate');
 			if (!isValid) {
 				$.messager.progress('close');

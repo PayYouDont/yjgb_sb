@@ -60,7 +60,7 @@ $(document).ready(function() {
 				return text;
 			}
 		}, {
-			title : '资源路径',
+			title : '资源名称',
 			field : 'sourceUrl',
 			width : 200,
 			align : 'center',
@@ -74,25 +74,27 @@ $(document).ready(function() {
 	});
 });
 
-function formatSourceUrl(value,rowData,rowIndex){
-	var text = '';
-	if(value){
-		$.ajax({
-			url:'../menuAction/get',
-			type:'post',
-			dataType:'json',
-			data:{id:value},
-			async:false,
-			success:function(json){
-				if(json.success){
-					url = json.data.text;
-				}else{
-					url = json.data
+function formatSourceUrl(value){
+	if(value!=''){
+		var url = '';
+		if(value){
+			$.ajax({
+				url:'../menuAction/get',
+				type:'post',
+				dataType:'json',
+				data:{id:value},
+				async:false,
+				success:function(json){
+					if(json.success){
+						url = json.data.text;
+					}else{
+						url = json.data
+					}
 				}
-			}
-		});
+			});
+		}
+		return url;
 	}
-	return text;
 }
 
 //搜索

@@ -22,8 +22,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdType;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Menu;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdTypeService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.MenuService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 /** 
@@ -39,7 +42,6 @@ public class CmdTypeAction extends BaseAction{
 	
 	@Resource
 	private CmdTypeService service;
-	
 	@GetMapping("toList")
 	public ModelAndView toList(Model model) {
 		return new ModelAndView("/complex/instruction/cmdType_list");
@@ -74,6 +76,32 @@ public class CmdTypeAction extends BaseAction{
 		try {
 			service.save(cmdType);
 			return  JsonWrapper.successWrapper();
+		} catch (Exception e) {
+			return JsonWrapper.failureWrapper(e.getMessage());
+		}
+	}
+	@PostMapping("get")
+	public HashMap<String,Object> get(Integer id) {
+		try {
+			CmdType cmdType = service.selectById(id);
+			String sourceId  = cmdType.getSourceUrl();
+			if(sourceId!=null) {
+				Integer menuId = Integer.parseInt(sourceId);
+				Menu menu = ApplicationContextRegister.getBean(MenuService.class).selectById(menuId);
+				if(menu!=null) {
+					cmdType.setSourceUrl(menu.getUrl());
+				}
+			}
+			return JsonWrapper.successWrapper(cmdType);
+		} catch (Exception e) {
+			return JsonWrapper.failureWrapper(e.getMessage());
+		}
+	}
+	@PostMapping("delete")
+	public HashMap<String,Object> delete(Integer id) {
+		try {
+			service.delete(id);
+			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}

@@ -27,9 +27,12 @@ public class CmdConfig implements Serializable {
      */
     private Integer length;
 
+    private Integer cmdTypeId;
+
     /**
      * 指令内容
      */
     private String cmd;
+
     private static final long serialVersionUID = 1L;
 }
