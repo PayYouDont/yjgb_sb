@@ -134,6 +134,10 @@
 			<if test="sourceFields != null">
 				and source_fields = #{sourceFields,jdbcType=VARCHAR}
 			</if>
+			<if test="nameLike != null">
+				and name_ch like "%" #{nameLike,jdbcType=VARCHAR} "%"
+				or name_en like "%" #{nameLike,jdbcType=VARCHAR} "%"
+			</if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -164,6 +168,10 @@
 			</if>
 			<if test="sourceFields != null">
 				and source_fields = #{sourceFields,jdbcType=VARCHAR}
+			</if>
+			<if test="nameLike != null">
+				and name_ch like "%" #{nameLike,jdbcType=VARCHAR} "%"
+				or name_en like "%" #{nameLike,jdbcType=VARCHAR} "%"
 			</if>
 		</where>
 	</select>

@@ -3,6 +3,8 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
+
 import lombok.Data;
 import lombok.Setter;
 
@@ -119,6 +121,7 @@ public class Deviceinfo implements Serializable {
 	private String onwarning; //是否报警 （第4位）
     
     private Devicemodel deviceModel;//设备型号
+    private String resouceCode;
     
     private static final long serialVersionUID = 1L;
     
@@ -130,36 +133,40 @@ public class Deviceinfo implements Serializable {
     }*/
     public String getOnline() {
     	if(status!=null&&!"".equals(status)) {
-        	return getStatus().substring(6,7);
+        	return status.substring(6,7);
     	}
     	return status;
     }
     public String getOnwork() {
     	if(status!=null&&!"".equals(status)) {
-        	return getStatus().substring(5,6);
+        	return status.substring(5,6);
     	}
     	return status;
     }
     public String getOnwarning() {
     	if(status!=null&&!"".equals(status)) {
-        	return getStatus().substring(4,5);
+        	return status.substring(4,5);
     	}
     	return status;
     }
     //获取纬度
     public String getLat() {
-    	String coordinate = getCoordinate();
     	if(coordinate!=null&&!"".equals(coordinate)&&coordinate.indexOf(",")!=-1) {
-        	this.lat = getCoordinate().split(",")[1];
+        	this.lat = coordinate.split(",")[1];
     	}
     	return this.lat;
     }
     //获取精度
     public String getLng() {
-    	String coordinate = getCoordinate();
     	if(coordinate!=null&&!"".equals(coordinate)&&coordinate.indexOf(",")!=-1) {
-        	this.lng = getCoordinate().split(",")[0];
+        	this.lng = coordinate.split(",")[0];
     	}
     	return this.lng;
+    }
+    public String getResouceCode() {
+    	if(resouceCode==null) {
+    		resouceCode = EBDcodeUtil.getEBRID(devaddresscode);
+    	}
+    	return resouceCode;
     }
 }

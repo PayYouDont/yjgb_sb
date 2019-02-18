@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,8 +48,11 @@ public class CmdTypeAction extends BaseAction{
 		return new ModelAndView("/complex/instruction/cmdType_list");
 	}
 	@PostMapping("list")
-	public HashMap<String,Object> list(Page page) {
+	public HashMap<String,Object> list(Page page,String search) {
 		Map<String,Object> map = page.getMap();
+		if(search!=null) {
+			map.put("nameLike",search);
+		}
 		List<CmdType> list = service.list(map);
 		int count = service.count(map);
 		return JsonWrapper.wrapperPage(list, count);
@@ -77,6 +81,7 @@ public class CmdTypeAction extends BaseAction{
 			service.save(cmdType);
 			return  JsonWrapper.successWrapper();
 		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
@@ -85,7 +90,7 @@ public class CmdTypeAction extends BaseAction{
 		try {
 			CmdType cmdType = service.selectById(id);
 			String sourceId  = cmdType.getSourceUrl();
-			if(sourceId!=null) {
+			if(!StringUtils.isEmpty(sourceId)) {
 				Integer menuId = Integer.parseInt(sourceId);
 				Menu menu = ApplicationContextRegister.getBean(MenuService.class).selectById(menuId);
 				if(menu!=null) {
@@ -94,6 +99,7 @@ public class CmdTypeAction extends BaseAction{
 			}
 			return JsonWrapper.successWrapper(cmdType);
 		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
@@ -103,6 +109,7 @@ public class CmdTypeAction extends BaseAction{
 			service.delete(id);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}

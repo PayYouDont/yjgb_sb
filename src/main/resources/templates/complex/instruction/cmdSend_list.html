@@ -7,7 +7,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>指令列表</title>
+    <title>指令发送列表</title>
     <!--easyui控件css -->
     <link id="easyuiTheme" rel="stylesheet" type="text/css"
           href="/easyui/themes/default/easyui.css">
@@ -16,7 +16,7 @@
     <!--easyui控件js -->
     <script src="/easyui/jquery.easyui.min.js"></script>
     <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script src="/js/complex/instruction/cmdType_list.js"></script>
+    <script src="/js/complex/instruction/cmdSend_list.js"></script>
     <style type="text/css">
         html, body {
             height: 100%;
@@ -40,18 +40,21 @@
 </head>
 <body class="easyui-layout">
 <div id="MyBtnDiv" style="height: 30px; padding: 1px 5px 3px 5px;">
-    <shiro:hasPermission name="cmd:type:add">
+    <shiro:hasPermission name="cmd:send:add">
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="add();">新增</a>
     </shiro:hasPermission>
-    <shiro:hasPermission name="cmd:type:edit">
+    <shiro:hasPermission name="cmd:send:edit">
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="edit();">修改</a>
     </shiro:hasPermission>
-    <shiro:hasPermission name="cmd:type:delete">
+    <shiro:hasPermission name="cmd:send:edit">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-ok" onclick="send();">发送</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="cmd:send:delete">
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="remove();">删除</a>
     </shiro:hasPermission>
     <font style="height: 30px; line-height: 30px;">&emsp;&emsp;搜索:</font>
     <input class="easyui-searchbox" id="searchValue" name="searchValue" value=''
-           data-options="prompt:'请输入类型名称',searcher:doSearch" style="width: 180px; height: 23px;">
+           data-options="prompt:'请输入指令类型',searcher:doSearch" style="width: 180px; height: 23px;">
 </div>
 <div data-options="region:'center',border:true" title="指令列表"
      iconCls="icon-extendlist">

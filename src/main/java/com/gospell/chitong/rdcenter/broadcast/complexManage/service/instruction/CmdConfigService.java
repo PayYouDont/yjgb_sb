@@ -18,6 +18,4 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.C
  * 
  */
 public interface CmdConfigService extends BaseService<CmdConfig, Integer> {
-	public int send(Integer[] ids) throws Exception;
-	public int delete(Integer[] ids) throws Exception;
 }

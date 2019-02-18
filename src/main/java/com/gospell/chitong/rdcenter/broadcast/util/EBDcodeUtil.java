@@ -1,17 +1,12 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
 
 public class EBDcodeUtil {
 	
@@ -59,17 +54,41 @@ public class EBDcodeUtil {
 	}
 	public static String getEBRID(Deviceinfo deviceInfo,String lastCode) {
 		String code = deviceInfo.getDevaddresscode();
-		AdministrativeMapper dao = ApplicationContextRegister.getBean(AdministrativeMapper.class);
-		Map<String, Object> map = new HashMap<>();
-		map.put("code", code);
-		List<Administrative> list = dao.list(map);
-		Integer level = null;
-		if(list.size()>0) {
-			level = list.get(0).getCodeLevel();
-		}
+		int level = getAreaCodeLevel(code);
 		return level+code+lastCode;
 	}
-	
+	public static String getEBRID(String areaColde) {
+		String lastCode = ApplicationContextRegister.getBean(ServerProperties.class).getSouceLastCode();
+		int level = getAreaCodeLevel(areaColde);
+		return level+areaColde+lastCode;
+	}
+	public static int getAreaCodeLevel(String areaCode) {
+		if(areaCode.length()==12) {
+			String first6Str = areaCode.substring(0,6);//前6位
+			String last6Str = areaCode.substring(6, 12);//后6位
+			if(last6Str.equals("000000")) {
+				String str5_6 = first6Str.substring(4,6);//5-6位
+				if(!str5_6.equals("00")) {
+					return 3;
+				}
+				String str2_4 = first6Str.substring(2,4);//3-4位
+				if(!str2_4.equals("00")) {
+					return 2;
+				}
+				return 1;
+			}else {
+				String last3Str = last6Str.substring(3,6);//最后3位数
+				if(last3Str.equals("000")) {
+					return 4;
+				}
+				return 5;
+			}
+		}
+		return -1;
+	}
+	public static void main(String[] args) {
+		System.out.println(getAreaCodeLevel("445103101000"));
+	}
 	public static String getEBRPSStateDesc() {
 		if("".equals(EBRPSStateDesc)) {
 			EBRPSStateDesc = "开机";

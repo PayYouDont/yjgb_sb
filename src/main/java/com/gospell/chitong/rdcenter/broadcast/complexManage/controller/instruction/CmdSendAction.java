@@ -1,12 +1,13 @@
 /**   
-* @Title: CmdConfigAction.java 
+* @Title: CmdSendAction.java 
 * @Package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.instruction 
 * @Description: TODO(     ) 
 * @author peiyongdong  
-* @date 2019年1月17日 下午5:42:51 
+* @date 2019年2月15日 上午11:38:58 
 */
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.instruction;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,58 +24,69 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdConfigService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdTypeService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdSendService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 
 /** 
-* @ClassName: CmdConfigAction 
+* @ClassName: CmdSendAction 
 * @Description: TODO(     ) 
 * @author peiyongdong
-* @date 2019年1月17日 下午5:42:51 
+* @date 2019年2月15日 上午11:38:58 
 *  
 */
 @RestController
-@RequestMapping("cmdConfigAction")
-public class CmdConfigAction extends BaseAction{
+@RequestMapping("/cmdSendAction")
+public class CmdSendAction extends BaseAction{
+	
 	@Resource
-	private CmdConfigService service;
+	private CmdSendService service;
 	@Resource
-	private CmdTypeService typeService;
+	private CmdConfigService cmdConfigService;
 	
 	@GetMapping("toList")
 	public ModelAndView toList() {
-		return new ModelAndView("complex/instruction/cmdConfig_list");
+		return new ModelAndView("complex/instruction/cmdSend_list");
 	}
 	@PostMapping("list")
-	public HashMap<String,Object> list(Page page,String search){
-		Map<String,Object> map = page.getMap ();
+	public HashMap<String,Object> list(Page page,String search) {
+		Map<String,Object> map = page.getMap();
 		if(search!=null) {
 			map.put("nameLike", search);
+			List<CmdConfig> configs = new ArrayList<>();
+			configs = cmdConfigService.list(map);
+			if(configs.size()>0) {
+				List<Integer> typeList = new ArrayList<>();
+				for (CmdConfig config : configs) {
+					typeList.add(config.getId());
+				}
+				map.put("typeList", typeList);
+			}
 		}
 		map.put("sort", "id");
-		map.put("order", "ASC");
-		List<CmdConfig> list = service.list(map);
+		map.put("order", "DESC");
+		List<CmdSend> list = service.list(map);
 		int count = service.count(map);
 		return JsonWrapper.wrapperPage(list, count);
 	}
 	@GetMapping("toEdit")
 	public ModelAndView toEdit(Model model,Integer id) {
-		CmdConfig cmd = null;
+		CmdSend cmdSend = null;
 		if(id!=null) {
-			cmd = service.selectById(id);
+			cmdSend = service.selectById(id);
 		}
-		if(cmd == null) {
-			cmd = new CmdConfig();
+		if(cmdSend == null) {
+			cmdSend = new CmdSend();
 		}
-		model.addAttribute("cmd",cmd);
-		model.addAttribute("typeList",typeService.list(new HashMap<String,Object>()));
-		return new ModelAndView("complex/instruction/cmdConfig_edit");
+		model.addAttribute("cmdSend",cmdSend);
+		model.addAttribute("cmdConfigList",cmdConfigService.list(new HashMap<>()));
+		return new ModelAndView("complex/instruction/cmdSend_edit");
 	}
 	@PostMapping("delete")
-	public HashMap<String,Object> delete(Integer id){
+	public HashMap<String,Object> delete(Integer[] ids){
 		try {
-			service.delete(id);
+			service.delete(ids);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
@@ -82,17 +94,23 @@ public class CmdConfigAction extends BaseAction{
 		}
 	}
 	@PostMapping("save")
-	public HashMap<String,Object> save(CmdConfig cmdConfig){
+	public HashMap<String,Object> save(CmdSend cmdSend){
 		try {
-			service.save(cmdConfig);
+			service.save(cmdSend);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
 	}
-	@PostMapping("get")
-	public HashMap<String, Object> get(Integer id){
-		return JsonWrapper.successWrapper(service.selectById(id));
+	@PostMapping("send")
+	public HashMap<String,Object> send(Integer[] ids){
+		try {
+			service.send(ids);
+			return JsonWrapper.successWrapper();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return JsonWrapper.failureWrapper(e.getMessage());
+		}
 	}
 }

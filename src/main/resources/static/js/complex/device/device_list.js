@@ -39,6 +39,7 @@ $(document).ready(function(){
 		        
 		        {field:'devaddress',title:'设备地址',width:150,align:'center',sortable:"true"}, 
 		        {field:'devaddresscode',title:'地址编码',width:150,align:'center',sortable:"true"}, 
+		        {field:'resouceCode',title:'资源编码',width:150,align:'center',sortable:"true"}, 
 		        {field:'lng',title:'经度',width:150,align:'center'}, 
 		        {field:'lat',title:'纬度',width:150,align:'center'}, 
 

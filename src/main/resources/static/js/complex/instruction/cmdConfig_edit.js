@@ -1,58 +1,9 @@
-$.extend($.fn.datagrid.methods, {
-    addEditor : function(jq, param) {
-        return jq.each(function(){
-            if (param instanceof Array) {
-                $.each(param, function(index, item) {
-                    var e = $(jq).datagrid('getColumnOption', item.field);
-                    e.editor = item.editor;
-                });
-            } else {
-                var e = $(jq).datagrid('getColumnOption', param.field);
-                e.editor = param.editor;
-            }
-        });
-    },
-    removeEditor : function(jq, param) {
-        return jq.each(function(){
-            if (param instanceof Array) {
-                $.each(param, function(index, item) {
-                    var e = $(jq).datagrid('getColumnOption', item);
-                    e.editor = {};
-                });
-            } else {
-                var e = $(jq).datagrid('getColumnOption', param);
-                e.editor = {};
-            }
-        });
-    }
-});
+
 $(document).ready(function(){
-	$("#cmdTypeId").combobox({
-		onLoadSuccess : function() {
-			var value = $("#cmdTypeId").combobox("getValue");
-			if(value.trim()!=''){
-				setResourceData(value);
-			}
-		},
-		onChange:function(value){
-			if(value.trim()!=''){
-				setResourceData(value);
-			}
-		}
-	});
 	initTab();
 });
 function initTab() {
-	var datagrid = $('#cmdTab').datagrid({   
-		onBeforeLoad : function(param){  
-			var page = param.page; //保存下值
-			var rows = param.rows;
-			delete param.rows; //删掉
-			delete param.page; //删掉
-			param.pageIndex = page; //这里就是重新命名了
-			param.pageSize = rows; //这里就是重新命名了
-		},
-		//url:'../cmdConfigAction/list',
+	datagrid = $('#cmdTab').datagrid({   
 	    autoRowHeight:false,
 	    fit:true,
 	    nowrap:true,
@@ -79,175 +30,47 @@ function initTab() {
             {title:"序号",field:'ck',width:5,checkbox:true}
         ]],
 	    columns:[[
-	    	{title:'属性类型',field:'attrType',width:150,align:'center'},
+	    	{title:'属性类型',field:'attrType',width:150,align:'center',
+	    		formatter:function(value,row,index){
+	    			if(value&&value.trim()!=''){
+	    				var type = getCmdType(value);
+		    			return type.nameCh
+	    			}
+	    	}},
 	    	{title:'属性名',field:'attrName',width:150,align:'center',editor:{
             	type:'validatebox',
             	options:{
             		required:true
             	}
             }},
-	    	{title:'属性值',field:'attrValue',width:150,align:'center'},
-	        {title:'说明',field:'explain',width:250,align:'center'}
+	    	//{title:'属性值',field:'attrValue',width:150,align:'center'},
+	        {title:'说明',field:'explain',width:250,align:'center',editor:{
+            	type:'textbox'
+            }}
 	    ]],
 	    onClickCell:onClickCell,
-	    onDblClickCell:onDblClickCell,
-	    onBeforeEdit:onBeforeEdit
+	    onDblClickCell:onDblClickCell
 	});
 	var id = $("#id").val();
 	if(id){
 		$('#cmdTab').datagrid('loadData',cmd);
 	}
 }
-var editIndex = undefined;
-function endEditing(){
-	if (editIndex == undefined){
-		return true
-	}
-	if ($('#cmdTab').datagrid('validateRow', editIndex)){
-		$('#cmdTab').datagrid('endEdit', editIndex);
-		editIndex = undefined;
-		return true;
-	}
-	return false;
-}
-function onClickCell(rowIndex, field, value){
-	if (editIndex != rowIndex){
-		if (endEditing()){
-			$('#cmdTab').datagrid('endEdit', editIndex);
-			editIndex = undefined;
-		} 
-		$('#cmdTab').datagrid('selectRow', rowIndex).datagrid('checkRow', rowIndex);
-	}
-}
-function onDblClickCell(index){
-	if (editIndex != index){
-		if (endEditing()){
-			$('#cmdTab').datagrid('selectRow', index).datagrid('beginEdit', index);
-			editIndex = index;
-		} else {
-			$('#cmdTab').datagrid('selectRow', editIndex);
-		}
-	}
-}
+
 function append(){
-	var text = $("#cmdTypeId").combobox("getText");
-	if(text.trim()==''){
+	var value = $("#cmdTypeId").combobox("getValue");
+	if(value.trim()==''){
 		$.messager.alert('警告', '请选择属性类!','warning');
 		return;
 	}
 	if (endEditing()){
 		$('#cmdTab').datagrid('appendRow',{
-			attrType:text
+			attrType:value
 		});
 		editIndex = $('#cmdTab').datagrid('getRows').length-1;
 		$('#cmdTab').datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
 	}
 }
-function remove(){
-	if (editIndex == undefined){
-		var selected = $('#cmdTab').datagrid('getSelected');
-		if(selected){
-			var index = $('#cmdTab').datagrid('getRowIndex',selected);
-			$('#cmdTab').datagrid('deleteRow',index);
-		}
-	}else{
-		$('#cmdTab').datagrid('cancelEdit', editIndex)
-		.datagrid('deleteRow', editIndex);
-		editIndex = undefined;	
-	}
-}
-function accept(){
-	if (endEditing()){
-		$('#cmdTab').datagrid('acceptChanges');
-	}
-}
-function reject(){
-	$('#cmdTab').datagrid('rejectChanges');
-	editIndex = undefined;
-}
-function getChanges(){
-	var rows = $('#cmdTab').datagrid('getChanges');
-	alert(rows.length+' rows are changed!');
-}
-
-function onBeforeEdit(rowIndex, rowData){
-	var type = rowData.attrType;
-	if(type=='文本'){//文本
-		$("#cmdTab").datagrid('addEditor',[
-            {field:'attrValue',editor:{
-                type:'textbox',
-                options:{
-                    required:true,
-                }
-            }
-        }]);
-	}else if(type=='数字'){//数字
-		$("#cmdTab").datagrid('addEditor',[ //添加cardNo列editor
-            {field:'attrValue',editor:{
-                type:'numberbox',
-                options:{
-                    required:true,
-                    type:'number'
-                }
-            }
-        }]);
-	}else if(type=='日期'){//日期
-		$("#cmdTab").datagrid('addEditor',[ //添加cardNo列editor
-            {field:'attrValue',editor:{
-                type:'datetimebox',
-                options:{
-                    required:true,
-                }
-            }
-        }]);
-	}else{//资源
-		$("#cmdTab").datagrid('addEditor',[ //添加cardNo列editor
-            {field:'attrValue',editor:{
-                type:'combobox',
-                options:{
-                    required:true,
-                    data:resourceData.data,
-                    valueField : resourceData.field,
-        			textField : resourceData.field,
-                }
-            }
-        }]);
-	}
-}
-var resourceData;
-function setResourceData(resourceId){
-	resourceData = {};
-	$.ajax({
-		url:'../cmdTypeAction/get',
-		type:'post',
-		dataType:'json',
-		data:{id:resourceId},
-		async:false,
-		success:function(json){
-			if(json.success){
-				var url = json.data.sourceUrl;
-				resourceData.field = json.data.sourceFields;
-				if(url!=null){
-					$("#resourceFrame").attr('src', url);
-					var iframe = document.getElementById("resourceFrame");
-					var datagrid;
-					var content = iframe.contentWindow;
-					if (iframe.attachEvent) {
-						iframe.attachEvent("onload", function() {//ie 
-							datagrid = content.$("#mainTab");
-						});
-					} else {
-						iframe.onload = function() {
-							datagrid = content.$("#mainTab");
-							resourceData.data = datagrid.datagrid('getData').rows;
-						};
-					}
-				}
-			}
-		}
-	});
-}
-
 //关闭父级页面模态框
 function closeParentModal(){
 	window.parent.closeMyModal();
@@ -259,20 +82,20 @@ function closeParentModal(){
  }
 //保存
 function mysave(){
-	 var tabData = $('#cmdTab').datagrid("getData");
-	 if(tabData.rows.length==0){
-		 $.messager.alert('警告', '请添加指令内容!','warning');
-		 return;
-	 }
-	 if(!endEditing()){
-		 $.messager.alert('警告', '请先保存指令内容!','warning');
-		 return;
-	 }
-	 $.messager.progress({
-         title : '系统提示',
-         text : '信息提交，请稍后。。。',
-         interval:300
-     });
+	var tabData = $('#cmdTab').datagrid("getData");
+	if (tabData.rows.length == 0) {
+		$.messager.alert('警告', '请添加指令内容!', 'warning');
+		return;
+	}
+	if (!endEditing()) {
+		$.messager.alert('警告', '请先保存指令内容!', 'warning');
+		return;
+	}
+	$.messager.progress({
+		title : '系统提示',
+		text : '信息提交，请稍后。。。',
+		interval : 300
+	});
 	$('#dataForm').form('submit',{
 		url:'../cmdConfigAction/save',
 		onSubmit:function(param){
@@ -280,7 +103,6 @@ function mysave(){
 			if (!isValid){
 				$.messager.progress('close');	
 			}
-			var data = $('#cmdTab').datagrid("getData");
 			param.cmd = JSON.stringify(tabData);
 			return isValid;	
 		},

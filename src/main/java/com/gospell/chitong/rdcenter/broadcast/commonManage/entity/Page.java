@@ -9,7 +9,7 @@ public class Page {
 
 	// 用户输入的分页条件
 	private int pageIndex = 1; // 当前页
-	private int pageSize=10; // 每页最大行数
+	private int pageSize = 10; // 每页最大行数
 	public int getBegin() {
 		// 在mapper.xml使用begin属性时，对其进行计算
 		return (pageIndex - 1) * pageSize;

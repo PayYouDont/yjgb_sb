@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction.CmdSendMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="cmd_config_id" jdbcType="INTEGER"
+			property="cmdConfigId" />
+		<association property="cmdConfig" column="cmd_config_id"
+			javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig"
+			select="com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction.CmdConfigMapper.selectByPrimaryKey" />
+	</resultMap>
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+		type="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend">
+		<result column="cmd_char" jdbcType="LONGVARCHAR"
+			property="cmdChar" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, cmd_config_id
+	</sql>
+	<sql id="Blob_Column_List">
+		cmd_char
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from cmd_send
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from cmd_send
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend">
+		insert into cmd_send (id, cmd_config_id, cmd_char
+		)
+		values (#{id,jdbcType=INTEGER}, #{cmdConfigId,jdbcType=INTEGER},
+		#{cmdChar,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend">
+		insert into cmd_send
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="cmdConfigId != null">
+				cmd_config_id,
+			</if>
+			<if test="cmdChar != null">
+				cmd_char,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="cmdConfigId != null">
+				#{cmdConfigId,jdbcType=INTEGER},
+			</if>
+			<if test="cmdChar != null">
+				#{cmdChar,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend">
+		update cmd_send
+		<set>
+			<if test="cmdConfigId != null">
+				cmd_config_id = #{cmdConfigId,jdbcType=INTEGER},
+			</if>
+			<if test="cmdChar != null">
+				cmd_char = #{cmdChar,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend">
+		update cmd_send
+		set cmd_config_id =
+		#{cmdConfigId,jdbcType=INTEGER},
+		cmd_char =
+		#{cmdChar,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend">
+		update cmd_send
+		set cmd_config_id =
+		#{cmdConfigId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="list" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from cmd_send
+		<where>
+			<if test="id != null">
+				and id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="cmdConfigId != null">
+				and cmdConfigId = #{cmdConfigId,jdbcType=INTEGER}
+			</if>
+			<if test="cmdChar != null">
+				and cmdChar = #{cmdChar,jdbcType=LONGVARCHAR}
+			</if>
+			<if test="typeList != null">
+				and cmd_config_id in
+				<foreach collection="typeList" item="item" index="index"
+					open="(" separator="," close=")">
+					#{item,jdbcType=INTEGER}
+				</foreach>
+
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="begin != null and pageSize != null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select count(id) from cmd_send
+		<where>
+			<if test="id != null">
+				and #{id,jdbcType=INTEGER}
+			</if>
+			<if test="cmdConfigId != null">
+				and #{cmdConfigId,jdbcType=INTEGER}
+			</if>
+			<if test="cmdChar != null">
+				and #{cmdChar,jdbcType=LONGVARCHAR}
+			</if>
+			<if test="typeList != null">
+				and cmd_config_id in
+				<foreach collection="typeList" item="item" index="index"
+					open="(" separator="," close=")">
+					#{item,jdbcType=INTEGER}
+				</foreach>
+
+			</if>
+		</where>
+	</select>
+</mapper>
