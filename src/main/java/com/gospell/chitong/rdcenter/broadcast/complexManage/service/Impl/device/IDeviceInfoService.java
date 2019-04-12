@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceinfoMapper;
@@ -17,6 +15,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Device
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
+import org.springframework.util.StringUtils;
 
 @Service
 public class IDeviceInfoService implements DeviceInfoService{

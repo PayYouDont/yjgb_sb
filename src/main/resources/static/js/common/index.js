@@ -1,4 +1,4 @@
-
+var tag={};
 $(function(){
 	getNvaMenuDetail();
 	
@@ -12,13 +12,13 @@ function getNvaMenuDetail(){
 			dataType:"json",
 			success:function(json){
 				if(json.success){
-					var menus = json.data;
-					for(var i=0;i<menus.length;i++){
-						var menu = menus[i];
-						var id = menu.id;
-						var text = menu.text;
-						var menuCaptionEn = menu.menucaptionen;
-						var menuImage = menu.menuimage;
+					let menus = json.data;
+					for(let i=0;i<menus.length;i++){
+                        let menu = menus[i];
+                        let id = menu.id;
+                        let text = menu.text;
+                        let menuCaptionEn = menu.menucaptionen;
+                        let menuImage = menu.menuimage;
 						$(".easyui-accordion").accordion("add",{
 							title: text,
 							id:id,
@@ -27,24 +27,43 @@ function getNvaMenuDetail(){
 							selected: i==0?true:false
 						})
 					}
+                    tag.panel = $(".easyui-accordion").accordion('getPanel','播发管理');
 					//获取第一个菜单子菜单
 					getChildMenu(0,menus[0].id);
 					//绑定选中事件
 					$(".easyui-accordion").accordion({
 						onSelect:function(title,index){
-							var id = $(this).accordion("getSelected")[0].id;
-							getChildMenu(index,id);
+                            let id = $(this).accordion("getSelected")[0].id;
+                            getChildMenu(index,id);
 						}
 					});
-					
 				}
 			}
 		});
 	}
 }
+function setTag(){
+    let total = tag.data.total;
+    if(tag.panel&&total>=0){
+        let title = '播发管理';
+        if(total>0){
+            title = title+'<span class="badge" style="margin-left: 10px">'+total+'</span>';
+        }
+        tag.panel.panel('setTitle',title);
+        tag.panel.panel('refresh');
+        let $span = $(tag.panel).find('span').eq(0);
+        if($span[0]){
+            title = '信息管理';
+            if(total>0){
+                title = title + '<span class="badge" style="margin-left: 10px;font-size: 5px;padding:2px 4px">'+total+'</span>';
+            }
+            $span.html(title);
+        }
+    }
+}
 //获取选中菜单的子菜单
 function getChildMenu(index,id){
-	var p = $(".easyui-accordion").accordion('getPanel',index);
+	let p = $(".easyui-accordion").accordion('getPanel',index);
 	$.ajax({
 		url:"../nvaMenuAction/getMenuByPid",
 		type:"post",
@@ -52,29 +71,75 @@ function getChildMenu(index,id){
 		dataType:"json",
 		success:function(json){
 			if(json.success){
-				var html = "";
-				var menus = json.data;
-				for(var i=0;i<menus.length;i++){
-					var menu = menus[i];
-					var url = menu.url;
-					var text = menu.text;
-					var menuCaptionEn = menu.menucaptionen;
-					var menuImage = menu.menuimage;
+				let html = "";
+                let menus = json.data;
+				for(let i=0;i<menus.length;i++){
+                    let menu = menus[i];
+                    let url = menu.url;
+                    let text = menu.text;
+					//var menuCaptionEn = menu.menucaptionen;
+                    let menuImage = menu.menuimage;
 					html += '<div class="childMenu" onclick="goPage(this);" id ="'+url+'" iconCls=\''+menuImage+'\'>'+
-					 	   		'<font class="childMenuFont">'+text+'</font>'+
+					 	   		'<span class="childMenuFont">'+text+'</span>'+
 					 	    '</div>';
 				}
 				$(p).html(html);
+                if(tag&&tag.data){
+                    setTag()
+                }
 			}
 		}
 	});
 }
+/**********************WebScoket开始****************************/
+var socket;
+/*是否连接*/
+var isconn;
+$(function () {
+    if (typeof (WebSocket) == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+    } else {
+        console.log("您的浏览器支持WebSocket");
+    }
+})
+socket = new WebSocket("ws://"+window.location.host+"/webscoket");
+/*打开事件  */
+socket.onopen = function () {
+    isconn = true;
+};
+/*获得消息事件  */
+socket.onmessage = function (msg) {
+    var data = msg.data;
+    data = JSON.parse(msg.data)
+    if(data.total>=0){
+        //$('#mainTab').datagrid("loadData",data);
+        tag.data = data;
+        setTag()
+    }/*else{
+        $.messager.alert('系统提示',data.data,'info');
+    }*/
+};
+/*关闭事件  */
+socket.onclose = function () {
+    /*console.log("Socket已关闭");  */
+    isconn = false;
+};
+/*发生了错误事件  */
+socket.onerror = function () {
+    /* alert("Socket发生了错误"); */
+    isconn = false;
+}
+$(window).unload(function () {
+    socket.close();
+    isconn = false;
+});
+/***************************WebScoket完毕************************************/
 /******************************************************/
 //菜单跳转页面
-function goPage(a){
-	var menuName=$(a).children().html();
-	var url=$(a).attr("id");
-	var icon=$(a).attr("iconCls");	
+function goPage(div){
+	var menuName=$(div).children().html();
+	var url=$(div).attr("id");
+	var icon=$(div).attr("iconCls");
 	if ($('#myEasyui-tabs').tabs('exists', menuName)){
 		$('#myEasyui-tabs').tabs('select', menuName);
 	} else {

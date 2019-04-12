@@ -557,6 +557,12 @@
 			<if test="nameLike != null">
 				and emergencyName like "%" #{nameLike,jdbcType=VARCHAR} "%"
 			</if>
+            <if test="addressCodeLike != null">
+                and addressCode like "%" #{addressCodeLike,jdbcType=VARCHAR} "%"
+            </if>
+            <if test="flagNot != null">
+                and flag != #{flagNot,jdbcType=INTEGER}
+            </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -660,6 +666,12 @@
 			<if test="nameLike != null">
 				and emergencyName like "%" #{nameLike,jdbcType=VARCHAR} "%"
 			</if>
+            <if test="addressCodeLike != null">
+                and addressCode like "%" #{addressCodeLike,jdbcType=VARCHAR} "%"
+            </if>
+            <if test="flagNot != null">
+                and flag != #{flagNot,jdbcType=INTEGER}
+            </if>
 		</where>
 	</select>
 	

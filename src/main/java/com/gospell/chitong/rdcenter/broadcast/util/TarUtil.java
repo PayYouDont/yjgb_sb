@@ -69,14 +69,12 @@ public class TarUtil {
 	}
 
 	/**
-	 * @Title: packDir
-	 * @Description: TODO(将目录压缩成tar包)
-	 * @param file
-	 * @param outPath 设定文件
-	 * @return void 返回类型
-	 * @throws @author peiyongdong
-	 * @date 2018年11月21日 下午3:58:40
-	 */
+	* @Author peiyongdong
+	* @Description ( 将目录压缩成tar包 )
+	* @Date 11:40 2019/4/11
+	* @Param [tarOut, file]
+	* @return void
+	**/
 	public static void packDir(TarOutputStream tarOut,File file) {
 		File[] files = file.listFiles();
 		for (File f : files) {
@@ -85,14 +83,12 @@ public class TarUtil {
 	}
 
 	/**
-	 * @Title: packFile
-	 * @Description: TODO(将文件压缩成tar包)
-	 * @param file
-	 * @param outPath 设定文件
-	 * @return void 返回类型
-	 * @throws @author peiyongdong
-	 * @date 2018年11月21日 下午3:59:01
-	 */
+	* @Author peiyongdong
+	* @Description ( 将文件压缩成tar包 )
+	* @Date 11:40 2019/4/11
+	* @Param [tarOut, file]
+	* @return void
+	**/
 	public static void packFile(TarOutputStream tarOut,File file) {
 		InputStream in = null;
 		try {
@@ -208,7 +204,8 @@ public class TarUtil {
 			return map;
 		}
 		EBD_EBDResponse response = new EBD_EBDResponse();
-		if(!(ebd instanceof EBD_ConnectionCheck)) {
+        boolean isSign = true;
+		if(!(ebd instanceof EBD_ConnectionCheck)) {//心跳文件不验证签名
 			//读取签名文件，并验证
 			File signFile = readTar(inTarPath,"sign");
 			// 获取Signature
@@ -217,8 +214,7 @@ public class TarUtil {
 			//验证签名
 			try {
 				byte[] inData = FileUtil.readFile(ebdFile);
-				boolean isSign = SignatureUtil.verifySignature(inData,sign);
-				map.put("isSign", isSign);
+				isSign = SignatureUtil.verifySignature(inData,sign);
 				if(!isSign) {
 					response.getEBD().getEBDResponse().setResultCode(""+EBD_EBDResponse.SIGN_VERIF_FAILED);
 					response.getEBD().getEBDResponse().setResultDesc("签名验证未通过");
@@ -229,9 +225,10 @@ public class TarUtil {
 				response.getEBD().getEBDResponse().setResultDesc("签名错误");
 			}
 		}else {
-			map.put("isSign", true);
+            isSign = true;
 		}
-		if(ebd instanceof EBD_EBD) {
+        map.put("isSign", true);
+		if(isSign && ebd instanceof EBD_EBD) {
 			try {
 				WebScoketServer.startpush(inTarPath);
 			} catch (Exception e) {

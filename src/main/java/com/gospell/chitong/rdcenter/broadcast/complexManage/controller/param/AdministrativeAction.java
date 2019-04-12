@@ -21,9 +21,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @Api(tags = "行政管理")
-@Controller
+@RestController
 @RequestMapping("/administrativeAction")
 public class AdministrativeAction extends BaseAction{
 	
@@ -31,14 +33,13 @@ public class AdministrativeAction extends BaseAction{
 	public AdministrativeService service;
 	
 	@GetMapping("/toList")
-	public String toList(Model model) {
-		return "complex/param/administrative_list";
+	public ModelAndView toList(Model model) {
+		return new ModelAndView ("complex/param/administrative_list");
 	}
 	
 	@ApiOperation(value="获取行政树", 
 					notes="根据登录用户的行政区域编码获取该区域范围内的行政树接口")
 	@RequestMapping("/getTreeByCode")
-	@ResponseBody
 	public String getTreeByCode() {
 		return service.getTreeStr(getUser().getAreaCode());
 	}
@@ -46,7 +47,6 @@ public class AdministrativeAction extends BaseAction{
 			notes="根据系统所在的行政区域编码获取该区域范围内的行政树接口")
 	//getTreeBySystem
 	@RequestMapping("/getTreeBySystem")
-	@ResponseBody
 	public String getTreeBySystem() {
 		return service.getTreeStr(serverProperties.getAreaCode());
 	}
@@ -57,7 +57,6 @@ public class AdministrativeAction extends BaseAction{
         @ApiImplicitParam(name = "searchCondition", value = "搜索索引", dataType = "String")
     })
 	@RequestMapping("/list")
-	@ResponseBody
 	public String list(String searchCondition) {
 		Map<String, Object> map = new HashMap<>();
 		if(searchCondition!=null) {
@@ -70,4 +69,15 @@ public class AdministrativeAction extends BaseAction{
 		List<Administrative> list = service.list(map);
 		return JsonUtil.toJson(list);
 	}
+    @RequestMapping("/getListByCodeLevel")
+    public String getListByCodeLevel(Integer level) {
+        Map<String, Object> map = new HashMap<>();
+        if(level!=null) {
+            map.put("codeLevel", level);
+        }
+        map.put("sort","code_level");
+        map.put("order","ASC");
+        List<Administrative> list = service.listByCodeLevel(map);
+        return JsonUtil.toJson(list);
+    }
 }

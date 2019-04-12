@@ -124,8 +124,11 @@ public class Emergencyinfo implements Serializable {
 	private Date createTime;
 
 	/**
-	 * 信息状态 (1:待提交 2:待审核 3:未通过审核 4:已审核 5:待发送 6:已发送 7:发送成功 8:等待播发 9:正在播发 10:播发失败
-	 * 11:播发结束)
+	 * 信息状态：
+     *  flag<2时:(1:待提交 2:待审核 3:未通过审核 4:已审核 5:待发送 6:已发送 7:发送成功 8:等待播发 9:正在播发 10:播发失败
+	 *  11:播发结束
+     * 注：11以后为上级消息(flag=2时)所需状态 12:已查看 13:未查看 18:已发送(6)+已查看(12) 19:已发送(6)+未查看(13)
+     * 22:播发失败(10)+已查看(12) 23:播发失败(10)+未查看(13))
 	 */
 	private Integer status;
 
@@ -139,7 +142,7 @@ public class Emergencyinfo implements Serializable {
 	private String areacode;
 
 	/**
-	 * 信息类型(0:预案1:非预案)
+	 * 信息类型(0:预案 1:本地消息 2:上级消息)
 	 */
 	private Integer flag;
 

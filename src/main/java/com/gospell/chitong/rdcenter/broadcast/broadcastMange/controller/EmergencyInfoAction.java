@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.ui.Model;
@@ -132,19 +134,23 @@ public class EmergencyInfoAction extends BaseAction{
 	@GetMapping("/toEdit")
 	@Log("应急信息编辑")
 	public ModelAndView toEdit(Model model,String type,Integer id) {
-		Emergencyinfo emer = new Emergencyinfo();
+		Emergencyinfo emer = null;
 		if(id!=null) {
 			emer = service.selectById(id);
-		}else {
+		}
+		if(emer==null){
+		    emer = new Emergencyinfo ();
 			emer.setStatus(2);
 			emer.setSound("60");
 			emer.setDuration("60");
 		}
-		if(type.equals("add")) {
-			emer.setFlag(1);
-		}else {
-			emer.setFlag(0);
-		}
+		if(emer.getFlag ()==null){
+            if(type.equals("add")) {
+                emer.setFlag(1);
+            }else {
+                emer.setFlag(0);
+            }
+        }
 		Map<String,Object> map = new HashMap<>();
 		map.put("sort","id");
 		map.put("order","ASC");
@@ -186,8 +192,8 @@ public class EmergencyInfoAction extends BaseAction{
 		if(search!=null) {
 			map.put("nameLike", search);
 		}
-		map.put("areacode",getUserAreaCode());
-		map.put("flag", 1);
+		map.put("addressCodeLike", EBDcodeUtil.getParentCode (getUserAreaCode()));
+		map.put("flagNot", 0);//非预案信息
 		map.put("sort", "start_time");
 		map.put("order", "DESC");
 		List<Emergencyinfo> list = service.list(map);
@@ -337,6 +343,28 @@ public class EmergencyInfoAction extends BaseAction{
 			return JsonWrapper.failureWrapper();
 		}
 	}
+	/**
+	* @Author peiyongdong
+	* @Description ( 已查看上级信息 )
+	* @Date 16:25 2019/4/11
+	* @Param [id]
+	* @return java.util.HashMap<java.lang.String,java.lang.Object>
+	**/
+    @PostMapping("/viewed")
+    public HashMap<String,Object> viewed(Integer id){
+        try {
+            Emergencyinfo info = service.selectById (id);
+            if(info!=null&&info.getFlag ()==2){
+                info.setStatus (info.getStatus ()-1);
+                service.save(info);
+                WebScoketServer.removeToNodeNews (id);
+                return JsonWrapper.successWrapper();
+            }
+        }catch(Exception e) {
+            logger.error(e.getMessage(),e);
+        }
+        return JsonWrapper.failureWrapper();
+    }
 	/**
 	 * 删除应急信息
 	 * @Title: delete

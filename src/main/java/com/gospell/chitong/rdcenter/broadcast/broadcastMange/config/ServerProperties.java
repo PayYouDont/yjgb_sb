@@ -8,6 +8,7 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.UnitJosn;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @ConfigurationProperties(prefix = "server")
@@ -20,6 +21,7 @@ import lombok.Data;
 		"file:${config.path}" }, ignoreResourceNotFound = true, 
 		encoding = "utf-8")
 @Data
+@Component
 public class ServerProperties {
 	// 后台管理系统名称
 	private String manageName;

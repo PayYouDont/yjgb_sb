@@ -55,6 +55,9 @@ public class IMenuRoleRelation implements MenuRoleRelationService{
 		for (MenuRoleRelation mrr : mrrs) {
 			Integer mid = mrr.getMenuId();
 			Menu menu = menuDao.selectByPrimaryKey(mid);
+			if(menu==null){
+			    continue;
+            }
 			String perms = menu.getPerms();
 			permsSet.addAll(mrr.getPermsSet(perms));
 		}

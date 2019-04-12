@@ -27,8 +27,10 @@ public class IMenuService implements MenuService{
 		Map<String,Object> map = new HashMap<>();
 		map.put("menuId", id);
 		List<MenuRoleRelation> mrrs = mrrDao.list(map);
-		if(mrrs.size()>0) {
-			i += mrrDao.deleteByPrimaryKey(mrrs.get(0).getId());
+		if(mrrs!=null&&mrrs.size()>0) {
+			for (MenuRoleRelation mrr:mrrs){
+                i += mrrDao.deleteByPrimaryKey(mrr.getId());
+            }
 		}
 		return i;
 	}

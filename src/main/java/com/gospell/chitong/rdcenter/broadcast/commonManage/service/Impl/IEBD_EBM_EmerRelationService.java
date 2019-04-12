@@ -91,4 +91,8 @@ public class IEBD_EBM_EmerRelationService implements EBD_EBM_EmerRelationService
 		return dao.selectByPrimaryKey(id);
 	}
 
+    @Override
+    public List<EBD_EBM_EmerRelation> list(Map<String, Object> map) {
+        return dao.list (map);
+    }
 }

@@ -119,7 +119,7 @@ public class EBD_EBD implements EBD{
 		EBD.EBM.MsgContent = new MsgContent();
 		EBD.EBM.MsgContent.LanguageCode = emerInfo.getDisplayLanguage().getShortname();
 		EBD.EBM.MsgContent.MsgTitle = emerInfo.getEmergencyname();
-		EBD.EBM.MsgContent.AreaCode = emerInfo.getAreacode();
+		EBD.EBM.MsgContent.AreaCode = emerInfo.getAddresscode ().trim ();
 		if(emerInfo.getMediaId()==null) {
 			EBD.EBM.MsgContent.MsgDesc = emerInfo.getContent();
 		}else {

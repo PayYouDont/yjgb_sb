@@ -16,6 +16,9 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.ReceiveTar;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.ReceiveTarService;
 
+import java.util.List;
+import java.util.Map;
+
 /** 
 * @ClassName: IReceiveTarService 
 * @Description: TODO(     ) 
@@ -117,10 +120,15 @@ public class IReceiveTarService implements ReceiveTarService{
 			tar.setId(ebd.getEBD().getEBDID());
 		}
 		tar.setResourceCode(ebd.getEBD().getSRC().getEBRID());
-		tar.setStatus(1);
+		tar.setStatus(0);
 		tar.setType(1);
 		tar.setEbdType(ebd.getEBD().getEBDType());
 		// tar.setResourceId();
 		return save(tar, isUpdate);
 	}
+
+    @Override
+    public List<ReceiveTar> list(Map<String, Object> map) {
+        return dao.list (map);
+    }
 }

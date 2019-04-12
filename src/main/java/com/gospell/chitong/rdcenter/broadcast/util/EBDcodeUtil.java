@@ -97,8 +97,17 @@ public class EBDcodeUtil {
 		}
 		return EBRPSStateDesc;
 	}
-	
-	public static void setEBDHeader(Class<? extends EBD> entity) {
-		
-	}
+	public static String getParentCode(String addressCode){
+        Integer level = getAreaCodeLevel (addressCode);
+        if(level>0){
+            String subCode;
+            if(level<4){
+                subCode = addressCode.substring (0,level*2);
+            }else{
+                subCode = addressCode.substring (0,6+(level-3)*3);
+            }
+            return subCode;
+        }
+	    return  null;
+    }
 }

@@ -70,9 +70,9 @@ public class NodeAction extends BaseAction{
 		return "broadcast/node_edit";
 	}
 	
-	@PostMapping("/queryNode")
+	@PostMapping("/list")
 	@ResponseBody
-	public HashMap<String,Object> queryNode(Page page){
+	public HashMap<String,Object> list(Page page){
 		Map<String,Object> map = page.getMap();
 		List<Node> list = service.list(map);
 		int total = service.count(page.getMap());

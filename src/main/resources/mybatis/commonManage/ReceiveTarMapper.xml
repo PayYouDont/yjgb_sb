@@ -161,4 +161,87 @@
       ebd_type = #{ebdType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from receive_tar
+        <where>
+            <if test="resourceId != null">
+                and resource_id = #{resourceId,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null">
+                and `status` = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="auditUser != null">
+                and audit_user = #{auditUser,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null">
+                and audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="type != null">
+                and `type` = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="auditDepar != null">
+                and audit_depar = #{auditDepar,jdbcType=VARCHAR}
+            </if>
+            <if test="auditDesc != null">
+                and audit_desc = #{auditDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="resourceCode != null">
+                and resource_code = #{resourceCode,jdbcType=VARCHAR}
+            </if>
+            <if test="ebdType != null">
+                and ebd_type = #{ebdType,jdbcType=VARCHAR}
+            </if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${order} ${sort}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="begin != null and pageSize != null">
+            limit #{begin},#{pageSize}
+        </if>
+    </select>
+    <select id="count" resultType="int">
+        select count(id) from receive_tar
+        <where>
+            <if test="resourceId != null">
+                and resource_id = #{resourceId,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null">
+                and `status` = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="auditUser != null">
+                and audit_user = #{auditUser,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null">
+                and audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="type != null">
+                and `type` = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="auditDepar != null">
+                and audit_depar = #{auditDepar,jdbcType=VARCHAR}
+            </if>
+            <if test="auditDesc != null">
+                and audit_desc = #{auditDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="resourceCode != null">
+                and resource_code = #{resourceCode,jdbcType=VARCHAR}
+            </if>
+            <if test="ebdType != null">
+                and ebd_type = #{ebdType,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 </mapper>

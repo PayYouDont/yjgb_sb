@@ -1,5 +1,6 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,4 +17,8 @@ public interface StatisticsService {
 	List<Emergencyinfo> list(Map<String,Object> map);
 	
 	int count(Map<String,Object> map);
+
+    Map<String, Object> getDataByAddress(String addressCode) throws Exception;
+
+    Map<String, Object> getDataByDate(Date startDate, Date endDate) throws Exception;
 }

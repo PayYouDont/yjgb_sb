@@ -69,16 +69,16 @@ public class MenuRoleRelation implements Serializable {
     
     public Set<String> getPermsSet(String perms) {
     	Set<String> permsSet = new HashSet<>();
-    	if(getIsView()) {
+    	if(isView) {
     		permsSet.add(perms+":list");
     	}
-    	if(getIsAdd()) {
+    	if(isAdd) {
     		permsSet.add(perms+":add");
     	}
-    	if(getIsModify()) {
+    	if(isModify) {
     		permsSet.add(perms+":edit");
     	}
-    	if(getIsDelete()) {
+    	if(isDelete) {
     		permsSet.add(perms+":delete");
     	}
     	return permsSet;

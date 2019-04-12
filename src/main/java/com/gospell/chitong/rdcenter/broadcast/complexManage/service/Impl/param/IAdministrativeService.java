@@ -82,7 +82,7 @@ public class IAdministrativeService implements AdministrativeService{
 	@Override
 	public List<Administrative> list(Map<String, Object> map) {
 		List<Administrative> list = dao.list(map);
-		if(list.size()==0) {
+		if(list==null||list.size()==0) {
 			return null;
 		}
 		for (Administrative ative : list) {
@@ -93,4 +93,9 @@ public class IAdministrativeService implements AdministrativeService{
 		}
 		return list;
 	}
+
+    @Override
+    public List<Administrative> listByCodeLevel(Map<String, Object> map) {
+        return dao.list (map);
+    }
 }

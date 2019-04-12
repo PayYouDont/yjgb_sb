@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>时间统计</title>
+    <!--easyui控件css -->
+    <link  id="easyuiTheme" rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+
+    <script src="/js/core/jquery.min.js"></script>
+    <!--easyui控件js -->
+    <script src="/easyui/jquery.easyui.min.js"></script>
+    <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <!-- echarts插件 -->
+    <script src="/js/core/echarts.min.js"></script>
+    <script src="/js/common/commonUtil.js"></script>
+    <script src="/js/broadcast/statistics/time.js"></script>
+</head>
+<body id="body" class="easyui-layout">
+<div data-options="region:'north'" style="height:34px;padding-left:5px;border-bottom:1px solid #95B8E7">
+    <span style="height:30px;line-height: 30px;">&emsp;&emsp;快速选择时间段:</span>
+    <select class="easyui-combobox" editable="false" id="fastSelect" name="codeLevel" style="width:100px;">
+        <option value="day">今天</option>
+        <option value="week">本周</option>
+        <option value="month">最近30</option>
+        <option value="threeMonth">最近90天</option>
+        <option value="year">最近一年</option>
+    </select>
+    <span style="height:30px;line-height: 30px;">&emsp;&emsp;自定义起始时间:</span>
+    <input class="easyui-datebox" id="startDate" style="width: 165px" />
+    <span style="height:30px;line-height: 30px;">&emsp;&emsp;自定义结束时间:</span>
+    <input class="easyui-datebox" id="endDate" style="width: 165px" />
+</div>
+<div data-options="region:'south',title:'应急信息播发范围统计-柱状图',split:true" style="height:50%;">
+    <div id="bar" style="height:90%; width:90%;float:left;"></div>
+</div>
+<div data-options="region:'west',title:'应急信息播发范围统计-饼状图',split:true" style="width:50%;">
+    <div id="pie" style="height:100%;width:100%;float:left;"></div>
+</div>
+<div data-options="region:'east',title:'应急信息播发范围统计-折线图',split:true" style="width:50%;">
+    <div id="line" style="height:100%;width:100%;float:left;"></div>
+</div>
+</body>
+</html>

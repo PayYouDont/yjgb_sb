@@ -68,29 +68,49 @@ $(document).ready(function(){
 
 function statusFormatter(value,rowData,rowIndex){
 	if(value=="2"){
-		return '<font style="color: #FF9800;">待审核</font>';
+		return '<span style="color: #FF9800;">待审核</span>';
 	}else if(value == "3"){
-		return '<font style="color:green;">未通过审核</font>';
+		return '<span style="color:green;">未通过审核</span>';
 	}else if(value == "4"){
-		return '<font style="color: green;">已审核</font>';
+		return '<span style="color: green;">已审核</span>';
 	}else if(value=="5"){
-		return '<font style="color: blue;">待发送</font>';
-	}else if(value=="6"){
-		return '<font style="color: green;">已发送</font>';
+		return '<span style="color: blue;">待发送</span>';
+	}else if(value=="6"||value == '18'){
+		return '<span style="color: green;">已发送</span>';
 	}else if(value == "7"){
-		return '<font style="color: green;">发送成功</font>';
+		return '<span style="color: green;">发送成功</span>';
 	}else if(value=="8"){
-		return '<font style="color: yellow;">等待播发</font>';
+		return '<span style="color: yellow;">等待播发</span>';
 	}else if(value=="9"){
-		return '<font style="color: green;">正在播发</font>';
+		return '<span style="color: green;">正在播发</span>';
 	}else if(value == "10"){
-		return '<font style="color: red;">播发失败</font>';
-	}else if(value == "11"){
-		return '<font style="color: #4EAF51">播发结束</font>';
-	}
+		return '<span style="color: red;">播发失败</span>';
+	}else if(value == "11"||value == '22'){
+		return '<span style="color: #4EAF51">播发结束</span>';
+	}else{
+        let label = '<span class="label" style="margin-left: 5px;margin-right:5px;">New</span><a href="#" onclick="viewNew('+rowData.id+')">查看</a>';
+        if(value == '19'){
+            return '<span style="color: green;">已发送'+label+'</span>';
+        }else if(value == '23'){
+            return '<span style="color: green;">播发结束'+label+'</span>';
+        }
+    }
 }
 
-
+function viewNew(v_id){
+    window.location.href="../emergencyInfoAction/toEdit?type=add&id="+v_id;
+    $.ajax({
+        url:'../emergencyInfoAction/viewed',
+        type:'post',
+        data:{id:v_id},
+        dataType:'json',
+        success:function (json) {
+            if(json.success){
+                window.parent.setTag();
+            }
+        }
+    })
+}
 function durationFun(value,rowData,rowIndex){
 	return value+" 分钟";
 }

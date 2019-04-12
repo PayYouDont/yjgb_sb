@@ -9,7 +9,9 @@ public interface AdministrativeService {
 	Administrative findByCode(String code);
 	
 	List<Administrative> list(Map<String,Object> map);
-	
+
+    List<Administrative> listByCodeLevel(Map<String,Object> map);
+
 	String getTreeStr(String areaCode);
 	
 	int count(Map<String,Object> map);

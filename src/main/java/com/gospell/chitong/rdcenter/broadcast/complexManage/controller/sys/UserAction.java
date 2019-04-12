@@ -61,7 +61,8 @@ public class UserAction extends BaseAction{
 		User user = null;
 		if(id!=null) {
 			user = service.selectById(id);
-		}else{
+		}
+		if(user==null){
 			user = new User();
 		}
 		List<Role> roleList = roleService.list(new HashMap<>());

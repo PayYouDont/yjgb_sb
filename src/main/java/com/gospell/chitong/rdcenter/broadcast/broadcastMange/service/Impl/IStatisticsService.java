@@ -10,12 +10,17 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.param.AdministrativeService;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import org.springframework.stereotype.Service;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.StatisticsService;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+import org.springframework.util.StringUtils;
 
 
 @Service
@@ -23,7 +28,9 @@ public class IStatisticsService implements StatisticsService{
 
 	@Resource
 	private EmergencyinfoMapper emerDao;
-	
+	@Resource
+	private AdministrativeMapper adDao;
+
 	@Override
 	public List<Map<String, Object>> getStateData() throws Exception{
 		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
@@ -299,4 +306,76 @@ public class IStatisticsService implements StatisticsService{
 		// TODO Auto-generated method stub
 		return emerDao.count(map);
 	}
+
+    @Override
+    public Map<String, Object> getDataByAddress(String addressCode) throws Exception {
+        if(StringUtils.isEmpty (addressCode)){
+            return null;
+        }
+        Integer level = EBDcodeUtil.getAreaCodeLevel (addressCode);
+        List<String> nameData = new ArrayList<> ();
+        List<Integer> valueData = new ArrayList<> ();
+        Map<String, Object> data = new HashMap<> ();
+        if(level>0){
+            Map<String,Object> map;
+            map = new HashMap<> ();
+            map.put ("addressCodeLike",EBDcodeUtil.getParentCode (addressCode));
+            List<Emergencyinfo> emergencyinfoList = emerDao.list (map);
+            map = new HashMap<> ();
+            //map.put("parentCode",addressCode);
+            //map.put("codeLevel",level+1);
+            List<Administrative> administrativeList = adDao.list (map);
+            for(Administrative ad:administrativeList){
+                String code =ad.getCode ();
+                String name = ad.getName ();
+                int count = 0;
+                for (Emergencyinfo emer:emergencyinfoList){
+                    String addCode = emer.getAddresscode ();
+                    if(addCode.indexOf (code)!=-1){
+                        count++;
+                    }
+                }
+                if(count>0){
+                    nameData.add (name);
+                    valueData.add (count);
+                }
+            }
+            data.put ("nameData",nameData);
+            data.put("valueData",valueData);
+            return data;
+        }
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getDataByDate(Date startDate, Date endDate) throws Exception {
+        List<String> nameData = new ArrayList<> ();
+        List<Integer> valueData = new ArrayList<> ();
+        Map<String, Object> data = new HashMap<> ();
+        Map<String,Object> map = new HashMap<> ();
+        map.put ("firstDate",startDate);
+        map.put ("lastDate",endDate);
+        List<Emergencyinfo> list = emerDao.getByStartTime (map);
+        SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd");
+        for(int i=0;i<list.size ();i++){
+            Date startTime1 = list.get (i).getStartTime ();
+            int count = 1;
+            String startTime = sdf.format (startTime1);
+            if(nameData.contains (startTime)){
+                continue;
+            }
+            for(int j=i;j<list.size ();j++){
+                Date startTime2 = list.get (j).getStartTime ();
+                if(DateUtils.isSameDate(startTime1,startTime2)){
+                    count++;
+                }
+            }
+            nameData.add(startTime);
+            valueData.add(count);
+        }
+        data.put ("nameData",nameData);
+        data.put("valueData",valueData);
+        return data;
+    }
+
 }

@@ -34,9 +34,9 @@ public class RoleMenuVO {
 
     public Role getRole(){
         Role role = new Role();
-        role.setId (getId ());
-        role.setName (getName ());
-        role.setDescript (getDescript ());
+        role.setId (id);
+        role.setName (name);
+        role.setDescript (descript);
         return role;
     }
 

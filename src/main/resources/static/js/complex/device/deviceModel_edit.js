@@ -1,6 +1,6 @@
 $(document).ready(function(){
 		$('#mainTab').datagrid({   
-			url:'../deviceModelParamAction/queryList',
+			url:'../deviceModelParamAction/list',
 		    autoRowHeight:false,
 			fitColumns:true,
 			checkOnSelect:true,

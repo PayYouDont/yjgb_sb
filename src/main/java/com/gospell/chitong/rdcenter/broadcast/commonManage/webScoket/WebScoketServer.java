@@ -1,29 +1,30 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArraySet;
-
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
-
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.NodeNews;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.ReceiveTar;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.EBD_EBM_EmerRelationService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.ReceiveTarService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.NodeNews;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 @ServerEndpoint("/webscoket")
 public class WebScoketServer {
@@ -34,7 +35,7 @@ public class WebScoketServer {
     public final static Logger logger = LoggerFactory.getLogger(WebScoketServer.class);
     
     private static CopyOnWriteArraySet<WebScoketServer> webSocketSet = new CopyOnWriteArraySet<WebScoketServer>();
-
+    private static List<NodeNews> nodeNews = new ArrayList<>();
     public static enum  Status{
         success("200"),   //返回成功 状态
         timeError("-200"), //日期异常  状态
@@ -61,7 +62,8 @@ public class WebScoketServer {
         try {
         	String msg = JsonUtil.toJson(JsonWrapper.successWrapper("连接成功"));
         	sendInfo(msg);
-        }catch(IOException e) {
+            initList();
+        }catch(Exception e) {
         	e.printStackTrace();
         }
     }
@@ -105,14 +107,13 @@ public class WebScoketServer {
      * 群发自定义消息 
      * */  
     public static void sendInfo(String message) throws IOException {
-        for (WebScoketServer item : webSocketSet) {  
-            try {  
+        for (WebScoketServer item : webSocketSet) {
+            try {
                 item.sendMessage(message);
-            } catch (IOException e) {  
-                continue;  
-            }  
-        } 
-    	
+            } catch (IOException e) {
+                continue;
+            }
+        }
     }
     /**
      * 返回推送消息
@@ -120,8 +121,7 @@ public class WebScoketServer {
      * @return
      */
     public static String showNodeNews(String path){
-        File tarfile = new File(path);
-        EBD ebd = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(tarfile);        
+        EBD ebd = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(new File(path));
         int i=0;
         try {
         	EmergencyInfoService emerService = ApplicationContextRegister.getBean(EmergencyInfoService.class);
@@ -129,14 +129,11 @@ public class WebScoketServer {
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
         }
-       /* ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
-        File dirFile = new File(prop.getTarInPath());*/
-        List<NodeNews> list = new ArrayList<>();
-        list.add(NodeNews.parseEBD(ebd));
+        nodeNews.add(NodeNews.parseEBD(ebd));
         if (i == -200) {
         	return Status.timeError.getStatus();
         }else {
-        	return JsonUtil.toJson(JsonWrapper.wrapperPage(list,1));
+        	return JsonUtil.toJson(JsonWrapper.wrapperPage(nodeNews,nodeNews.size ()));
         }
             
     }
@@ -161,5 +158,55 @@ public class WebScoketServer {
             }
             return Status.success.getStatus();
         }
+    }
+    /**
+    * @Author peiyongdong
+    * @Description (从播发列表删除)
+    * @Date 17:31 2019/4/11
+    * @Param [emerId]
+    * @return void
+    **/
+    public static void removeToNodeNews(Integer emerId) throws Exception{
+        Map<String,Object> map = new HashMap<> ();
+        map.put ("emerId",emerId);
+        List<EBD_EBM_EmerRelation> list = ApplicationContextRegister.getBean (EBD_EBM_EmerRelationService.class).list (map);
+        ReceiveTarService receiveTarService = ApplicationContextRegister.getBean (ReceiveTarService.class);
+        for(EBD_EBM_EmerRelation eeer:list){
+            String ebmId = eeer.getEbmId ();
+            for(NodeNews news:nodeNews){
+                String EBMID = news.getEBMID ();
+                if(ebmId.equals (EBMID)){
+                    nodeNews.remove (news);
+                    String ebdId = eeer.getEbdId ();
+                    ReceiveTar receiveTar = receiveTarService.selectById (ebdId);
+                    if(receiveTar!=null){
+                        receiveTar.setStatus (1);
+                    }
+                    receiveTarService.save (receiveTar,true);
+                    break;
+                }
+            }
+        }
+        String data = JsonUtil.toJson(JsonWrapper.wrapperPage(nodeNews,nodeNews.size ()));
+        WebScoketServer.sendInfo (data);
+    }
+    //初始化上级信息推送list
+    private static void initList() throws Exception{
+        Map<String,Object> map = new HashMap<> ();
+        map.put ("ebdType","EBD");
+        map.put ("status",0);
+        List<ReceiveTar> receiveTarList = ApplicationContextRegister.getBean (ReceiveTarService.class).list (map);
+        String path = ApplicationContextRegister.getBean (ServerProperties.class).getTarInPath ();
+        for(ReceiveTar tar:receiveTarList){
+            String id = tar.getId ();
+            String filePath = path + File.separatorChar + "EBDT_" + id + ".tar";
+            EBD ebd = ApplicationContextRegister.getBean(NodeService.class).getEbmFromTar(new File(filePath));
+            NodeNews news = NodeNews.parseEBD (ebd);
+            if(!nodeNews.contains (news)){
+                nodeNews.add(news);
+            }
+        }
+        String data = JsonUtil.toJson(JsonWrapper.wrapperPage(nodeNews,nodeNews.size ()));
+        WebScoketServer.sendInfo (data);
     }
 }
