@@ -46,7 +46,7 @@ public class EBD_ConnectionCheck implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:19:53

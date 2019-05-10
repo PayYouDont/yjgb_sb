@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 
 /** 
 * @ClassName: EBD_EBDResponse 
-* @Description: TODO(     ) 
+* @Description: TODO(接收回执文件)
 * @author peiyongdong
 * @date 2019年1月2日 下午2:41:16 
 *  

@@ -1,8 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction;
 
-import java.io.Serializable;
-
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * cmd_config
@@ -13,9 +13,14 @@ public class CmdConfig implements Serializable {
     private Integer id;
 
     /**
-     * 指令名称
+     * 指令名称中文
      */
-    private String name;
+    private String nameCh;
+
+    /**
+     * 指令名称英文
+     */
+    private String nameEn;
 
     /**
      * 指令标识符

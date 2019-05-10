@@ -39,7 +39,7 @@
 							data-options="required:true" name="cmdConfigId" id="cmdConfigId">
 								<option th:each="config,configStat:${cmdConfigList}"
 									th:selected="${config.id==cmdSend.cmdConfigId}"
-									th:text="${config.name}"
+									th:text="${config.nameCh}"
 									th:value="${config.id}" />
 						</select>
 					</td>

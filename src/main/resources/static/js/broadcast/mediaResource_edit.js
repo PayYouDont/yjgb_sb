@@ -56,8 +56,9 @@ function mysave(){
 		formData.append("file", file);
 	}
 	var id = $("#souceId").val();
-	if(id!=null&&id!=""&&file){
+	if(id==null&&!file){
 		$.messager.alert('异常', '请选择上传资源!','error');
+        $.messager.progress('close');
 		return;
 	}
     $.ajax({

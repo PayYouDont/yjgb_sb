@@ -78,7 +78,7 @@ function onBeforeEdit(rowIndex, rowData) {
 				}
 			}
 		} ]);
-	} else {// 资源
+	} else {// 资源、数组/集合
 		setResourceData(cmdType)
 		datagrid.datagrid('addEditor', [ {// 添加cardNo列editor
 			field : 'attrValue',
@@ -86,6 +86,7 @@ function onBeforeEdit(rowIndex, rowData) {
 				type : 'combobox',
 				options : {
 					required : true,
+                    multiple:true,
 					data : resourceData.data,
 					valueField : resourceData.field,
 					textField : resourceData.field,

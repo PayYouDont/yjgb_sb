@@ -77,13 +77,14 @@ function send(){
 		$.messager.alert('系统提示','请选择待发送的信息！','info');
 		return;
 	}
-
+	let emerType = $('#emerType').combobox('getValue');
+	console.log(emerType)
 	 $.messager.progress({
          title : '系统提示',
          text : '指令发送中，请稍后。。。',
          interval:300
      });
-	 $.post("../emergencyInfoAction/sendEmer",{emerId:v_id},function(data){
+	 $.post("../emergencyInfoAction/sendEmer",{emerId:v_id,emerType:emerType},function(data){
 			$.messager.progress('close');
 	    	if(data.success){
 	    		 $.messager.alert('系统提示','发送成功！','info',function(){
@@ -207,11 +208,15 @@ function getEmertail(rowIndex,rowData){
 	$("#dispalyText").html(rowData.content);
 	$("#addressCode").html(rowData.addresscode);
 	$("#EBM_ID").html(rowData.ebmId);
+    let html;
 	if(rowData.status == "5"){
-		$("#ctrl_btn_div").html('<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="send();">信息发送</a>')
+        html = '<input id="emerType" class="easyui-combobox" name="emerType" style="width: 120px" ' +
+            'data-options="valueField:\'fieldKey\',textField:\'fieldValue\',value:3,url:\'../dictionaryAction/listByField?field=MsgType&except=2\'">';
+		html += '<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="send();">信息发送</a>';
 	}else if(rowData.status == "6"){
-		$("#ctrl_btn_div").html('<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="stopSend();">停止发送</a>')
+        html = '<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="stopSend();">停止发送</a>';
 	}
+    $("#ctrl_btn_div").html(html);
 	$.parser.parse($("#ctrl_btn_div")); 
 	getDevByEmerAreCode(rowData.addresscode);
 

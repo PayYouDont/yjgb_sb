@@ -10,17 +10,18 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import lombok.EqualsAndHashCode;
 
 /**
  * @ClassName: EBD_EBRPSState
- * @Description: TODO(平台状态信息)
+ * @Description: TODO(应急广播平台状态文件)
  * @author peiyongdong
  * @date 2018年12月13日 下午6:01:44
  * 
  */
 @lombok.Data
-public class EBD_EBRPSState implements EBD{
+public class EBD_EBRPSState implements EBDResponse {
 
 	private EBD EBD;
 
@@ -74,4 +75,13 @@ public class EBD_EBRPSState implements EBD{
 		return null;
 	}
 
+    @Override
+    public EBDResponse createFullResponse() {
+        return null;
+    }
+
+    @Override
+    public EBDResponse createIncrementalResponse() {
+        return null;
+    }
 }

@@ -35,7 +35,7 @@ $(document).ready(function(){
 
 //1获取输入资源
 function queryInnChannel(){
-	$.post("../backCommunicationAction/getProgrameJson",function(json){
+	$.post("/emergencyInfoAction/getPrograme",function(json){
 		var data = json.data;
 		data = JSON.parse(data);
 		if(data==""||typeof(data)=="undefined"||data==null){

@@ -94,25 +94,22 @@
 		<div class="easyui-layout" data-options="fit:true" style="padding: 10px">
 			<form id="info_form" data-options="novalidate:true,fit:true">
 				<div>
-					<label for="userName" >用户姓名:&nbsp;&nbsp;</label>
+					<label>用户姓名:&nbsp;&nbsp;</label>
 				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" type="text"  data-options="required:true"
 				      	id="name" name="name" th:value="${user.name}">
 				</div><br>
-				
 			    <div>
-					<label for="phoneNum" >联系方式:&nbsp;&nbsp;</label>
+					<label>联系方式:&nbsp;&nbsp;</label>
 					<input class="easyui-textbox" type="text" style="width:180px;" data-options="validType:'phoneNum',required:true"
 							id="phone" name="phone" th:value="${user.phone}">
 			    </div><br>
 			    <div>
-					<label for="userSex" >用户性别:&nbsp;&nbsp;</label>
+					<label>用户性别:&nbsp;&nbsp;</label>
 					<span id="sex" class="easyui-radio">
 		                <input type="radio" name="sex" value="1" th:checked="${user.sex == 1}" />男
 		                <input type="radio" name="sex" value="0" th:checked="${user.sex == 0}" />女
 		            </span>
 			    </div><br>
-			    
-			    
 			    <input id="edit_info_id" name="id" type="hidden" th:value="${user.id}"/>
 			    <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
 					<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="mysave();" style="width:80px">保存</a>
@@ -132,18 +129,15 @@
 				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="validType:'pass',required:true"
 				      	id="oldpassword" type="password" name="oldPwd" value='' >
 				</div><br>
-				
 				<div>
 					<label for="newpassword" >&emsp;&emsp;新密码:&nbsp;&nbsp;</label>
 				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="validType:'pass',required:true"
 				      	id="newpassword" type="password" name="newPwd" value='' >
 				</div><br>
-				
 				<div>
-					<label for="repnewpassword" >重复新密码:&nbsp;&nbsp;</label>
+					<label>重复新密码:&nbsp;&nbsp;</label>
 				   	<input class="easyui-textbox easyui-validatebox" style="width:180px" data-options="required:true" validType="equals['#newpassword']" type="password">
 				</div><br>
-				
 				<input id="edit_password_id" name="userId" type="hidden" th:value="${user.id}"/>
 			    <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
 					<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="changePWD();" style="width:80px">保存</a>
@@ -152,9 +146,8 @@
 			</form>
 		</div>
 	</div>
-	<div align="center" data-options="region:'south',border:false" 
-		style="height:25px;background:#A9FACD;">
-		系统版本:<font th:text="${server.server_version}"  style="height:25px;line-height:25px;"></font>
+	<div align="center" data-options="region:'south',border:false" style="height:25px;background:#A9FACD;">
+		系统版本:<span th:text="${server.server_version}"  style="height:25px;line-height:25px;"></span>
 	</div>
 </body>
 </html>

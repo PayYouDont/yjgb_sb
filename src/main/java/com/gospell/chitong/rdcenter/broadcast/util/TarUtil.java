@@ -1,14 +1,11 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Signature;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -16,12 +13,9 @@ import org.xeustechnologies.jtar.TarEntry;
 import org.xeustechnologies.jtar.TarInputStream;
 import org.xeustechnologies.jtar.TarOutputStream;
 
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Signature;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TarUtil {
 
@@ -92,7 +86,8 @@ public class TarUtil {
 	public static void packFile(TarOutputStream tarOut,File file) {
 		InputStream in = null;
 		try {
-			tarOut.putNextEntry(new TarEntry(file, file.getName()));
+            TarEntry tarEntry = new TarEntry(file, file.getName());
+			tarOut.putNextEntry(tarEntry);
 			in = new FileInputStream(file);
 			FileUtil.wirteFile(in, tarOut,false);
 		} catch (IOException e) {
@@ -161,6 +156,13 @@ public class TarUtil {
 		archive(tarPath, temPath);
 		return tempFile;
 	}
+    public static void addFileToTar(String tarPath,String filePath,String fileName){
+	    String intTarPath = archiveToTemp (tarPath).getPath ();
+	    FileUtil.copyFile (filePath,intTarPath,fileName);
+	    FileUtil.delete (tarPath);
+	    pack (intTarPath,tarPath);
+	    FileUtil.delete (intTarPath);
+    }
 	public static File readTar(String tarPath) {
 		return readTar(tarPath,null);
 	}
@@ -181,9 +183,7 @@ public class TarUtil {
 					// 获取签名xml文件
 					if (EBDType.equals("EBDS")&&fileName.indexOf("EBDS") != -1) {
 						return file;
-					}else if (EBDType.equals("EBDB")
-							&&fileName.indexOf("EBDB") != -1 
-							&& fileName.indexOf("EBDS") == -1) {
+					}else if (EBDType.equals("EBDB")&&fileName.indexOf("EBDB") != -1&& fileName.indexOf("EBDS") == -1) {
 						return file;
 					}
 				}

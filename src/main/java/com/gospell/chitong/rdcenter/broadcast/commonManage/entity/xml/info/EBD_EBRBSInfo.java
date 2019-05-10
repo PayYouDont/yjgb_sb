@@ -10,17 +10,18 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import lombok.EqualsAndHashCode;
 
 /**
  * @ClassName: EBD_EBRBSInfo
- * @Description: TODO( )
+ * @Description: TODO(传输覆盖播出设备信息)
  * @author peiyongdong
  * @date 2018年12月13日 下午5:55:17
  * 
  */
 @lombok.Data
-public class EBD_EBRBSInfo implements EBD{
+public class EBD_EBRBSInfo implements EBDResponse {
 
 	private EBD EBD;
 
@@ -101,7 +102,7 @@ public class EBD_EBRBSInfo implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML()
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:36:05
@@ -112,4 +113,13 @@ public class EBD_EBRBSInfo implements EBD{
 		return null;
 	}
 
+    @Override
+    public EBDResponse createFullResponse() {
+        return null;
+    }
+
+    @Override
+    public EBDResponse createIncrementalResponse() {
+        return null;
+    }
 }

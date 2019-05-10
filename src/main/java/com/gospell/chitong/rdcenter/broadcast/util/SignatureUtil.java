@@ -81,7 +81,6 @@ public class SignatureUtil {
 		}
 		return null;
 	}
-
 	/**
 	 * @Title: verifySignature
 	 * @Description: TODO(平台验证数据签名)

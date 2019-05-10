@@ -63,7 +63,7 @@ public class Emergencyinfo implements Serializable {
 	private String addresscode;
 
 	/**
-	 * 输入资源节目id的字符串,每个id用';'分割
+	 * 输入资源节目id的字符串,每个id用','分割
 	 */
 	private Integer programId;
 
@@ -89,7 +89,9 @@ public class Emergencyinfo implements Serializable {
 	private Integer displaylanguageId;
 
 	private Integer emergencylocationId;
-	
+    /**
+     * 媒体资源id
+     */
 	private Integer mediaId;
 	
 	private Accidenttype accidentType;//事件等级类型（多对一）

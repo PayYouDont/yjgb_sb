@@ -6,6 +6,10 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBMBrdLog;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -220,4 +224,11 @@ public class DaoTest {
 	public void test19() {
 		System.out.println(ccdao.count(new HashMap<String,Object>()));
 	}
+    @Test
+    public void test20() {
+        EBD EBD = new EBD_EBMBrdLog ().creatResponse ();
+        //String jsonStr = JsonUtil.toJson (EBD);
+        //XMLUtil.createXMLByJson(jsonStr,"C:\\Users\\pay\\Desktop","test.xml");
+        XMLUtil.createXMLByBean(EBD,"C:\\Users\\pay\\Desktop","test.xml");
+    }
 }

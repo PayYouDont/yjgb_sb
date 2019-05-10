@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * @ClassName: EBD_EBMStateResponse
- * @Description: TODO(播发状态回执)
+ * @Description: TODO(播发状态回执,应急广播消息播发状态反馈文件)
  * @author peiyongdong
  * @date 2018年12月13日 下午5:59:02
  * 
@@ -92,10 +92,7 @@ public class EBD_EBMStateResponse implements EBD{
 
 	/** 
 	 * <p>Title: creatResponseXML</p> 
-	 * <p>Description: </p> 
-	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
-	 * @throws 
+	 * <p>Description: </p>
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:35:28
 	 */

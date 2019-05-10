@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 
 /** 
 * @ClassName: EBD_EBD 
-* @Description: TODO(应急消息) 
+* @Description: TODO(应急广播)
 * @author peiyongdong
 * @date 2018年12月13日 下午5:31:14 
 *  
@@ -69,6 +69,7 @@ public class EBD_EBD implements EBD{
 		private String MsgDesc;
 		private String AreaCode;
 		private Auxiliary Auxiliary;
+		private String ProgramNum;
 	}
 
 	@lombok.Data
@@ -82,7 +83,7 @@ public class EBD_EBD implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:34:44
@@ -93,15 +94,15 @@ public class EBD_EBD implements EBD{
 		return null;
 	}
 	
-	public void setEmergencyinfo(Emergencyinfo emerInfo,ServerProperties properties,String msgType) {
+	public void setEmergencyinfo(Emergencyinfo emerInfo,ServerProperties properties,String msgType,String ebmId) {
 		EBD = new EBD();
 		EBD.setEBDHeader();
-		EBD.setEBDType("EBD");
+		EBD.setEBDType("EBM");
 		EBD.RelatedEBD = new RelatedEBD();
 		EBD.RelatedEBD.EBDID = EBDcodeUtil.getBaseEBDID();
 		EBD.EBM = new EBM();
 		EBD.EBM.EBMVersion = "1";
-		EBD.EBM.EBMID = EBDcodeUtil.getEBMID();
+        EBD.EBM.EBMID = ebmId==null?EBDcodeUtil.getEBMID():ebmId;
 		EBD.EBM.MsgBasicInfo = new MsgBasicInfo();
 		/*
 		 * MsgType:
@@ -119,7 +120,10 @@ public class EBD_EBD implements EBD{
 		EBD.EBM.MsgContent = new MsgContent();
 		EBD.EBM.MsgContent.LanguageCode = emerInfo.getDisplayLanguage().getShortname();
 		EBD.EBM.MsgContent.MsgTitle = emerInfo.getEmergencyname();
-		EBD.EBM.MsgContent.AreaCode = emerInfo.getAddresscode ().trim ();
+		EBD.EBM.MsgContent.AreaCode = emerInfo.getAddresscode ();
+		if(emerInfo.getProgramId ()!=null){
+		    EBD.EBM.MsgContent.ProgramNum = emerInfo.getProgramId ().toString ();
+        }
 		if(emerInfo.getMediaId()==null) {
 			EBD.EBM.MsgContent.MsgDesc = emerInfo.getContent();
 		}else {
@@ -128,7 +132,7 @@ public class EBD_EBD implements EBD{
 			MediaResouce midea = mideaService.selectById(mediaId);
 			EBD.EBM.MsgContent.Auxiliary = new Auxiliary();
 			EBD.EBM.MsgContent.Auxiliary.AuxiliaryType = "2";
-			EBD.EBM.MsgContent.Auxiliary.AuxiliaryDesc = midea.getFileName();
+			EBD.EBM.MsgContent.Auxiliary.AuxiliaryDesc = "EBDR_" + midea.getFileName();
 			EBD.EBM.MsgContent.Auxiliary.Size = ""+midea.getFileSize();
 		}
 	}

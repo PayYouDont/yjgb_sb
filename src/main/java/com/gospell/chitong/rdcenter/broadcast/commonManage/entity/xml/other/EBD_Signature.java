@@ -53,7 +53,7 @@ public class EBD_Signature implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML()
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:37:00

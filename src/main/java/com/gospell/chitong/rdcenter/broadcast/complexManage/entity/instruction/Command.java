@@ -8,6 +8,7 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import lombok.Data;
 
@@ -26,7 +27,8 @@ public class Command {
 	@Data
 	public static class Commands {
 		private int CMD_Tag;
-		private String CMD_Char;
+		private String CMD_Name;
+		private Map<String,String> CMD_Data;
 	}
 
 

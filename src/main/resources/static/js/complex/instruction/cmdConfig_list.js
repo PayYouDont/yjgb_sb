@@ -34,12 +34,18 @@ $(document).ready(function() {
 			width : 200,
 			hidden : true
 		}, {
-			title : '指令名称',
-			field : 'name',
+			title : '指令中文名称',
+			field : 'nameCh',
 			width : 200,
 			align : 'left',
 			halign : 'center'
-		}, ] ],
+		},{
+            title : '指令英文名称',
+            field : 'nameEn',
+            width : 150,
+            align : 'left',
+            halign : 'center'
+        }, ] ],
 		columns : [ [ {
 			title : '指令标识符',
 			field : 'tag',

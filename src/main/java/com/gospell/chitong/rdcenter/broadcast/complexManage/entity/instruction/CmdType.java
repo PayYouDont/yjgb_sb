@@ -28,7 +28,7 @@ public class CmdType implements Serializable {
     private String nameEn;
 
     /**
-     * 输入框类型(0:文本框,1:数字框,2:日期框,3:资源框)
+     * 输入框类型(0:文本框,1:数字框,2:日期框,3:资源框,4:数组/集合)
      */
     private Integer boxType = 0;
 

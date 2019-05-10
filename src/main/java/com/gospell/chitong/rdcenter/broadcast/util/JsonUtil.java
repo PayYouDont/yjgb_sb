@@ -1,12 +1,5 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -14,12 +7,20 @@ import com.google.gson.GsonBuilder;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.GsonIgnore;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.config.SensorTypeAdapter;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.Command;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.EsayuiData;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.EsayuiData.Rows;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class JsonUtil {
 
-	public static String toCMDChar(String cmd) {
+	public static Map<String, String> toCMDChar(String cmd) {
 		EsayuiData data = toBean(cmd, EsayuiData.class);
 		ArrayList<Rows> rows = data.getRows();
 		Map<String,String> map = new HashMap<>();
@@ -28,8 +29,8 @@ public class JsonUtil {
 			String value = row.getAttrValue();
 			map.put(key, value);
 		}
-		String CMDChar = toJson(map);
-		return CMDChar;
+		//String CMDChar = toJson(map);
+		return map;
 	}
 	
 	public static String toJson(Object object) {
@@ -38,13 +39,6 @@ public class JsonUtil {
 		Gson gson = builder.create();
 		return gson.toJson(object);
 	}
-	/*public static void main(String[] args) {
-		CMDTime time = new CMDTime();
-		time.setId(2);
-		String json = JsonUtil.toJson(time);
-		System.out.println(json);
-	}*/
-	
 	public static String toJson(Object object, Class<? extends EBD> clazz) {
 		Gson gson = new GsonBuilder().registerTypeAdapter(clazz, new SensorTypeAdapter()).create();
 		return gson.toJson(object);

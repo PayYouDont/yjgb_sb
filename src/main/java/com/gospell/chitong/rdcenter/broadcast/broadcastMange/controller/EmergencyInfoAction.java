@@ -9,13 +9,11 @@ import javax.annotation.Resource;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
@@ -170,7 +168,17 @@ public class EmergencyInfoAction extends BaseAction{
 		model.addAttribute("mediaResouce",mrService.list(new HashMap<>()));
 		return new ModelAndView("broadcast/emer_edit");
 	}
-	
+    @PostMapping({"/getPrograme"})
+    public HashMap<String, Object> getProgrameJson() {
+        String url = serverProperties.getProgramAddress();
+        try {
+            String result = HttpClientUtil.sendPostDataByJson(url, "", "utf8");
+            return JsonWrapper.successWrapper(result);
+        } catch (Exception e) {
+            this.logger.error(e.getMessage(), e);
+            return JsonWrapper.failureWrapper();
+        }
+    }
 	/**
 	 * 分页查询应急信息
 	 * @Title: queryEmer 
@@ -422,9 +430,9 @@ public class EmergencyInfoAction extends BaseAction{
 	}
 	
 	@PostMapping("/sendEmer")
-	public HashMap<String,Object> sendEmer(Integer emerId){
+	public HashMap<String,Object> sendEmer(Integer emerId,String emerType){
 		try {
-			service.sendEBDByEmer(emerId,"3");
+			service.sendEBDByEmer(emerId,emerType);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);

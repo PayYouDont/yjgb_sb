@@ -124,7 +124,7 @@ public class FileUtil {
 	 */
 	public static void wirteFile(InputStream in, OutputStream out, boolean isClosed) {
 		byte[] b = new byte[1024];
-		int len = 0;
+		int len;
 		try {
 			while ((len = in.read(b)) != -1) {
 				out.write(b, 0, len);

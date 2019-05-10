@@ -33,18 +33,23 @@
 			<table class="tab" cellpadding="1" cellspacing="5"
 				style="width: calc(100% - 2px); margin-top: 10px;">
 				<tr>
-					<td style="text-align: center;">指令名称</td>
-					<td><input class="easyui-textbox" id="name" name="name"
-						th:value='${cmd.name}' data-options="required:true"></td>
+					<td style="text-align: center;">指令中文名称</td>
+					<td><input class="easyui-textbox" id="nameCh" name="nameCh"
+						th:value='${cmd.nameCh}' data-options="required:true"></td>
 					<td style="text-align: center;">指令标识符</td>
 					<td><input id="tag" name="tag" placeholder="icon-man" class="easyui-numberbox" type="number"
 					data-options="required:true"	th:value="${cmd.tag}"></td>
 				</tr>
+                <tr>
+                    <td style="text-align: center;">指令英文名称</td>
+                    <td><input class="easyui-textbox" id="nameEn" name="nameEn"
+                               th:value='${cmd.nameEn}' data-options="required:true"></td>
+                    <td style="text-align: center;">指令长度</td>
+                    <td>
+                        <input id="length" name="length" th:value='${cmd.length}' >
+                    </td>
+                </tr>
 				<tr>
-					<td style="text-align: center;">指令长度</td>
-					<td>
-						<input id="length" name="length" th:value='${cmd.length}' >
-					</td>
 					<td style="text-align: center;">属性类型</td>
 					<td>
 						<select class="easyui-combobox" editable="false"

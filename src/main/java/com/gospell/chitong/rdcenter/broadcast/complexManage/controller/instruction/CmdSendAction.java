@@ -106,8 +106,12 @@ public class CmdSendAction extends BaseAction{
 	@PostMapping("send")
 	public HashMap<String,Object> send(Integer[] ids){
 		try {
-			service.send(ids);
-			return JsonWrapper.successWrapper();
+			Integer status = service.send(ids);
+			if(status==200){
+			    return JsonWrapper.successWrapper ();
+            }else{
+			    return JsonWrapper.failureWrapper ();
+            }
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper(e.getMessage());

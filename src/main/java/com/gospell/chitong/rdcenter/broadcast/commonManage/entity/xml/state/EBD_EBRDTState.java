@@ -9,17 +9,18 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
 
 /** 
 * @ClassName: EBD_EBRDTState 
-* @Description: TODO(     ) 
+* @Description: TODO(平台设备及终端状态)
 * @author peiyongdong
 * @date 2019年1月3日 上午10:52:45 
 *  
 */
 @lombok.Data
-public class EBD_EBRDTState implements EBD{
+public class EBD_EBRDTState implements EBDResponse {
 
 	private EBD EBD;
 
@@ -63,4 +64,14 @@ public class EBD_EBRDTState implements EBD{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public EBDResponse createFullResponse() {
+        return null;
+    }
+
+    @Override
+    public EBDResponse createIncrementalResponse() {
+        return null;
+    }
 }

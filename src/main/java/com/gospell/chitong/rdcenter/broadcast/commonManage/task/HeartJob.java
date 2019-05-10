@@ -29,7 +29,7 @@ public class HeartJob implements Job{
 	
 	@Resource
 	private ServerProperties server;
-	
+	//是否已经主动上报平台信息
 	public static boolean flag = false;
 	
 	public static final Logger logger = LoggerFactory.getLogger(HeartJob.class);
@@ -54,8 +54,11 @@ public class HeartJob implements Job{
 			String result = HttpClientUtil.sendPostFile(url, tarPath);
 			if(!flag) {
 				EBD_EBDResponse response = TarUtil.getEBDResponse(result);
+				if(response==null){
+				    return;
+                }
 				String resultCode = response.getEBD().getEBDResponse().getResultCode();
-				if(response!=null&&EBD_EBDResponse.SUCCESS.equals(resultCode)) {
+				if(EBD_EBDResponse.SUCCESS.equals(resultCode)) {
 					EBD_EBRPSInfo info = new EBD_EBRPSInfo(server);
 					tarPath = TarUtil.createXMLTarByBean(info, server.getTarOutPath(), info.getEBD().getEBDID());
 					HttpClientUtil.sendPostFile(url, tarPath);

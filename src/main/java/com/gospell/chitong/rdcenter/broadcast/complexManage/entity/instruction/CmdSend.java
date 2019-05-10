@@ -33,7 +33,7 @@ public class CmdSend implements Serializable {
     }
     public String getType() {
     	if(type==null&&cmdConfig!=null) {
-    		type = cmdConfig.getName();
+    		type = cmdConfig.getNameEn();
     	}
     	return type;
     }

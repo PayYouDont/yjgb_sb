@@ -9,12 +9,15 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 
 /** 
 * @ClassName: SensorTypeAdapter 
@@ -79,14 +82,23 @@ public class SensorTypeAdapter extends TypeAdapter<EBD> {
 				if(type==null) {
 					continue;
 				}
-				if(!(type instanceof String)) {
-					out.name(field.getName()).beginObject();
-					Field[] subFields = type.getClass().getDeclaredFields();					
-					setWrite(subFields, out, type);
-					out.endObject();
-				}else{
-					out.name(field.getName()).value(type.toString());
-				}
+
+				if(type instanceof String){
+                    out.name(field.getName()).value(type.toString());
+                }else if(type instanceof List){
+				    out.name (field.getName ()).beginObject();
+				    List list = (List)type;
+                    list.forEach (t->{
+                        Field[] subFields = t.getClass().getDeclaredFields();
+                        setWrite(subFields, out, t);
+                    });
+                    out.endObject();
+                }else{
+                    out.name(field.getName()).beginObject();
+                    Field[] subFields = type.getClass().getDeclaredFields();
+                    setWrite(subFields, out, type);
+                    out.endObject();
+                }
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

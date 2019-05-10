@@ -59,10 +59,10 @@ public class EBD_Type {
 		case "EBMStateResponse":
 			//应急广播消息播发状态反馈文件
 			return  EBD_EBMStateResponse.class;
-		case "EBD_OMDRequest":
+		case "OMDRequest":
 			//运维数据请求文件
 			return EBD_OMDRequest.class;
-		case "EBD_EBDResponse":
+		case "EBDResponse":
 			//接收回执文件
 			return  EBD_EBDResponse.class;
 		case "EBRPSInfo":
@@ -86,8 +86,8 @@ public class EBD_Type {
 		case "EBRASState":
 			//应急广播适配器状态
 			return EBD_EBRASState.class;
-		case "EBD_EBRBSState":
-			//：传输覆盖播出设备状态
+		case "EBRBSState":
+            //：传输覆盖播出设备状态
 			return EBD_EBRBSState.class;
 		case "EBRDTState":
 			//平台设备及终端状态

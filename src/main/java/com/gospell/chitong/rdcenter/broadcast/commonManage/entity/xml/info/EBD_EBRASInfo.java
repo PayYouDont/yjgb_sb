@@ -10,17 +10,18 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import lombok.EqualsAndHashCode;
 
 /**
  * @ClassName: EBD_EBRASInfo
- * @Description: TODO(适配器信息)
+ * @Description: TODO(应急广播适配器信息)
  * @author peiyongdong
  * @date 2018年12月13日 下午5:51:37
  * 
  */
 @lombok.Data
-public class EBD_EBRASInfo implements EBD{
+public class EBD_EBRASInfo implements EBDResponse {
 
 	private EBD EBD;
 
@@ -80,15 +81,34 @@ public class EBD_EBRASInfo implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponse()
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:35:44
 	 */
 	@Override
 	public EBD_EBRASInfo creatResponse() {
-		// TODO Auto-generated method stub
+        EBD_EBRASInfo.EBD ebd = new EBD_EBRASInfo.EBD ();
+        ebd.setEBDHeader ();
+        ebd.setEBDType ("EBRASInfo");
+        EBRASInfo ebrasInfo = new EBRASInfo ();
+        Params params = new Params ();
+        //params.setRptStartTime ();
+        ebrasInfo.setParams (params);
+        EBRAS ebras = new EBRAS ();
+
+        ebrasInfo.setEBRAS (ebras);
 		return null;
 	}
 
+    @Override
+    public EBDResponse createFullResponse() {
+
+        return null;
+    }
+
+    @Override
+    public EBDResponse createIncrementalResponse() {
+        return null;
+    }
 }

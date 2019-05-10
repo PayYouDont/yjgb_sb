@@ -54,11 +54,16 @@ easyuiInitTree=function(elementId,url,initIdArray){
 	    	var nodes = $(element).tree('getChecked');
 	    	for (var i = 0; i < nodes.length; i++) {
 	    		var pNode=$(element).tree("getParent",nodes[i].target);
-	    		if(pNode==null){v_addressCode=v_addressCode+nodes[i].id+";"}
+	    		if(pNode==null){
+	    		    v_addressCode=v_addressCode+nodes[i].id+","
+	    		}
 	    		else{
-	    			if(!pNode.checked){v_addressCode=v_addressCode+nodes[i].id+";"}
+	    			if(!pNode.checked){
+	    			    v_addressCode=v_addressCode+nodes[i].id+","
+	    			}
 	    		}
 			}
+            v_addressCode = v_addressCode.substring(0,v_addressCode.length-1);
 	    	$("#addressCode").val(v_addressCode);
 	    }
 	});  

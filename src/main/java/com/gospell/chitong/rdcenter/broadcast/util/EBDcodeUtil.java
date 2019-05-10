@@ -52,11 +52,25 @@ public class EBDcodeUtil {
 	public static String getBaseEBDID() {
 		return "10"+createBaseDateCode()+getEBDIDCode();
 	}
+	/**
+	* @Author peiyongdong
+	* @Description ( 23位资源编码)
+	* @Date 14:02 2019/5/8
+	* @Param [deviceInfo, lastCode]
+	* @return java.lang.String
+	**/
 	public static String getEBRID(Deviceinfo deviceInfo,String lastCode) {
 		String code = deviceInfo.getDevaddresscode();
 		int level = getAreaCodeLevel(code);
 		return level+code+lastCode;
 	}
+	/**
+	* @Author peiyongdong
+	* @Description ( 23位资源编码)
+	* @Date 14:01 2019/5/8
+	* @Param [areaColde]
+	* @return java.lang.String
+	**/
 	public static String getEBRID(String areaColde) {
 		String lastCode = ApplicationContextRegister.getBean(ServerProperties.class).getSouceLastCode();
 		int level = getAreaCodeLevel(areaColde);
@@ -85,9 +99,6 @@ public class EBDcodeUtil {
 			}
 		}
 		return -1;
-	}
-	public static void main(String[] args) {
-		System.out.println(getAreaCodeLevel("445103101000"));
 	}
 	public static String getEBRPSStateDesc() {
 		if("".equals(EBRPSStateDesc)) {

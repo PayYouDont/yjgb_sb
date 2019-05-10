@@ -17,9 +17,7 @@ import org.springframework.stereotype.Component;
  *  当config.path中文件不存在时，用classpath中的配置，当存在时会被覆盖
  *  ignoreResourceNotFound = true表示当文件不存在时不报错，默认为false
  */
-@PropertySource(value = { "classpath:config/server.properties",
-		"file:${config.path}" }, ignoreResourceNotFound = true, 
-		encoding = "utf-8")
+@PropertySource(value = { "classpath:config/server.properties", "file:${config.path}" }, ignoreResourceNotFound = true, encoding = "utf-8")
 @Data
 @Component
 public class ServerProperties {
@@ -53,6 +51,10 @@ public class ServerProperties {
 	private String tarOutPath;
 	//后台信息地址
 	private String supporterUrl;
+	//应急信息获取后台频点资源
+    private String programAddress;
+    //指令通道
+    private String cmdChannel;
 	//上级平台地址
 	private String superiorUrl;
 	// 上级平台区域等级
