@@ -11,6 +11,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseE
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info.*;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBMBrdLog;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state.EBD_EBRASState;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state.EBD_EBRBSState;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state.EBD_EBRDTState;
@@ -59,22 +60,26 @@ public class EBD_OMDRequest implements EBD{
 	 * @date 2019年1月3日 上午10:23:43
 	 */
 	@Override
-	public com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD creatResponse() {
-		Class clazz = getClassByOMDType ();
-		if(clazz.getSuperclass ()==EBDResponse.class){
-		    try{
-                EBDResponse ebd = (EBDResponse)clazz.newInstance ();
-                if("Full".equals (this.EBD.OMDRequest.Params.RptType)){
+    public com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD creatResponse() {
+        Class clazz = getClassByOMDType ();
+        if(clazz==null){
+            return null;
+        }
+        try {
+            Object object = clazz.newInstance ();
+            if (object instanceof EBDResponse) {
+                EBDResponse ebd = (EBDResponse) object;
+                if ("Full".equals (this.EBD.OMDRequest.Params.RptType)) {
                     return ebd.createFullResponse ();
-                }else{
+                } else {
                     return ebd.createIncrementalResponse ();
                 }
-            }catch (Exception e){
-		        e.printStackTrace ();
             }
+        } catch (Exception e) {
+            e.printStackTrace ();
         }
-		return null;
-	}
+        return null;
+    }
 	public Class getClassByOMDType(){
 	    switch (this.EBD.OMDRequest.OMDType){
             case "EBRPSInfo":
@@ -104,6 +109,9 @@ public class EBD_OMDRequest implements EBD{
             case "EBRDTState":
                 //平台设备及终端状态
                 return EBD_EBRDTState.class;
+            case "EBMBrdLog":
+                //播发记录
+                return EBD_EBMBrdLog.class;
         }
 	    return null;
     }

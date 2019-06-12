@@ -7,11 +7,26 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceinfoMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicemodelMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicetypeMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicetype;
+import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import lombok.EqualsAndHashCode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: EBD_EBRPSState
@@ -43,12 +58,13 @@ public class EBD_EBRPSState implements EBDResponse {
 	
 	@lombok.Data
 	public static class EBRPSState {
-		private EBRPS EBRPS;
+		private List<EBRPS> EBRPS;
 	}
 
 	@lombok.Data
 	public static class EBRPS {
 		private String RptTime;
+        private String EBRID;
 		/*
 		 * 1：开机/运行正常
 		 * 2：关机/停止运行
@@ -62,26 +78,40 @@ public class EBD_EBRPSState implements EBDResponse {
 
 	/** 
 	 * <p>Title: creatResponseXML</p> 
-	 * <p>Description: </p> 
-	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML() 
-	 * @throws 
+	 * <p>Description: </p>
+	 * @return
+	 * @throws
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:36:46
 	 */
 	@Override
 	public EBD_EBRPSState creatResponse() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
     @Override
     public EBDResponse createFullResponse() {
-        return null;
+	    EBD = new EBD ();
+	    EBD.setEBDHeader ();
+	    EBD.setEBDType ("EBRPSState");
+        EBD.EBRPSState = new EBRPSState ();
+        EBD.EBRPSState.EBRPS = new ArrayList<> ();
+        EBRPS ebrps = new EBRPS ();
+        ebrps.setRptTime (DateUtils.getDateTime ());
+        ServerProperties properties = ApplicationContextRegister.getBean (ServerProperties.class);
+        ebrps.setEBRID (EBDcodeUtil.getEBRID(properties.getAreaCode ()));
+        ebrps.setStateCode ("1");
+        ebrps.setStateDesc ("开机/运行正常");
+        EBD.EBRPSState.EBRPS.add (ebrps);
+        return this;
     }
-
     @Override
     public EBDResponse createIncrementalResponse() {
-        return null;
+        EBD = new EBD ();
+        EBD.setEBDHeader ();
+        EBD.setEBDType ("EBRPSState");
+        EBD.EBRPSState = new EBRPSState ();
+        EBD.EBRPSState.EBRPS = new ArrayList<> ();
+        return this;
     }
 }

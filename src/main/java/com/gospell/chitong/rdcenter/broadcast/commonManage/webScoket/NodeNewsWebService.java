@@ -62,12 +62,15 @@ public class NodeNewsWebService extends BaseService {
 	@OnClose
 	@Override
 	public void close(Session session) {
-		super.close(session);
+	    if(session!=null){
+            super.close(session);
+        }
 	}
 
 	@OnMessage
 	@Override
 	public void incoming(String request) {
+        System.out.println (request);
 		super.incoming(request);
 	}
 

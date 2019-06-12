@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>菜单管理</title>
+    <!--easyui控件css -->
+    <link id="easyuiTheme" rel="stylesheet" type="text/css"
+          href="/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+    <script src="/js/core/jquery.min.js"></script>
+    <!--easyui控件js -->
+    <script src="/easyui/jquery.easyui.min.js"></script>
+    <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/complex/device/whitelist_list.js"></script>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        a:FOCUS {
+            outline: none;
+        }
+    </style>
+</head>
+<body class="easyui-layout">
+<div id="MyBtnDiv" style="height: 30px; padding-top: 3px;">
+    <!--<shiro:hasPermission name="dev:task:add">
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="add();">增加</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="dev:task:edit">
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="edit();">修改</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="dev:task:delete">
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="remove();">删除</a>
+    </shiro:hasPermission>-->
+</div>
+<div data-options="region:'center'" border="true" fit="true" iconCls="icon-extendlist" title="白名单管理">
+    <table id="mainTab" class="easyui-datagrid" toolbar="#MyBtnDiv" border="false"></table>
+</div>
+<div id="editModal" class="easyui-window" title="查看白名单"
+     data-options="iconCls:'icon-extenduser',shadow:false,modal:true,closed:true"
+     style="width: 550px; height: 300px; padding: 5px;">
+    <iframe id="editIframe" scrolling="auto" frameborder="0" src=""style="width: 100%; height: 100%;"></iframe>
+</div>
+</body>
+</html>

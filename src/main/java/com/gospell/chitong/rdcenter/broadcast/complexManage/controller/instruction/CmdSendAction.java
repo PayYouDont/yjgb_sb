@@ -54,9 +54,8 @@ public class CmdSendAction extends BaseAction{
 		Map<String,Object> map = page.getMap();
 		if(search!=null) {
 			map.put("nameLike", search);
-			List<CmdConfig> configs = new ArrayList<>();
-			configs = cmdConfigService.list(map);
-			if(configs.size()>0) {
+			List<CmdConfig> configs = cmdConfigService.list(map);
+			if(configs!=null&&configs.size()>0) {
 				List<Integer> typeList = new ArrayList<>();
 				for (CmdConfig config : configs) {
 					typeList.add(config.getId());

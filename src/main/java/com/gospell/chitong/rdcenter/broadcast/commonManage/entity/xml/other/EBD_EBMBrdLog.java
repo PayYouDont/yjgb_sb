@@ -16,6 +16,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRe
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 import lombok.EqualsAndHashCode;
@@ -30,7 +31,7 @@ import java.util.*;
  * 
  */
 @lombok.Data
-public class EBD_EBMBrdLog implements EBD{
+public class EBD_EBMBrdLog implements EBDResponse {
 
 	private EBD EBD;
 
@@ -155,7 +156,7 @@ public class EBD_EBMBrdLog implements EBD{
                     EBD_EBM_EmerRelation EEER = EEERList.get (0);
                     String EBMID = EEER.getEbmId ();
                     EBM.setEBMID (EBMID);
-                    Emergencyinfo emergencyinfo = EMERDao.getByEmb_id (EBMID);
+                    Emergencyinfo emergencyinfo = EMERDao.getByEbm_id (EBMID);
                     EBD_EBMBrdLog.MsgBasicInfo msgBasicInfo = new EBD_EBMBrdLog.MsgBasicInfo ();
                     //msgBasicInfo.setMsgType (emergencyinfo.get);
                     msgBasicInfo.setSenderName (emergencyinfo.getUnitname ());
@@ -186,11 +187,21 @@ public class EBD_EBMBrdLog implements EBD{
                     item.setUnitInfo (unitInfo);
                     //播发状态代码 0：未处理 1：等待播发，指未到消息播发时间 2：播发中 3：播发成功 4：播发失败，包括播发全部失败、播发部分失败、未按要求播发等情况 5：播发取消
                     item.setBrdStateCode ("3");
-                    item.setBrdStateDesc ("播发成功");
+                    item.setBrdStateDesc (emergencyinfo.getResult ());
                     EBD.EBMBrdLog.EBMBrdItem.add (item);
                 }
             });
         }
 		return this;
 	}
+
+    @Override
+    public com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD createFullResponse() {
+        return creatResponse();
+    }
+
+    @Override
+    public com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD createIncrementalResponse() {
+        return creatResponse();
+    }
 }

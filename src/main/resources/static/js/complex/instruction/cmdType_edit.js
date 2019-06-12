@@ -11,7 +11,7 @@ $(function() {
 	$("#boxType").combobox({
 		onLoadSuccess : function() {
 			var val = $("#boxType option:selected").val();
-			if (val == 3) {
+			if (val == 3||val==4) {
 				$("#resource_tr").show();
 				$('#sourceUrl').combotree({ required: true });
 				$("#sourceFields").combobox({ required: true })
@@ -25,7 +25,7 @@ $(function() {
 		},
 		onChange : function() {
 			var val = $("#boxType option:selected").val();
-			if (val == 3) {
+			if (val == 3||val==4) {
 				$("#resource_tr").show();
 				$('#sourceUrl').combotree({ required: true });
 				$("#sourceFields").combobox({ required: true })

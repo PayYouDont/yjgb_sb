@@ -16,4 +16,7 @@ public interface DeviceInfoService extends BaseService<Deviceinfo,Integer>{
 	List<Deviceinfo> getListByModel(Devicemodel model);
 	
 	List<Deviceinfo> getRegistListByType(String devtype);
+
+    int regist(Deviceinfo deviceinfo) throws Exception;
+    int update(Deviceinfo deviceinfo) throws Exception;
 }

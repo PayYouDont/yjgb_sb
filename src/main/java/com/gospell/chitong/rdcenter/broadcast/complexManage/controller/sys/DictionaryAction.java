@@ -39,7 +39,7 @@ public class DictionaryAction extends BaseAction {
     public HashMap<String,Object> list(Integer pageIndex,Integer pageSize){
         Page<Dictionary> page = service.page (pageIndex-1,pageSize);
         List<Dictionary> list = page.getContent ();
-        int count = page.getSize ();
+        int count = service.count ();
         return JsonWrapper.wrapperPage(list,count);
     }
     @GetMapping("toEdit")

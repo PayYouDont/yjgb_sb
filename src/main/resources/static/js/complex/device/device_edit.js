@@ -50,7 +50,7 @@ function baseUpdate(){
        interval:300
    });
 	$('#dataForm').form('submit',{
-		url:'../backCommunicationAction/baseUpdate',
+		url:'../deviceInfoAction/save',
 		onSubmit:function(){
 			var isValid= $(this).form('enableValidation').form('validate');
 			if (!isValid){

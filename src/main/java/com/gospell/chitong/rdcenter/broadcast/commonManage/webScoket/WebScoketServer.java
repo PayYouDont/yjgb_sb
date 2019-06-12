@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 @Component
-@ServerEndpoint("/webscoket")
+@ServerEndpoint("/websocket")
 public class WebScoketServer {
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据  

@@ -10,8 +10,7 @@
 <title th:text="${emerType}"></title>
 <!--easyui控件css -->
 <link rel="stylesheet" type="text/css" href="/css/common/index.css">
-<link id="easyuiTheme" rel="stylesheet" type="text/css"
-	href="/easyui/themes/default/easyui.css">
+<link id="easyuiTheme" rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
 <script src="/js/core/jquery.min.js"></script>
 <!--easyui控件js -->
@@ -158,9 +157,10 @@
 								th:value="${emer.content}" style="width: 412px; height: 150px"></td>
 						</tr>
 						<tr>
-							<td><input type="hidden" name="status"
-								th:value="${emer.status}" /> <input type="hidden" name="flag"
-								th:value="${emer.flag}" /></td>
+							<td>
+                                <input type="hidden" name="status" th:value="${emer.status}" />
+                                <input type="hidden" name="flag" th:value="${emer.flag}" />
+                            </td>
 						</tr>
 					</table>
 				</div>

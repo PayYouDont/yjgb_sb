@@ -145,5 +145,34 @@ public class DeviceInfoAction extends BaseAction {
 			return JsonWrapper.failureWrapper(e);
 		}
 	}
-
+    @ApiOperation(value="更新设备信息", notes="更新设备信息接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "设备信息id", required = true ,dataType = "String")
+    })
+    @Log("更新设备信息")
+    @RequestMapping("/save")
+    @ResponseBody
+    public HashMap<String, Object> save(Deviceinfo deviceinfo) {
+        try {
+            service.update (deviceinfo);
+            return JsonWrapper.successWrapper();
+        } catch (Exception e) {
+            return JsonWrapper.failureWrapper(e);
+        }
+    }
+    @ApiOperation(value="保存设备信息", notes="保存设备信息接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "设备信息id", required = true ,dataType = "String")
+    })
+    @Log("保存设备信息")
+    @RequestMapping("/regist")
+    @ResponseBody
+    public HashMap<String, Object> regist(Deviceinfo deviceinfo) {
+        try {
+            service.regist (deviceinfo);
+            return JsonWrapper.successWrapper();
+        } catch (Exception e) {
+            return JsonWrapper.failureWrapper(e);
+        }
+    }
 }

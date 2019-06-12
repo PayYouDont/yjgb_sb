@@ -53,6 +53,8 @@
 		<result column="flag" jdbcType="INTEGER" property="flag" />
 		<result column="addressCodeName" jdbcType="VARCHAR"
 			property="addresscodename" />
+        <result column="result" jdbcType="VARCHAR"
+                property="result" />
 		<!-- 关联查询accidentType -->
 		<association property="accidentType" column="accidentType_id" 
 		javaType="com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidenttype"	
@@ -86,7 +88,7 @@
 		displayMethod_id, displayLanguage_id, emergencyLocation_id, media_id, update_by,
 		update_time,
 		create_by, create_time, status, unitName, EBM_ID, areaCode, flag,
-		addressCodeName
+		addressCodeName,result
 	</sql>
 	<sql id="Blob_Column_List">
 		content
@@ -137,6 +139,7 @@
 		#{unitname,jdbcType=VARCHAR},
 		#{ebmId,jdbcType=INTEGER}, #{areacode,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER},
 		#{addresscodename,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
+		#{result,jdbcType=VARCHAR}
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo">
@@ -227,6 +230,9 @@
 			<if test="content != null">
 				content,
 			</if>
+            <if test="result != null">
+                result,
+            </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="emergencyname != null">
@@ -310,6 +316,9 @@
 			<if test="content != null">
 				#{content,jdbcType=LONGVARCHAR},
 			</if>
+            <if test="result != null">
+                #{result,jdbcType=VARCHAR},
+            </if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective"
@@ -397,6 +406,9 @@
 			<if test="content != null">
 				content = #{content,jdbcType=LONGVARCHAR},
 			</if>
+            <if test="result != null">
+                result = #{result,jdbcType=LONGVARCHAR},
+            </if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -429,7 +441,8 @@
 		areaCode = #{areacode,jdbcType=VARCHAR},
 		flag = #{flag,jdbcType=INTEGER},
 		addressCodeName = #{addresscodename,jdbcType=VARCHAR},
-		content = #{content,jdbcType=LONGVARCHAR}
+		content = #{content,jdbcType=LONGVARCHAR},
+		result = #{result,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<update id="updateByPrimaryKey"
@@ -460,7 +473,8 @@
 		EBM_ID = #{ebmId,jdbcType=VARCHAR},
 		areaCode = #{areacode,jdbcType=VARCHAR},
 		flag = #{flag,jdbcType=INTEGER},
-		addressCodeName = #{addresscodename,jdbcType=VARCHAR}
+		addressCodeName = #{addresscodename,jdbcType=VARCHAR},
+		result = #{result,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<select id="list" resultMap="ResultMapWithBLOBs">
@@ -554,6 +568,9 @@
 			<if test="content != null">
 				and content = #{content,jdbcType=LONGVARCHAR}
 			</if>
+            <if test="result != null">
+                and result = #{result,jdbcType=VARCHAR}
+            </if>
 			<if test="nameLike != null">
 				and emergencyName like "%" #{nameLike,jdbcType=VARCHAR} "%"
 			</if>
@@ -663,6 +680,9 @@
 			<if test="content != null">
 				and content = #{content,jdbcType=LONGVARCHAR}
 			</if>
+            <if test="result != null">
+                and result = #{result,jdbcType=VARCHAR}
+            </if>
 			<if test="nameLike != null">
 				and emergencyName like "%" #{nameLike,jdbcType=VARCHAR} "%"
 			</if>

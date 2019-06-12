@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,16 +61,13 @@ public class SignatureUtil {
 			log.error("签名驱动停止错误", e);
 		}
 	}
-
 	/**
-	 * @Title: signature
-	 * @Description: TODO(计算平台数据签名)
-	 * @param flag(0.指令数据1.消息数据)
-	 * @return 设定文件
-	 * @return String 返回类型
-	 * @throws @author peiyongdong
-	 * @date 2018年11月20日 上午10:37:44
-	 */
+	* @Author peiyongdong
+	* @Description ( 计算平台数据签名 )
+	* @Date 16:17 2019/5/13
+	* @Param [inData]
+	* @return java.lang.String
+	**/
 	public static String signature(byte[] inData) {
 		// 调用平台签名的方法
 		try {
@@ -81,16 +80,14 @@ public class SignatureUtil {
 		}
 		return null;
 	}
+
 	/**
-	 * @Title: verifySignature
-	 * @Description: TODO(平台验证数据签名)
-	 * @param sign
-	 * @param flag (0. 指令数据1.消息数据)
-	 * @return 设定文件
-	 * @return boolean 返回类型
-	 * @throws @author peiyongdong
-	 * @date 2018年11月20日 上午10:35:54
-	 */
+	* @Author peiyongdong
+	* @Description ( 平台验证数据签名 )
+	* @Date 16:18 2019/5/13
+	* @Param [inData, sign]
+	* @return boolean
+	**/
 	public static boolean verifySignature(byte[] inData, String sign) {
 		// 返回验签结果
 		try {
@@ -102,7 +99,6 @@ public class SignatureUtil {
 		}
 		return false;
 	}
-
 	public static String getCertSN() {
 		return "0001230000000001";
 	}

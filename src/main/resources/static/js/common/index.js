@@ -102,7 +102,7 @@ $(function () {
         console.log("您的浏览器支持WebSocket");
     }
 })
-socket = new WebSocket("ws://"+window.location.host+"/webscoket");
+socket = new WebSocket("ws://"+window.location.host+"/websocket");
 /*打开事件  */
 socket.onopen = function () {
     isconn = true;
@@ -129,7 +129,7 @@ socket.onerror = function () {
     /* alert("Socket发生了错误"); */
     isconn = false;
 }
-$(window).unload(function () {
+$(window).on('beforeunload',function () {
     socket.close();
     isconn = false;
 });

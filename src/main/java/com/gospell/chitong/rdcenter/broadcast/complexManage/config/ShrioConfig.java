@@ -44,10 +44,12 @@ public class ShrioConfig {
 		filterChainDefinitionMap.put("/easyui/**", "anon");
 		//filterChainDefinitionMap.put("/fonts/**", "anon");
 		filterChainDefinitionMap.put("/image/**", "anon");
+		filterChainDefinitionMap.put ("/websocket*","anon");
+        filterChainDefinitionMap.put ("/administrativeAction/getTreeByCode","anon");
 		filterChainDefinitionMap.put("/nodeAction/upload", "anon");
 		filterChainDefinitionMap.put("/nodeAction/postTar", "anon");
 		filterChainDefinitionMap.put("/EBM_media/*", "anon");
-		filterChainDefinitionMap.put("/backCommunicationAction/*", "anon");
+		//filterChainDefinitionMap.put("/backCommunicationAction/*", "anon");
 		//filterChainDefinitionMap.put("/docs/**", "anon");
 		filterChainDefinitionMap.put("/", "authc");
 		//filterChainDefinitionMap.put("/static/**", "anon");// 静态资源不拦截

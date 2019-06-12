@@ -79,7 +79,7 @@ function baseSave(){
 	 
 	//var data =  $('#dataForm').serializeArray();
 	$('#dataForm').form('submit',{
-		url:'../backCommunicationAction/baseSave',
+		url:'../deviceInfoAction/regist',
 		onSubmit:function(){
 			var isValid= $(this).form('enableValidation').form('validate');
 			if (!isValid){

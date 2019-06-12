@@ -44,7 +44,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public int delete(Integer id) throws Exception {
-         dao.deleteById (id);
+        dao.deleteById (id);
         return 1;
     }
 

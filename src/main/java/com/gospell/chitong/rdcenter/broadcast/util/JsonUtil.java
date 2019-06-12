@@ -7,7 +7,6 @@ import com.google.gson.GsonBuilder;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.GsonIgnore;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.config.SensorTypeAdapter;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.Command;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.EsayuiData;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.EsayuiData.Rows;
 

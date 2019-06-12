@@ -154,6 +154,9 @@ public class Emergencyinfo implements Serializable {
 	 * 信息内容
 	 */
 	private String content;
-
+	/**
+	* 播发结果文字描述
+	**/
+	private String result;
 	private static final long serialVersionUID = 1L;
 }

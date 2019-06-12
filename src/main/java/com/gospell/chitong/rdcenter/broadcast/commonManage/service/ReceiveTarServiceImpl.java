@@ -100,12 +100,12 @@ public class ReceiveTarServiceImpl implements ReceiveTarService{
 	}
 
 	/** 
-	 * <p>Title: saveReceiveTar</p> 
+	 * <p>Title: saveReceiveTar</p>
 	 * <p>Description: </p> 
 	 * @param ebd
 	 * @return
 	 * @throws Exception 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.ReceiveTarService#saveReceiveTar(com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD) 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.ReceiveTarService#saveReceiveTar(com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD)
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2019年1月3日 下午3:15:13

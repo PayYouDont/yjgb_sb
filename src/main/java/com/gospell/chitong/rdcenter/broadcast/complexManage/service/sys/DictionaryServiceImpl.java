@@ -6,6 +6,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.Dictiona
 import com.gospell.chitong.rdcenter.broadcast.util.UpdateTool;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -59,7 +60,8 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     @Override
     public Page<Dictionary> page(Integer pageIndex, Integer pageSize) {
-        return dao.findAll (PageRequest.of (pageIndex,pageSize));
+        Sort sort = new Sort (Sort.Direction.DESC,"id");
+        return dao.findAll (PageRequest.of (pageIndex,pageSize,sort));
     }
 
     @Override

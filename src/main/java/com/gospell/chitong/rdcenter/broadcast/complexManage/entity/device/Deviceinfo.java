@@ -5,8 +5,10 @@ import java.util.Date;
 
 import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 
+import com.gospell.chitong.rdcenter.broadcast.util.StringUtil;
 import lombok.Data;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
 /**
  * deviceinfo
@@ -104,47 +106,43 @@ public class Deviceinfo implements Serializable {
      * 修改人
      */
     private String updateBy;
+    /**
+     * 是否注册
+     */
+    private String onregister;
 
     private String parentpath;
-    
-	private Integer onregister;//是否注册
+
     /***********不存数据库的属性*****************/
     //坐标
     private String coordinate;
-    /*@Setter
-	private String onregister;//是否注册 （第7位）*/
 	@Setter
 	private String online;	  //是否在线 （第6位）
     @Setter
 	private String onwork;	  //是否工作	 （第5位）
     @Setter
 	private String onwarning; //是否报警 （第4位）
-    
+
     private Devicemodel deviceModel;//设备型号
     private String resouceCode;
-    
+    private String statusDesc;
+
     private static final long serialVersionUID = 1L;
-    
-   /* public String getOnregister() {
-    	if(status!=null&&!"".equals(status)) {
-        	return getStatus().substring(7,8);
-    	}
-    	return null;
-    }*/
+
     public String getOnline() {
-    	if(status!=null&&!"".equals(status)) {
+    	if(!StringUtils.isEmpty (status)) {
         	return status.substring(6,7);
     	}
     	return status;
     }
     public String getOnwork() {
-    	if(status!=null&&!"".equals(status)) {
+    	if(!StringUtils.isEmpty (status)) {
         	return status.substring(5,6);
     	}
     	return status;
     }
     public String getOnwarning() {
-    	if(status!=null&&!"".equals(status)) {
+    	if(!StringUtils.isEmpty (status)) {
         	return status.substring(4,5);
     	}
     	return status;
@@ -164,9 +162,30 @@ public class Deviceinfo implements Serializable {
     	return this.lng;
     }
     public String getResouceCode() {
-    	if(resouceCode==null) {
+    	if(resouceCode==null&&devaddresscode!=null) {
     		resouceCode = EBDcodeUtil.getEBRID(devaddresscode);
     	}
     	return resouceCode;
+    }
+    public String getStatusDesc(){
+        if("1".equals (online)&&"1".equals (onwarning)&&"1".equals (onwork)){
+            return "开机/运行正常";
+        }else if("0".equals (online)){
+            return "关机/停止运行";
+        }else if("0".equals (onwarning)){
+            return "故障";
+        }else if("1".equals (online)&&"1".equals (onwarning)&&"0".equals (onwork)){
+            return "播发中";
+        }else{
+            return "故障恢复";
+        }
+    }
+    public void setStatus(String status){
+        this.status = status;
+    }
+    public void setStatus(Integer status){
+        int statusCode = (int) Math.pow (2,status);
+        String workStatus = StringUtil.patch ("0",8,Integer.valueOf (Integer.toBinaryString (statusCode)));
+        this.status = workStatus;
     }
 }

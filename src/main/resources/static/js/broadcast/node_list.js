@@ -176,7 +176,7 @@ $(function () {
         console.log("您的浏览器支持WebSocket");
     }
 })
-socket = new WebSocket("ws://localhost:8090/webscoket");/*打开事件  */
+socket = new WebSocket("ws://localhost:8090/websocket");/*打开事件  */
 socket.onopen = function () {
     isconn = true;
 };/*获得消息事件  */
@@ -194,7 +194,7 @@ socket.onclose = function () {/*console.log("Socket已关闭");  */
 socket.onerror = function () {/* alert("Socket发生了错误"); */
     isconn = false;
 }
-$(window).unload(function () {
+$(window).on('beforeunload',function () {
     socket.close();
     isconn = false;
 });

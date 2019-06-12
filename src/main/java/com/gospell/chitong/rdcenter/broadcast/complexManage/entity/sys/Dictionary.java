@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="sys_dictionary")
 @EqualsAndHashCode(callSuper = false)
-public class Dictionary extends BaseEntity<Dictionary> {
+public class Dictionary extends BaseEntity {
     private String field;
     private String fieldKey;
     private String fieldValue;

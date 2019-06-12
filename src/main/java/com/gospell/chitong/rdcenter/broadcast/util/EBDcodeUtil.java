@@ -1,12 +1,12 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
-import java.util.Date;
-
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
+
+import java.util.Date;
 
 public class EBDcodeUtil {
 	
@@ -76,6 +76,10 @@ public class EBDcodeUtil {
 		int level = getAreaCodeLevel(areaColde);
 		return level+areaColde+lastCode;
 	}
+    public static String getAreaCode(String EBRID) {
+        String areaCode = EBRID.substring (1,13);
+        return areaCode;
+    }
 	public static int getAreaCodeLevel(String areaCode) {
 		if(areaCode.length()==12) {
 			String first6Str = areaCode.substring(0,6);//前6位

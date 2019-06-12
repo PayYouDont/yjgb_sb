@@ -35,7 +35,4 @@ public class EBMessageUtil {
 
 		return String.format("%05d%02d%02d%02d", MJD, H, Mi, S);
 	}
-	public static void main(String [] args){
-		System.out.println(generateSendtime());
-	}
 }

@@ -1,11 +1,14 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Signature;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -102,7 +105,13 @@ public class TarUtil {
 			}
 		}
 	}
-	
+	/**
+	* @Author peiyongdong
+	* @Description ( 解压tar)
+	* @Date 09:21 2019/5/24
+	* @Param [inPath, outPath]
+	* @return void
+	**/
 	public static void archive(String inPath, String outPath) {
 		if(StringUtils.isEmpty(inPath)) {
 			return;
@@ -111,7 +120,7 @@ public class TarUtil {
 		TarInputStream in = null;
 		try {
 			in = new TarInputStream(new FileInputStream(file));
-			TarEntry entry = null;
+			TarEntry entry;
 			while ((entry = in.getNextEntry()) != null) {
 				if (entry.isDirectory()) {
 					continue;
@@ -120,7 +129,7 @@ public class TarUtil {
 				new File(outFile.getParent()).mkdirs();
 				OutputStream out = new FileOutputStream(outFile);
 				byte[] b = new byte[1024];
-				int len = 0;
+				int len;
 				while ((len = in.read(b)) != -1) {
 					out.write(b, 0, len);
 				}
@@ -156,6 +165,13 @@ public class TarUtil {
 		archive(tarPath, temPath);
 		return tempFile;
 	}
+	/**
+	* @Author peiyongdong
+	* @Description (将新文件添加至tar)
+	* @Date 09:21 2019/5/24
+	* @Param [tarPath, filePath, fileName]
+	* @return void
+	**/
     public static void addFileToTar(String tarPath,String filePath,String fileName){
 	    String intTarPath = archiveToTemp (tarPath).getPath ();
 	    FileUtil.copyFile (filePath,intTarPath,fileName);
@@ -163,9 +179,23 @@ public class TarUtil {
 	    pack (intTarPath,tarPath);
 	    FileUtil.delete (intTarPath);
     }
+    /**
+    * @Author peiyongdong
+    * @Description (读取tar)
+    * @Date 09:21 2019/5/24
+    * @Param [tarPath]
+    * @return java.io.File
+    **/
 	public static File readTar(String tarPath) {
 		return readTar(tarPath,null);
 	}
+	/**
+	* @Author peiyongdong
+	* @Description (读取tar)
+	* @Date 09:21 2019/5/24
+	* @Param [tarPath, EBDType]
+	* @return java.io.File
+	**/
 	public static File readTar(String tarPath,String EBDType) {
 		File tempFile = archiveToTemp(tarPath);
 		if(tempFile==null) {
@@ -191,6 +221,13 @@ public class TarUtil {
 		}
 		return null;
 	}
+	/**
+	* @Author peiyongdong
+	* @Description (根据tar路径获取tar相关信息)
+	* @Date 09:22 2019/5/24
+	* @Param [inTarPath, outTarPath]
+	* @return java.util.Map<java.lang.String,java.lang.Object>
+	**/
 	public static Map<String,Object> getTarByPath(String inTarPath, String outTarPath) {
 		if(StringUtils.isEmpty(inTarPath)) {
 			return null;
@@ -225,6 +262,7 @@ public class TarUtil {
 				response.getEBD().getEBDResponse().setResultDesc("签名错误");
 			}
 		}else {
+		    //心跳不验证签名
             isSign = true;
 		}
         map.put("isSign", true);
@@ -241,6 +279,13 @@ public class TarUtil {
 		map.put("ebd", ebd);
 		return map;
 	}
+	/**
+	* @Author peiyongdong
+	* @Description (根据实体类创建tar)
+	* @Date 09:22 2019/5/24
+	* @Param [entity, outPath, name]
+	* @return java.lang.String
+	**/
 	public static String createXMLTarByBean(EBD entity, String outPath, String name) {
 		String tempPath = outPath+File.separatorChar+"temp";
 		// 生成xml
@@ -259,7 +304,13 @@ public class TarUtil {
 		FileUtil.delete(tempPath);
 		return outPath;
 	}
-	
+	/**
+	* @Author peiyongdong
+	* @Description (根据回执tar路径获取回执文件实体)
+	* @Date 09:23 2019/5/24
+	* @Param [result]
+	* @return com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse
+	**/
 	public static EBD_EBDResponse getEBDResponse(String result){
 		if(StringUtils.isEmpty(result)) {
 			return null;
@@ -272,4 +323,20 @@ public class TarUtil {
 		}
 		return null;
 	}
+	/**
+	* @Author peiyongdong
+	* @Description (发送tar)
+	* @Date 09:23 2019/5/24
+	* @Param [ebd]
+	* @return java.lang.String
+	**/
+	public static String sendEBD(EBD ebd) throws Exception{
+        ServerProperties serverProperties = ApplicationContextRegister.getBean (ServerProperties.class);
+        String outPath = serverProperties.getTarOutPath ();
+	    String tarPath = createXMLTarByBean (ebd, outPath, ebd.getEBD ().getEBDID ());
+        String result = HttpClientUtil.sendPostFile (serverProperties.getSupporterUrl (), tarPath);
+        EBD_EBDResponse response = getEBDResponse (result);
+        ApplicationContextRegister.getBean (SendTarService.class).saveSendTar (ebd,response);
+	    return result;
+    }
 }

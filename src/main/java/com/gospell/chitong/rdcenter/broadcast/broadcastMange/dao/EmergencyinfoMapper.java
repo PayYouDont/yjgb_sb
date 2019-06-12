@@ -10,7 +10,7 @@ public interface EmergencyinfoMapper extends BaseDao<Emergencyinfo, Integer>{
  
     List<Emergencyinfo> getByStartTime(Map<String,Object> map);
     
-    Emergencyinfo getByEmb_id(String ebmId);
+    Emergencyinfo getByEbm_id(String ebmId);
     
     int updateByEmb_idSelective(Emergencyinfo record);
     

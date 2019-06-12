@@ -30,9 +30,8 @@ a:FOCUS {
 	<div id="registerDiv" data-options="region:'center'"
 		style="padding: 10px;">
 		<form id="dataForm" class="easyui-form" method="post">
-
+            <input id="id" type="hidden" name="id" th:value="${device.id}">
 			<table class="tab" cellpadding="3">
-
 				<tr>
 					<td style="text-align: center; width: 80px;">设备序列</td>
 					<td><input class="easyui-textbox" id="devDsn" name="devdsn"
@@ -40,28 +39,22 @@ a:FOCUS {
 						data-options="required:true,readonly:'true'" style="width: 200px;" />
 					</td>
 				</tr>
-
 				<tr>
 					<td style="text-align: center; width: 80px;">设备名称</td>
 					<td><input class="easyui-textbox" id="devname" name="devname"
 						data-options="required:true" style="width: 200px;"></td>
 				</tr>
-
-
 				<tr>
 					<td style="text-align: center;">注册地址</td>
 					<td><input id="devAddressCode" name="devaddresscode"
 						data-options="required:true" style="width: 200px;"> <input
 						type="hidden" id="devAddress" name="devAddress"></td>
 				</tr>
-
-
 				<tr>
 					<td style="text-align: center;">设备坐标</td>
 					<td><input id="coordinate" name="coordinate" value=""
 						style="width: 200px;"></td>
 				</tr>
-
 				<tr>
 					<td style="text-align: center;">设备型号</td>
 					<td><select class="easyui-combobox easyui-validatebox"

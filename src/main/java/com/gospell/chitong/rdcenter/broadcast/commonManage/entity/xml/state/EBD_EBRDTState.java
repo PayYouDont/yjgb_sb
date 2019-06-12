@@ -8,9 +8,10 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state;
 
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
+import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 
 /** 
 * @ClassName: EBD_EBRDTState 
@@ -73,5 +74,18 @@ public class EBD_EBRDTState implements EBDResponse {
     @Override
     public EBDResponse createIncrementalResponse() {
         return null;
+    }
+    public static EBD_EBRDTState createInstance(Deviceinfo deviceinfo){
+        EBD_EBRDTState state = new EBD_EBRDTState ();
+        state.EBD = new EBD ();
+        state.EBD.setEBDHeader ();
+        state.EBD.setEBDType ("EBRDTState");
+        state.EBD.EBRDTState = new EBRDTState ();
+        state.EBD.EBRDTState.EBRDT = new EBRDT ();
+        state.EBD.EBRDTState.EBRDT.RptTime = DateUtils.getDateTime ();
+        state.EBD.EBRDTState.EBRDT.EBRID = deviceinfo.getResouceCode ();
+        state.EBD.EBRDTState.EBRDT.StateCode = deviceinfo.getStatus ();
+        state.EBD.EBRDTState.EBRDT.StateDesc = deviceinfo.getStatusDesc ();
+        return state;
     }
 }

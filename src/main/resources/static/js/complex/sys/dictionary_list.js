@@ -33,8 +33,8 @@ $(document).ready(function(){
 	    	{title:'创建人',field:'createBy',width:100,align:'center'},
 	    	{title:'修改时间',field:'updateTime',width:200,align:'center'},
 	        {title:'修改人',field:'updateBy',width:100,align:'center'}
-	    ]]    
-	});  
+	    ]]
+	});
 });
 //搜索
 function doSearch(value){
@@ -100,8 +100,8 @@ function deleteData(id){
         },
         success: function (data) {
             $.messager.progress('close');
-            if(data=="ok"){
-                $.messager.alert('删除提示','删除成功！','info',function(){reloadPage();});
+            if(data.success){
+                $.messager.alert('删除提示','删除成功！','info',function(){refreshMyData();});
             }else if(data=="used"){
                 $.messager.alert('删除提示','该角色正在被多个用户拥有，不能删除','warning');
             }else {

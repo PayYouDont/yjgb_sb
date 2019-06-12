@@ -149,16 +149,12 @@ public class NodeAction extends BaseAction{
 			// 将tar包信息保存至数据库
 			ApplicationContextRegister.getBean(ReceiveTarService.class).saveReceiveTar(ebd);
 			EBD responseEBD = ebd.creatResponse();
-			if(responseEBD == null) {
-				return;
+			if(responseEBD != null) {
+                TarUtil.sendEBD (responseEBD);
 			}
-			String tarName = responseEBD.getEBD().getEBDID();
-			tarPath = TarUtil.createXMLTarByBean(responseEBD,serverProperties.getTarOutPath(),tarName);
-			String result = HttpClientUtil.sendPostFile(serverProperties.getSuperiorUrl(), tarPath);
-			// 保存发送tar包信息
-			ApplicationContextRegister.getBean(SendTarService.class).saveSendTar(responseEBD,TarUtil.getEBDResponse(result));
 		} catch (Exception e) {
-			logger.error("接收tar包异常:"+e);
+			logger.error("接收tar包异常:"+e.getMessage (),e);
+            FileUtil.writeString(e.getMessage (),out);
 		}
 	}
 }

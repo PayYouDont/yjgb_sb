@@ -1,8 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +97,7 @@ public class HttpClientUtil {
 			response = httpClient.execute(httpPost);
 			HttpEntity resEntity = response.getEntity();
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				InputStream in = response.getEntity().getContent();
+				InputStream in = resEntity.getContent();
 				String tarInPath = ApplicationContextRegister.getBean(ServerProperties.class).getTarInPath();
 				String filename = getFileName(response);
 				if(filename!=null) {
@@ -121,7 +121,7 @@ public class HttpClientUtil {
 				if (param != null) {
 					try {
 						// 此处根据具体编码来设置
-						filename = new String(param.getValue().toString().getBytes("ISO-8859-1"), "GBK");
+						filename = new String(param.getValue().getBytes("ISO-8859-1"), "GBK");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -231,4 +231,48 @@ public class HttpClientUtil {
 		String result = postUpload(url, tar);
 		return FileUtil.writeString(result, path);
 	}
+    public static String post(String url,String param){
+        PrintWriter out = null;
+        BufferedReader in = null;
+        String result = "";
+        try{
+            URLConnection connection = new URL (url).openConnection ();
+            // 设置通用的请求属性
+            connection.setRequestProperty ("accept","*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            // 发送POST请求必须设置如下两行
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestProperty("user-agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 获取URLConnection对象对应的输出流
+            out = new PrintWriter(connection.getOutputStream());
+            // 发送请求参数
+            out.print(param);
+            // flush输出流的缓冲
+            out.flush();
+            // 定义BufferedReader输入流来读取URL的响应
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+        }catch (Exception e){
+            e.printStackTrace ();
+        }
+        //使用finally块来关闭输出流、输入流
+        finally{
+            try{
+                if(out!=null){
+                    out.close();
+                }
+                if(in!=null){
+                    in.close();
+                }
+            }
+            catch(IOException ex){
+                ex.printStackTrace();
+            }
+        }
+        return result;
+    }
 }

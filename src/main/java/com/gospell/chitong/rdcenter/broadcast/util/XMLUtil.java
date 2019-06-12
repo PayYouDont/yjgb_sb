@@ -205,8 +205,4 @@ public class XMLUtil {
 		File file = new File(xmlpath);
 		return file.getPath();
 	}
-	public static void main(String[] args) {
-		String xmlPath = "D:\\tar\\get\\temp\\EBDB_01434152300000001030101010000000000000000.xml";
-
-	}
 }

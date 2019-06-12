@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name ="sys_group")
 @EqualsAndHashCode(callSuper = false)
-public class Group extends BaseEntity<Group> {
+public class Group extends BaseEntity{
     private String name;
     private String description;
 }

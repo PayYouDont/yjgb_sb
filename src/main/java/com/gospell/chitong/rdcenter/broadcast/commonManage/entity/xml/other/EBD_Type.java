@@ -47,7 +47,7 @@ public class EBD_Type {
 		case "ConnectionCheck":
 			//心跳
 			return  EBD_ConnectionCheck.class;
-		case "EBD":
+		case "EBM":
 			//应急广播
 			return  EBD_EBD.class;
 		case "EBMBrdLog":

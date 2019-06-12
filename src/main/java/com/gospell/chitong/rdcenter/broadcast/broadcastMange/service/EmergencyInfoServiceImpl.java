@@ -5,13 +5,11 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMa
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.MediaResouceMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.EBD_EBM_EmerRelationMapper;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.service.AreaCodeChineseService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.EBD_EBM_EmerRelationService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
@@ -32,7 +30,6 @@ import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -372,7 +369,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
             info.setUpdateBy (ShiroUtils.getUser ().getName ());
         }
         int i;
-        if (dao.getByEmb_id (info.getEbmId ()) == null) {  //验证数据库是否存在相关数据
+        if (dao.getByEbm_id (info.getEbmId ()) == null) {  //验证数据库是否存在相关数据
             i = dao.insertSelective (info);
         } else {
             i = dao.updateByEmb_idSelective (info);
