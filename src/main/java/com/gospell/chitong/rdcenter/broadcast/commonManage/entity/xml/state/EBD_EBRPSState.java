@@ -79,9 +79,9 @@ public class EBD_EBRPSState implements EBDResponse {
 	/** 
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p>
-	 * @return
+	 * @return88
 	 * @throws
-	 * @author peiyongdong
+	 * @author peiyongdong8
 	 * @date 2018年12月17日 上午9:36:46
 	 */
 	@Override

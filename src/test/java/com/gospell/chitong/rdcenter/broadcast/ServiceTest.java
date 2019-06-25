@@ -6,6 +6,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.google.gson.GsonBuilder;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdConfigService;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,13 +41,5 @@ public class ServiceTest {
 	public void test2() {
 		String str = acservice.getChinese("445103115203");
 		System.out.println(str);
-	}
-	
-	@Resource
-	NodeService nodeservice;
-	@Test
-	public void test3() {
-		DeviceInfoService service = ApplicationContextRegister.getBean(DeviceInfoService.class);
-		System.out.println(service);
 	}
 }

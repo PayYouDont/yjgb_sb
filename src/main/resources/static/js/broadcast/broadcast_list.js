@@ -13,7 +13,6 @@ function intiMap(){
 	setMyMap(unitLng,unitLat,12,"light");
 }
 
-
 //初始化获取所有已经注册的设备集合json
 function getDevByEmerAreCode(addressCodes){
 	$.post("../deviceInfoAction/findByCodes",{code:addressCodes},function(json){
@@ -179,13 +178,21 @@ function intiEmerTab(){
 	});
 }
 
-function statusFormatter(value,rowData,rowIndex){
-	if(value=="5"){
-		return '<font style="color: green;">待发送</font>';
-	}
-	if(value=="6"){
-		return '<font style="color: red;">已发送</font>';
-	}
+function statusFormatter(value){
+	if(value==5){
+		return '<span style="color: green;">待发送</span>';
+	}else if(value==6||value==7||value==18||value==19){
+		return '<span style="color: blue;">已发送</span>';
+	}else if(value==10||value==22||value==23){
+        return '<span style="color: red;">播发失败</span>';
+    }else if(value==8){
+        return '<span style="color: chartreuse;">等待播发</span>';
+    }else if(value==9){
+        return '<span style="color: chartreuse;">正在播发</span>';
+    }else if(value==9){
+        return '<span style="color: blue;">播发结束</span>';
+    }
+
 }
 
 
@@ -263,9 +270,76 @@ function setMyMap(unitLng,unitLat,level,mapStyle){
 	//map.setCurrentCity("赣州市");          // 设置地图显示的城市 此项是必须设置的
 	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 	map.setMapStyle({style:mapStyle});
+	var imgUrl = '../image/mapicon/m4.png';
+    //addImgToMap(imgUrl,unitLng,unitLat)
 }
+function addImgToMap(imgUrl,lng,lat) {
+    // 复杂的自定义覆盖物
+    //1、定义构造函数并继承Overlay
+    //定义自定义覆盖物的构造函数
+    function ComplexCustomOverlay(point) {
+        this._point = point;
+    }
+    // 继承API的BMap.Overlay
+    ComplexCustomOverlay.prototype = new BMap.Overlay();
+    //2、初始化自定义覆盖物
+    // 实现初始化方法
+    ComplexCustomOverlay.prototype.initialize = function (map) {
+        // 保存map对象实例
+        this._map = map;
+        // 创建div元素，作为自定义覆盖物的容器
+        var div = this._div = document.createElement("div");
+        div.style.position = "absolute";
+        div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);//聚合功能?
+        // 可以根据参数设置元素外观
+        div.style.height = "35px";
+        div.style.width = "35px";
+        var arrow = this._arrow = document.createElement("img");
+        arrow.src = imgUrl;
+        arrow.style.width = "35px";
+        arrow.style.height = "35px";
+        arrow.style.top = "22px";
+        arrow.style.left = "10px";
+        div.appendChild(arrow);
 
+        // 将div添加到覆盖物容器中
+        map.getPanes().labelPane.appendChild(div);//getPanes(),返回值:MapPane,返回地图覆盖物容器列表  labelPane呢???
+        // 需要将div元素作为方法的返回值，当调用该覆盖物的show、
+        // hide方法，或者对覆盖物进行移除时，API都将操作此元素。
+        return div;
+    }
 
+    //3、绘制覆盖物
+    // 实现绘制方法
+    ComplexCustomOverlay.prototype.draw = function () {
+        var map = this._map;
+        var pixel = map.pointToOverlayPixel(this._point);
+        this._div.style.left = pixel.x - parseInt(this._arrow.style.left) + "px";
+        this._div.style.top = pixel.y - 30 + "px";
+    }
+    //4、自定义覆盖物添加事件方法
+    ComplexCustomOverlay.prototype.addEventListener = function (event, fun) {
+        this._div['on' + event] = fun;
+    }
+    var myCompOverlay = new ComplexCustomOverlay(new BMap.Point(lng,lat));
+    map.addOverlay(myCompOverlay);//将标注添加到地图中
+    //5、 为自定义覆盖物添加点击事件
+    /*myCompOverlay.addEventListener('click', function () {
+        alert("点击图标");
+        //hide_show();
+    });*/
+    var show = 0;
+    function hide_show() {
+
+        if (show == 0) {
+            myCompOverlay.hide();
+            show = 1;
+        } else {
+            myCompOverlay.show();
+            show = 0;
+        }
+    }
+}
 //4创建控件 添加到地图当中
 function addControl(newControl){
 	var myZoomCtrl = newControl;

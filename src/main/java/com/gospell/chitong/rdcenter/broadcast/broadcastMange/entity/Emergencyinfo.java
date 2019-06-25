@@ -2,6 +2,8 @@ package com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Infosource;
@@ -128,7 +130,7 @@ public class Emergencyinfo implements Serializable {
 	/**
 	 * 信息状态：
      *  flag<2时:(1:待提交 2:待审核 3:未通过审核 4:已审核 5:待发送 6:已发送 7:发送成功 8:等待播发 9:正在播发 10:播发失败
-	 *  11:播发结束
+	 *  11:播发结束 -1:播发取消
      * 注：11以后为上级消息(flag=2时)所需状态 12:已查看 13:未查看 18:已发送(6)+已查看(12) 19:已发送(6)+未查看(13)
      * 22:播发失败(10)+已查看(12) 23:播发失败(10)+未查看(13))
 	 */
@@ -159,4 +161,38 @@ public class Emergencyinfo implements Serializable {
 	**/
 	private String result;
 	private static final long serialVersionUID = 1L;
+
+	public Integer getStatusToEBM(){
+		if(status<8){
+			return 0;
+		}else if (status==8){
+			return 1;
+		}else if (status==9){
+			return 2;
+		}else if (status==11){
+			return 3;
+		}else if (status==10){
+			return 4;
+		}else if (status==-1){
+			return 5;
+		}
+		return null;
+	}
+	public String getStatusDsc(){
+		if(status<8){
+			return "未处理";
+		}else if (status==8){
+			return "等待播发";
+		}else if (status==9){
+			return "播发中";
+		}else if (status==11){
+			return "播发成功";
+		}else if (status==10||status==23||status==22){
+			return"播发失败";
+		}else if (status==-1){
+			return "播发取消";
+		}else {
+			return "未处理";
+		}
+	}
 }

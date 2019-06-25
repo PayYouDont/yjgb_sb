@@ -126,16 +126,16 @@ public class WebScoketServer {
         try {
         	EmergencyInfoService emerService = ApplicationContextRegister.getBean(EmergencyInfoService.class);
             i = emerService.saveXML(ebd);
+            nodeNews.add(NodeNews.parseEBD(ebd));
+            if (i == -200) {
+                return Status.timeError.getStatus();
+            }else {
+                return JsonUtil.toJson(JsonWrapper.wrapperPage(nodeNews,nodeNews.size ()));
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
         }
-        nodeNews.add(NodeNews.parseEBD(ebd));
-        if (i == -200) {
-        	return Status.timeError.getStatus();
-        }else {
-        	return JsonUtil.toJson(JsonWrapper.wrapperPage(nodeNews,nodeNews.size ()));
-        }
-            
+        return null;
     }
 
     /**
@@ -145,7 +145,10 @@ public class WebScoketServer {
      */
     public static String startpush(String path){
         String data = showNodeNews(path);
-        if (data.equals(Status.timeError.getStatus())){
+        if(data==null){
+            return "500";
+        }
+        if (Status.timeError.getStatus().equals(data)){
             return Status.timeError.getStatus();
         }else {
             if (WebScoketServer.session.isOpen()){

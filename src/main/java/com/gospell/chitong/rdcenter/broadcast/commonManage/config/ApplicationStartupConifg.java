@@ -2,6 +2,7 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.task.UpdateDatabasesJob;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
@@ -42,6 +43,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
     private String url;
     @Autowired
     private NettyServer socketServer;
+    //收到的终端心跳集合 存入内存方便随时根据心跳调整状态
     public static Map<String, Deviceinfo> deviceinfoMap = new HashMap<> ();
     public static Map<String, Long> timerMap = new HashMap<> ();
 	@Override
@@ -56,6 +58,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 		startSignature();
         startNettyServer();
         checkTimeOut();
+        updateDatabaseJob();
 	}
     public void checkTimeOut(){
         Timer timer = new Timer();
@@ -118,6 +121,23 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
         } ).start();
 
 	}
+    public void updateDatabaseJob(){
+        Task task = taskDao.selectByJobName("updateDatabaseJob");
+        if(task==null) {
+            task = new Task();
+            task.setCronExpression("0/5 * * * * ?");
+            task.setBeanClass(UpdateDatabasesJob.class.getName());
+            task.setMethodName("run2");
+            task.setIsConcurrent(ScheduleJob.CONCURRENT_IS);
+            task.setDescription("轮询检查应急广播开始时间任务");
+            task.setJobGroup("group2");
+            task.setJobName("updateDatabasesJob");
+            task.setJobStatus(ScheduleJob.STATUS_RUNNING);
+            taskDao.insertSelective(task);
+        }
+        ScheduleJob job = ScheduleJobUtils.entityToData(task);
+        quartzManager.addJob(job);
+    }
 	public void startHeartJob(boolean isCheck){
 		if(isCheck) {
 			Task task = taskDao.selectByJobName("heartJob");

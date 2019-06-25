@@ -427,19 +427,10 @@ public class ReturnData {
             EmergencyinfoMapper emerDao = ApplicationContextRegister.getBean (EmergencyinfoMapper.class);
             Emergencyinfo emergencyinfo = emerDao.getByEbm_id (EBMID);
             if(emergencyinfo!=null){
-                Integer flag = emergencyinfo.getFlag ();
-                if(flag<2){
-                    if(resultCode()==1){//自主播发的应急信息
-                        emergencyinfo.setStatus (11);//播发结束
-                    }else{
-                        emergencyinfo.setStatus (10);//播发失败
-                    }
+                if(resultCode()==1){//自主播发的应急信息
+                    emergencyinfo.setStatus (11);//播发结束
                 }else{
-                    if(resultCode()==1){//上级转发的应急信息
-                        emergencyinfo.setStatus (11);//播发结束
-                    }else{
-                        emergencyinfo.setStatus (emergencyinfo.getStatus ()+10);//播发失败
-                    }
+                    emergencyinfo.setStatus (10);//播发失败
                 }
             }
             emergencyinfo.setResult (new String (resultDesc()));

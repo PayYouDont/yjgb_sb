@@ -13,6 +13,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.Whitelist
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.instruction.CmdSendMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Whitelist;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdType;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.Command;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
@@ -34,6 +35,7 @@ import java.util.Map;
 public class CmdSendServiceImpl implements CmdSendService {
     @Resource
     private CmdSendMapper dao;
+
     /**
 	 * <p>
 	 * Title: delete
@@ -128,7 +130,8 @@ public class CmdSendServiceImpl implements CmdSendService {
 				Command.Commands commands = new Command.Commands ();
 				commands.setCMD_Tag(send.getTag());
 				String cmdChar = send.getCmdChar();
-				Map<String,String> CMD_Char = JsonUtil.toCMDChar(cmdChar);
+				//CmdType type =
+				Map<String,Object> CMD_Char = JsonUtil.toCMDChar(cmdChar);
                 commands.setCMD_Name (send.getType ());
 				commands.setCMD_Data(CMD_Char);
 				comandsList.add(commands);
@@ -138,7 +141,7 @@ public class CmdSendServiceImpl implements CmdSendService {
             System.out.println (json);
             ServerProperties serverProperties = ApplicationContextRegister.getBean (ServerProperties.class);
 			String result = HttpClientUtil.sendPostDataByJson(serverProperties.getCmdChannel (), json,"utf-8");
-			if(result.equals ("ok")){
+			if(result.toLowerCase().equals ("ok")){
                 sends.forEach (send-> send.setStatus (0));
                 resultStatus = 200;
             }else{
@@ -154,10 +157,10 @@ public class CmdSendServiceImpl implements CmdSendService {
             try {
                 save (send);
                 if(send.getTag ()==12){//白名单
-                    Map<String,String> map = JsonUtil.toCMDChar (send.getCmdChar ());
-                    String phoneNumber = map.get ("Phone_number");
-                    String userName = map.get ("User_name");
-                    Integer permissionTypeId = Integer.valueOf (map.get ("Permission_type"));
+                    Map<String,Object> map = JsonUtil.toCMDChar (send.getCmdChar ());
+                    String phoneNumber = map.get ("Phone_number").toString();
+                    String userName = map.get ("User_name").toString();
+                    Integer permissionTypeId = Integer.valueOf (map.get ("Permission_type").toString());
                     String permissionType = "";
                     if(permissionTypeId==1){
                         permissionType = "短信";
@@ -166,9 +169,8 @@ public class CmdSendServiceImpl implements CmdSendService {
                     }else if(permissionTypeId==3){
                         permissionType = "短信和电话";
                     }
-                    String permissionAreaCode = map.get ("Permission_area_code");
+                    String permissionAreaCode = map.get ("Permission_area_code").toString();
                     Whitelist whitelist = new Whitelist (phoneNumber,userName,permissionTypeId,permissionType,permissionAreaCode);
-                    System.out.println (whitelist);
                     ApplicationContextRegister.getBean (WhitelistRepository.class).save (whitelist);
                 }
             }catch (Exception e){

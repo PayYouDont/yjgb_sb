@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +19,9 @@ import javax.annotation.Resource;
 public class ConfigTest {
     @Resource
     private ServerProperties serverProperties;
-	@Test
-	public void test2() {
+
+    @Test
+    public void test2() {
         System.out.println (serverProperties);
-	}
+    }
 }

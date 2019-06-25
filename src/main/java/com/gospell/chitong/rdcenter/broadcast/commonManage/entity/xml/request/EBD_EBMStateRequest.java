@@ -60,28 +60,28 @@ public class EBD_EBMStateRequest implements EBD{
 		}
         EmergencyInfoService emerService = ApplicationContextRegister.getBean (EmergencyInfoService.class);
 		if(list.size()>0) {
-            list.forEach ((eeer)->{
-                Integer emerId = eeer.getEmerId ();
-                Emergencyinfo info = emerService.selectById (emerId);
-                if(info!=null){
-                    EBD_EBMStateResponse response = new EBD_EBMStateResponse ();
-                    EBD_EBMStateResponse.EBD ebd = new EBD_EBMStateResponse.EBD ();
-                    ebd.setEBDHeader ();
-                    EBD_EBMStateResponse.EBMStateResponse ebmStateResponse = new EBD_EBMStateResponse.EBMStateResponse ();
-                    ebmStateResponse.setRptTime (DateUtils.getDateTime ());
-                    EBD_EBMStateResponse.EBM ebm = new EBD_EBMStateResponse.EBM ();
-                    ebm.setEBMID (ebmid);
-                    ebmStateResponse.setEBM (ebm);
-                    ebmStateResponse.setBrdStateCode (info.getStatus ().toString ());
-                    ebmStateResponse.setBrdStateDesc ("播发完成");
-                    EBD_EBMStateResponse.Coverage coverage = new EBD_EBMStateResponse.Coverage ();
-                    coverage.setAreaCode (info.getAreacode ());
-                   // coverage.setCoverageRate ();
-                    ebmStateResponse.setCoverage (coverage);
-                    ebd.setEBMStateResponse (ebmStateResponse);
-                    response.setEBD (ebd);
-                }
-            });
+			Integer emerId = list.get(0).getEmerId ();
+			Emergencyinfo info = emerService.selectById (emerId);
+			if(info!=null){
+				EBD_EBMStateResponse response = new EBD_EBMStateResponse ();
+				EBD_EBMStateResponse.EBD ebd = new EBD_EBMStateResponse.EBD ();
+				ebd.setEBDHeader ();
+				ebd.setEBDType("EBMStateResponse");
+				EBD_EBMStateResponse.EBMStateResponse ebmStateResponse = new EBD_EBMStateResponse.EBMStateResponse ();
+				ebmStateResponse.setRptTime (DateUtils.getDateTime ());
+				EBD_EBMStateResponse.EBM ebm = new EBD_EBMStateResponse.EBM ();
+				ebm.setEBMID (ebmid);
+				ebmStateResponse.setEBM (ebm);
+				ebmStateResponse.setBrdStateCode (info.getStatusToEBM().toString());
+				ebmStateResponse.setBrdStateDesc (info.getStatusDsc());
+				EBD_EBMStateResponse.Coverage coverage = new EBD_EBMStateResponse.Coverage ();
+				coverage.setAreaCode (info.getAreacode ());
+				// coverage.setCoverageRate ();
+				ebmStateResponse.setCoverage (coverage);
+				ebd.setEBMStateResponse (ebmStateResponse);
+				response.setEBD (ebd);
+				return response;
+			}
 		}
 		return null;
 	}

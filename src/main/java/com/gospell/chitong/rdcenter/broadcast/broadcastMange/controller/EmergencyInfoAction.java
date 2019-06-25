@@ -360,21 +360,21 @@ public class EmergencyInfoAction extends BaseAction{
 	**/
     @PostMapping("/viewed")
     public HashMap<String,Object> viewed(Integer id){
-        try {
-            Emergencyinfo info = service.selectById (id);
-            if(info!=null&&info.getFlag ()==2){
-                info.setStatus (info.getStatus ()-1);
-                service.save(info);
-                WebScoketServer.removeToNodeNews (id);
-                return JsonWrapper.successWrapper();
-            }
-        }catch(Exception e) {
-            logger.error(e.getMessage(),e);
-        }
-        return JsonWrapper.failureWrapper();
-    }
-	/**
-	 * 删除应急信息
+     try {
+     Emergencyinfo info = service.selectById (id);
+     if(info!=null&&info.getFlag ()==2){
+     info.setStatus (info.getStatus ()-1);
+     service.save(info);
+     WebScoketServer.removeToNodeNews (id);
+     return JsonWrapper.successWrapper();
+     }
+     }catch(Exception e) {
+     logger.error(e.getMessage(),e);
+     }
+     return JsonWrapper.failureWrapper();
+     }
+     /**
+     * 删除应急信息
 	 * @Title: delete
 	 * @Description: TODO(删除应急信息) 
 	 * @param @param ids
@@ -420,8 +420,8 @@ public class EmergencyInfoAction extends BaseAction{
 	public HashMap<String,Object> castList(Page page){
 		Map<String,Object> map = page.getMap();
 		map.put("areacode", getUser().getAreaCode());
-		map.put("status",5);
-		map.put("orStatus",6);
+		Integer[] statusList = {5,6,7,8,9,10,11,18,19,22,23};
+		map.put("statusList",statusList);
 		map.put("sort", "status");
 		map.put("order", "ASC");
 		List<Emergencyinfo> list = service.list(map);

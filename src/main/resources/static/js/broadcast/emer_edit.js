@@ -76,9 +76,9 @@ function formClear(){
 //返回预案列表
 function goback(){
 	//返回预案还是正常list页面
-	//var href = type=="add"?"toList":"toPlan";
-	//window.location.href="/emergencyInfoAction/"+href;
-    if(type=="add"){
+	var href = type=="add"?"toList":"toPlan";
+	window.location.href="/emergencyInfoAction/"+href;
+    /*if(type=="add"){
         let tab = window.parent.$('#myEasyui-tabs').tabs('getSelected');
         let index = window.parent.$('#myEasyui-tabs').tabs('getTabIndex',tab);
         let div = $(window.parent.tag.panel).find('div').eq(0);
@@ -86,7 +86,7 @@ function goback(){
         window.parent.$('#myEasyui-tabs').tabs('close',index);
     }else{
         window.location.href="/emergencyInfoAction/toPlan";
-    }
+    }*/
 }
 
 //保存

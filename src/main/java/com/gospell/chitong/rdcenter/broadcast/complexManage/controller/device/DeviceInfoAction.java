@@ -142,7 +142,8 @@ public class DeviceInfoAction extends BaseAction {
 			service.delete(id);
 			return JsonWrapper.successWrapper();
 		} catch (Exception e) {
-			return JsonWrapper.failureWrapper(e);
+            logger.error (e.getMessage (),e);
+            return JsonWrapper.failureWrapper(e.getMessage ());
 		}
 	}
     @ApiOperation(value="更新设备信息", notes="更新设备信息接口")
@@ -157,7 +158,8 @@ public class DeviceInfoAction extends BaseAction {
             service.update (deviceinfo);
             return JsonWrapper.successWrapper();
         } catch (Exception e) {
-            return JsonWrapper.failureWrapper(e);
+            logger.error (e.getMessage (),e);
+            return JsonWrapper.failureWrapper(e.getMessage ());
         }
     }
     @ApiOperation(value="保存设备信息", notes="保存设备信息接口")
@@ -172,7 +174,8 @@ public class DeviceInfoAction extends BaseAction {
             service.regist (deviceinfo);
             return JsonWrapper.successWrapper();
         } catch (Exception e) {
-            return JsonWrapper.failureWrapper(e);
+            logger.error (e.getMessage (),e);
+            return JsonWrapper.failureWrapper(e.getMessage ());
         }
     }
 }

@@ -140,6 +140,10 @@ function goPage(div){
 	var menuName=$(div).children().html();
 	var url=$(div).attr("id");
 	var icon=$(div).attr("iconCls");
+	if(menuName.indexOf("badge")!=-1){
+        menuName = menuName.substring(0,menuName.indexOf('<span'));
+        tag.data.total = 0;
+    }
 	if ($('#myEasyui-tabs').tabs('exists', menuName)){
 		$('#myEasyui-tabs').tabs('select', menuName);
 	} else {

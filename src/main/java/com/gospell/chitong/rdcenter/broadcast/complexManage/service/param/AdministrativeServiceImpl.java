@@ -31,7 +31,6 @@ public class AdministrativeServiceImpl implements AdministrativeService{
 		map.put("code", areaCode);
 		List<Administrative> list = list(map);
 		String jsonstr=JsonUtil.toJson(list).replaceAll("name", "text").replaceAll("id", "areaId").replaceAll("code", "id");
-        System.out.println (jsonstr);
 		return jsonstr;
 	}
 	public Administrative getChildList(Administrative ad){

@@ -5,6 +5,7 @@ import java.util.*;
 import javax.annotation.Resource;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.config.ApplicationStartupConifg;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info.EBD_EBRDTInfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig;
@@ -52,7 +53,9 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
 
 	@Override
 	public int delete(Integer id) throws Exception {
-		return dao.deleteByPrimaryKey(id);
+        dao.deleteByPrimaryKey(id);
+        ApplicationStartupConifg.updateDeviceMap ();
+		return 1;
 	}
 
 	@Override
@@ -165,26 +168,32 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
         Map<String,Object> deviceCmd = new LinkedHashMap<> ();
         deviceCmd.put ("CMD_Tag",5);
         deviceCmd.put ("CMD_Name","Set_Logic_Address");
-        Map<String,Object> CMD_Data = new LinkedHashMap<> ();
-        CMD_Data.put ("Physical_address",deviceinfo.getDevdsn ());
-        CMD_Data.put ("Physical_address",EBDcodeUtil.getEBRID (deviceinfo.getDevaddresscode ()));
+        List<Map<String,Object>> CMD_Data = new ArrayList<> ();
+        Map<String,Object> dataMap = new LinkedHashMap<> ();
+        dataMap.put ("Physical_address",deviceinfo.getDevdsn ());
+        dataMap.put ("Logic_address",EBDcodeUtil.getEBRID (deviceinfo.getDevaddresscode ()));
+        CMD_Data.add (dataMap);
         deviceCmd.put ("CMD_Data",CMD_Data);
-        Map<String,Object> rebackCmd = new LinkedHashMap<> ();
+		ServerProperties serverProperties = ApplicationContextRegister.getBean (ServerProperties.class);
+        /*Map<String,Object> rebackCmd = new LinkedHashMap<> ();
         rebackCmd.put ("CMD_Tag",7);
         rebackCmd.put ("CMD_Name","Set_Reback_Para");
-        Map<String,Object> rebbackCMD_Data = new LinkedHashMap<> ();
-        rebbackCMD_Data.put ("Reback_address",url+":"+port);
+        List<Map<String,Object>> rebbackCMD_Data = new ArrayList<> ();
+        Map<String,Object> rebbackDataMap = new LinkedHashMap<> ();
+        rebbackDataMap.put ("Reback_address",url+":"+port);
         ServerProperties serverProperties = ApplicationContextRegister.getBean (ServerProperties.class);
-        rebbackCMD_Data.put ("Resource_code",serverProperties.getSRC_EBRID ());
-        rebbackCMD_Data.put ("Resource_code_type",2);
-        rebbackCMD_Data.put ("Reback_type",2);
-        rebackCmd.put ("CMD_Data",rebbackCMD_Data);
+        rebbackDataMap.put ("Resource_code",serverProperties.getSRC_EBRID ());
+        rebbackDataMap.put ("Resource_code_type",2);
+        rebbackDataMap.put ("Reback_type",2);
+        rebbackCMD_Data.add (rebbackDataMap);
+        rebackCmd.put ("CMD_Data",rebbackCMD_Data);*/
         commands.add (deviceCmd);
-        commands.add (rebackCmd);
+        //commands.add (rebackCmd);
         map.put ("Commands",commands);
         String json = JsonUtil.toJson (map);
+        System.out.println (json);
         String result = HttpClientUtil.sendPostDataByJson(serverProperties.getCmdChannel (), json,"utf-8");
-        if(result.equals ("ok")){
+        if(result.toLowerCase().equals ("ok")){
             return 200;
         }
         return 0;
@@ -201,8 +210,9 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
             deviceinfo.setCreateBy (ShiroUtils.getUser ().getName ());
             deviceinfo.setOnregister ("1");
             EBD_EBRDTInfo ebrdtInfo = EBD_EBRDTInfo.createInstance (deviceinfo);
+            save (deviceinfo);
             TarUtil.sendEBD (ebrdtInfo);
-            return save (deviceinfo);
+            return 1;
         }
         return -1;
     }

@@ -59,7 +59,7 @@ public class EBD_ConnectionCheck implements EBD{
 	@Override
 	public EBD_EBDResponse creatResponse() {
         try{
-            sendIOQueryCMD();
+            //sendIOQueryCMD();
         }catch (Exception e){
             e.printStackTrace ();
         }

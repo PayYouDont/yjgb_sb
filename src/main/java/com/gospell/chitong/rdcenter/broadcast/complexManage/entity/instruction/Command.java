@@ -28,7 +28,7 @@ public class Command {
 	public static class Commands {
 		private int CMD_Tag;
 		private String CMD_Name;
-		private Map<String,String> CMD_Data;
+		private Map<String,Object> CMD_Data;
 	}
 
 

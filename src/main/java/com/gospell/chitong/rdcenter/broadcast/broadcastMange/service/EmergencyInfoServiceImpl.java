@@ -369,7 +369,8 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
             info.setUpdateBy (ShiroUtils.getUser ().getName ());
         }
         int i;
-        if (dao.getByEbm_id (info.getEbmId ()) == null) {  //验证数据库是否存在相关数据
+        Emergencyinfo emergencyinfo = dao.getByEbm_id (info.getEbmId ());
+        if (emergencyinfo == null) {  //验证数据库是否存在相关数据
             i = dao.insertSelective (info);
         } else {
             i = dao.updateByEmb_idSelective (info);

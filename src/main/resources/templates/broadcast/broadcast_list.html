@@ -89,8 +89,7 @@ a:focus {
 			    	</table>
 		    	</div>
 		    	<div id="ctrl_btn_div" style="width:212px;height:30px;padding:10px;position:absolute;bottom:10px;text-align: center;">
-                    <input>
-                    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="send();">信息发送</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add"8 onclick="send();">信息发送</a>
 		   		</div>
 		    </div>   
 		    <div data-options="region:'center',title:'覆盖地图'" >
@@ -112,30 +111,27 @@ a:focus {
 		
 			<div style="height:25px;border-bottom:1px solid rgb(61,91,129);">
 				<i class="fa fa-volume-up" style="color:rgb(0,136,204);line-height:25px;height:25px;font-size:16px;"></i>
-				<font  id="windowDevName"style="line-height:25px;height:25px;color:rgb(0,136,204);
-					font-size:14px;font-weight: bold;font-family: cursive;">设备一
-				</font>
+				<span  id="windowDevName"style="line-height:25px;height:25px;color:rgb(0,136,204);font-size:14px;font-weight: bold;font-family: cursive;">设备一</span>
 			</div>
-		
 			<div style="width:calc(100% - 2px);margin-top:5px;">
-				<font id="windowDevId"style="font-size:14px;font-family: cursive;display: none;"></font>
-				<font style="font-size:14px;font-family: cursive;">序列：</font>
-				<font id="windowDevDsn"style="font-size:14px;font-family: cursive;"></font><br>
-				<font style="font-size:14px;font-family: cursive;">状态：</font>
-				<font id="windowDevStatus"style="font-size:14px;font-family: cursive;">报警</font><br>
-				<font style="font-size:14px;font-family: cursive;">情况： </font>
-				<font id="windowDevStatusScript"style="font-size:14px;font-family: cursive;"></font><br>
-				<font style="font-size:14px;font-family: cursive;">地址：</font>
-				<font id="windowDevAddress"style="font-size:14px;font-family: cursive;"></font><br>
+				<span id="windowDevId"style="font-size:14px;font-family: cursive;display: none;"></span>
+				<span style="font-size:14px;font-family: cursive;">序列：</span>
+				<span id="windowDevDsn"style="font-size:14px;font-family: cursive;"></span><br>
+				<span style="font-size:14px;font-family: cursive;">状态：</span>
+				<span id="windowDevStatus"style="font-size:14px;font-family: cursive;">报警</span><br>
+				<span style="font-size:14px;font-family: cursive;">情况： </span>
+				<span id="windowDevStatusScript"style="font-size:14px;font-family: cursive;"></span><br>
+				<span style="font-size:14px;font-family: cursive;">地址：</span>
+				<span id="windowDevAddress"style="font-size:14px;font-family: cursive;"></span><br>
 				<a style="cursor:pointer;float:right;" href="#" onclick="getDevDetail();">
-				  <font style="font-size:14px;font-weight: bold;font-family: cursive;">更多...</font>
+				  <span style="font-size:14px;font-weight: bold;font-family: cursive;">更多...</span>
 				</a>
 			</div>
 			
 		</div>
    </div>
 	<script type="text/javascript">
-		 //定义全局变量
+         //定义全局变量
 		var map = new BMap.Map("main_map"); // 创建Map实例
 	</script>
 
