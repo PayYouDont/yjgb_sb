@@ -7,15 +7,13 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.commonManage.service;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.SendTarMapper;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.SendTar;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /** 
 * @ClassName: ISendTarService 
@@ -104,7 +102,7 @@ public class SendTarServiceImpl implements SendTarService{
 	 * @date 2019年1月3日 下午3:00:25
 	 */
 	@Override
-	public int saveSendTar(EBD ebd,EBD_EBDResponse response) throws Exception {
+	public int saveSendTar(EBD ebd, EBD_EBDResponse response) throws Exception {
 		SendTar tar = selectById(ebd.getEBD().getEBDID());
 		boolean isUpdate = true;
 		if (tar == null) {

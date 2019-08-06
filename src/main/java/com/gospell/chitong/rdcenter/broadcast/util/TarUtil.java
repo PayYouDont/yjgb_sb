@@ -2,10 +2,11 @@ package com.gospell.chitong.rdcenter.broadcast.util;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Signature;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBMStateResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_Signature;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.resolve.EBD_EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
@@ -204,7 +205,13 @@ public class TarUtil {
 		if(tempFile.isDirectory()) {
 			// 获取临时目录
 			File[] files = tempFile.listFiles();
-			EBDType = EBDType!=null&&EBDType.indexOf("sign")!=-1?"EBDS":"EBDB";
+			if(EBDType!=null&&EBDType.toLowerCase().indexOf(".mp3")!=-1){
+				EBDType = "MP3";
+			}else if (EBDType!=null&&EBDType.indexOf("sign")!=-1){
+				EBDType = "EBDS";
+			}else {
+				EBDType = "EBDB";
+			}
 			for (int i = 0; i < files.length; i++) {
 				// 获取临时目录里面的文件
 				File file = files[i];
@@ -214,6 +221,8 @@ public class TarUtil {
 					if (EBDType.equals("EBDS")&&fileName.indexOf("EBDS") != -1) {
 						return file;
 					}else if (EBDType.equals("EBDB")&&fileName.indexOf("EBDB") != -1&& fileName.indexOf("EBDS") == -1) {
+						return file;
+					}else if (EBDType.equals("MP3")&&fileName.toLowerCase().indexOf(".mp3")!=-1){
 						return file;
 					}
 				}
@@ -240,7 +249,6 @@ public class TarUtil {
 		if(ebd == null) {
 			return map;
 		}
-		EBD_EBDResponse response = new EBD_EBDResponse();
         boolean isSign = true;
 		if(!(ebd instanceof EBD_ConnectionCheck)) {//心跳文件不验证签名
 			//读取签名文件，并验证
@@ -252,42 +260,35 @@ public class TarUtil {
 			try {
 				byte[] inData = FileUtil.readFile(ebdFile);
 				isSign = SignatureUtil.verifySignature(inData,sign);
-				if(!isSign) {
-					response.getEBD().getEBDResponse().setResultCode(""+EBD_EBDResponse.SIGN_VERIF_FAILED);
-					response.getEBD().getEBDResponse().setResultDesc("签名验证未通过");
-				}
 			}catch(Exception e) {
 				logger.error(e.getMessage(),e);
-				response.getEBD().getEBDResponse().setResultCode(""+EBD_EBDResponse.OTHER_ERROR);
-				response.getEBD().getEBDResponse().setResultDesc("签名错误");
 			}
 		}else {
 		    //心跳不验证签名
             isSign = true;
 		}
-        map.put("isSign", true);
-		if(isSign && ebd instanceof EBD_EBD) {
+        map.put("isSign", isSign);
+		if(isSign && ebd instanceof EBD_EBM) {
 			try {
 				WebScoketServer.startpush(inTarPath);
 			} catch (Exception e) {
 				logger.error("播发节点消息失败", e);
 			}
 		}
+		map.put("ebd", ebd);
 		// 删除临时文件
 		FileUtil.delete(ebdFile.getParent());
-		map.put("tarPath", TarUtil.createXMLTarByBean(response, outTarPath, response.getEBD().getEBDID()));
-		map.put("ebd", ebd);
 		return map;
 	}
 	/**
-	* @Author peiyongdong
-	* @Description (根据实体类创建tar)
-	* @Date 09:22 2019/5/24
-	* @Param [entity, outPath, name]
-	* @return java.lang.String
-	**/
+	 * @Author peiyongdong
+	 * @Description (根据实体类创建tar)
+	 * @Date 09:22 2019/5/24
+	 * @Param [entity, outPath, name, type]
+	 * @return java.lang.String
+	 **/
 	public static String createXMLTarByBean(EBD entity, String outPath, String name) {
-		String tempPath = outPath+File.separatorChar+"temp";
+		String tempPath = outPath+File.separatorChar+"temp_"+name;
 		// 生成xml
 		String xmlpath = XMLUtil.createXMLByBean(entity, tempPath, "EBDB_"+name);
 		// 生成签名xml
@@ -317,24 +318,30 @@ public class TarUtil {
 		}
 		File xmlFile = readTar(result);
 		EBD ebd = XMLUtil.readXMLToBean(xmlFile);
+		FileUtil.delete(xmlFile.getParent());
 		if(ebd instanceof EBD_EBDResponse){
 			EBD_EBDResponse response = (EBD_EBDResponse)ebd;
 			return response;
 		}
+		LoggerUtil.print(TarUtil.class,result+"：解析结果为空");
 		return null;
 	}
 	/**
 	* @Author peiyongdong
-	* @Description (发送tar)
+	* @Description (向上级平台发送tar)
 	* @Date 09:23 2019/5/24
 	* @Param [ebd]
 	* @return java.lang.String
 	**/
-	public static String sendEBD(EBD ebd) throws Exception{
+	public static String sendEBDToSuperior(EBD ebd) throws Exception{
         ServerProperties serverProperties = ApplicationContextRegister.getBean (ServerProperties.class);
         String outPath = serverProperties.getTarOutPath ();
-	    String tarPath = createXMLTarByBean (ebd, outPath, ebd.getEBD ().getEBDID ());
-        String result = HttpClientUtil.sendPostFile (serverProperties.getSupporterUrl (), tarPath);
+	    boolean isHeart = false;
+	    if(ebd instanceof EBD_ConnectionCheck){
+			isHeart = true;
+		}
+		String tarPath = createXMLTarByBean (ebd, outPath, ebd.getEBD ().getEBDID ());
+        String result = HttpClientUtil.sendPostFile (serverProperties.getSuperiorUrl (), tarPath,isHeart);
         EBD_EBDResponse response = getEBDResponse (result);
         ApplicationContextRegister.getBean (SendTarService.class).saveSendTar (ebd,response);
 	    return result;

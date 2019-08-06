@@ -19,4 +19,6 @@ public interface DeviceInfoService extends BaseService<Deviceinfo,Integer>{
 
     int regist(Deviceinfo deviceinfo) throws Exception;
     int update(Deviceinfo deviceinfo) throws Exception;
+	List<Deviceinfo> getDeviceByType(String devType);
+
 }

@@ -67,38 +67,38 @@ $(document).ready(function(){
 });
 
 function statusFormatter(value,rowData,rowIndex){
-	if(value=="2"){
-		return '<span style="color: #FF9800;">待审核</span>';
-	}else if(value == "3"){
-		return '<span style="color:green;">未通过审核</span>';
-	}else if(value == "4"){
-		return '<span style="color: green;">已审核</span>';
-	}else if(value=="5"){
-		return '<span style="color: blue;">待发送</span>';
-	}else if(value=="6"||value == '18'){
-		return '<span style="color: green;">已发送</span>';
-	}else if(value == "7"){
-		return '<span style="color: green;">发送成功</span>';
-	}else if(value=="8"){
-		return '<span style="color: yellow;">等待播发</span>';
-	}else if(value=="9"){
-		return '<span style="color: green;">正在播发</span>';
-	}else if(value == "10"){
-		return '<span style="color: red;">播发失败</span>';
-	}else if(value == "11"||value == '22'){
-		return '<span style="color: #4EAF51">播发结束</span>';
-	}else{
-        let label = '<span class="label" style="margin-left: 5px;margin-right:5px;">New</span><a href="#" onclick="viewNew('+rowData.id+')">查看</a>';
-        if(value == '19'){
-            return '<span style="color: green;">已发送'+label+'</span>';
-        }else if(value == '23'){
-            return '<span style="color: green;">播发结束'+label+'</span>';
-        }
-    }
+	//1:待提交 2:待审核 3:未通过审核 4:已审核 5:待发送 6:已发送 7:发送成功 8:等待播发 9:正在播发 10:播发失败 11:播发结束 12:播发取消
+	let label = '<span class="label" style="margin-left: 5px;margin-right:5px;">New</span><a href="#" onclick="viewNew(' + rowData.id + ')">查看</a>';
+	let flag = rowData.flag;
+	if (flag != 2) {
+		label = "";
+	}
+	if (value == 2) {
+		return '<span style="color: #FF9800;">待审核' + label + '</span>';
+	} else if (value == 3) {
+		return '<span style="color:green;">未通过审核' + label + '</span>';
+	} else if (value == 4) {
+		return '<span style="color: green;">已审核' + label + '</span>';
+	} else if (value == 5) {
+		return '<span style="color: blue;">待发送' + label + '</span>';
+	} else if (value == 6) {
+		return '<span style="color: green;">已发送' + label + '</span>';
+	} else if (value == 7) {
+		return '<span style="color: green;">发送成功' + label + '</span>';
+	} else if (value == 8) {
+		return '<span style="color: #FFE370;">等待播发' + label + '</span>';
+	} else if (value == 9) {
+		return '<span style="color: green;">正在播发' + label + '</span>';
+	} else if (value == 10) {
+		return '<span style="color: red;">播发失败' + label + '</span>';
+	} else if (value == 11) {
+		return '<span style="color: #4EAF51">播发结束' + label + '</span>';
+	} else if (value == 12) {
+		return '<span style="color: #FF9800;">播发取消' + label + '</span>';
+	}
 }
 
 function viewNew(v_id){
-    window.location.href="../emergencyInfoAction/toEdit?type=add&id="+v_id;
     $.ajax({
         url:'../emergencyInfoAction/viewed',
         type:'post',
@@ -107,6 +107,7 @@ function viewNew(v_id){
         success:function (json) {
             if(json.success){
                 window.parent.setTag();
+				window.location.href="../emergencyInfoAction/toEdit?type=viewed&id="+v_id;
             }
         }
     })

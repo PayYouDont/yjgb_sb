@@ -112,8 +112,8 @@ function stopSend(){
 	}
 	var v_statu=selectData.status;
 	var v_id=selectData.id;
-	if(v_statu!="6"){
-		$.messager.alert('系统提示','请选择已发送的信息！','info');
+	if(v_statu!=9){//正在播发
+		$.messager.alert('系统提示','请选择正在播发的信息！','info');
 		return;
 	}
 	 $.messager.progress({
@@ -181,9 +181,9 @@ function intiEmerTab(){
 function statusFormatter(value){
 	if(value==5){
 		return '<span style="color: green;">待发送</span>';
-	}else if(value==6||value==7||value==18||value==19){
+	}else if(value==6){
 		return '<span style="color: blue;">已发送</span>';
-	}else if(value==10||value==22||value==23){
+	}else if(value==10){
         return '<span style="color: red;">播发失败</span>';
     }else if(value==8){
         return '<span style="color: chartreuse;">等待播发</span>';

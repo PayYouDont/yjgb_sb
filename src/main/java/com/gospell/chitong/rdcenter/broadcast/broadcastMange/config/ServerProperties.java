@@ -49,6 +49,12 @@ public class ServerProperties {
 	private String tarInPath;
 	// 输出的tar包路径
 	private String tarOutPath;
+	//收到的心跳回执包存放路径
+	private String heartTarPath;
+	// 发出的通用回复包存放路径
+	private String replyOutTarPath;
+	// 收到的通用回复包存放路径
+	private String replyInTarPath;
 	//后台信息地址
 	private String supporterUrl;
 	//应急信息获取后台频点资源
@@ -68,14 +74,16 @@ public class ServerProperties {
 	public String getSRC_EBRID() {
 		String SRC_EBRID = "";
 		// 格式为：区域级别+区域编码+资源编码后10位
-		SRC_EBRID = getAreaLevel() + getAreaCode() + souceLastCode;
+		//SRC_EBRID = getAreaLevel() + getAreaCode() + souceLastCode;
+		SRC_EBRID = "43415230000000101010101";
 		return SRC_EBRID;
 	}
 
 	public String getDEST_EBRID() {
 		String SRC_EBRID = "";
 		// 格式为：区域级别+区域编码+资源编码后10位
-		SRC_EBRID = getSuperAreaLevel() + getSuperAreaCode() + "0101" + "010101";
+		//SRC_EBRID = getSuperAreaLevel() + getSuperAreaCode() + "0101" + "010101";
+		SRC_EBRID = "23400000000000101010101";
 		return SRC_EBRID;
 	}
 

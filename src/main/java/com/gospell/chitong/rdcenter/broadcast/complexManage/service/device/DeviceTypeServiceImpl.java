@@ -1,18 +1,15 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.device;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicemodelMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicetypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicetype;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceTypeService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class DeviceTypeServiceImpl implements DeviceTypeService{
@@ -55,6 +52,4 @@ public class DeviceTypeServiceImpl implements DeviceTypeService{
 	public int count(Map<String, Object> map) {
 		return dao.count(map);
 	}
-	
-	
 }

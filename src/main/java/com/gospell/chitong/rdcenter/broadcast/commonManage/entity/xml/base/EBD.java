@@ -7,7 +7,9 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base;
 
-/** 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
+
+/**
 * @ClassName: EBD 
 * @Description: TODO(     ) 
 * @author peiyongdong

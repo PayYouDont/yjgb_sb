@@ -1,44 +1,35 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.resolve.EBD_EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.ReceiveTarService;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
-import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
-
+import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
+import com.gospell.chitong.rdcenter.broadcast.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.FileExistsException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Api(tags = "节点管理")
 @Controller
@@ -48,7 +39,7 @@ public class NodeAction extends BaseAction{
 	@Resource
 	private NodeService service;
 	@Resource
-	private EmergencyInfoService emergencyInfoService;
+	private ReceiveTarService receiveTarService;
 	@GetMapping("/toList")
 	public String toList() {
 		return "broadcast/node_list";
@@ -115,7 +106,6 @@ public class NodeAction extends BaseAction{
 	public HashMap<String,Object> checkNode(@RequestBody List<Node> nodes){		
 		try {
 			List<Node> list = service.checkNodes(nodes);
-			//WebScoketServer.sendInfo(jsonStr);
 			return JsonWrapper.successWrapper(list);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
@@ -124,37 +114,61 @@ public class NodeAction extends BaseAction{
 	}
 	@ApiOperation(value="上传文件", notes="上传文件接口")
 	@RequestMapping("/upload")
-	@ResponseBody
-	public void upload(HttpServletRequest request,HttpServletResponse response){		
+	public void upload(HttpServletRequest request, HttpServletResponse response){
 		OutputStream out = null;
 		InputStream in = null;
+		EBD_EBDResponse replyResponse;
+		response.setContentType("application/force-download");// 设置强制下载不打开            
 		try {
 			Map<String,Object> map = service.receiveTar(request);
 			out = response.getOutputStream();
 			boolean isTar = (boolean)map.get("isTar");
 			if(!isTar) {
-				FileUtil.writeString("该文件不是tar格式文件",out);
+				replyResponse = new EBD_EBDResponse(EBD_EBDResponse.OTHER_ERROR,"该文件不是tar格式文件");
+				String replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
+				File file = new File(replyOutTarPath);
+				in = new FileInputStream(file);
+				response.addHeader("Content-Disposition", "attachment;fileName=" + file.getName());
+				FileUtil.wirteFile(in, out);
 				return;
 			}
 			boolean isSign = (boolean)map.get("isSign");
 			if(!isSign) {
-				FileUtil.writeString("签名文件验证未通过",out);
+				replyResponse = new EBD_EBDResponse(EBD_EBDResponse.SIGN_VERIF_FAILED,"签名文件验证未通过");
+				String replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
+				File file = new File(replyOutTarPath);
+				in = new FileInputStream(file);
+				response.addHeader("Content-Disposition", "attachment;fileName=" + file.getName());
+				FileUtil.wirteFile(in, out);
 				return;
 			}
-			String tarPath = map.get("tarPath").toString();
-			in = new FileInputStream(new File(tarPath));
-			FileUtil.wirteFile(in, out);
-			FileUtil.delete(tarPath);
+			//验证通过后回复通用
+			replyResponse = new EBD_EBDResponse();
+			String replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
+			File file = new File(replyOutTarPath);
+			in = new FileInputStream(file);
+			response.addHeader("Content-Disposition", "attachment;fileName=" + file.getName());
+			FileUtil.wirteFile(in, out,false);
 			EBD ebd = (EBD)map.get("ebd");
 			// 将tar包信息保存至数据库
-			ApplicationContextRegister.getBean(ReceiveTarService.class).saveReceiveTar(ebd);
+			receiveTarService.saveReceiveTar(ebd);
 			EBD responseEBD = ebd.creatResponse();
 			if(responseEBD != null) {
-                TarUtil.sendEBD (responseEBD);
+                TarUtil.sendEBDToSuperior (responseEBD);
 			}
 		} catch (Exception e) {
-			logger.error("接收tar包异常:"+e.getMessage (),e);
-            FileUtil.writeString(e.getMessage (),out);
+			logger.info(e.getMessage(),e);
+			replyResponse = new EBD_EBDResponse(EBD_EBDResponse.OTHER_ERROR,e.getMessage());
+			String replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
+			try {
+				out = response.getOutputStream();
+				in = new FileInputStream(new File(replyOutTarPath));
+				FileUtil.wirteFile(in, out);
+			}catch (Exception e1){
+				logger.info(e1.getMessage(),e1);
+			}
+		}finally {
+			FileUtil.closeIO(in,out);
 		}
 	}
 }

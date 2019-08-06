@@ -7,12 +7,11 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity;
 
-import java.io.Serializable;
-
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
-
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.resolve.EBD_EBM;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /** 
 * @ClassName: NodeNew 
@@ -45,13 +44,13 @@ public class NodeNews implements Serializable{
 	private String AuxiliaryDesc;
 	private String Size;
 	public static NodeNews parseEBD(EBD ebd){
-		if(!(ebd instanceof EBD_EBD)) {
+		if(!(ebd instanceof EBD_EBM)) {
 			return null;
 		}
-		EBD_EBD EBD = (EBD_EBD)ebd;
+		EBD_EBM EBD = (EBD_EBM)ebd;
 		NodeNews nodeNews = new NodeNews();
 		nodeNews.setEBMVersion(EBD.getEBD().getEBDVersion());
-		EBD_EBD.EBM EBM = EBD.getEBD().getEBM();
+		EBD_EBM.EBM EBM = EBD.getEBD().getEBM();
 		nodeNews.setEBMID(EBM.getEBMID());
 		nodeNews.setMsgType(EBM.getMsgBasicInfo().getMsgType());
 		nodeNews.setSenderName(EBM.getMsgBasicInfo().getSenderName());
@@ -65,7 +64,7 @@ public class NodeNews implements Serializable{
 		nodeNews.setMsgTitle(EBM.getMsgContent().getMsgTitle());
 		nodeNews.setMsgDesc(EBM.getMsgContent().getMsgDesc());
 		nodeNews.setAreaCode(EBM.getMsgContent().getAreaCode());
-		EBD_EBD.Auxiliary Auxiliary = EBM.getMsgContent().getAuxiliary();
+		EBD_EBM.Auxiliary Auxiliary = EBM.getMsgContent().getAuxiliary();
 		if(Auxiliary!=null) {
 			nodeNews.setAuxiliaryType(Auxiliary.getAuxiliaryType());
 			nodeNews.setAuxiliaryDesc(Auxiliary.getAuxiliaryDesc());

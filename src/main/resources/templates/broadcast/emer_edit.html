@@ -173,8 +173,8 @@
 	<div data-options="region:'south'"
 		style="text-align: right; padding: 5px;">
 		<a class="easyui-linkbutton" data-options="iconCls:'icon-back'"href="javascript:void(0)" onclick="goback();" style="width: 80px;">返回</a>
-		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" th:if="${emer.flag<2}" href="javascript:void(0)" onclick="mysave();" style="width: 80px">保存</a>
-		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" th:if="${emer.flag<2}" href="javascript:void(0)" onclick="formClear();" style="width: 80px">重置</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" th:if="${type}!='viewed'" href="javascript:void(0)" onclick="mysave();" style="width: 80px">保存</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" th:if="${type}!='viewed'" href="javascript:void(0)" onclick="formClear();" style="width: 80px">重置</a>
 	</div>
 </body>
 </html>

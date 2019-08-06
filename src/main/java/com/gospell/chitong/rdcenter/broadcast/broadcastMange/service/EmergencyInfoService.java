@@ -17,8 +17,8 @@ public interface EmergencyInfoService extends BaseService<Emergencyinfo,Integer>
     String review(Emergencyinfo info) throws Exception;
     
     int deleteByIds(Integer[] ids) throws Exception;
-    
-    int saveXML(EBD ebd) throws Exception;
+
+    Emergencyinfo getByEbm_id(String ebmId);
     
     List<Displaylanguage> DisplaylanguageList(Map<String,Object> map);
     

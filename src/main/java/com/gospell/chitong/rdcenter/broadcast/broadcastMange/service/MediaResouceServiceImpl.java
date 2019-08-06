@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 *  
 */
 @Service
+@Getter
 public class MediaResouceServiceImpl implements MediaResouceService{
 	@Resource
 	private MediaResouceMapper dao;
@@ -43,7 +45,7 @@ public class MediaResouceServiceImpl implements MediaResouceService{
 	 * @param id
 	 * @return
 	 * @throws Exception 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService#delete(java.lang.Integer) 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService#(java.lang.Integer)
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年9月25日 下午4:49:41
@@ -61,19 +63,23 @@ public class MediaResouceServiceImpl implements MediaResouceService{
 	 * <p>Description: </p> 
 	 * @param record
 	 * @return
-	 * @throws Exception 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService#save(java.lang.Object) 
-	 * @throws 
+	 * @throws Exception
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService#(java.lang.Object)
+	 * @throws
 	 * @author peiyongdong
 	 * @date 2018年9月25日 下午4:49:41
 	 */
 	@Override
 	public int save(MediaResouce record) throws Exception {
 		if(record.getId()!=null) {
-			record.setUpdateBy(ShiroUtils.getUser().getName());
+			if (ShiroUtils.getUser()!=null){
+				record.setUpdateBy(ShiroUtils.getUser().getName());
+			}
 			return dao.updateByPrimaryKeySelective(record);
 		}
-		record.setCreateBy(ShiroUtils.getUser().getName());
+		if (ShiroUtils.getUser()!=null){
+			record.setCreateBy(ShiroUtils.getUser().getName());
+		}
 		return dao.insertSelective(record);
 	}
 
@@ -82,7 +88,7 @@ public class MediaResouceServiceImpl implements MediaResouceService{
 	 * <p>Description: </p> 
 	 * @param id
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService#selectById(java.lang.Integer) 
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService#(java.lang.Integer)
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年9月25日 下午4:49:41

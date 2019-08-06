@@ -93,7 +93,7 @@ public class ReceiveTarServiceImpl implements ReceiveTarService{
 	 */
 	@Override
 	public int save(ReceiveTar record, boolean isUpdate) throws Exception {
-		if(isUpdate) {
+		if(isUpdate&&record.getId()!=null) {
 			return dao.updateByPrimaryKeySelective(record);
 		}
 		return dao.insertSelective(record);

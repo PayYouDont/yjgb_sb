@@ -1,7 +1,6 @@
 var tag={};
 $(function(){
 	getNvaMenuDetail();
-	
 })
 function getNvaMenuDetail(){
 	if(nvaMenuType){
@@ -115,9 +114,16 @@ socket.onmessage = function (msg) {
         //$('#mainTab').datagrid("loadData",data);
         tag.data = data;
         setTag()
-    }/*else{
-        $.messager.alert('系统提示',data.data,'info');
-    }*/
+    }
+	var ifrmaes = $('iframe');
+	for (var i=0;i<ifrmaes.length;i++){
+		var src = $(ifrmaes[i]).attr("src");
+		var a = "";
+		if (src.indexOf('emergencyInfoAction/toList')!=-1){
+			ifrmaes[i].contentWindow.refreshMyData();
+			return
+		}
+	}
 };
 /*关闭事件  */
 socket.onclose = function () {

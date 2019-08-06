@@ -2,9 +2,9 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.task;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info.EBD_EBRPSInfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_ConnectionCheck;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.info.EBD_EBRPSInfo;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -47,7 +47,7 @@ public class HeartJob implements Job{
 		EBD_ConnectionCheck check = new EBD_ConnectionCheck();
 		check.init();
 		try {
-			String result = TarUtil.sendEBD (check);
+			String result = TarUtil.sendEBDToSuperior (check);
 			if(!flag) {
 				EBD_EBDResponse response = TarUtil.getEBDResponse(result);
 				if(response==null){
@@ -56,7 +56,7 @@ public class HeartJob implements Job{
 				String resultCode = response.getEBD().getEBDResponse().getResultCode();
 				if(EBD_EBDResponse.SUCCESS.equals(resultCode)) {
 					EBD_EBRPSInfo info = new EBD_EBRPSInfo(server);
-                    TarUtil.sendEBD (info);
+                    TarUtil.sendEBDToSuperior (info);
 					flag = true;
 				}
 			}

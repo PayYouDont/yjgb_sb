@@ -1,31 +1,24 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.device;
 
-import java.util.*;
-
-import javax.annotation.Resource;
-
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.config.ApplicationStartupConifg;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info.EBD_EBRDTInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.info.EBD_EBRDTInfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdConfig;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdSend;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.CmdType;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdConfigService;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.instruction.CmdTypeService;
-import com.gospell.chitong.rdcenter.broadcast.util.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicemodelMapper;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DevicetypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicetype;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Administrative;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
+import com.gospell.chitong.rdcenter.broadcast.util.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import springfox.documentation.spring.web.json.Json;
+
+import javax.annotation.Resource;
+import java.util.*;
 
 @Service
 public class DeviceInfoServiceImpl implements DeviceInfoService{
@@ -191,14 +184,13 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
         //commands.add (rebackCmd);
         map.put ("Commands",commands);
         String json = JsonUtil.toJson (map);
-        System.out.println (json);
+		LoggerUtil.print(this.getClass(),json);
         String result = HttpClientUtil.sendPostDataByJson(serverProperties.getCmdChannel (), json,"utf-8");
         if(result.toLowerCase().equals ("ok")){
             return 200;
         }
         return 0;
     }
-
     @Override
     public int regist(Deviceinfo deviceinfo) throws Exception {
         int status = sendDeviceInfoCMD (deviceinfo);
@@ -211,7 +203,12 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
             deviceinfo.setOnregister ("1");
             EBD_EBRDTInfo ebrdtInfo = EBD_EBRDTInfo.createInstance (deviceinfo);
             save (deviceinfo);
-            TarUtil.sendEBD (ebrdtInfo);
+			ApplicationStartupConifg.updateDeviceMap ();
+            try {
+				TarUtil.sendEBDToSuperior (ebrdtInfo);
+			}catch (Exception e){
+            	LoggerUtil.log(this.getClass(),e);
+			}
             return 1;
         }
         return -1;
@@ -232,7 +229,7 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
                 deviceinfo.setUpdateBy (ShiroUtils.getUser ().getName ());
                 EBD_EBRDTInfo ebrdtInfo = EBD_EBRDTInfo.createInstance (deviceinfo);
                 //主动上报
-                TarUtil.sendEBD (ebrdtInfo);
+                TarUtil.sendEBDToSuperior (ebrdtInfo);
                 return save (deviceinfo);
             }else{
                 return -1;
@@ -242,4 +239,38 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
             return save (deviceinfo);
         }
     }
+	/**
+	 * @Author peiyongdong
+	 * @Description ( 根据devType获取设备 )
+	 * @Date 14:20 2019/5/15
+	 * @Param [devType]
+	 * @return java.util.List<com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo>
+	 **/
+	@Override
+	public List<Deviceinfo> getDeviceByType(String devType) {
+		DevicetypeMapper dtDao = ApplicationContextRegister.getBean (DevicetypeMapper.class);
+		Map<String,Object> map = new HashMap<>();
+		map.put ("devtype",devType);
+		List<Devicetype> deviceTypes = dtDao.list (map);
+		Devicetype devicetype = null;
+		if(deviceTypes!=null&&deviceTypes.size ()>0){
+			devicetype = deviceTypes.get (0);
+		}
+		if (devicetype==null){
+			return null;
+		}
+		Integer deviceTypeId = devicetype.getId ();
+		map = new HashMap<> ();
+		map.put ("devicetypeId",deviceTypeId);
+		List<Devicemodel> deviceModels = dmdao.list (map);
+		List<Deviceinfo> list = new ArrayList<> ();
+		for (Devicemodel deviceModel:deviceModels){
+			Integer deviceModelId = deviceModel.getId ();
+			Map<String,Object> objectMap = new HashMap<> ();
+			objectMap.put ("devicemodelId",deviceModelId);
+			List<Deviceinfo> deviceInfos = dao.list (objectMap);
+			list.addAll (deviceInfos);
+		}
+		return list;
+	}
 }

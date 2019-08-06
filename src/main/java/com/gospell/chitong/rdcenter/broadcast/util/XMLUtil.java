@@ -24,8 +24,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Signature;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_Type;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_Signature;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD_Type;
 /** 
 * @ClassName: XMLUtil O
 * @Description: TODO(     ) 
@@ -47,7 +47,7 @@ public class XMLUtil {
 			String EBDType = "";
 			EBDType = parseJsonElement(element,EBDType);
 			Class<? extends EBD> clazz = EBD_Type.getClassByEBDType(EBDType);
-			return (EBD) readXMLToBean(xmlFile, clazz);
+			return readXMLToBean(xmlFile, clazz);
 		}
 		return null;
 	}
@@ -78,7 +78,7 @@ public class XMLUtil {
 		JsonElement element = parser.parse(json);
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.fromJson(element,clazz);
-	}
+}
 	public static String readXMLToJsonStr(File xmlFile) {
 		SAXReader reader = new SAXReader();
 		// 通过reader对象的read方法加载xml文件，获取document对象  
@@ -92,7 +92,7 @@ public class XMLUtil {
             sb.replace(sb.length()-1, sb.length(),"}");
             return sb.toString();
 		} catch (DocumentException e) {
-			e.printStackTrace();
+			LoggerUtil.log(XMLUtil.class,e);
 		}
 		return null;
 	}

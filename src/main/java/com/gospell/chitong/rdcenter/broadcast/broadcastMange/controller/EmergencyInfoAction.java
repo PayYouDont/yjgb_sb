@@ -145,7 +145,7 @@ public class EmergencyInfoAction extends BaseAction{
 		if(emer.getFlag ()==null){
             if(type.equals("add")) {
                 emer.setFlag(1);
-            }else {
+            }else if(type.equals("plan")){
                 emer.setFlag(0);
             }
         }
@@ -200,7 +200,7 @@ public class EmergencyInfoAction extends BaseAction{
 		if(search!=null) {
 			map.put("nameLike", search);
 		}
-		map.put("addressCodeLike", EBDcodeUtil.getParentCode (getUserAreaCode()));
+		//map.put("addressCodeLike", EBDcodeUtil.getParentCode (getUserAreaCode()));
 		map.put("flagNot", 0);//非预案信息
 		map.put("sort", "start_time");
 		map.put("order", "DESC");
@@ -361,18 +361,18 @@ public class EmergencyInfoAction extends BaseAction{
     @PostMapping("/viewed")
     public HashMap<String,Object> viewed(Integer id){
      try {
-     Emergencyinfo info = service.selectById (id);
-     if(info!=null&&info.getFlag ()==2){
-     info.setStatus (info.getStatus ()-1);
-     service.save(info);
-     WebScoketServer.removeToNodeNews (id);
-     return JsonWrapper.successWrapper();
-     }
-     }catch(Exception e) {
-     logger.error(e.getMessage(),e);
-     }
-     return JsonWrapper.failureWrapper();
-     }
+		 Emergencyinfo info = service.selectById(id);
+		 if (info != null && info.getFlag() == 2) {
+			 info.setFlag(1);
+			 service.save(info);
+			 WebScoketServer.removeToNodeNews(id);
+			 return JsonWrapper.successWrapper();
+		 }
+	 } catch (Exception e) {
+		 logger.error(e.getMessage(), e);
+	 }
+		return JsonWrapper.failureWrapper();
+	}
      /**
      * 删除应急信息
 	 * @Title: delete

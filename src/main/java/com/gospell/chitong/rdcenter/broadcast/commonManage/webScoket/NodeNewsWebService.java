@@ -1,22 +1,18 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket;
 
-import java.io.File;
-
-import javax.annotation.Resource;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.NodeService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
+import java.io.File;
 
 
 /**
@@ -45,9 +41,9 @@ public class NodeNewsWebService extends BaseService {
 	 * @param
 	 * @return
 	 */
-	public String showNodeNews(){
-		File tarfile = new File(this.path);
-		EBD ebd = service.getEbmFromTar(tarfile);
+	public String showNodeNews() {
+		File ebdFile = TarUtil.readTar(path);
+		EBD ebd = XMLUtil.readXMLToBean(ebdFile);
 		return JsonUtil.toJson(JsonUtil.toJson(ebd));
 	}
 	@OnOpen

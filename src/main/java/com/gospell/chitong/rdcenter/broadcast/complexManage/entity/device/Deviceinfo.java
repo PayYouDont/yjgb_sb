@@ -180,6 +180,19 @@ public class Deviceinfo implements Serializable {
             return "故障恢复";
         }
     }
+    public Integer getStatusToEBD(){
+        if("1".equals (online)&&"1".equals (onwarning)&&"1".equals (onwork)){
+            return 1;
+        }else if("0".equals (online)){
+            return 2;
+        }else if("0".equals (onwarning)){
+            return 3;
+        }else if("1".equals (online)&&"1".equals (onwarning)&&"0".equals (onwork)){
+            return 4;
+        }else{
+            return 5;
+        }
+    }
     public void setStatus(String status){
         this.status = status;
     }

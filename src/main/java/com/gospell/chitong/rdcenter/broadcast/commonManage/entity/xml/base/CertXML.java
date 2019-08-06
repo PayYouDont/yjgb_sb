@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other;
+package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base;
 
 import lombok.Data;
 

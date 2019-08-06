@@ -15,6 +15,18 @@ import org.slf4j.LoggerFactory;
 public class FileUtil {
 	public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
+	public static void closeIO(InputStream in,OutputStream out){
+		try{
+			if (in!=null){
+				in.close();
+			}
+			if(out!=null){
+				out.close();
+			}
+		}catch (IOException e){
+			logger.info(e.getMessage(),e);
+		}
+	}
 	public static String writeString(String msg, String path) {
 		PrintWriter out = null;
 		File file = new File(path);
@@ -87,18 +99,23 @@ public class FileUtil {
 	 * @throws @author peiyongdong
 	 * @date 2018年11月21日 下午4:01:40
 	 */
-	public static void copyFile(String inPath, String outPaht, String fileName) {
+	public static String copyFile(String inPath, String outPaht, String fileName) {
 		File file = new File(inPath);
+		File outDir = new File(outPaht);
+		if (!outDir.exists()){
+			outDir.mkdirs();
+		}
 		File outFile = new File(outPaht + File.separatorChar + fileName);
 		try {
 			InputStream in = new FileInputStream(file);
 			wirteFile(in, new FileOutputStream(outFile));
 			logger.debug("写出文件完毕!路径:" + outFile.getPath());
+			return outFile.getPath();
 		} catch (IOException e) {
 			logger.error("复制文件错误:", e);
 		}
+		return null;
 	}
-
 	/**
 	 * @Title: wirteFile
 	 * @Description: TODO(复制文件)

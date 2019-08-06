@@ -1,17 +1,9 @@
 package com.gospell.chitong.rdcenter.broadcast.util;
 
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -31,14 +23,15 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Node;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HttpClientUtil {
 
-	public static final Logger logger = LoggerFactory
-			.getLogger("com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil");
+	public static final Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 
 	public static Integer checkNode(Node node) throws ClientProtocolException, IOException {
 		String url = node.getUrl();
@@ -62,21 +55,20 @@ public class HttpClientUtil {
 		// 获取结果实体
 		// 判断网络连接状态码是否正常(0--200都数正常)
 		int statusCode = response.getStatusLine().getStatusCode();
-		/*
-		 * String result = ""; if (statusCode == HttpStatus.SC_OK) { result =
-		 * EntityUtils.toString(response.getEntity(), "utf-8"); }
-		 */
 		// 释放链接
 		response.close();
 		return statusCode;
 	}
-
+	public static String sendPostFile(String url, String tarPath,boolean isHeart) throws Exception {
+		File tar = new File(tarPath);
+		return postUpload(url, tar,isHeart);
+	}
 	public static String sendPostFile(String url, String tarPath) throws Exception {
 		File tar = new File(tarPath);
-		return postUpload(url, tar);
+		return postUpload(url, tar,false);
 	}
 
-	public static String postUpload(String url, File file) {
+	public static String postUpload(String url, File file,boolean isHeart) {
 		// 创建httpclient对象
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
@@ -98,9 +90,13 @@ public class HttpClientUtil {
 			HttpEntity resEntity = response.getEntity();
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				InputStream in = resEntity.getContent();
-				String tarInPath = ApplicationContextRegister.getBean(ServerProperties.class).getTarInPath();
+				ServerProperties serverProperties = ApplicationContextRegister.getBean(ServerProperties.class);
+				String tarInPath = serverProperties.getTarInPath();
 				String filename = getFileName(response);
 				if(filename!=null) {
+					if(isHeart){
+						tarInPath = serverProperties.getHeartTarPath();
+					}
 					result = FileUtil.copyFile(in, tarInPath, filename);
 				}
 			}
@@ -158,7 +154,7 @@ public class HttpClientUtil {
 		// 创建post方式请求对象
 		HttpPost httpPost = new HttpPost(url);
 		// 设置超时
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(2000).setConnectTimeout(10000).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(10000).build();
 		httpPost.setConfig(requestConfig);
 		// 设置参数到请求对象中
 		StringEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
@@ -228,7 +224,7 @@ public class HttpClientUtil {
 			return "";
 		}
 		path += File.separatorChar + tar.getName();
-		String result = postUpload(url, tar);
+		String result = postUpload(url, tar,false);
 		return FileUtil.writeString(result, path);
 	}
     public static String post(String url,String param){

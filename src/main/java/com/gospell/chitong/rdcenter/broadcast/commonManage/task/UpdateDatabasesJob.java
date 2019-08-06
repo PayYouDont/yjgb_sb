@@ -1,13 +1,8 @@
 
 package com.gospell.chitong.rdcenter.broadcast.commonManage.task;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info.EBD_EBRPSInfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_ConnectionCheck;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
-import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -31,7 +26,7 @@ import java.util.Map;
 @Component
 public class UpdateDatabasesJob implements Job{
     @Resource
-    private EmergencyinfoMapper emerDao;
+    private EmergencyInfoService emergencyInfoService;
 	public static final Logger logger = LoggerFactory.getLogger(UpdateDatabasesJob.class);
 
 	/**
@@ -47,14 +42,26 @@ public class UpdateDatabasesJob implements Job{
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
         Map<String,Object> map = new HashMap<> ();
-        map.put ("status","5");//待发送
-        List<Emergencyinfo> emergencyinfos = emerDao.list (map);
+        map.put ("status",5);//待发送
+        List<Emergencyinfo> emergencyinfos = emergencyInfoService.list (map);
         Date date = new Date ();
         emergencyinfos.forEach (emergencyinfo -> {
             Date startTime = emergencyinfo.getStartTime ();
-            if(startTime.getTime ()-date.getTime ()<=10*1000){//开始时间和现在的时间在10秒以内
-                emergencyinfo.setStatus (9);//正在播发
-            }
+            Date endTime = emergencyinfo.getEndTime();
+			try {
+				if(startTime.getTime ()-date.getTime ()<=10*1000&&endTime.getTime()-date.getTime()>0){//开始时间和现在的时间在10秒以内
+					emergencyinfo.setStatus(6);//已发送
+					emergencyInfoService.save (emergencyinfo);
+					emergencyInfoService.sendEBDByEmer(emergencyinfo.getId(),"1");
+				}else if (endTime.getTime() - date.getTime()<0){//播发结束时间已经超过当前时间了
+					if (emergencyinfo.getStatus()!=11){//停止播发
+						emergencyinfo.setStatus(11);
+						emergencyInfoService.save(emergencyinfo);
+					}
+				}
+			}catch (Exception e){
+				logger.info(e.getMessage(),e);
+			}
         });
 
 	}

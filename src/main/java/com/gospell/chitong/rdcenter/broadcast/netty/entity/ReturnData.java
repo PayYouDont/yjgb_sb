@@ -1,14 +1,11 @@
 package com.gospell.chitong.rdcenter.broadcast.netty.entity;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.EmergencyinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.config.ApplicationStartupConifg;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.EBD_EBM_EmerRelationMapper;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.info.EBD_EBRDTInfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBMBrdLog;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.state.EBD_EBRDTState;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.info.EBD_EBRDTInfo;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRDTState;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceTaskRepository;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceinfoMapper;
@@ -20,14 +17,9 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.C
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Dictionary;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
 import com.gospell.chitong.rdcenter.broadcast.netty.util.ByteUtils;
-import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.StringUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.*;
 import lombok.Data;
-import lombok.Getter;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -62,7 +54,7 @@ public class ReturnData {
     }
     public int saveDevcie(Deviceinfo deviceinfo, EBD ebd) throws Exception{
         if(ebd!=null){
-            TarUtil.sendEBD (ebd);
+            TarUtil.sendEBDToSuperior (ebd);
         }
         int i = ApplicationContextRegister.getBean (DeviceInfoService.class).save (deviceinfo);
         ApplicationStartupConifg.updateDeviceMap ();
@@ -142,7 +134,6 @@ public class ReturnData {
                     deviceinfo.setStatus ((int)getWorkStatus());
                     saveDevcie (deviceinfo,null);
                 }
-
             }else{
                 deviceinfo = new Deviceinfo ();
                 deviceinfo.setStatus ((int)getWorkStatus());
@@ -424,8 +415,8 @@ public class ReturnData {
         }
         public void save(){
             String EBMID = ByteUtils.Bytes2HexString (getEBMId ()).substring (1);
-            EmergencyinfoMapper emerDao = ApplicationContextRegister.getBean (EmergencyinfoMapper.class);
-            Emergencyinfo emergencyinfo = emerDao.getByEbm_id (EBMID);
+            EmergencyInfoService emergencyInfoService = ApplicationContextRegister.getBean (EmergencyInfoService.class);
+            Emergencyinfo emergencyinfo = emergencyInfoService.getByEbm_id (EBMID);
             if(emergencyinfo!=null){
                 if(resultCode()==1){//自主播发的应急信息
                     emergencyinfo.setStatus (11);//播发结束
@@ -434,7 +425,11 @@ public class ReturnData {
                 }
             }
             emergencyinfo.setResult (new String (resultDesc()));
-            emerDao.updateByPrimaryKeySelective (emergencyinfo);
+            try {
+                emergencyInfoService.save(emergencyinfo);
+            }catch (Exception e){
+                LoggerUtil.log(this.getClass(),e);
+            }
         }
     }
     /**

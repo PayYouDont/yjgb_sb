@@ -29,6 +29,11 @@ public class BaseEBD{
 	private SRC SRC;
 	private DEST DEST;
 	private String EBDTime;
+	private RelatedEBD RelatedEBD;
+	@lombok.Data
+	public static class RelatedEBD{
+		private String EBDID;
+	}
 	@lombok.Data
 	public static class SRC {
 		private String EBRID;
@@ -42,7 +47,11 @@ public class BaseEBD{
 	public void setEBDHeader() {
 		ServerProperties prop = ApplicationContextRegister.getBean(ServerProperties.class);
 		EBDVersion = prop.getServer_version();
-		EBDID = EBDcodeUtil.getBaseEBDID();
+		if(this.getClass().toString().indexOf("EBD_ConnectionCheck")!=-1){
+			EBDID = EBDcodeUtil.getConnectionCheckID();
+		}else{
+			EBDID = EBDcodeUtil.getBaseEBDID();
+		}
 		SRC = new SRC();
 		SRC.setEBRID(prop.getSRC_EBRID());
 		DEST = new DEST();

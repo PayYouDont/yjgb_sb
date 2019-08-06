@@ -7,11 +7,12 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinf
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.EBD_EBM_EmerRelationMapper;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.response.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBMStateResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.resolve.EBD_EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.EBD_EBM_EmerRelationService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket.WebScoketServer;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.InfosourceMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidentlevelMapper;
@@ -23,14 +24,13 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Acciden
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidenttype;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaylanguage;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaymethod;
-import com.gospell.chitong.rdcenter.broadcast.util.EBMessageUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,12 +100,10 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
 
     @Override
     public int save(Emergencyinfo emer) throws Exception {
-        int i = -1;
+        int i;
         if (emer.getId () != null) {
-            emer.setCreateBy (ShiroUtils.getUser ().getName ());
             i = dao.updateByPrimaryKeySelective (emer);
         } else {
-            emer.setUpdateBy (ShiroUtils.getUser ().getName ());
             i = dao.insertSelective (emer);
         }
         return i;
@@ -195,7 +193,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
         if(relations!=null&&relations.size ()>0){
             ebmId = relations.get (0).getEbmId ();
         }
-        EBD_EBD ebd = new EBD_EBD ();
+        EBD_EBM ebd = new EBD_EBM ();
         ebd.setEmergencyinfo (emer, serverProperties, msgType,ebmId);
         sendEBDByEmer (emer, ebd);
     }
@@ -207,7 +205,7 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
      * @Date 13:54 2019/4/12
      * @Param [emerId, ebd]
      **/
-    public void sendEBDByEmer(Emergencyinfo emer, EBD_EBD ebd) throws Exception {
+    public void sendEBDByEmer(Emergencyinfo emer, EBD_EBM ebd) throws Exception {
         String outPath = serverProperties.getTarOutPath ();
         String tarPath = TarUtil.createXMLTarByBean (ebd, outPath, ebd.getEBD ().getEBDID ());
         if(emer.getMediaId ()!=null){
@@ -225,6 +223,9 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
         eeer.setEbdId (ebd.getEBD ().getEBDID ());
         ApplicationContextRegister.getBean (EBD_EBM_EmerRelationService.class).save (eeer);
         if (response == null) {
+            emer.setStatus(10);//播发失败
+            save (emer);
+            WebScoketServer.initList();
             throw new NullPointerException ("The result returned is not a response file!");
         }
         String resultCode = response.getEBD ().getEBDResponse ().getResultCode ();
@@ -237,145 +238,27 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
         if (emer.getFlag () == 0) {//预案发送后需要重新审核
             emer.setStatus (2);//待审核
         }
-        if (emer.getStatus () == 5) {
-            emer.setStatus (6);//已发送
-        } else if (emer.getStatus () == 6) {//正在播发
-            emer.setStatus (11);//停止播发
+        if (emer.getStatus () == 6) {//已发送
+            emer.setStatus (9);//正在播发
+        } else if (emer.getStatus () == 9) {//正在播发
+            emer.setStatus (12);//取消播发
         }
         save (emer);
+        EBD_EBMStateResponse ebmStateResponse = new EBD_EBMStateResponse(emer,null);
+        result = TarUtil.sendEBDToSuperior(ebmStateResponse);
+        checkAndSaveResponse(result);
     }
-
-    /**
-     * @return int
-     * @Author peiyongdong
-     * @Description (将xml内容存入数据库)
-     * @Date 11:15 2019/4/11
-     * @Param [ebd]
-     **/
+    private void checkAndSaveResponse(String result) throws Exception{
+        EBD_EBDResponse response  = TarUtil.getEBDResponse (result);
+        FileUtil.copyFile(result,serverProperties.getReplyInTarPath(),response.getEBD().getEBDID());
+        FileUtil.delete(result);
+        String resultCode = response.getEBD ().getEBDResponse ().getResultCode ();
+        if (!EBD_EBDResponse.SUCCESS.equals (resultCode)) {
+            throw new RuntimeException (response.getEBD ().getEBDResponse ().getResultDesc ());
+        }
+    }
     @Override
-    public int saveXML(EBD ebd) throws Exception {
-        Emergencyinfo info = new Emergencyinfo ();
-        if (!(ebd instanceof EBD_EBD)) {
-            return -1;
-        }
-        EBD_EBD.EBM ebmxml = ((EBD_EBD) ebd).getEBD ().getEBM ();
-        info.setAreacode (ebmxml.getMsgContent ().getAreaCode ().trim ());
-        info.setAddresscode (ebmxml.getMsgContent ().getAreaCode ().trim ());
-        SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-        info.setStartTime (sdf.parse (ebmxml.getMsgBasicInfo ().getStartTime ()));
-        info.setEndTime (sdf.parse (ebmxml.getMsgBasicInfo ().getEndTime ()));
-        info.setContent (ebmxml.getMsgContent ().getMsgDesc ());
-        info.setEmergencyname (ebmxml.getMsgContent ().getMsgTitle ());
-        info.setEbmId (ebmxml.getEBMID ());
-        if (ebmxml.getMsgContent ().getAuxiliary () != null) {
-            info.setProgramdescription (ebmxml.getMsgContent ().getAuxiliary ().getAuxiliaryDesc ());
-        }
-        String language = ebmxml.getMsgContent ().getLanguageCode ();
-        long between = (info.getStartTime ().getTime () - info.getEndTime ().getTime ()) / (1000 * 60);//除以1000是为了转换成秒
-        info.setDuration (String.valueOf (Math.abs (between)));  //持续时间
-        Date date = new Date (); //当前系统时间
-        if (info.getStartTime ().getTime () >= date.getTime () - 5 * 60 * 1000) { //如果开始时间大于系统当前时间(误差为5分钟以内)
-            info.setStatus (19);//19:已发送(6)+未查看(13)
-        } else {
-            info.setStatus (23);//23:播发失败(10)+未查看(13)
-        }
-        info.setSound ("60");
-        Displaylanguage dl = null;
-        if (language.equals ("zho")) {
-            Map<String, Object> map = new HashMap<> ();
-            map.put ("shortname", "zhong");
-            List<Displaylanguage> list = DisplaylanguageList (map);
-            if (list.size () > 0) {
-                dl = list.get (0);
-            }
-        }
-        if (dl == null) {
-            dl = new Displaylanguage ();
-            dl.setLanguage (language);
-            dl.setShortname (language);
-            dldao.insertSelective (dl);
-        }
-        info.setDisplaylanguageId (dl.getId ());
-        // 事件类型
-        Accidenttype at = null;
-        String eventType = ebmxml.getMsgBasicInfo ().getEventType ();
-        if (eventType != null) {
-            Map<String, Object> map = new HashMap<> ();
-            map.put ("code", eventType);
-            List<Accidenttype> list = AccidenttypeList (map);
-            if (list.size () > 0) {
-                at = list.get (0);
-            } else {
-                at = new Accidenttype ();
-                at.setCode (eventType);
-                atdao.insertSelective (at);
-            }
-        } else {
-            new RuntimeException ("事件类型不能为空");
-        }
-        info.setAccidenttypeId (at.getId ());
-        //事件等级
-        Accidentlevel level = null;
-        String servrity = ebmxml.getMsgBasicInfo ().getSeverity ();
-        if (servrity != null) {
-            //levelcode
-            Map<String, Object> map = new HashMap<> ();
-            map.put ("levelcode", servrity);
-            List<Accidentlevel> list = AccidentlevelList (map);
-            if (list.size () > 0) {
-                level = list.get (0);
-            } else {
-                level = new Accidentlevel ();
-                level.setLevelcode (new Integer (servrity));
-                aldao.insert (level);
-            }
-        } else {
-            new RuntimeException ("事件级别不能为空");
-        }
-        info.setAccidentlevelId (level.getId ());
-        // String EventType =
-        // 是否用MP3播发
-        String code = null;
-        if (ebmxml.getMsgContent ().getAuxiliary () != null) {
-            code = ebmxml.getMsgContent ().getAuxiliary ().getAuxiliaryType ();
-        }
-        Displaymethod dm = null;
-        if (code != null) {
-            Map<String, Object> map = new HashMap<> ();
-            map.put ("code", code);
-            List<Displaymethod> list = DisplaymethodList (map);
-            if (list.size () > 0) {
-                dm = list.get (0);
-            } else {
-                dm = new Displaymethod ();
-                dm.setCode (code);
-                dm.setMethod ("MP3播发");
-                dmdao.insertSelective (dm);
-            }
-        } else {
-            dm = dmdao.selectByPrimaryKey (1);
-        }
-        info.setDisplaymethodId (dm.getId ());
-        info.setInfosourceId (1);
-
-        info.setEmergencycode (EBMessageUtil.generateSendtime ());
-        info.setFlag (2);
-        info.setUnitname (serverProperties.getUnitName ());
-        //设置事件编码（随机数）
-        info.setEmergencycode (EBMessageUtil.generateSendtime ());
-        if (info.getId () == null) {
-            info.setCreateBy (ebmxml.getMsgBasicInfo ().getSenderName ());
-        } else {
-            info.setUpdateBy (ShiroUtils.getUser ().getName ());
-        }
-        int i;
-        Emergencyinfo emergencyinfo = dao.getByEbm_id (info.getEbmId ());
-        if (emergencyinfo == null) {  //验证数据库是否存在相关数据
-            i = dao.insertSelective (info);
-        } else {
-            i = dao.updateByEmb_idSelective (info);
-        }
-        sendEBDByEmer (info, (EBD_EBD) ebd);
-        return i;
+    public Emergencyinfo getByEbm_id(String ebmId){
+        return dao.getByEbm_id(ebmId);
     }
 }
