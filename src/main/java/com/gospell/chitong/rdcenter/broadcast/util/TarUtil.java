@@ -4,7 +4,6 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProper
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_ConnectionCheck;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBMStateResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_Signature;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.resolve.EBD_EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
@@ -62,7 +61,6 @@ public class TarUtil {
 			}catch(IOException e) {
 				logger.error(e.getMessage(),e);
 			}
-			
 		}
 	}
 
@@ -250,7 +248,8 @@ public class TarUtil {
 			return map;
 		}
         boolean isSign = true;
-		if(!(ebd instanceof EBD_ConnectionCheck)) {//心跳文件不验证签名
+		ServerProperties serverProperties = ApplicationContextRegister.getBean(ServerProperties.class);
+		if(!(ebd instanceof EBD_ConnectionCheck)&&serverProperties.isCheckSign()) {//心跳文件不验证签名
 			//读取签名文件，并验证
 			File signFile = readTar(inTarPath,"sign");
 			// 获取Signature
@@ -262,6 +261,7 @@ public class TarUtil {
 				isSign = SignatureUtil.verifySignature(inData,sign);
 			}catch(Exception e) {
 				logger.error(e.getMessage(),e);
+				logger.info("验证:"+ebdFile.getName()+"时签名错误,路径为：",inTarPath);
 			}
 		}else {
 		    //心跳不验证签名
@@ -289,16 +289,19 @@ public class TarUtil {
 	 **/
 	public static String createXMLTarByBean(EBD entity, String outPath, String name) {
 		String tempPath = outPath+File.separatorChar+"temp_"+name;
+		ServerProperties serverProperties = ApplicationContextRegister.getBean(ServerProperties.class);
 		// 生成xml
 		String xmlpath = XMLUtil.createXMLByBean(entity, tempPath, "EBDB_"+name);
-		// 生成签名xml
-		byte[] inData = {};
-		try {
-			inData = FileUtil.readFile(new File(xmlpath));
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+		if (serverProperties.isCreateSign()){
+			// 生成签名xml
+			byte[] inData = {};
+			try {
+				inData = FileUtil.readFile(new File(xmlpath));
+			} catch (IOException e) {
+				logger.error(e.getMessage(), e);
+			}
+			XMLUtil.createSignature(entity.getEBD().getEBDID(),tempPath,name,inData);
 		}
-		XMLUtil.createSignature(entity.getEBD().getEBDID(),tempPath,name,inData);
 		name = name.indexOf(".tar") == -1 ? name + ".tar" : name;
 		outPath += File.separatorChar + "EBDT_" + name;
 		pack(tempPath,outPath);

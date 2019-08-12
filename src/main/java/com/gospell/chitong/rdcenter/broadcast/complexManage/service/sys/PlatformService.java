@@ -1,9 +1,10 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PlatformVO;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Platform;
 
-public interface PlatformService {
-	
-	int saveAndUpdate(PlatformVO vo) throws Exception;
-	
+import java.util.List;
+
+public interface PlatformService extends BaseService<Platform,Integer> {
+	List<Platform> findAll();
 }

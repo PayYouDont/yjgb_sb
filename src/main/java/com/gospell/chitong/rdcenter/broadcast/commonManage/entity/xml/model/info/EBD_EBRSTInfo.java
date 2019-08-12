@@ -7,10 +7,11 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.info;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Platform;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 
 /** 
@@ -65,21 +66,8 @@ public class EBD_EBRSTInfo implements EBDResponse {
     @Override
     public EBDResponse createFullResponse() {
         setBaseResponse();
-        EBD.EBRSTInfo.Params.RptType = "Full";
-        EBD.EBRSTInfo.EBRST = new EBRST ();
-        EBD.EBRSTInfo.EBRST.RptTime = DateUtils.getDateTime ();
-        EBD.EBRSTInfo.EBRST.RptType = "Sync";
-        //EBD.EBRSTInfo.EBRST.RelatedEBRPS = new RelatedEBRPS ();
-        //EBD.EBRSTInfo.EBRST.RelatedEBRPS.EBRID = EBDcodeUtil.getEBRID ();
-        EBD.EBRSTInfo.EBRST.EBRID = EBD.getSRC ().getEBRID ();
-        ServerProperties properties = ApplicationContextRegister.getBean (ServerProperties.class);
-        EBD.EBRSTInfo.EBRST.EBRName = properties.getUnitName ();
-        EBD.EBRSTInfo.EBRST.Address = "某某市某某街123号";
-        EBD.EBRSTInfo.EBRST.Contact = "管理员";
-        EBD.EBRSTInfo.EBRST.PhoneNumber = "15111111111";
-        EBD.EBRSTInfo.EBRST.Longitude = properties.getAreaLongitude ();
-        EBD.EBRSTInfo.EBRST.Latitude = properties.getAreaLatitude ();
-        return this;
+		Platform platform = ApplicationContextRegister.getBean(PlatformService.class).selectById(1);
+		return createInstance(platform);
     }
 
     @Override
@@ -98,4 +86,20 @@ public class EBD_EBRSTInfo implements EBDResponse {
         EBD.EBRSTInfo.Params.RptStartTime = DateUtils.getDateTime ();
         EBD.EBRSTInfo.Params.RptEndTime = DateUtils.getDateTime ();
     }
+    public EBD_EBRSTInfo createInstance(Platform platform){
+		setBaseResponse();
+		if (platform!=null){
+			EBD.EBRSTInfo.Params.RptType = "Sync";
+			EBD.EBRSTInfo.EBRST = new EBRST ();
+			EBD.EBRSTInfo.EBRST.RptTime = DateUtils.getDateTime ();
+			EBD.EBRSTInfo.EBRST.EBRID = EBD.getSRC ().getEBRID ();
+			EBD.EBRSTInfo.EBRST.EBRName = platform.getName();
+			EBD.EBRSTInfo.EBRST.Address = platform.getAddress();
+			EBD.EBRSTInfo.EBRST.Contact = platform.getContact();
+			EBD.EBRSTInfo.EBRST.PhoneNumber = platform.getPhoneNumber();
+			EBD.EBRSTInfo.EBRST.Longitude =platform.getLng();
+			EBD.EBRSTInfo.EBRST.Latitude = platform.getLat();
+		}
+		return this;
+	}
 }

@@ -1,4 +1,4 @@
-package com.gospell.chitong.rdcenter.broadcast.complexManage.vo;
+/*package com.gospell.chitong.rdcenter.broadcast.complexManage.vo;
 
 import lombok.Data;
 
@@ -16,4 +16,4 @@ public class PlatformVO{
 	private String AreaLongitude;
 	// 平台管辖区域中心坐标纬度
 	private String AreaLatitude;
-}
+}*/

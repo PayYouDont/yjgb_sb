@@ -1,19 +1,17 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.PlatformRepository;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Platform;
 import org.springframework.stereotype.Service;
 
-import com.gospell.chitong.rdcenter.broadcast.complexManage.vo.PlatformVO;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
-import com.gospell.chitong.rdcenter.broadcast.util.ProepertyUtil;	
+import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class PlatformServiceImpl implements PlatformService{
-
-	@Override
+	@Resource
+	private PlatformRepository repository;
+	/*@Override
 	public int saveAndUpdate(PlatformVO vo) throws Exception {
 		Class<? extends PlatformVO> cls = vo.getClass();
 		Field[] fields = cls.getDeclaredFields();
@@ -29,5 +27,27 @@ public class PlatformServiceImpl implements PlatformService{
 		}
 		String propertyPath = "config/server.properties";
 		return ProepertyUtil.writeToProperties(map, propertyPath);
+	}*/
+
+	@Override
+	public int delete(Integer id) throws Exception {
+		repository.deleteById(id);
+		return 1;
+	}
+
+	@Override
+	public int save(Platform record) throws Exception {
+		repository.save(record);
+		return 1;
+	}
+
+	@Override
+	public Platform selectById(Integer id) {
+		return repository.findById(id).get();
+	}
+
+	@Override
+	public List<Platform> findAll() {
+		return repository.findAll();
 	}
 }

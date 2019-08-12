@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.google.gson.*;
 import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -18,11 +19,6 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.springframework.util.StringUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_Signature;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD_Type;
@@ -161,6 +157,12 @@ public class XMLUtil {
 			Element e = document.addElement(key);
 			if(value.isJsonObject()) {
 				setElement(value,e);
+			}else if(value.isJsonArray()){
+				JsonArray array = (JsonArray)value;
+				array.forEach(v->{
+					setElement(v,e);
+				});
+
 			}else {
 				e.setText(value.toString().replace("\"", ""));
 			}

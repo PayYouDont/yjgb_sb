@@ -134,7 +134,7 @@ public class EBD_EBMStateResponse implements EBD{
 		EBD.EBMStateResponse.BrdStateCode = String.valueOf(emergencyinfo.getStatusToEBM());
 		EBD.EBMStateResponse.BrdStateDesc = emergencyinfo.getStatusDsc();
 		EBD.EBMStateResponse.ResBrdInfo = new ResBrdInfo();
-		List<ResBrdItem> resBrdItemList = new ArrayList<>();
+		/*List<ResBrdItem> resBrdItemList = new ArrayList<>();
 		ResBrdItem resBrdItem = new ResBrdItem();
 		resBrdItem.EBRPS = new EBRPS();
 		resBrdItem.EBRPS.EBRID = ApplicationContextRegister.getBean(ServerProperties.class).getSRC_EBRID();
@@ -147,6 +147,6 @@ public class EBD_EBMStateResponse implements EBD{
 		resBrdItem.EBRBS.BrdStateCode = String.valueOf(emergencyinfo.getStatusToEBM());
 		resBrdItem.EBRBS.BrdStateDesc = emergencyinfo.getStatusDsc();
 		resBrdItemList.add(resBrdItem);
-		EBD.EBMStateResponse.ResBrdInfo.ResBrdItem = resBrdItemList;
+		EBD.EBMStateResponse.ResBrdInfo.ResBrdItem = resBrdItemList;*/
 	}
 }

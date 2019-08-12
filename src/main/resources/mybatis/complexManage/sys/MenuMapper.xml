@@ -229,7 +229,7 @@
 		</if>
 	</select>
 	<select id="count" resultType="int">
-		select count(*) from menu
+		select count(id) from menu
 		<where>
 			<if test="text != null">
 				and `text` = #{text,jdbcType=VARCHAR}

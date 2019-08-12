@@ -55,6 +55,9 @@ public class EBDcodeUtil {
 		int level = getAreaCodeLevel(code);
 		return level+code+lastCode;
 	}
+	public static String getEBRID(String areaColde) {
+		return getEBRID(areaColde,null);
+	}
 	/**
 	* @Author peiyongdong
 	* @Description ( 23位资源编码)
@@ -62,9 +65,17 @@ public class EBDcodeUtil {
 	* @Param [areaColde]
 	* @return java.lang.String
 	**/
-	public static String getEBRID(String areaColde) {
-		String lastCode = ApplicationContextRegister.getBean(ServerProperties.class).getSouceLastCode();
-		int level = getAreaCodeLevel(areaColde);
+	public static String getEBRID(String areaColde,String type) {
+		ServerProperties serverProperties =  ApplicationContextRegister.getBean(ServerProperties.class);
+		String lastCode = "";
+		if (type==null){
+			lastCode = serverProperties.getSouceLastCode();
+		}else if (type.indexOf("EBRAS")!=-1){
+			lastCode = serverProperties.getEBRASLastCode();
+		}else if (type.indexOf("EBRDT")!=-1){
+			lastCode = serverProperties.getEBRDTLastCode();
+		}
+		int level = getAreaCodeLevel(areaColde)+1;
 		return level+areaColde+lastCode;
 	}
     public static String getAreaCode(String EBRID) {

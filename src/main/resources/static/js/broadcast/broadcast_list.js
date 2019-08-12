@@ -189,9 +189,11 @@ function statusFormatter(value){
         return '<span style="color: chartreuse;">等待播发</span>';
     }else if(value==9){
         return '<span style="color: chartreuse;">正在播发</span>';
-    }else if(value==9){
+    }else if(value==11){
         return '<span style="color: blue;">播发结束</span>';
-    }
+    }else if(value==12){
+		return '<span style="color: red;">播发取消</span>';
+	}
 
 }
 
@@ -220,7 +222,7 @@ function getEmertail(rowIndex,rowData){
         html = '<input id="emerType" class="easyui-combobox" name="emerType" style="width: 120px" ' +
             'data-options="valueField:\'fieldKey\',textField:\'fieldValue\',value:3,url:\'../dictionaryAction/listByField?field=MsgType&except=2\'">';
 		html += '<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="send();">信息发送</a>';
-	}else if(rowData.status == "6"){
+	}else if(rowData.status == 6||rowData.status == 9){
         html = '<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="stopSend();">停止发送</a>';
 	}
     $("#ctrl_btn_div").html(html);

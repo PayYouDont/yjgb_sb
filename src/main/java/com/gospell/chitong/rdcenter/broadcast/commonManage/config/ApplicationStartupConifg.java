@@ -2,11 +2,14 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRDTState;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.task.UpdateDatabasesJob;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.device.DeviceinfoMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.netty.config.NettyServer;
+import com.gospell.chitong.rdcenter.broadcast.util.LoggerUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 import io.netty.channel.ChannelFuture;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
     private String url;
     @Autowired
     private NettyServer socketServer;
-    //收到的终端心跳集合 存入内存方便随时根据心跳调整状态
+    //收到的终端心跳集合 存入内存方便随时根据心跳调整状态 减少查询数据库的次数
     public static Map<String, Deviceinfo> deviceinfoMap = new HashMap<> ();
     public static Map<String, Long> timerMap = new HashMap<> ();
 	@Override
@@ -55,7 +58,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 		 * server.connectionCheck设为true即可）
 		 */
 		startHeartJob(server.isConnectionCheck());// 项目启动时候执行心跳包发送
-		startSignature();
+		//startSignature();
         startNettyServer();
         checkTimeOut();
         updateDatabaseJob();
@@ -63,6 +66,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
     public void checkTimeOut(){
         Timer timer = new Timer();
         timer.schedule (new TimerTask () {
+            int i = 0;
             @Override
             public void run() {
                 Iterator<Map.Entry<String,Long>> it = timerMap.entrySet ().iterator ();
@@ -72,13 +76,13 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
                     Long v = entry.getValue ();
                     Long currentTime = System.currentTimeMillis ();
                     int interval = (int)((currentTime - v)/1000);
-                    if(interval>16){
+                    if(interval>server.getNettyHeartRate()){
                         setDeviceTimeOut(k);
                         it.remove ();
                     }
                 }
             }
-        },1000,1000);
+        },1500,1000);
     }
     /**
     * @Author peiyongdong
@@ -91,6 +95,15 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
         Deviceinfo deviceinfo = deviceinfoMap.get (devdsn);
         deviceinfo.setStatus ("00000001");
         ApplicationContextRegister.getBean (DeviceinfoMapper.class).updateByPrimaryKeySelective (deviceinfo);
+        //超时后主动上报
+        EBD_EBRDTState state = EBD_EBRDTState.createInstance(deviceinfo);
+        try {
+            if(state!=null){
+                TarUtil.sendEBDToSuperior(state);
+            }
+        }catch (Exception e){
+            LoggerUtil.log(this.getClass(),e);
+        }
     }
 	public static void updateDeviceMap(){
         Map<String,Object> map = new HashMap<> ();
@@ -98,6 +111,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
         deviceinfos.forEach (deviceinfo -> {
             String devdsn = deviceinfo.getDevdsn ();
             deviceinfoMap.put (devdsn,deviceinfo);
+            timerMap.put(devdsn,System.currentTimeMillis());
         });
     }
     public void startNettyServer(){

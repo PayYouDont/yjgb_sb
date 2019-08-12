@@ -72,7 +72,7 @@ public class EBD_EBRDTState implements EBDResponse {
 	}
 
     @Override
-    public EBDResponse createFullResponse() {
+    public EBD_EBRDTState createFullResponse() {
 		EBD = new EBD_EBRDTState.EBD();
 		EBD.setEBDHeader ();
 		EBD.setEBDType ("EBRDTState");
@@ -106,7 +106,7 @@ public class EBD_EBRDTState implements EBDResponse {
 		EBRDT ebrdt = new EBRDT();
 		ebrdt.RptTime = DateUtils.getDateTime ();
 		ebrdt.EBRID = deviceinfo.getResouceCode ();
-		ebrdt.StateCode = deviceinfo.getStatus ();
+		ebrdt.StateCode = String.valueOf(deviceinfo.getStatusToEBD ());
 		ebrdt.StateDesc = deviceinfo.getStatusDesc ();
 		return ebrdt;
 	}

@@ -94,7 +94,7 @@ function statusFormatter(value,rowData,rowIndex){
 	} else if (value == 11) {
 		return '<span style="color: #4EAF51">播发结束' + label + '</span>';
 	} else if (value == 12) {
-		return '<span style="color: #FF9800;">播发取消' + label + '</span>';
+		return '<span style="color: red;">播发取消' + label + '</span>';
 	}
 }
 
@@ -183,7 +183,7 @@ function remove(){
 			var arr = new Array(checkedData.length);
 			for(i in checkedData){
 				if(checkedData[i].status == "9"){
-					$.messager.alert("删除提示",checkedData[i].emergencyName+" 正在播发，无法删除！");
+					$.messager.alert("删除提示",checkedData[i].emergencyname+" 正在播发，无法删除！");
 					return;
 				}
 				arr[i] = checkedData[i].id;

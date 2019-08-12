@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -145,7 +146,20 @@ public class MediaResouceServiceImpl implements MediaResouceService{
 	 */
 	@Override
 	public List<MediaResouce> list(Map<String, Object> map) {
-		return dao.list(map);
+		List<MediaResouce> mediaResouceList = dao.list(map);
+		List<MediaResouce> mediaResouces = new ArrayList<>();
+		File[] files = new File(uploadLocation).listFiles();
+		mediaResouceList.forEach(mediaResouce -> {
+			String resouceName = mediaResouce.getFileName();
+			for (int i=0;i<files.length;i++){
+				String fileName = files[i].getName();
+				if (resouceName.equals(fileName)){//只加载资源所在目录中还存在的资源
+					mediaResouces.add(mediaResouce);
+					break;
+				}
+			}
+		});
+		return mediaResouces;
 	}
 
 	/** 

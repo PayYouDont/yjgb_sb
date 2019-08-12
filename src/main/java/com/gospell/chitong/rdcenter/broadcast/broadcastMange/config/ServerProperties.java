@@ -10,6 +10,9 @@ import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Configuration
 @ConfigurationProperties(prefix = "server")
 /*
@@ -67,15 +70,26 @@ public class ServerProperties {
 	private String superAreaLevel;
 	// 上级平台区域编码
 	private String superAreaCode;
-	//资源编码后10位(资源类型码(4位)+资源类型顺序码(2位)+资源子类型码(2位)+资源子类型序码(2位))
+	//平台资源编码后10位(资源类型码(4位)+资源类型顺序码(2位)+资源子类型码(2位)+资源子类型序码(2位))
 	private String souceLastCode;
+	//适配器资源编码后10位
+	private String EBRASLastCode;
+	//平台资源编码后10位(资源类型码(4位)+资源类型顺序码(2位)+资源子类型码(2位)+资源子类型序码(2位))
+	private String EBRDTLastCode;
+
 	//是否开启心跳检测
 	private boolean connectionCheck;
+	//终端与netty服务器之间的心跳间隔
+	private Integer NettyHeartRate;
+	//是否生成签名文件
+	private boolean createSign;
+	//是否验签
+	private boolean isCheckSign;
 	public String getSRC_EBRID() {
 		String SRC_EBRID = "";
 		// 格式为：区域级别+区域编码+资源编码后10位
-		//SRC_EBRID = getAreaLevel() + getAreaCode() + souceLastCode;
-		SRC_EBRID = "43415230000000101010101";
+		SRC_EBRID = getAreaLevel() + getAreaCode() + souceLastCode;
+		//SRC_EBRID = "43415230000000101010101";
 		return SRC_EBRID;
 	}
 
@@ -83,7 +97,8 @@ public class ServerProperties {
 		String SRC_EBRID = "";
 		// 格式为：区域级别+区域编码+资源编码后10位
 		//SRC_EBRID = getSuperAreaLevel() + getSuperAreaCode() + "0101" + "010101";
-		SRC_EBRID = "23400000000000101010101";
+		SRC_EBRID = getSuperAreaLevel() + getSuperAreaCode() + souceLastCode;
+		//SRC_EBRID = "23400000000000101010101";
 		return SRC_EBRID;
 	}
 

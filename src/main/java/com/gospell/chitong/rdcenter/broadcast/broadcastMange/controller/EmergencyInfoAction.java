@@ -343,7 +343,9 @@ public class EmergencyInfoAction extends BaseAction{
 			info.setAreacode(getUserAreaCode());
 			//设置事件编码（随机数）
 			info.setEmergencycode(EBMessageUtil.generateSendtime());
-			info.setAddresscodename(accService.getPcodeChinese(getUserAreaCode()));
+			//info.setAddresscodename(accService.getPcodeChinese(getUserAreaCode()));
+			info.setAddresscodename(accService.getChineseByAreaCodes(info.getAddresscode()));
+			service.save(info);
 			service.save(info);
 			return JsonWrapper.successWrapper();
 		}catch(Exception e) {
@@ -419,8 +421,8 @@ public class EmergencyInfoAction extends BaseAction{
 	@PostMapping("/castList")
 	public HashMap<String,Object> castList(Page page){
 		Map<String,Object> map = page.getMap();
-		map.put("areacode", getUser().getAreaCode());
-		Integer[] statusList = {5,6,7,8,9,10,11,18,19,22,23};
+		//map.put("areacode", getUser().getAreaCode());
+		Integer[] statusList = {5,6,7,8,9,10,11,12};
 		map.put("statusList",statusList);
 		map.put("sort", "status");
 		map.put("order", "ASC");

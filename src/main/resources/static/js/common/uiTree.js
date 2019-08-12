@@ -19,17 +19,20 @@ $.extend($.fn.tree.methods, {
     }
 });
 
-
-
-
-
 //easyui 树
 easyuiInitTree=function(elementId,url,initIdArray){
 	var element='#'+elementId;
+	$.messager.progress({
+		title: '提示',
+		msg: '区域加载中，请稍后...',
+		text: ''
+	});
+
 	$(element).tree({    
 	    url:url,    
 	    checkbox:true,
 	    onLoadSuccess:function(node, data){
+			$.messager.progress('close');
 	    	//展开第一级
 	    	var rootnode = $(element).tree('getRoot');//获取根节点
 	    	var childrennode1 = $(element).tree('getLeafChildren',rootnode.target);

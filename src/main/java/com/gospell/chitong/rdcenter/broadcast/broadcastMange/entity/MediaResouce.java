@@ -1,9 +1,11 @@
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import lombok.Data;
 
 /**
  * media_resouce
@@ -55,6 +57,11 @@ public class MediaResouce implements Serializable {
      * 资源介绍
      */
     private String introduction;
+    private String playPath;
 
+    public String getPlayPath() {
+        ServerProperties serverProperties = ApplicationContextRegister.getBean(ServerProperties.class);
+        return serverProperties.getServer_ip()+":"+serverProperties.getServer_port()+"/EBM_media/"+fileName;
+    }
     private static final long serialVersionUID = 1L;
 }

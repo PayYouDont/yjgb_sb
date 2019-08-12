@@ -11,10 +11,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.resolve.EB
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.EBD_EBM_EmerRelationService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.ReceiveTarService;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
-import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,7 +19,9 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,6 +127,9 @@ public class WebScoketServer {
             File ebdFile = TarUtil.readTar(path);
             EBD_EBM ebd = (EBD_EBM)XMLUtil.readXMLToBean(ebdFile);
             EBD_EBM.EBM ebm = ebd.getEBD().getEBM();
+            //读取xml内容并生成实体类
+            File mp3File = TarUtil.readTar(path,".mp3");
+            FileUtil.copyFile(path,"E:\\upload\\EBM_media",mp3File.getName());
             if (ebm.getMsgContent()!=null&&ebm.getMsgContent().getAuxiliary()!=null){
                 ebm.getMsgContent().getAuxiliary().setPath(path);
             }
@@ -212,8 +214,8 @@ public class WebScoketServer {
                     ReceiveTar receiveTar = receiveTarService.selectById (ebdId);
                     if(receiveTar!=null){
                         receiveTar.setStatus (1);
+                        receiveTarService.save (receiveTar,true);
                     }
-                    receiveTarService.save (receiveTar,true);
                     break;
                 }
             }

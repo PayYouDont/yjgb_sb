@@ -68,6 +68,13 @@ public class EBD_EBM implements EBD {
     }
     @lombok.Data
     public static class MsgBasicInfo {
+        /**
+         * 1：实际播发
+         * 2：取消播发
+         * 3：平台演练播发
+         * 4：前端演练播发
+         * 5：终端演练播发
+         */
         private String MsgType;
         private String SenderName;
         private String SenderCode;
@@ -205,7 +212,7 @@ public class EBD_EBM implements EBD {
         //上级转发
         emergencyinfo.setFlag(2);
         MsgBasicInfo info = ebm.getMsgBasicInfo();
-        if (info.getMsgType().equals("1")){//等待播发
+        if (!info.getMsgType().equals("2")){//等待播发
             emergencyinfo.setStatus(5);//:待发送
         }else if (info.getMsgType().equals("2")){//播发取消
             if (emergencyinfo.getId()!=null){

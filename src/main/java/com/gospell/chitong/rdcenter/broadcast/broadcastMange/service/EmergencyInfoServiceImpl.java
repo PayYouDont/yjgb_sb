@@ -9,6 +9,7 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.EBD_EBM_EmerRelat
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBMStateResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRDTState;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.resolve.EBD_EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.EBD_EBM_EmerRelationService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
@@ -208,12 +209,19 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
     public void sendEBDByEmer(Emergencyinfo emer, EBD_EBM ebd) throws Exception {
         String outPath = serverProperties.getTarOutPath ();
         String tarPath = TarUtil.createXMLTarByBean (ebd, outPath, ebd.getEBD ().getEBDID ());
-        if(emer.getMediaId ()!=null){
+        String msgType = ebd.getEBD().getEBM().getMsgBasicInfo().getMsgType();
+        if(!msgType.equals("2")&&emer.getMediaId ()!=null){
             MediaResouce resouce = mediaDao.selectByPrimaryKey (emer.getMediaId ());
             String fileName = ebd.getEBD ().getEBM ().getMsgContent ().getAuxiliary ().getAuxiliaryDesc ();
             TarUtil.addFileToTar (tarPath,resouce.getFilePath (),fileName);
         }
-        String result = HttpClientUtil.sendPostFile (serverProperties.getSupporterUrl (), tarPath);
+        String result = null;
+        //如果没有超时才发送到终端播发
+        Date endTime = emer.getEndTime();
+        Date date = new Date ();
+        if (endTime.getTime() - date.getTime()>0){
+            result = HttpClientUtil.sendPostFile (serverProperties.getSupporterUrl (), tarPath);
+        }
         EBD_EBDResponse response = TarUtil.getEBDResponse (result);
         ApplicationContextRegister.getBean (SendTarService.class).saveSendTar (ebd, response);
         //保存关系表
@@ -223,10 +231,15 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
         eeer.setEbdId (ebd.getEBD ().getEBDID ());
         ApplicationContextRegister.getBean (EBD_EBM_EmerRelationService.class).save (eeer);
         if (response == null) {
-            emer.setStatus(10);//播发失败
+            if (!msgType.equals("2")){
+                emer.setStatus(10);//播发失败
+            }
             save (emer);
             WebScoketServer.initList();
-            throw new NullPointerException ("The result returned is not a response file!");
+            throw new NullPointerException ("发送"+tarPath+"包到："+serverProperties.getSupporterUrl ()+"后没有收到回执包!");
+        }else{
+            EBD_EBRDTState state = new EBD_EBRDTState().createFullResponse();
+            TarUtil.sendEBDToSuperior(state);
         }
         String resultCode = response.getEBD ().getEBDResponse ().getResultCode ();
         if (!EBD_EBDResponse.SUCCESS.equals (resultCode)) {
@@ -250,11 +263,13 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
     }
     private void checkAndSaveResponse(String result) throws Exception{
         EBD_EBDResponse response  = TarUtil.getEBDResponse (result);
-        FileUtil.copyFile(result,serverProperties.getReplyInTarPath(),response.getEBD().getEBDID());
-        FileUtil.delete(result);
-        String resultCode = response.getEBD ().getEBDResponse ().getResultCode ();
-        if (!EBD_EBDResponse.SUCCESS.equals (resultCode)) {
-            throw new RuntimeException (response.getEBD ().getEBDResponse ().getResultDesc ());
+        if (response!=null){
+            FileUtil.copyFile(result,serverProperties.getReplyInTarPath(),response.getEBD().getEBDID());
+            FileUtil.delete(result);
+            String resultCode = response.getEBD ().getEBDResponse ().getResultCode ();
+            if (!EBD_EBDResponse.SUCCESS.equals (resultCode)) {
+                throw new RuntimeException (response.getEBD ().getEBDResponse ().getResultDesc ());
+            }
         }
     }
     @Override

@@ -26,7 +26,10 @@ $(document).ready(function(){
 		        {field:'status',title:'状态',width:150,align:'center',formatter:statusFormatter}, 
 			]],
 		    columns:[[
-		        {field:'filePath',title:'资源路径',width:150,align:'center'},
+				{field:'playPath',title:'播放路径',width:300,align:'center',formatter:function (value) {
+						return '<a href="'+value+'" target="view_window">'+value+'</a>';
+				}},
+		        {field:'filePath',title:'资源来源路径',width:150,align:'center'},
 		        {field:'fileType',title:'资源类型',width:150,align:'center'},
 				{field:'source',title:'来源',width:150,align:'center'},     
 				{field:'createTime',title:'创建时间',width:150,align:'left',halign:'center'},

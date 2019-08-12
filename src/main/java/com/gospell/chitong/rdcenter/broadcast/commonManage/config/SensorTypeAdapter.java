@@ -18,6 +18,7 @@ import com.google.gson.stream.JsonWriter;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.LoggerUtil;
 
 /** 
 * @ClassName: SensorTypeAdapter 
@@ -82,17 +83,22 @@ public class SensorTypeAdapter extends TypeAdapter<EBD> {
 				if(type==null) {
 					continue;
 				}
-
 				if(type instanceof String){
                     out.name(field.getName()).value(type.toString());
                 }else if(type instanceof List){
-				    out.name (field.getName ()).beginObject();
+					out.name (field.getName ()).beginArray();
 				    List list = (List)type;
                     list.forEach (t->{
-                        Field[] subFields = t.getClass().getDeclaredFields();
-                        setWrite(subFields, out, t);
+                    	try {
+							out.beginObject();
+							Field[] subFields = t.getClass().getDeclaredFields();
+							setWrite(subFields, out, t);
+							out.endObject();
+						}catch (IOException e){
+                    		LoggerUtil.log(this.getClass(),e);
+						}
                     });
-                    out.endObject();
+					out.endArray();
                 }else{
                     out.name(field.getName()).beginObject();
                     Field[] subFields = type.getClass().getDeclaredFields();
@@ -100,7 +106,7 @@ public class SensorTypeAdapter extends TypeAdapter<EBD> {
                     out.endObject();
                 }
 			} catch (Exception e) {
-				e.printStackTrace();
+				LoggerUtil.log(this.getClass(),e);
 			}
 		}
 	}

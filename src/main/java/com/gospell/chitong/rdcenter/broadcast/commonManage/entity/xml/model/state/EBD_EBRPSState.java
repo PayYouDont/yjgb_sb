@@ -7,11 +7,11 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
-
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Platform;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import lombok.EqualsAndHashCode;
@@ -67,7 +67,7 @@ public class EBD_EBRPSState implements EBDResponse {
 		private String StateDesc;
 	}
     @Override
-    public EBDResponse createFullResponse() {
+    public EBD_EBRPSState createFullResponse() {
 	    EBD = new EBD ();
 	    EBD.setEBDHeader ();
 	    EBD.setEBDType ("EBRPSState");
@@ -75,8 +75,9 @@ public class EBD_EBRPSState implements EBDResponse {
         EBD.EBRPSState.EBRPS = new ArrayList<> ();
         EBRPS ebrps = new EBRPS ();
         ebrps.setRptTime (DateUtils.getDateTime ());
-        ServerProperties properties = ApplicationContextRegister.getBean (ServerProperties.class);
-        ebrps.setEBRID (EBDcodeUtil.getEBRID(properties.getAreaCode ()));
+       // ServerProperties properties = ApplicationContextRegister.getBean (ServerProperties.class);
+		Platform platform = ApplicationContextRegister.getBean(PlatformService.class).selectById(1);
+        ebrps.setEBRID (EBDcodeUtil.getEBRID(platform.getAddressCode()));
         ebrps.setStateCode ("1");
         ebrps.setStateDesc ("开机/运行正常");
         EBD.EBRPSState.EBRPS.add (ebrps);

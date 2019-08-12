@@ -220,17 +220,20 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
 	    Deviceinfo info = selectById (deviceId);
         int status;
 	    if(!info.getDevaddresscode ().equals (deviceinfo.getDevaddresscode ())){//更改区域码后发送信息到后台
-            status = sendDeviceInfoCMD (deviceinfo);
+			info.setDevaddresscode(deviceinfo.getDevaddresscode());
+			info.setLng(deviceinfo.getLng());
+			info.setLat(deviceinfo.getLat());
+            status = sendDeviceInfoCMD (info);
             if(status==200){
                 Map<String,Object> map = new HashMap<> ();
-                map.put ("code",deviceinfo.getDevaddresscode ());
+                map.put ("code",info.getDevaddresscode ());
                 Administrative administrative = adsDao.list (map).get (0);
-                deviceinfo.setDevaddress (administrative.getName ());
-                deviceinfo.setUpdateBy (ShiroUtils.getUser ().getName ());
-                EBD_EBRDTInfo ebrdtInfo = EBD_EBRDTInfo.createInstance (deviceinfo);
+				info.setDevaddress (administrative.getName ());
+				info.setUpdateBy (ShiroUtils.getUser ().getName ());
+                EBD_EBRDTInfo ebrdtInfo = EBD_EBRDTInfo.createInstance (info);
                 //主动上报
                 TarUtil.sendEBDToSuperior (ebrdtInfo);
-                return save (deviceinfo);
+                return save (info);
             }else{
                 return -1;
             }

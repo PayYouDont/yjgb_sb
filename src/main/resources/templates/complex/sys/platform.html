@@ -1,100 +1,82 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>平台管理</title>
-<!--easyui控件css -->
-<link id="easyuiTheme" rel="stylesheet" type="text/css"
-	href="/easyui/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
-<script src="/js/core/jquery.min.js"></script>
-<!--easyui控件js -->
-<script src="/easyui/jquery.easyui.min.js"></script>
-<script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
-<script src="/js/complex/sys/platform.js"></script>
-<style type="text/css">
-html, body {
-	height: 100%;
-	width: 100%;
-	margin: 0px;
-	padding: 0px;
-}
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>平台管理</title><!--easyui控件css -->
+    <link id="easyuiTheme" rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+    <script src="/js/core/jquery.min.js"></script><!--easyui控件js -->
+    <script src="/easyui/jquery.easyui.min.js"></script>
+    <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/complex/sys/platform.js"></script>
+    <style type="text/css">
+		html, body {
+			height: 100%;
+			width: 100%;
+			margin: 0px;
+			padding: 0px;
+		}
 
-a:FOCUS {
-	outline: none;
-}
-
-#detailInfoBtn {
-	height: 15px;
-	line-height: 15px;
-	padding: 0px 10px;
-	background: #E8F1FF;
-	border: 1px #26bbdb solid;
-	border-radius: 3px;
-	display: inline-block;
-	text-decoration: none;
-	font-size: 12px;
-	outline: none;
-}
-
-#detailInfoBtn:hover {
-	background: #4d92ff;
-}
-</style>
+	</style>
 </head>
 <body class="easyui-layout">
-	<div data-options="region:'center'" title="平台设置" fit="true"
-		iconCls="icon-extendlist">
-		<form
-			style="margin: auto; width: 800px; height: 200px; border: 1px solid #95B8E7"
-			id="dataForm" class="easyui-form" method="post">
-			<table class="tab" cellpadding="1" cellspacing="5"
-				style="width: calc(100% - 2px); margin-top: 10px;">
-				<tr>
-					<td style="text-align: center;">平台名称</td>
-					<td><input class="easyui-textbox" id="manageName"
-						name="manageName" th:value="${server.manageName}"
-						data-options="required:true"></td>
-					<td style="text-align: center;">平台loge路径</td>
-					<td><input class="easyui-textbox" id="manageLogo"
-						name="manageLogo" th:value="${server.manageLogo}"
-						data-options="required:true"></td>
-				</tr>
-				<tr>
-					<td style="text-align: center;">管辖区域名称</td>
-					<td><input class="easyui-textbox" id="UnitName"
-						name="UnitName" data-options="required:true"
-						th:value="${server.UnitName}"></td>
-					<td style="text-align: center;">管辖区域编码</td>
-					<td><input class="easyui-textbox" id="AreaCode"
-						name="AreaCode" data-options="required:true"
-						th:value="${server.AreaCode}"></td>
-				</tr>
-				<tr>
-					<td style="text-align: center;">管辖区域坐标经度</td>
-					<td><input class="easyui-textbox" id="AreaLongitude"
-						name="AreaLongitude" data-options="required:true"
-						th:value="${server.AreaLongitude}"></td>
-					<td style="text-align: center;">管辖区域坐标纬度</td>
-					<td><input class="easyui-textbox" id="AreaLatitude"
-						name="AreaLatitude" data-options="required:true"
-						th:value="${server.AreaLatitude}"></td>
-				</tr>
-			</table>
-			<div
-				style="text-align: right; width: 200px; margin: auto; margin-top: 50px; padding: 5px 0 0;">
-				<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
-					href="javascript:void(0)" onclick="save();" style="width: 80px">保存</a>
-				<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"
-					href="javascript:void(0)" onclick="clearForm();"
-					style="width: 80px">重置</a>
-			</div>
-		</form>
+<div data-options="region:'center'" title="平台设置" fit="true" iconCls="icon-extendlist">
+    <form style="margin: auto; margin-top:50px; width: 800px; height:300px; border: 1px solid #95B8E7" id="dataForm" class="easyui-form"
+          method="post">
+        <table class="tab" cellpadding="1" cellspacing="5" style="width: calc(100% - 2px); margin-top: 10px;">
+            <tr>
+                <td style="text-align: center;">平台名称</td>
+                <td><input class="easyui-textbox" id="name" name="name" th:value="${platform.name}"
+                           data-options="required:true">
+				</td>
+                <td style="text-align: center;">平台loge路径</td>
+                <td><input class="easyui-textbox" id="logoPath" name="logoPath" th:value="${platform.logoPath}"
+                           data-options="required:true">
+				</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">区域名称</td>
+                <td><input class="easyui-textbox" id="address" name="address" data-options="required:true"
+                           th:value="${platform.address}"></td>
+                <td style="text-align: center;">区域编码</td>
+                <td><input class="easyui-textbox" id="addressCode" name="addressCode" data-options="required:true"
+                           th:value="${platform.addressCode}">
+				</td>
+            </tr>
+			<tr>
+				<td style="text-align: center;">联系人</td>
+				<td><input class="easyui-textbox" id="contact" name="contact" data-options="required:true"
+						   th:value="${platform.contact}">
+				</td>
+				<td style="text-align: center;">联系电话</td>
+				<td><input class="easyui-textbox" id="phoneNumber" name="phoneNumber" data-options="required:true"
+						   th:value="${platform.phoneNumber}">
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center;">平台路径</td>
+				<td><input class="easyui-textbox" id="url" name="url" data-options="required:true"
+						   th:value="${platform.url}">
+				</td>
+				<td style="text-align: center;">管辖区域坐标</td>
+				<td><input class="easyui-textbox" id="coordinate" name="coordinate" data-options="required:true"
+						   th:value="${platform.coordinate}">
+				</td>
+			</tr>
+        </table>
+        <div style="text-align: right; width: 200px; margin: auto; margin-top: 50px; padding: 5px 0 0;">
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="save();" style="width: 80px">保存</a>
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"  href="javascript:void(0)" onclick="clearForm();" style="width: 80px">重置</a>
+        </div>
+    </form>
+	<div id="coordinateMap" style="width: 398px; height: 198px;">
+		<iframe id="coordinateMapIframe" scrolling="auto" frameborder="0"
+				src="" style="width: 100%; height: 100%;"> </iframe>
 	</div>
+</div>
 </body>
 </html>

@@ -167,17 +167,28 @@ public class Deviceinfo implements Serializable {
     	}
     	return resouceCode;
     }
+
+    /**
+     * /*
+     * 		 * 1：开机/运行正常
+     * 		 * 2：关机/停止运行
+     * 		 * 3：故障
+     * 		 * 4：故障恢复
+     * 		 * 5：播发中
+     *
+     **/
+
     public String getStatusDesc(){
-        if("1".equals (online)&&"1".equals (onwarning)&&"1".equals (onwork)){
+        if(getStatusToEBD()==1){
             return "开机/运行正常";
-        }else if("0".equals (online)){
+        }else if(getStatusToEBD()==2){
             return "关机/停止运行";
-        }else if("0".equals (onwarning)){
+        }else if(getStatusToEBD()==3){
             return "故障";
-        }else if("1".equals (online)&&"1".equals (onwarning)&&"0".equals (onwork)){
-            return "播发中";
-        }else{
+        }else if(getStatusToEBD()==4){
             return "故障恢复";
+        }else{
+            return "播发中";
         }
     }
     public Integer getStatusToEBD(){

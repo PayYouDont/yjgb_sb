@@ -23,6 +23,20 @@ public class AreaCodeChineseServiceImpl implements AreaCodeChineseService{
 
 	@Resource
 	private AdministrativeService adservice;
+
+	@Override
+	public String getChineseByAreaCodes(String areaCodes) {
+		String[] areaCodeArray = areaCodes.split(",");
+		String codeNames = "";
+		for (int i = 0; i<areaCodeArray.length; i++) {
+			String areaCode = areaCodeArray[i];
+			Administrative administrative = adservice.findByCode(areaCode);
+			String codeName = administrative.getName();
+			codeNames += ";"+codeName;
+		}
+		return codeNames.substring(1);
+	}
+
 	/**
 	 * 获取区域编码对应父级的中文名字(区级)
 	 * @Title: getPcodeChinese 
@@ -52,7 +66,7 @@ public class AreaCodeChineseServiceImpl implements AreaCodeChineseService{
 	 * 返回区域编码对应的中文名字
 	 * @Title: getChinese 
 	 * @Description: TODO(返回区域编码对应的中文名字) 
-	 * @param @param areaCode(区域编码单个或者多个。多个用逗号隔开)
+	 * @param @param areaCode(区域编码单个或者多个多个用逗号隔开)
 	 * @param @return    设定文件 
 	 * @return String    返回类型 
 	 * @throws 

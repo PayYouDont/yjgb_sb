@@ -5,12 +5,10 @@ function getAddress(){
 }
 //把区域树获取注册地点和编码填入数据框
 function setAddress(address,code){
+	code = code.substring(code.lastIndexOf("/")+1)
 	$("#devAddress").textbox('setValue', address);
 	$("#devAddressCode").val(code);
 }
-
-
-
 //点击打开地图获取坐标
 function getCoordinate(){
 	$('#editIframe').attr('src','../deviceInfoAction/goCoordinate');
@@ -23,25 +21,14 @@ function setLatLng(lng,lat){
 	$("#_easyui_textbox_input4").val(lng);
 	$("#_easyui_textbox_input5").val(lat);
 }
-
-
-
-
-
 //关闭父级页面模态框
 function closeParentModal(){
 	window.parent.closeMyModal();
 }
-
-
-
 //表单重置
  function clearForm(){
  	$('#dataForm').form('clear');
  }
- 
- 
-
 //基本信息修改
 function baseUpdate(){
 	 $.messager.progress({

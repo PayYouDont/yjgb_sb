@@ -423,12 +423,12 @@ public class ReturnData {
                 }else{
                     emergencyinfo.setStatus (10);//播发失败
                 }
-            }
-            emergencyinfo.setResult (new String (resultDesc()));
-            try {
-                emergencyInfoService.save(emergencyinfo);
-            }catch (Exception e){
-                LoggerUtil.log(this.getClass(),e);
+                emergencyinfo.setResult (new String (resultDesc()));
+                try {
+                    emergencyInfoService.save(emergencyinfo);
+                }catch (Exception e){
+                    LoggerUtil.log(this.getClass(),e);
+                }
             }
         }
     }

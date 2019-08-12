@@ -19,6 +19,9 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.LoggerUtil;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
@@ -122,16 +125,14 @@ public class EBD_EBMBrdLog implements EBDResponse {
 
 	@lombok.Data
 	public static class ResBrdInfo {
-		private String ResBrdItem;
+		private List<ResBrdItem> ResBrdItem;
 	}
-
-	@Override
-	public com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD creatResponse() {
-		return null;
+	@lombok.Data
+	public static class ResBrdItem {
+		private EBRPS EBRPS;
 	}
-
 	@Override
-    public EBDResponse createFullResponse() {
+    public EBD_EBMBrdLog createFullResponse() {
 		//以下层级结构参考播发记录xml格式
 		EBD = new EBD_EBMBrdLog.EBD ();
 		EBD.setEBDHeader();
@@ -190,6 +191,22 @@ public class EBD_EBMBrdLog implements EBDResponse {
 						//播发状态代码 0：未处理 1：等待播发，指未到消息播发时间 2：播发中 3：播发成功 4：播发失败，包括播发全部失败、播发部分失败、未按要求播发等情况 5：播发取消
 						item.setBrdStateCode ("3");
 						item.setBrdStateDesc (emergencyinfo.getStatusDsc ());
+						//以下内容为可选
+						/*Coverage coverage = new Coverage();
+						coverage.setAreaCode(emergencyinfo.getAreacode());
+						coverage.setCoverageRate("99.1");
+						coverage.setResBrdStat("1,1,1,1");
+						item.setCoverage(coverage);
+						ResBrdInfo resBrdInfo = new ResBrdInfo();
+						List<ResBrdItem> resBrdItemList = new ArrayList<>();
+						ResBrdItem resBrdItem = new ResBrdItem();
+						EBRPS ebrps1 = new EBRPS();
+						ebrps1.setEBRID(getEBD().getEBDID());
+						resBrdItem.setEBRPS(ebrps1);
+						resBrdItemList.add(resBrdItem);
+						resBrdInfo.setResBrdItem(resBrdItemList);
+						//resBrdInfo.setResBrdItem("");
+						item.setResBrdInfo(resBrdInfo);*/
 						EBD.EBMBrdLog.EBMBrdItem.add (item);
 					}
 				}

@@ -7,4 +7,6 @@ public interface AreaCodeChineseService {
 	String getChinese(String code,int level);
 	
 	String getPcodeChinese(String codes);
+
+	String getChineseByAreaCodes(String areaCodes);
 }

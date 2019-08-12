@@ -7,7 +7,10 @@ import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProper
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Platform;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import lombok.EqualsAndHashCode;
 
 /** @ClassName: EBD_EBRPSInfo
@@ -59,36 +62,18 @@ public class EBD_EBRPSInfo implements EBDResponse {
     }
     public EBD_EBRPSInfo() {}
     public EBD_EBRPSInfo(ServerProperties prop) {
-        EBD = new EBD ();
-        EBD.setEBDHeader ();
-        EBD.setEBDType ("EBRPSInfo");
-        EBD.EBRPSInfo = new EBRPSInfo ();
-        EBD.EBRPSInfo.EBRPS = new EBRPS ();
-        EBD.EBRPSInfo.EBRPS.RptTime = DateUtils.getDateTime ();
-        EBD.EBRPSInfo.EBRPS.RptType = "Sync";
-        EBD.EBRPSInfo.EBRPS.EBRID = prop.getSRC_EBRID ();
-        EBD.EBRPSInfo.EBRPS.EBRName = prop.getManageName ();
-        EBD.EBRPSInfo.EBRPS.Address = prop.getUnitName ();
-        EBD.EBRPSInfo.EBRPS.Contact = "管理员";
-        EBD.EBRPSInfo.EBRPS.PhoneNumber = "15111111111";
-        EBD.EBRPSInfo.EBRPS.Longitude = prop.getAreaLongitude ();
-        EBD.EBRPSInfo.EBRPS.Latitude = prop.getAreaLatitude ();
-        EBD.EBRPSInfo.EBRPS.URL = prop.getServer_ip () +":"+ prop.getServer_port () + "/nodeAction/upload";
+        Platform platform = ApplicationContextRegister.getBean(PlatformService.class).selectById(1);
+        createInstance(platform,"Sync");
     }
 
     @Override
-    public EBDResponse createFullResponse() {
-        ServerProperties serverProperties = ApplicationContextRegister.getBean (ServerProperties.class);
-        EBD_EBRPSInfo EBRPSInfo = new EBD_EBRPSInfo(serverProperties);
-        EBRPSInfo.EBD.EBRPSInfo.Params = new Params ();
-        EBRPSInfo.EBD.EBRPSInfo.Params.RptStartTime = DateUtils.getDateTime ();
-        EBRPSInfo.EBD.EBRPSInfo.Params.RptEndTime = DateUtils.getDateTime ();
-        EBRPSInfo.EBD.EBRPSInfo.Params.RptType = "Full";
-        return EBRPSInfo;
+    public EBD_EBRPSInfo createFullResponse() {
+        Platform platform = ApplicationContextRegister.getBean(PlatformService.class).selectById(1);
+        return createInstance(platform,"Full");
     }
 
     @Override
-    public EBDResponse createIncrementalResponse() {
+    public EBD_EBRPSInfo createIncrementalResponse() {
         EBD = new EBD ();
         EBD.setEBDHeader ();
         EBD.setEBDType ("EBRPSInfo");
@@ -98,6 +83,26 @@ public class EBD_EBRPSInfo implements EBDResponse {
         EBD.EBRPSInfo.Params.RptEndTime = DateUtils.getDateTime ();
         EBD.EBRPSInfo.Params.RptType = "Incremental";
         EBD.EBRPSInfo.EBRPS = new EBRPS ();
+        return this;
+    }
+    public EBD_EBRPSInfo createInstance(Platform platform,String rptType){
+        if (platform!=null){
+            EBD = new EBD ();
+            EBD.setEBDHeader ();
+            EBD.setEBDType ("EBRPSInfo");
+            EBD.EBRPSInfo = new EBRPSInfo ();
+            EBD.EBRPSInfo.EBRPS = new EBRPS ();
+            EBD.EBRPSInfo.EBRPS.RptTime = DateUtils.getDateTime ();
+            EBD.EBRPSInfo.EBRPS.RptType = rptType;
+            EBD.EBRPSInfo.EBRPS.EBRID = EBDcodeUtil.getEBRID(platform.getAddressCode());//prop.getSRC_EBRID ();
+            EBD.EBRPSInfo.EBRPS.EBRName = platform.getName();
+            EBD.EBRPSInfo.EBRPS.Address = platform.getAddress();
+            EBD.EBRPSInfo.EBRPS.Contact = platform.getContact();
+            EBD.EBRPSInfo.EBRPS.PhoneNumber = platform.getPhoneNumber();
+            EBD.EBRPSInfo.EBRPS.Longitude = platform.getLng();
+            EBD.EBRPSInfo.EBRPS.Latitude = platform.getLat();
+            EBD.EBRPSInfo.EBRPS.URL = platform.getUrl();
+        }
         return this;
     }
 }

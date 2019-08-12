@@ -9,11 +9,13 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.inf
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
@@ -83,24 +85,30 @@ public class EBD_EBRASInfo implements EBDResponse {
 		private String EBRID;
 	}
 
-    @Override
-    public EBDResponse createFullResponse() {
+	@Override
+	public EBD_EBRASInfo creatResponse() {
+		return createFullResponse();
+	}
+
+	@Override
+    public EBD_EBRASInfo createFullResponse() {
 		EBD = new EBD_EBRASInfo.EBD ();
 		EBD.setEBDHeader ();
 		EBD.setEBDType ("EBRASInfo");
 		EBD.EBRASInfo = new EBD_EBRASInfo.EBRASInfo();
 		EBD.EBRASInfo.EBRAS = new ArrayList<>();
 		List<Deviceinfo> deviceInfos = ApplicationContextRegister.getBean(DeviceInfoService.class).getDeviceByType ("适配设备");
-		ServerProperties serverProperties = ApplicationContextRegister.getBean(ServerProperties.class);
+		//ServerProperties serverProperties = ApplicationContextRegister.getBean(ServerProperties.class);
 		deviceInfos.forEach (deviceInfo -> {
 			EBD_EBRASInfo.EBRAS ebras = new EBD_EBRASInfo.EBRAS();
 			ebras.setRptTime (DateUtils.getDateTime ());
-			ebras.setEBRID (deviceInfo.getResouceCode ());
+			//ebras.setEBRID (deviceInfo.getResouceCode ());
+			ebras.setEBRID ("43415230000000103010201");
 			ebras.setEBRName(deviceInfo.getDevname());
 			ebras.setLatitude(deviceInfo.getLat());
 			ebras.setLongitude(deviceInfo.getLng());
-			ebras.setRptType("Sync");
-			ebras.setURL(serverProperties.getSupporterUrl ());
+			ebras.setRptType("Full");
+			ebras.setURL(" ");
 			EBD.EBRASInfo.EBRAS.add (ebras);
 		});
         return this;

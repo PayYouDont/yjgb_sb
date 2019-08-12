@@ -6,10 +6,10 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.other.EBD_EBMBrdLog;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.XMLUtil;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBMBrdLog;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,10 +30,6 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.Accidentle
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AccidenttypeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.DisplaymethodMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.MenuMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.RoleMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.UserLogMapper;
-import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.sys.UserMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.DeviceParamVal;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Devicemodel;
@@ -49,7 +45,8 @@ public class DaoTest {
 
 	@Resource
 	private EmergencyinfoMapper emergencyinfodao;
-	
+	@Resource
+	private EmergencyInfoService emergencyInfoService;
 	@Resource
 	private AccidentlevelMapper accidentleveldao;
 	
@@ -58,20 +55,16 @@ public class DaoTest {
 	
 	@Test
 	public void test1() {
-		Page page = new Page();
-		Map<String,Object> map = page.getMap();
-		map.put("status", 6);
-		map.put("order", "ASC");
-		map.put("sort", "id");
-		map.put("areaCode", "445103000000");
-		List<Emergencyinfo> list = emergencyinfodao.list(map);
-		int count=0;
-		for(Emergencyinfo e:list) {
-			count++;
-			System.out.println(e.getDisplayLanguage());
-		}
-		System.out.println(count);
-		//System.out.println(list);
+		Map<String,Object> map = new HashMap<>();
+		map.put("status", 5);
+		List<Emergencyinfo> emergencyinfos = emergencyInfoService.list(map);
+		emergencyinfos.forEach(emergencyinfo -> {
+			try {
+				emergencyInfoService.sendEBDByEmer(emergencyinfo.getId(),"1");
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		});
 	}
 	@Test
 	public void test2() {
@@ -228,7 +221,5 @@ public class DaoTest {
     public void test20() {
         EBD EBD = new EBD_EBMBrdLog ().creatResponse ();
         //String jsonStr = JsonUtil.toJson (EBD);
-        //XMLUtil.createXMLByJson(jsonStr,"C:\\Users\\pay\\Desktop","test.xml");
-        XMLUtil.createXMLByBean(EBD,"C:\\Users\\pay\\Desktop","test.xml");
     }
 }
