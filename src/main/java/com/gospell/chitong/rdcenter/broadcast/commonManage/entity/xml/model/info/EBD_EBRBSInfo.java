@@ -128,7 +128,7 @@ public class EBD_EBRBSInfo implements EBDResponse {
 		EBRBS ebrbs = new EBRBS();
 		ebrbs.RptTime = DateUtils.getDateTime ();
 		ebrbs.RptType = "Sync";
-		ebrbs.EBRID = deviceInfo.getResouceCode ();
+		ebrbs.EBRID = deviceInfo.getResouceCode ("EBRBS");
 		ebrbs.EBRName = deviceInfo.getDevname ();
 		ebrbs.Longitude = deviceInfo.getLng ();
 		ebrbs.Latitude = deviceInfo.getLat ();

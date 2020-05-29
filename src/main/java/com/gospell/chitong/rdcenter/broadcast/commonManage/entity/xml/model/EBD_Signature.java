@@ -25,8 +25,8 @@ public class EBD_Signature implements EBD{
 
 	@lombok.Data
 	public static class Signature {
-		private RelatedEBD RelatedEBD;
 		private String Version;
+		private RelatedEBD RelatedEBD;
 		private String CertSN;
 		private String SignatureAlgorithm;
 		private String SignatureValue;
@@ -37,6 +37,7 @@ public class EBD_Signature implements EBD{
 	}
 	public EBD_Signature(String EBDID,byte[] inData) {
 		Signature = new Signature();
+		Signature.setVersion("1");
 		Signature.RelatedEBD = new RelatedEBD();
 		Signature.RelatedEBD.EBDID = EBDID;
 		Signature.CertSN = SignatureUtil.getCertSN();
@@ -53,7 +54,7 @@ public class EBD_Signature implements EBD{
 	 * <p>Title: creatResponseXML</p> 
 	 * <p>Description: </p> 
 	 * @return 
-	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD#creatResponseXML()
+	 * @see com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD()
 	 * @throws 
 	 * @author peiyongdong
 	 * @date 2018年12月17日 上午9:37:00

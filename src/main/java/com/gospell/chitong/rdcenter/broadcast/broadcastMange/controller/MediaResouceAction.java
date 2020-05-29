@@ -1,12 +1,15 @@
 
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.MediaResouceService;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.vo.MediaResouceVO;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
+import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.ui.Model;
@@ -16,16 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.MediaResouceService;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.vo.MediaResouceVO;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.annontation.Log;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.Page;
-import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 
 * @ClassName: MediaResouceAction 

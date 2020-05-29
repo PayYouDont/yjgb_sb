@@ -19,9 +19,6 @@ $(document).ready(function(){
 			fitColumns:false,
 			checkOnSelect:true,
 			singleSelect:true,
-//			onSelect:function(rowIndex,rowData){//选择表格行触发
-//				getDetail(rowIndex,rowData);
-//			},
 			idField:'id',
 			frozenColumns:[[
 			                {field:'ck',width:5,checkbox:true},
@@ -30,19 +27,14 @@ $(document).ready(function(){
 					        {field:'devdsn',title:'设备序列号',width:120,align:'center',sortable:"true"}, 
 						]],
 		    columns:[[
-		        {field:'onregister',title:'注册状态',width:80,align:'center',formatter:register}, 
-		        {field:'online',title:'在线状态',width:80,align:'center',formatter:line}, 
-		        {field:'onwork',title:'工作状态',width:80,align:'center',formatter:work}, 
-		        {field:'onwarning',title:'报警状态',width:80,align:'center',formatter:warning},
-		        {field:'status',title:'状态',width:80,align:'center',hidden:"true"},
+		        {field:'onregister',title:'注册状态',width:80,align:'center',formatter:register},
+		        {field:'status',title:'设备状态',width:80,align:'center',formatter:status},
 		        {field:'statusScript',title:'状态描述',width:80,align:'center',hidden:"true"},
-		        
 		        {field:'devaddress',title:'设备地址',width:150,align:'center',sortable:"true"}, 
 		        {field:'devaddresscode',title:'地址编码',width:150,align:'center',sortable:"true"}, 
 		        {field:'resouceCode',title:'资源编码',width:150,align:'center',sortable:"true"}, 
 		        {field:'lng',title:'经度',width:150,align:'center'}, 
-		        {field:'lat',title:'纬度',width:150,align:'center'}, 
-
+		        {field:'lat',title:'纬度',width:150,align:'center'},
 		        {field:'deviceModel',title:'设备型号',width:120,align:'center',sortable:"true",
 		        	formatter: function(value,row,index){
 		        		var devmodel = row.deviceModel;
@@ -60,52 +52,34 @@ $(document).ready(function(){
 		        {field:'updateTime',title:'修改时间',width:120,align:'center',sortable:"true"}, 
 		    ]]    
 		});
-
 });
-
-
 //搜索
 function doSearch(value){
 	$('#mainTab').datagrid('load',{
 		devDsn:value
 	});
 }
-
-
 function register(value,row,index){
 	if (value==1){
-		return '<font style="color: green;">已注册</font>';
+		return '<span style="color: green;">已注册</span>';
 	} else {
-		return '<font style="color: gray;">未注册</font>';
+		return '<span style="color: gray;">未注册</span>';
 	}
 }
-
-
-function line(value,row,index){
+//设备状态1：开机/运行正常2：关机/停止运行3：故障4：故障恢复 5：播发中
+function status(value){
 	if (value==1){
-		return '<font style="color: green;">在线</font>';
-	} else {
-		return '<font style="color: gray;">离线</font>';
-	}
+		return '<span style="color: green;">在线</span>';
+	} else if (value==2){
+        return '<span style="color: gray;">离线</span>';
+    }else if (value==3){
+        return '<span style="color: gray;">故障</span>';
+    }else if (value==4){
+        return '<span style="color: gray;">故障恢复</span>';
+    }else if (value==5){
+        return '<span style="color: gray;">播发中</span>';
+    }
 }
-
-
-function work(value,row,index){
-	if (value==1){
-		return '<font style="color: green;">工作</font>';
-	} else {
-		return '<font style="color: gray;">待机</font>';
-	}
-}
-
-function warning(value,row,index){
-	if (value==1){
-		return '<font style="color: red;">报警</font>';
-	} else {
-		return '<font style="color: green;">正常</font>';
-	}
-}
-
 
 //关闭模态框
 function closeMyModal(){
@@ -121,7 +95,6 @@ function refreshMyData(){
 function refreshPage(){
 	 $('#mainTab').datagrid("load");
 }
-
 //（打开模态框）
 function add(){
 	var checkedData =$('#mainTab').datagrid("getChecked");
@@ -139,10 +112,6 @@ function add(){
 	$('#editModal').window('setTitle','设备信息注册');
 	$('#editModal').window('open');
 }
-
-
-
-
 //（打开模态框）
 function edit(){
 	var checkedData =$('#mainTab').datagrid("getChecked");
@@ -160,9 +129,6 @@ function edit(){
 	$('#editModal').window('setTitle','设备基本信息修改');
 	$('#editModal').window('open');
 }
-
-
-
 //参数设置
 function send(){
 	var checkedData =$('#mainTab').datagrid("getChecked");
@@ -180,13 +146,6 @@ function send(){
 	$('#editModal').window('setTitle','设备参数设置');
 	$('#editModal').window('open');
 }
-
-
-
-
-
-
-
 //删除
 function remove(){
 	var checkedData =$('#mainTab').datagrid("getChecked");
@@ -200,8 +159,6 @@ function remove(){
 		}
 	});
 }
-
-
 function deleteData(id){
 	$.ajax({
 	    type: "post",
@@ -222,8 +179,3 @@ function deleteData(id){
 	    }
 	});
 }
-
-
-
-
-

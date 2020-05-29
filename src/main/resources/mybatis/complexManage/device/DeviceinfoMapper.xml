@@ -14,7 +14,7 @@
 			property="devaddresscode" />
 		<result column="devAddress" jdbcType="VARCHAR"
 			property="devaddress" />
-		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="lat" jdbcType="VARCHAR" property="lat" />
 		<result column="lng" jdbcType="VARCHAR" property="lng" />
 		<result column="messageId" jdbcType="VARCHAR"
@@ -79,7 +79,7 @@
 		values (#{devname,jdbcType=VARCHAR}, #{devdsn,jdbcType=VARCHAR},
 		#{devcode,jdbcType=VARCHAR},
 		#{devhexcode,jdbcType=VARCHAR}, #{devaddresscode,jdbcType=VARCHAR}, #{devaddress,jdbcType=VARCHAR},
-		#{status,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{lat,jdbcType=VARCHAR},
 		#{lng,jdbcType=VARCHAR}, #{messageid,jdbcType=VARCHAR},
 		#{devicemodelId,jdbcType=INTEGER}, #{deviceid,jdbcType=INTEGER},
 		#{statusscript,jdbcType=VARCHAR},
@@ -178,7 +178,7 @@
 				#{devaddress,jdbcType=VARCHAR},
 			</if>
 			<if test="status != null">
-				#{status,jdbcType=VARCHAR},
+				#{status,jdbcType=INTEGER},
 			</if>
 			<if test="lat != null">
 				#{lat,jdbcType=VARCHAR},
@@ -244,7 +244,7 @@
 				devAddress = #{devaddress,jdbcType=VARCHAR},
 			</if>
 			<if test="status != null">
-				status = #{status,jdbcType=VARCHAR},
+				status = #{status,jdbcType=INTEGER},
 			</if>
 			<if test="lat != null">
 				lat = #{lat,jdbcType=VARCHAR},
@@ -297,7 +297,7 @@
 		devHexcode = #{devhexcode,jdbcType=VARCHAR},
 		devAddressCode = #{devaddresscode,jdbcType=VARCHAR},
 		devAddress = #{devaddress,jdbcType=VARCHAR},
-		status = #{status,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
 		lat = #{lat,jdbcType=VARCHAR},
 		lng = #{lng,jdbcType=VARCHAR},
 		messageId = #{messageid,jdbcType=VARCHAR},
@@ -337,7 +337,7 @@
 				and devAddress = #{devaddress,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
-				and status = #{status,jdbcType=VARCHAR}
+				and status = #{status,jdbcType=INTEGER}
 			</if>
 			<if test="lat != null">
 				and lat = #{lat,jdbcType=VARCHAR}
@@ -416,7 +416,7 @@
 				and devAddress = #{devaddress,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
-				and status = #{status,jdbcType=VARCHAR}
+				and status = #{status,jdbcType=INTEGER}
 			</if>
 			<if test="lat != null">
 				and lat = #{lat,jdbcType=VARCHAR}

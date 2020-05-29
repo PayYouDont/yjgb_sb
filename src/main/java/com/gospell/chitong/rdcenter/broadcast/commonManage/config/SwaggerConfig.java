@@ -1,9 +1,8 @@
 package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import io.swagger.annotations.ApiOperation;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -29,10 +28,6 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("应急广播项目API")
-                .description("应急广播项目后台api接口文档")
-                .version("1.0")
-                .build();
+        return new ApiInfoBuilder ().title ("应急广播项目API").description ("应急广播项目后台api接口文档").version ("1.0").build ();
     }
 }

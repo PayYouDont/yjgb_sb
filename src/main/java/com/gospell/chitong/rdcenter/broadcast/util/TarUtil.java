@@ -270,7 +270,9 @@ public class TarUtil {
         map.put("isSign", isSign);
 		if(isSign && ebd instanceof EBD_EBM) {
 			try {
-				WebScoketServer.startpush(inTarPath);
+			    EBD_EBM ebm = (EBD_EBM)ebd;
+				//WebScoketServer.startpush(inTarPath);
+                WebScoketServer.showNodeNews(ebm,inTarPath);
 			} catch (Exception e) {
 				logger.error("播发节点消息失败", e);
 			}
@@ -336,7 +338,7 @@ public class TarUtil {
 	* @Param [ebd]
 	* @return java.lang.String
 	**/
-	public static String sendEBDToSuperior(EBD ebd) throws Exception{
+	public static  EBD_EBDResponse sendEBDToSuperior(EBD ebd) throws Exception{
         ServerProperties serverProperties = ApplicationContextRegister.getBean (ServerProperties.class);
         String outPath = serverProperties.getTarOutPath ();
 	    boolean isHeart = false;
@@ -344,9 +346,12 @@ public class TarUtil {
 			isHeart = true;
 		}
 		String tarPath = createXMLTarByBean (ebd, outPath, ebd.getEBD ().getEBDID ());
-        String result = HttpClientUtil.sendPostFile (serverProperties.getSuperiorUrl (), tarPath,isHeart);
+	    if(!serverProperties.isReportSuperior ()){
+	        return null;
+        }
+        String result = HttpClientUtil.sendPostFile (serverProperties.getSuperUrl(), tarPath,isHeart);
         EBD_EBDResponse response = getEBDResponse (result);
         ApplicationContextRegister.getBean (SendTarService.class).saveSendTar (ebd,response);
-	    return result;
+	    return response;
     }
 }

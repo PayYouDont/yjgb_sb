@@ -2,6 +2,8 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.config;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRASState;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRDTState;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.task.UpdateDatabasesJob;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
@@ -29,6 +31,7 @@ import com.gospell.chitong.rdcenter.broadcast.util.SignatureUtil;
 
 import java.net.InetSocketAddress;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Configuration
 public class ApplicationStartupConifg implements ApplicationListener<ContextRefreshedEvent>,DisposableBean{
@@ -58,7 +61,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
 		 * server.connectionCheck设为true即可）
 		 */
 		startHeartJob(server.isConnectionCheck());// 项目启动时候执行心跳包发送
-		//startSignature();
+		startSignature();
         startNettyServer();
         checkTimeOut();
         updateDatabaseJob();
@@ -93,13 +96,25 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
     **/
     private void setDeviceTimeOut(String devdsn){
         Deviceinfo deviceinfo = deviceinfoMap.get (devdsn);
-        deviceinfo.setStatus ("00000001");
+        deviceinfo.setStatus (2);
         ApplicationContextRegister.getBean (DeviceinfoMapper.class).updateByPrimaryKeySelective (deviceinfo);
+        if (deviceinfo.getDeviceModel ()!=null||deviceinfo.getDeviceModel ().getDeviceType ()==null){
+            return;
+        }
+        String devType = deviceinfo.getDeviceModel ().getDeviceType ().getDevtype ();
+        if(devType==null){
+            return;
+        }
+        EBD ebd = null;
         //超时后主动上报
-        EBD_EBRDTState state = EBD_EBRDTState.createInstance(deviceinfo);
+        if (devType.indexOf ("终端")!=-1){
+            ebd = EBD_EBRDTState.createInstance(deviceinfo);
+        }else if(devType.indexOf ("适配")!=-1){
+            ebd = EBD_EBRASState.createInstance(deviceinfo);
+        }
         try {
-            if(state!=null){
-                TarUtil.sendEBDToSuperior(state);
+            if(ebd!=null){
+                TarUtil.sendEBDToSuperior(ebd);
             }
         }catch (Exception e){
             LoggerUtil.log(this.getClass(),e);
@@ -129,7 +144,7 @@ public class ApplicationStartupConifg implements ApplicationListener<ContextRefr
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    LoggerUtil.log (this.getClass (),e);
                 }
             }
         } ).start();

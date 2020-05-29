@@ -159,12 +159,11 @@ public class XMLUtil {
 				setElement(value,e);
 			}else if(value.isJsonArray()){
 				JsonArray array = (JsonArray)value;
-				array.forEach(v->{
-					setElement(v,e);
-				});
-
+				array.forEach(v->setElement(v,e));
 			}else {
-				e.setText(value.toString().replace("\"", ""));
+			    if (!value.toString().equals ("")){
+                    e.setText(value.toString().replace("\"", ""));
+                }
 			}
 		}
 	}
@@ -195,7 +194,7 @@ public class XMLUtil {
             writer.close();
             return file.getPath();
         } catch (IOException e) {
-        	e.printStackTrace();
+        	LoggerUtil.log (XMLUtil.class,e);
         }
         return null;
 	}

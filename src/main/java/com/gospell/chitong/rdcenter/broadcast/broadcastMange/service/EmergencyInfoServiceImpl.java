@@ -9,7 +9,9 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.dao.EBD_EBM_EmerRelat
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBMStateResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRASState;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRDTState;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRPSState;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.resolve.EBD_EBM;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.EBD_EBM_EmerRelationService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.service.SendTarService;
@@ -25,13 +27,11 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Acciden
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Accidenttype;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaylanguage;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.param.Displaymethod;
-import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -239,7 +239,22 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
             throw new NullPointerException ("发送"+tarPath+"包到："+serverProperties.getSupporterUrl ()+"后没有收到回执包!");
         }else{
             EBD_EBRDTState state = new EBD_EBRDTState().createFullResponse();
+            EBD_EBRDTState.EBRDT ebrdt = state.getEBD().getEBRDTState().getEBRDT().get(0);
+            EBD_EBRASState ebrasState = new EBD_EBRASState().createFullResponse();
+            EBD_EBRASState.EBRAS ebras = ebrasState.getEBD().getEBRASState().getEBRAS();
+            EBD_EBRPSState ebrpsState = new EBD_EBRPSState().createFullResponse();
+            EBD_EBRPSState.EBRPS ebrps = ebrpsState.getEBD().getEBRPSState().getEBRPS().get(0);
+            if (!msgType.equals("2")&&emer.getStatus()!=8){
+                ebrdt.setStateCode("5");
+                ebrdt.setStateDesc("播发中");
+                ebras.setStateCode("5");
+                ebras.setStateDesc("播发中");
+                ebrps.setStateCode("5");
+                ebrps.setStateDesc("播发中");
+            }
             TarUtil.sendEBDToSuperior(state);
+            TarUtil.sendEBDToSuperior(ebrasState);
+            TarUtil.sendEBDToSuperior(ebrpsState);
         }
         String resultCode = response.getEBD ().getEBDResponse ().getResultCode ();
         if (!EBD_EBDResponse.SUCCESS.equals (resultCode)) {
@@ -258,14 +273,13 @@ public class EmergencyInfoServiceImpl implements EmergencyInfoService {
         }
         save (emer);
         EBD_EBMStateResponse ebmStateResponse = new EBD_EBMStateResponse(emer,null);
-        result = TarUtil.sendEBDToSuperior(ebmStateResponse);
-        checkAndSaveResponse(result);
+        response = TarUtil.sendEBDToSuperior(ebmStateResponse);
+        checkResponse(response);
     }
-    private void checkAndSaveResponse(String result) throws Exception{
-        EBD_EBDResponse response  = TarUtil.getEBDResponse (result);
+    private void checkResponse(EBD_EBDResponse response) throws Exception{
         if (response!=null){
-            FileUtil.copyFile(result,serverProperties.getReplyInTarPath(),response.getEBD().getEBDID());
-            FileUtil.delete(result);
+            /*FileUtil.copyFile(result,serverProperties.getReplyInTarPath(),response.getEBD().getEBDID());
+            FileUtil.delete(result);*/
             String resultCode = response.getEBD ().getEBDResponse ().getResultCode ();
             if (!EBD_EBDResponse.SUCCESS.equals (resultCode)) {
                 throw new RuntimeException (response.getEBD ().getEBDResponse ().getResultDesc ());

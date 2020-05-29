@@ -21,8 +21,8 @@ import cn.tass.yingjgb.YingJGBCALLDLL;
 public class SignatureUtil {
     private static final Logger log = LoggerFactory.getLogger(SignatureUtil.class);
     public static boolean isStart = false;
-    public static int flag = 0;
-
+    //0. 指令数据 1. 消息数据
+    private static final Integer dataType = 1;
     /**
      * @return void 返回类型
      * @throws @author peiyongdong
@@ -32,7 +32,6 @@ public class SignatureUtil {
      */
     public static void start(int flagData) {
         try {
-            flag = flagData;
             YingJGBCALLDLL.openDevice(flagData);
             isStart = true;
             log.info("签名驱动启动成功");
@@ -71,7 +70,7 @@ public class SignatureUtil {
         // 调用平台签名的方法
         try {
             if (isStart) {
-                String sign = YingJGBCALLDLL.platformCalculateSignature(1, inData);
+                String sign = YingJGBCALLDLL.platformCalculateSignature(dataType, inData);
                 return sign;
             }
         } catch (YJException e) {
@@ -91,7 +90,7 @@ public class SignatureUtil {
         // 返回验签结果
         try {
             if (isStart) {
-                return YingJGBCALLDLL.platformVerifySignature(1, inData, sign);
+                return YingJGBCALLDLL.platformVerifySignature(dataType, inData, sign);
             }
         } catch (YJException e) {
             log.error("验证签名错误", e);

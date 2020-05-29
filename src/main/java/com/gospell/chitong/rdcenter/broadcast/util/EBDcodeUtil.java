@@ -68,40 +68,48 @@ public class EBDcodeUtil {
 	public static String getEBRID(String areaColde,String type) {
 		ServerProperties serverProperties =  ApplicationContextRegister.getBean(ServerProperties.class);
 		String lastCode = "";
-		if (type==null){
+        int level = getAreaCodeLevel(areaColde);
+		if (type==null){//平台
 			lastCode = serverProperties.getSouceLastCode();
-		}else if (type.indexOf("EBRAS")!=-1){
+		}else if (type.indexOf("EBRAS")!=-1){//适配器
 			lastCode = serverProperties.getEBRASLastCode();
-		}else if (type.indexOf("EBRDT")!=-1){
+		}else if (type.indexOf("EBRDT")!=-1){//终端
 			lastCode = serverProperties.getEBRDTLastCode();
-		}
-		int level = getAreaCodeLevel(areaColde)+1;
+            level = 6;//村级
+		}else if (type.indexOf("EBRBS")!=-1){//传输设备
+            lastCode = serverProperties.getEBRBSLastCode ();
+        }
 		return level+areaColde+lastCode;
 	}
     public static String getAreaCode(String EBRID) {
         String areaCode = EBRID.substring (1,13);
         return areaCode;
     }
-	public static int getAreaCodeLevel(String areaCode) {
+	public static Integer getAreaCodeLevel(String areaCode) {
 		if(areaCode.length()==12) {
 			String first6Str = areaCode.substring(0,6);//前6位
 			String last6Str = areaCode.substring(6, 12);//后6位
 			if(last6Str.equals("000000")) {
 				String str5_6 = first6Str.substring(4,6);//5-6位
 				if(!str5_6.equals("00")) {
-					return 3;
+                    return 4;
 				}
 				String str2_4 = first6Str.substring(2,4);//3-4位
 				if(!str2_4.equals("00")) {
-					return 2;
+                    return 3;
 				}
-				return 1;
+                String str1_2 = first6Str.substring(1,2);//1-2位
+                if(!str1_2.equals("00")) {
+                    return 2;
+                }else{//000000000000
+                    return 1;
+                }
 			}else {
 				String last3Str = last6Str.substring(3,6);//最后3位数
 				if(last3Str.equals("000")) {
-					return 4;
+					return 5;
 				}
-				return 5;
+				return 6;
 			}
 		}
 		return -1;

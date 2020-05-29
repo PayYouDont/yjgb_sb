@@ -12,6 +12,9 @@ import com.gospell.chitong.rdcenter.broadcast.netty.util.Crc32Util;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
 /**netty 接收二进制
 * @ClassName: ServerHandler 
 * @Description: TODO(     ) 
@@ -46,6 +49,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Object>{
 	}
 	@Override
     public void channelActive(ChannelHandlerContext ctx) {
-        System.out.println (ctx);
+        SocketAddress address = ctx.channel ().remoteAddress ();
+        System.out.println ("收到来自IP为:"+address.toString ()+"的连接");
     }
 }

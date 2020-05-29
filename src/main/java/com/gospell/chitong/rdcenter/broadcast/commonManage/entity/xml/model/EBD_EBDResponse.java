@@ -75,7 +75,7 @@ public class EBD_EBDResponse implements EBD {
         EBD.setEBDType("EBDResponse");
         EBD.EBDResponse = new EBDResponse();
         EBD.EBDResponse.ResultCode = "1";
-        EBD.EBDResponse.ResultDesc = "已接收完成";
+        EBD.EBDResponse.ResultDesc = "接收解析及数据校验成功";
     }
     public EBD_EBDResponse(String ResultCode,String ResultDesc) {
         EBD = new EBD();

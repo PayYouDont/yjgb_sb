@@ -1,9 +1,14 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.controller.sys;
 
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.controller.BaseAction;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD_Type;
+import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.info.EBD_EBRPSInfo;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.info.EBD_EBRSTInfo;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.state.EBD_EBRPSState;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Platform;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonWrapper;
@@ -16,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 
 @Api(tags = "平台管理")
 @RestController
@@ -55,4 +59,24 @@ public class PlatformAction extends BaseAction{
 		}
 		return JsonWrapper.failureWrapper();
 	}
+    @ApiOperation(value="信息上报", notes="信息上报接口")
+    @PostMapping("/report")
+    @ResponseBody
+    public HashMap<String,Object> report(String EBDType){
+        Class<? extends EBD> clazz = EBD_Type.getClassByEBDType(EBDType);
+        try {
+            EBD ebd = ((EBDResponse)clazz.newInstance ()).createFullResponse ();
+            EBD_EBDResponse response = TarUtil.sendEBDToSuperior (ebd);
+            if (response!=null){
+                String resultCode = response.getEBD ().getEBDResponse ().getResultCode ();
+                String resultDesc = response.getEBD ().getEBDResponse ().getResultDesc ();
+                return JsonWrapper.successWrapper (resultCode,resultDesc);
+            }else{
+                return JsonWrapper.successWrapper (EBD_EBDResponse.OTHER_ERROR,"服务器无响应，返回结果为空");
+            }
+        }catch (Exception e){
+            logger.error (e.getMessage (),e);
+            return JsonWrapper.failureWrapper (e.getMessage ());
+        }
+    }
 }

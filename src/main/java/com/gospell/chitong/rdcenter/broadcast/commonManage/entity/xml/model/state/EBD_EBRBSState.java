@@ -79,8 +79,8 @@ public class EBD_EBRBSState implements EBDResponse {
 		deviceInfos.forEach (deviceInfo -> {
 			EBRBS ebras = new EBRBS();
 			ebras.setRptTime (DateUtils.getDateTime ());
-			ebras.setEBRID (deviceInfo.getResouceCode ());
-			ebras.setStateCode (deviceInfo.getStatusToEBD ().toString());
+			ebras.setEBRID (deviceInfo.getResouceCode ("EBRBS"));
+			ebras.setStateCode (deviceInfo.getStatus ().toString ());
 			ebras.setStateDesc (deviceInfo.getStatusDesc ());
 			EBD.EBRBSState.EBRBS.add (ebras);
 		});

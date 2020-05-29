@@ -13,6 +13,7 @@
     <script src="/easyui/jquery.easyui.min.js"></script>
     <script src="/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script src="/js/complex/sys/platform.js"></script>
+    <script src="/js/complex/sys/report.js"></script>
     <style type="text/css">
 		html, body {
 			height: 100%;
@@ -25,8 +26,10 @@
 </head>
 <body class="easyui-layout">
 <div data-options="region:'center'" title="平台设置" fit="true" iconCls="icon-extendlist">
-    <form style="margin: auto; margin-top:50px; width: 800px; height:300px; border: 1px solid #95B8E7" id="dataForm" class="easyui-form"
-          method="post">
+    <form style="margin: auto; margin-top:50px; width: 800px; height:350px; border: 1px solid #95B8E7" id="dataForm" class="easyui-form" method="post">
+        <div>
+            <h1 style="text-align: center">平台信息设置</h1>
+        </div>
         <table class="tab" cellpadding="1" cellspacing="5" style="width: calc(100% - 2px); margin-top: 10px;">
             <tr>
                 <td style="text-align: center;">平台名称</td>
@@ -67,16 +70,107 @@
 						   th:value="${platform.coordinate}">
 				</td>
 			</tr>
+            <tr>
+                <td style="text-align: center;">平台资源编码后10位</td>
+                <td><input class="easyui-textbox" id="EBRPSLastCode" name="EBRPSLastCode" data-options="required:true"
+                           th:value="${platform.EBRPSLastCode}">
+                </td>
+                <td style="text-align: center;">适配器资源编码后10位</td>
+                <td><input class="easyui-textbox" id="EBRASLastCode" name="EBRASLastCode" data-options="required:true"
+                           th:value="${platform.EBRASLastCode}">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">终端资源编码后10位</td>
+                <td><input class="easyui-textbox" id="EBRDTLastCode" name="EBRDTLastCode" data-options="required:true"
+                           th:value="${platform.EBRDTLastCode}">
+                </td>
+                <td style="text-align: center;">传输设备资源编码后10位</td>
+                <td><input class="easyui-textbox" id="EBRBSSLastCode" name="EBRBSSLastCode" data-options="required:true"
+                           th:value="${platform.EBRBSSLastCode}">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">上级平台区域编码</td>
+                <td><input class="easyui-textbox" id="superAreaCode" name="superAreaCode" data-options="required:true"
+                           th:value="${platform.superAreaCode}">
+                </td>
+                <td style="text-align: center;">上级平台地址</td>
+                <td><input class="easyui-textbox" id="superiorUrl" name="superiorUrl" data-options="required:true"
+                           th:value="${platform.superiorUrl}">
+                </td>
+            </tr>
         </table>
-        <div style="text-align: right; width: 200px; margin: auto; margin-top: 50px; padding: 5px 0 0;">
+        <div style="text-align: right; width: 200px; margin: auto; margin-top:30px; padding: 5px 0 0;">
 			<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="save();" style="width: 80px">保存</a>
 			<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"  href="javascript:void(0)" onclick="clearForm();" style="width: 80px">重置</a>
         </div>
     </form>
 	<div id="coordinateMap" style="width: 398px; height: 198px;">
-		<iframe id="coordinateMapIframe" scrolling="auto" frameborder="0"
-				src="" style="width: 100%; height: 100%;"> </iframe>
+		<iframe id="coordinateMapIframe" scrolling="auto" frameborder="0" src="" style="width: 100%; height: 100%;"> </iframe>
 	</div>
+    <div class="easyui-form" style="margin: 10px auto auto;width: 800px; height:300px; border: 1px solid #95B8E7">
+        <div>
+            <h1 style="text-align: center">主动上报</h1>
+        </div>
+        <table class="tab" cellpadding="1" cellspacing="5" style="width: calc(100% - 2px); margin-top: 10px;">
+            <tr>
+                <td style="text-align: center;">平台信息</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRPSInfo" name="EBRPSInfo" prompt="(EBRPSInfo)上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+                <td style="text-align: center;">平台状态</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRPSState" name="EBRPSState" prompt="(EBRPSState)上上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">适配器信息</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRASInfo" name="EBRASInfo" prompt="(EBRASInfo)上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+                <td style="text-align: center;">适配器状态</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRASState" name="EBRASState" prompt="(EBRASState)上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">终端信息</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRDTInfo" name="EBRDTInfo" prompt="(EBRDTInfo)上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+                <td style="text-align: center;">终端状态</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRDTState" name="EBRDTState" prompt="(EBRDTState)上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">传输设备信息</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRBSInfo" name="EBRBSInfo" prompt="(EBRBSInfo)上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+                <td style="text-align: center;">传输设备状态</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRBSState" name="EBRBSState" prompt="(EBRBSState)上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">台站信息</td>
+                <td>
+                    <input class="easyui-textbox" id="EBRSTInfo" name="EBRSTInfo" prompt="(EBRSTInfo)上报结果" readonly="true">
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="reportToSuperior(this)" href="javascript:void(0)" style="width: 80px">上报</a>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 </body>
 </html>

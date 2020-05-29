@@ -93,8 +93,8 @@ public class EBD_EBRDTInfo implements EBDResponse {
 		ebrdt.RptType = "Sync";
 		ebrdt.RelatedEBRPS = new RelatedEBRPS ();
 		ebrdt.RelatedEBRPS.EBRID = ApplicationContextRegister.getBean (ServerProperties.class).getSRC_EBRID ();
-		//ebrdt.EBRID = deviceInfo.getResouceCode ();
-		ebrdt.EBRID = "63415231002000301010401";
+		ebrdt.EBRID = deviceInfo.getResouceCode ("EBRDT");
+		//ebrdt.EBRID = "63415231002000301010401";
 		ebrdt.EBRName = deviceInfo.getDevname ();
 		ebrdt.Longitude = deviceInfo.getLng ();
 		ebrdt.Latitude = deviceInfo.getLat ();

@@ -101,7 +101,7 @@ public class EBD_EBM implements EBD {
         private String AuxiliaryDesc;
         private String Size;
         @GsonIgnore
-        private String path;
+        private Integer mediaId;
     }
 
     @lombok.Data
@@ -296,28 +296,7 @@ public class EBD_EBM implements EBD {
         if(auxiliary!=null){
             code = auxiliary.getAuxiliaryType ();
             emergencyinfo.setProgramdescription (auxiliary.getAuxiliaryDesc ());
-            map = new HashMap<>();
-            map.put("fileName",auxiliary.getAuxiliaryDesc());
-            map.put("fileSize",auxiliary.getSize());
-            MediaResouceService mediaResouceService = ApplicationContextRegister.getBean (MediaResouceService.class);
-            List<MediaResouce> mediaResouceList = mediaResouceService.list(map);
-            MediaResouce mediaResouce;
-            if (mediaResouceList!=null&&mediaResouceList.size()>0){
-                mediaResouce = mediaResouceList.get(0);
-            }else{
-                mediaResouce = new MediaResouce();
-                mediaResouce.setFileType("mp3");
-            }
-            mediaResouce.setFileSize(Long.valueOf(auxiliary.getSize()));
-            mediaResouce.setFileName(auxiliary.getAuxiliaryDesc());
-            mediaResouce.setFilePath(auxiliary.getPath());
-            mediaResouce.setSource("上级转发");
-            try {
-                mediaResouceService.save(mediaResouce);
-                emergencyinfo.setMediaId(mediaResouce.getId());
-            }catch (Exception e){
-                LoggerUtil.log(this.getClass(),e);
-            }
+            emergencyinfo.setMediaId(auxiliary.mediaId);
         }
         Displaymethod dm;
         DisplaymethodMapper displaymethodMapper = ApplicationContextRegister.getBean(DisplaymethodMapper.class);

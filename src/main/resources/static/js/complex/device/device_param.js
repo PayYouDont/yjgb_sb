@@ -1,18 +1,11 @@
-
 //关闭父级页面模态框
 function closeParentModal(){
 	window.parent.closeMyModal();
 }
-
-
 //表单重置
  function clearForm(){
  	$('#dataForm').form('clear');
  }
- 
- 
- 
-
 //基本信息修改
 function mysave(){
 	 $.messager.progress({

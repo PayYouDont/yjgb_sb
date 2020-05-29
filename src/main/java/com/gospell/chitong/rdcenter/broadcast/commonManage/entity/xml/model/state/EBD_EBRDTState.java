@@ -105,8 +105,8 @@ public class EBD_EBRDTState implements EBDResponse {
     private static EBRDT parseEBRDT(Deviceinfo deviceinfo){
 		EBRDT ebrdt = new EBRDT();
 		ebrdt.RptTime = DateUtils.getDateTime ();
-		ebrdt.EBRID = deviceinfo.getResouceCode ();
-		ebrdt.StateCode = String.valueOf(deviceinfo.getStatusToEBD ());
+		ebrdt.EBRID = deviceinfo.getResouceCode ("EBRDT");
+		ebrdt.StateCode = String.valueOf(deviceinfo.getStatus ());
 		ebrdt.StateDesc = deviceinfo.getStatusDesc ();
 		return ebrdt;
 	}

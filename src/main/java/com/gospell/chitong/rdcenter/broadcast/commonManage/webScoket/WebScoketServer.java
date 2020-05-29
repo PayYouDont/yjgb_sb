@@ -2,8 +2,10 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.webScoket;
 
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.Emergencyinfo;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.NodeNews;
 import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.EmergencyInfoService;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.MediaResouceService;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.EBD_EBM_EmerRelation;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.ReceiveTar;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
@@ -14,6 +16,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationCo
 import com.gospell.chitong.rdcenter.broadcast.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -30,10 +33,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 @ServerEndpoint("/websocket")
 public class WebScoketServer {
-
     //与某个客户端的连接会话，需要通过它来给客户端发送数据  
-    private static Session session; 
-    
+    private static Session session;
     public final static Logger logger = LoggerFactory.getLogger(WebScoketServer.class);
     
     private static CopyOnWriteArraySet<WebScoketServer> webSocketSet = new CopyOnWriteArraySet<WebScoketServer>();
@@ -122,7 +123,7 @@ public class WebScoketServer {
      * @param
      * @return
      */
-    public static String showNodeNews(String path){
+    /*public static String showNodeNews(String path){
         try {
             File ebdFile = TarUtil.readTar(path);
             EBD_EBM ebd = (EBD_EBM)XMLUtil.readXMLToBean(ebdFile);
@@ -155,10 +156,29 @@ public class WebScoketServer {
             logger.error(e.getMessage(),e);
         }
         return null;
-    }
-    public static void showNodeNews(EBD_EBM ebm){
-        if(ebm.getEBD().getEBM().getMsgBasicInfo().getMsgType().equals("1")){//播发请求
-            nodeNews.add(NodeNews.parseEBD(ebm));
+    }*/
+    public static void showNodeNews(EBD_EBM ebd_ebm,String tarPath){
+        EBD_EBM.EBM ebm = ebd_ebm.getEBD().getEBM();
+        try {
+            if (ebm.getMsgContent()!=null&&ebm.getMsgContent().getAuxiliary()!=null){
+                MediaResouceService service = ApplicationContextRegister.getBean (MediaResouceService.class);
+                Integer madiaId = service.saveByTarPath (tarPath);
+                ebm.getMsgContent().getAuxiliary().setMediaId (madiaId);
+            }
+            Emergencyinfo emergencyinfo = ebd_ebm.createEmer ();
+            EmergencyInfoService emerService = ApplicationContextRegister.getBean(EmergencyInfoService.class);
+            emerService.save(emergencyinfo);
+            EBD_EBM_EmerRelationService relationService = ApplicationContextRegister.getBean(EBD_EBM_EmerRelationService.class);
+            EBD_EBM_EmerRelation relation = new EBD_EBM_EmerRelation();
+            relation.setEbdId(ebd_ebm.getEBD().getEBDID());
+            relation.setEbmId(ebm.getEBMID());
+            relation.setEmerId(emergencyinfo.getId());
+            relationService.save(relation);
+        }catch (Exception e){
+            logger.error (e.getMessage (),e);
+        }
+        if(ebm.getMsgBasicInfo().getMsgType().equals("1")){//播发请求
+            nodeNews.add(NodeNews.parseEBD(ebd_ebm));
         }
         String data = JsonUtil.toJson(JsonWrapper.wrapperPage(nodeNews,nodeNews.size ()));
         try {
@@ -173,7 +193,7 @@ public class WebScoketServer {
      * @param path
      * @return  "-200" 日期异常错误标识   "500" 连接异常   "200"  正常标识
      */
-    public static String startpush(String path){
+    /*public static String startpush(String path){
         String data = showNodeNews(path);
         if(data==null){
             return "500";
@@ -191,7 +211,7 @@ public class WebScoketServer {
             }
             return Status.success.getStatus();
         }
-    }
+    }*/
     /**
     * @Author peiyongdong
     * @Description (从播发列表删除)

@@ -88,33 +88,39 @@ public class FileUtil {
 		}
 		return "";
 	}
+    /**
+     * @Title: copyFile
+     * @Description: TODO(复制文件)
+     * @param file
+     * @param outPaht
+     * @param fileName 设定文件
+     * @return void 返回类型
+     * @throws @author peiyongdong
+     * @date 2018年11月21日 下午4:01:40
+     */
+    public static String copyFile(File file, String outPaht,String fileName) {
+        File outDir = new File(outPaht);
+        if (!outDir.exists()){
+            outDir.mkdirs();
+        }
+        if (fileName==null){
+            fileName = file.getName ();
+        }
+        File outFile = new File(outPaht + File.separatorChar + fileName);
+        try {
+            InputStream in = new FileInputStream(file);
+            wirteFile(in, new FileOutputStream(outFile));
+            logger.debug("写出文件完毕!路径:" + outFile.getPath());
+            return outFile.getPath();
+        } catch (IOException e) {
+            logger.error("复制文件错误:", e);
+        }
+        return null;
+    }
 
-	/**
-	 * @Title: copyFile
-	 * @Description: TODO(复制文件)
-	 * @param inPath
-	 * @param outPaht
-	 * @param fileName 设定文件
-	 * @return void 返回类型
-	 * @throws @author peiyongdong
-	 * @date 2018年11月21日 下午4:01:40
-	 */
 	public static String copyFile(String inPath, String outPaht, String fileName) {
 		File file = new File(inPath);
-		File outDir = new File(outPaht);
-		if (!outDir.exists()){
-			outDir.mkdirs();
-		}
-		File outFile = new File(outPaht + File.separatorChar + fileName);
-		try {
-			InputStream in = new FileInputStream(file);
-			wirteFile(in, new FileOutputStream(outFile));
-			logger.debug("写出文件完毕!路径:" + outFile.getPath());
-			return outFile.getPath();
-		} catch (IOException e) {
-			logger.error("复制文件错误:", e);
-		}
-		return null;
+		return copyFile (file,outPaht,fileName);
 	}
 	/**
 	 * @Title: wirteFile

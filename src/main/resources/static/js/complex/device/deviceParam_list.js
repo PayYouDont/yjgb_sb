@@ -32,9 +32,6 @@ $(document).ready(function(){
 		});
 });
 
-
-
-
 //搜索
 function doSearch(value){
 	$('#mainTab').datagrid('load',{
@@ -56,16 +53,12 @@ function refreshMyData(){
 function refreshPage(){
 	 $('#mainTab').datagrid("reload");
 }
-
-
 //增加 
 function add(){
 	$('#editIframe').attr('src','../deviceModelParamAction/toEdit');
 	$('#editModal').window('setTitle','设备参数添加');
 	$('#editModal').window('open');
 }
-
-
 //（打开模态框）
 function edit(){
 	var checkedData =$('#mainTab').datagrid("getChecked");
@@ -78,11 +71,6 @@ function edit(){
 	$('#editModal').window('setTitle','设备参数修改');
 	$('#editModal').window('open');
 }
-
-
-
-
-
 //删除
 function remove(){
 	var checkedData =$('#mainTab').datagrid("getChecked");
@@ -96,9 +84,6 @@ function remove(){
 		}
 	});
 }
-
-
-
 function deleteData(id){
 	$.ajax({
 	    type: "post",
@@ -116,9 +101,6 @@ function deleteData(id){
 				$.messager.alert('删除提示','该参数正在被某型号使用','warning')
 			};
 	    },
-//	    complete: function () {//完成响应
-//	        $("#submit").removeAttr("disabled");
-//	    },
 	    error: function (data) {
 	    	$.messager.alert('系统提示','异常：'+data,'error')
 	    }

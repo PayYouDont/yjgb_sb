@@ -10,7 +10,6 @@ package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.sta
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.EBD_EBDResponse;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.info.EBD_EBRASInfo;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.dao.param.AdministrativeMapper;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
@@ -23,7 +22,6 @@ import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.LoggerUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +74,6 @@ public class EBD_EBRASState implements EBDResponse {
 	 */
 	@Override
 	public EBD_EBDResponse creatResponse() {
-
         //存入数据库
         Deviceinfo deviceinfo = new Deviceinfo();
         EBRAS ebras = getEBD().getEBRASState().getEBRAS();
@@ -95,7 +92,7 @@ public class EBD_EBRASState implements EBDResponse {
             deviceinfo.setOnregister("1");
             deviceinfo.setStatus(Integer.parseInt(ebras.getStateCode()));
             deviceinfo.setStatusDesc(ebras.getStateDesc());
-            deviceinfo.setDevname("应急广播适配器");
+            deviceinfo.setDevname("高斯贝尔应急广播适配器");
             map = new HashMap<>();
             map.put("code",areaCode);
             List<Administrative> administrativeList = ApplicationContextRegister.getBean(AdministrativeMapper.class).list(map);
@@ -116,9 +113,8 @@ public class EBD_EBRASState implements EBDResponse {
         }
         //主动上报
         try {
-            EBD_EBRASInfo info = new EBD_EBRASInfo().creatResponse();
-            TarUtil.sendEBDToSuperior(info);
-            TarUtil.sendEBDToSuperior(this);
+            EBD_EBRASState state =createInstance (deviceinfo);
+            TarUtil.sendEBDToSuperior(state);
         }catch (Exception e){
             LoggerUtil.log(this.getClass(),e);
         }
@@ -136,31 +132,31 @@ public class EBD_EBRASState implements EBDResponse {
 	}
 
     @Override
-    public EBDResponse createFullResponse() {
-        EBD = new EBD_EBRASState.EBD ();
-        EBD.setEBDHeader ();
-        EBD.setEBDType ("EBRASState");
-        EBD.EBRASState = new EBRASState ();
-        EBD.EBRASState.EBRAS = new EBRAS();
+    public EBD_EBRASState createFullResponse() {
         List<Deviceinfo> deviceInfos = ApplicationContextRegister.getBean(DeviceInfoService.class).getDeviceByType ("适配设备");
         if (deviceInfos!=null&&deviceInfos.size()>0){
             Deviceinfo deviceInfo = deviceInfos.get(0);
-            EBD.EBRASState.EBRAS.setRptTime (DateUtils.getDateTime ());
-           // EBD.EBRASState.EBRAS.setEBRID (deviceInfo.getResouceCode ());
-            EBD.EBRASState.EBRAS.setEBRID("43415230000000103010201");
-            EBD.EBRASState.EBRAS.setStateCode (deviceInfo.getStatusToEBD ().toString());
-            EBD.EBRASState.EBRAS.setStateDesc (deviceInfo.getStatusDesc ());
+            return createInstance (deviceInfo);
         }
         return this;
     }
 
     @Override
     public EBDResponse createIncrementalResponse() {
-        EBD = new EBD_EBRASState.EBD ();
-        EBD.setEBDHeader ();
-        EBD.setEBDType ("EBRASState");
-        EBD.EBRASState = new EBRASState ();
-        EBD.EBRASState.EBRAS = new EBRAS();
-        return this;
+	    return null;
+	}
+    public static EBD_EBRASState createInstance(Deviceinfo deviceInfo){
+        EBD_EBRASState state = new EBD_EBRASState ();
+        state.EBD = new EBD_EBRASState.EBD ();
+        state.EBD.setEBDHeader ();
+        state.EBD.setEBDType ("EBRASState");
+        state.EBD.EBRASState = new EBRASState ();
+        state.EBD.EBRASState.EBRAS = new EBRAS ();
+        state.EBD.EBRASState.EBRAS.setRptTime (DateUtils.getDateTime ());
+        //EBD.EBRASState.EBRAS.setEBRID("43415230000000103010201");
+        state.EBD.EBRASState.EBRAS.setEBRID (deviceInfo.getResouceCode ("EBRAS"));
+        state.EBD.EBRASState.EBRAS.setStateCode (deviceInfo.getStatus ().toString ());
+        state.EBD.EBRASState.EBRAS.setStateDesc (deviceInfo.getStatusDesc ());
+        return state;
     }
 }

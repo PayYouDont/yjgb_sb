@@ -1,28 +1,27 @@
 
 package com.gospell.chitong.rdcenter.broadcast.broadcastMange.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.MediaResouceMapper;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce;
+import com.gospell.chitong.rdcenter.broadcast.broadcastMange.vo.MediaResouceVO;
+import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.dao.MediaResouceMapper;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.entity.MediaResouce;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.service.MediaResouceService;
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.vo.MediaResouceVO;
-import com.gospell.chitong.rdcenter.broadcast.util.FileUtil;
-import com.gospell.chitong.rdcenter.broadcast.util.ShiroUtils;
+import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 
 * @ClassName: IMediaResouceService 
@@ -38,8 +37,7 @@ public class MediaResouceServiceImpl implements MediaResouceService{
 	private MediaResouceMapper dao;
 	@Value("${upload.file.location}")
 	private String uploadLocation;
-	
-	
+
 	/** 
 	 * <p>Title: delete</p> 
 	 * <p>Description: </p> 
@@ -125,7 +123,7 @@ public class MediaResouceServiceImpl implements MediaResouceService{
 			InputStream in = file.getInputStream();
 			String outFileName = resouce.getFileName();
 			outFileName = outFileName.indexOf(".")==-1?outFileName+".mp3":outFileName;
-			String outFilePath = uploadLocation +File.separator+ outFileName;
+			String outFilePath = uploadLocation + File.separator+"EBM_media"+File.separator+ outFileName;
 			File outFile = new File(outFilePath);
 			OutputStream out = new FileOutputStream(outFile);
 			FileUtil.wirteFile(in, out);
@@ -148,7 +146,8 @@ public class MediaResouceServiceImpl implements MediaResouceService{
 	public List<MediaResouce> list(Map<String, Object> map) {
 		List<MediaResouce> mediaResouceList = dao.list(map);
 		List<MediaResouce> mediaResouces = new ArrayList<>();
-		File[] files = new File(uploadLocation).listFiles();
+        String uploadPath = uploadLocation + File.separator+"EBM_media";
+		File[] files = new File(uploadPath).listFiles();
 		mediaResouceList.forEach(mediaResouce -> {
 			String resouceName = mediaResouce.getFileName();
 			for (int i=0;i<files.length;i++){
@@ -176,5 +175,29 @@ public class MediaResouceServiceImpl implements MediaResouceService{
 	public int count(Map<String, Object> map) {
 		return dao.count(map);
 	}
-	
+
+    @Override
+    public Integer saveByTarPath(String tarPath) throws Exception{
+        File mp3File = TarUtil.readTar(tarPath,".mp3");
+        String uploadPath = uploadLocation + File.separator+"EBM_media";
+        String mp3Path = FileUtil.copyFile(mp3File,uploadPath,null);
+        FileUtil.delete (mp3File.getParentFile ());
+        Map<String,Object> map = new HashMap<> ();
+        map.put("fileName",mp3File.getName ());
+        map.put("fileSize",mp3File.length ());
+        List<MediaResouce> mediaResouceList = list(map);
+        MediaResouce mediaResouce;
+        if (mediaResouceList!=null&&mediaResouceList.size()>0){
+            mediaResouce = mediaResouceList.get(0);
+        }else{
+            mediaResouce = new MediaResouce();
+            mediaResouce.setFileType("mp3");
+        }
+        mediaResouce.setFileSize(mp3File.length ());
+        mediaResouce.setFileName(mp3File.getName ());
+        mediaResouce.setFilePath(mp3Path);
+        mediaResouce.setSource("上级转发");
+        save(mediaResouce);
+	    return mediaResouce.getId ();
+    }
 }

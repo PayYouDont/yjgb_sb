@@ -17,7 +17,9 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.instruction.C
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Dictionary;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.service.device.DeviceInfoService;
 import com.gospell.chitong.rdcenter.broadcast.netty.util.ByteUtils;
-import com.gospell.chitong.rdcenter.broadcast.util.*;
+import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.LoggerUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.TarUtil;
 import lombok.Data;
 
 import java.text.SimpleDateFormat;
@@ -121,18 +123,15 @@ public class ReturnData {
             long currentTime = System.currentTimeMillis ();
             ApplicationStartupConifg.timerMap.put (devdsn,currentTime);
             if(ApplicationStartupConifg.deviceinfoMap.containsKey (devdsn)){//判断缓存中是否存在
-                //保存设备信息
                 deviceinfo = ApplicationStartupConifg.deviceinfoMap.get (devdsn);
-                String status = deviceinfo.getStatus ();
-                int statusCode = (int) Math.pow (2,getWorkStatus ());
-                String workStatus = StringUtil.patch ("0",8,Integer.valueOf (Integer.toBinaryString (statusCode)));
-                if(deviceinfo.getResouceCode ()!=null&&!status.equals (workStatus)){//若注册过且状态更改了就上报到上级平台
+                if(!deviceinfo.getStatus ().equals (getWorkStatus())){//状态更改了
                     deviceinfo.setStatus ((int)getWorkStatus());
-                    EBD_EBRDTInfo ebrdtInfo = EBD_EBRDTInfo.createInstance (deviceinfo);
-                    saveDevcie (deviceinfo,ebrdtInfo);
-                }else if(!status.equals (workStatus)){//未注册但是状态更改了
-                    deviceinfo.setStatus ((int)getWorkStatus());
-                    saveDevcie (deviceinfo,null);
+                    if (deviceinfo.getOnregister ()!=null){//若注册过就上报到上级平台
+                        EBD_EBRDTInfo ebrdtInfo = EBD_EBRDTInfo.createInstance (deviceinfo);
+                        saveDevcie (deviceinfo,ebrdtInfo);
+                    }else{//未注册但是状态更改了
+                        saveDevcie (deviceinfo,null);
+                    }
                 }
             }else{
                 deviceinfo = new Deviceinfo ();
@@ -338,7 +337,7 @@ public class ReturnData {
                     Date date = sdf.parse (ByteUtils.Bytes2HexString (getStartDate ()));
                     task.setTaskStartTime (date);
                 }catch (Exception e){
-                    e.printStackTrace ();
+                    LoggerUtil.log(this.getClass(),e);
                 }
                 task.setTaskType ((int)getTaskType ());
                 ApplicationContextRegister.getBean (DeviceTaskRepository.class).save (task);

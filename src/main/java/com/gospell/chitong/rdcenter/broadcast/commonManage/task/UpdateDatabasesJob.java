@@ -44,20 +44,33 @@ public class UpdateDatabasesJob implements Job{
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
         Map<String,Object> map = new HashMap<> ();
-        map.put ("status",5);//待发送
+		Integer[] statusList = {5,8};
+		map.put("statusList",statusList);//待发送。待播发
         List<Emergencyinfo> emergencyinfos = emergencyInfoService.list (map);
         Date date = new Date ();
         emergencyinfos.forEach (emergencyinfo -> {
             Date startTime = emergencyinfo.getStartTime ();
             Date endTime = emergencyinfo.getEndTime();
 			try {
-				if(startTime.getTime ()-date.getTime ()<=10*1000&&endTime.getTime()-date.getTime()>0){//开始时间和现在的时间在10秒以内
+				long startM = startTime.getTime ()-date.getTime ();
+				long endM = endTime.getTime()-date.getTime();
+				if(startM<=10*1000&&endM>0){//开始时间和现在的时间在10秒以内
 					emergencyinfo.setStatus(6);//已发送
-				}else if (endTime.getTime() - date.getTime()<0){//播发结束时间已经超过当前时间了
-					emergencyinfo.setStatus(11);//播发结束
+					emergencyInfoService.save (emergencyinfo);
+					emergencyInfoService.sendEBDByEmer(emergencyinfo.getId(),"1");
+				}else if (endM<0){//播发结束时间已经超过当前时间了
+					if(emergencyinfo.getFlag()==2){
+						emergencyinfo.setStatus(6);//播发结束
+					}else {
+						emergencyinfo.setStatus(11);//播发结束
+					}
+					emergencyInfoService.save (emergencyinfo);
+					emergencyInfoService.sendEBDByEmer(emergencyinfo.getId(),"1");
+				}else if(startM>=0&&emergencyinfo.getStatus()==5){//待发送
+					emergencyinfo.setStatus(8);//等待播发
+					emergencyInfoService.save (emergencyinfo);
+					emergencyInfoService.sendEBDByEmer(emergencyinfo.getId(),"1");
 				}
-				emergencyInfoService.save (emergencyinfo);
-				emergencyInfoService.sendEBDByEmer(emergencyinfo.getId(),"1");
 			}catch (Exception e){
 				logger.info(e.getMessage(),e);
 			}

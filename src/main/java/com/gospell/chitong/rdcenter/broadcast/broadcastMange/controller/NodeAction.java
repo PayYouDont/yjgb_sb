@@ -123,9 +123,10 @@ public class NodeAction extends BaseAction{
 			Map<String,Object> map = service.receiveTar(request);
 			out = response.getOutputStream();
 			boolean isTar = (boolean)map.get("isTar");
+            String replyOutTarPath;
 			if(!isTar) {
 				replyResponse = new EBD_EBDResponse(EBD_EBDResponse.OTHER_ERROR,"该文件不是tar格式文件");
-				String replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
+				replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
 				File file = new File(replyOutTarPath);
 				in = new FileInputStream(file);
 				response.addHeader("Content-Disposition", "attachment;fileName=" + file.getName());
@@ -135,7 +136,7 @@ public class NodeAction extends BaseAction{
 			boolean isSign = (boolean)map.get("isSign");
 			if(!isSign) {
 				replyResponse = new EBD_EBDResponse(EBD_EBDResponse.SIGN_VERIF_FAILED,"签名文件验证未通过");
-				String replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
+				replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
 				File file = new File(replyOutTarPath);
 				in = new FileInputStream(file);
 				response.addHeader("Content-Disposition", "attachment;fileName=" + file.getName());
@@ -144,7 +145,7 @@ public class NodeAction extends BaseAction{
 			}
 			//验证通过后回复通用
 			replyResponse = new EBD_EBDResponse();
-			String replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
+			replyOutTarPath = TarUtil.createXMLTarByBean(replyResponse,serverProperties.getReplyOutTarPath(),replyResponse.getEBD().getEBDID());
 			File file = new File(replyOutTarPath);
 			in = new FileInputStream(file);
 			response.addHeader("Content-Disposition", "attachment;fileName=" + file.getName());

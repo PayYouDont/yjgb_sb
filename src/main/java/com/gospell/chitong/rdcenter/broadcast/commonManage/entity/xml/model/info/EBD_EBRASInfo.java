@@ -7,9 +7,7 @@
 */
 package com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.model.info;
 
-import com.gospell.chitong.rdcenter.broadcast.broadcastMange.config.ServerProperties;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.BaseEBD;
-import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBD;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.xml.base.EBDResponse;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationContextRegister;
 import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device.Deviceinfo;
@@ -102,13 +100,13 @@ public class EBD_EBRASInfo implements EBDResponse {
 		deviceInfos.forEach (deviceInfo -> {
 			EBD_EBRASInfo.EBRAS ebras = new EBD_EBRASInfo.EBRAS();
 			ebras.setRptTime (DateUtils.getDateTime ());
-			//ebras.setEBRID (deviceInfo.getResouceCode ());
-			ebras.setEBRID ("43415230000000103010201");
+			ebras.setEBRID (deviceInfo.getResouceCode ("EBRAS"));
+			//ebras.setEBRID ("43415230000000103010201");
 			ebras.setEBRName(deviceInfo.getDevname());
 			ebras.setLatitude(deviceInfo.getLat());
 			ebras.setLongitude(deviceInfo.getLng());
 			ebras.setRptType("Full");
-			ebras.setURL(" ");
+			ebras.setURL(new String ());
 			EBD.EBRASInfo.EBRAS.add (ebras);
 		});
         return this;

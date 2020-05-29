@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys.Platform;
+import com.gospell.chitong.rdcenter.broadcast.complexManage.service.sys.PlatformService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class AdministrativeAction extends BaseAction{
 	
 	@Resource
-	public AdministrativeService service;
+	private AdministrativeService service;
+	@Resource
+    private PlatformService platformService;
 	
 	@GetMapping("/toList")
 	public ModelAndView toList(Model model) {
@@ -48,7 +52,12 @@ public class AdministrativeAction extends BaseAction{
 	//getTreeBySystem
 	@RequestMapping("/getTreeBySystem")
 	public String getTreeBySystem() {
-		return service.getTreeStr(serverProperties.getAreaCode());
+        Platform platform = platformService.selectById (1);
+        if (platform!=null){
+            return service.getTreeStr (platform.getAddressCode ());
+        }
+		//return service.getTreeStr(serverProperties.getAreaCode());
+        return null;
 	}
 	@ApiOperation(value="行政区划列表", notes="行政区划接口")
 	@ApiImplicitParams({

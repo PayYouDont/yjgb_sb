@@ -94,6 +94,8 @@ public class EBD_EBRPSInfo implements EBDResponse {
             EBD.EBRPSInfo.EBRPS = new EBRPS ();
             EBD.EBRPSInfo.EBRPS.RptTime = DateUtils.getDateTime ();
             EBD.EBRPSInfo.EBRPS.RptType = rptType;
+            EBD.EBRPSInfo.EBRPS.RelatedEBRPS = new RelatedEBRPS();
+            EBD.EBRPSInfo.EBRPS.RelatedEBRPS.EBRID = "23400000000000103010101";
             EBD.EBRPSInfo.EBRPS.EBRID = EBDcodeUtil.getEBRID(platform.getAddressCode());//prop.getSRC_EBRID ();
             EBD.EBRPSInfo.EBRPS.EBRName = platform.getName();
             EBD.EBRPSInfo.EBRPS.Address = platform.getAddress();

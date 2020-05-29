@@ -1,14 +1,11 @@
 package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.device;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.gospell.chitong.rdcenter.broadcast.util.EBDcodeUtil;
-
-import com.gospell.chitong.rdcenter.broadcast.util.StringUtil;
 import lombok.Data;
 import lombok.Setter;
-import org.springframework.util.StringUtils;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * deviceinfo
@@ -48,10 +45,15 @@ public class Deviceinfo implements Serializable {
      */
     private String devaddress;
 
+
     /**
-     * 设备状态(8位二进制格式，如:00000001)
-     */
-    private String status;
+     * 	1：开机/运行正常
+     * 2：关机/停止运行
+     * 3：故障
+     * 4：故障恢复
+     * 5：播发中
+     **/
+    private Integer status;
 
     /**
      * 纬度
@@ -116,37 +118,11 @@ public class Deviceinfo implements Serializable {
     /***********不存数据库的属性*****************/
     //坐标
     private String coordinate;
-	@Setter
-	private String online;	  //是否在线 （第6位）
-    @Setter
-	private String onwork;	  //是否工作	 （第5位）
-    @Setter
-	private String onwarning; //是否报警 （第4位）
-
     private Devicemodel deviceModel;//设备型号
     private String resouceCode;
     private String statusDesc;
 
     private static final long serialVersionUID = 1L;
-
-    public String getOnline() {
-    	if(!StringUtils.isEmpty (status)) {
-        	return status.substring(6,7);
-    	}
-    	return status;
-    }
-    public String getOnwork() {
-    	if(!StringUtils.isEmpty (status)) {
-        	return status.substring(5,6);
-    	}
-    	return status;
-    }
-    public String getOnwarning() {
-    	if(!StringUtils.isEmpty (status)) {
-        	return status.substring(4,5);
-    	}
-    	return status;
-    }
     //获取纬度
     public String getLat() {
     	if(coordinate!=null&&!"".equals(coordinate)&&coordinate.indexOf(",")!=-1) {
@@ -161,55 +137,34 @@ public class Deviceinfo implements Serializable {
     	}
     	return this.lng;
     }
-    public String getResouceCode() {
+    public String getResouceCode(String type) {
     	if(resouceCode==null&&devaddresscode!=null) {
-    		resouceCode = EBDcodeUtil.getEBRID(devaddresscode);
+    		resouceCode = EBDcodeUtil.getEBRID(devaddresscode,type);
     	}
     	return resouceCode;
     }
 
     /**
-     * /*
-     * 		 * 1：开机/运行正常
-     * 		 * 2：关机/停止运行
-     * 		 * 3：故障
-     * 		 * 4：故障恢复
-     * 		 * 5：播发中
-     *
+     * 	1：开机/运行正常
+     * 2：关机/停止运行
+     * 3：故障
+     * 4：故障恢复
+     * 5：播发中
      **/
 
     public String getStatusDesc(){
-        if(getStatusToEBD()==1){
+        if(status==1){
             return "开机/运行正常";
-        }else if(getStatusToEBD()==2){
+        }else if(status==2){
             return "关机/停止运行";
-        }else if(getStatusToEBD()==3){
+        }else if(status==3){
             return "故障";
-        }else if(getStatusToEBD()==4){
+        }else if(status==4){
             return "故障恢复";
-        }else{
+        }else if(status==5){
             return "播发中";
         }
+        return null;
     }
-    public Integer getStatusToEBD(){
-        if("1".equals (online)&&"1".equals (onwarning)&&"1".equals (onwork)){
-            return 1;
-        }else if("0".equals (online)){
-            return 2;
-        }else if("0".equals (onwarning)){
-            return 3;
-        }else if("1".equals (online)&&"1".equals (onwarning)&&"0".equals (onwork)){
-            return 4;
-        }else{
-            return 5;
-        }
-    }
-    public void setStatus(String status){
-        this.status = status;
-    }
-    public void setStatus(Integer status){
-        int statusCode = (int) Math.pow (2,status);
-        String workStatus = StringUtil.patch ("0",8,Integer.valueOf (Integer.toBinaryString (statusCode)));
-        this.status = workStatus;
-    }
+
 }

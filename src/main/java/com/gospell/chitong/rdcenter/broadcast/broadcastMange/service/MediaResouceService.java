@@ -16,7 +16,8 @@ import com.gospell.chitong.rdcenter.broadcast.commonManage.service.BaseService;
 *  
 */
 public interface MediaResouceService extends BaseService<MediaResouce,Integer>{
-	public int save(MediaResouceVO vo) throws Exception;
+	int save(MediaResouceVO vo) throws Exception;
 	List<MediaResouce> list(Map<String,Object> map);
 	int count(Map<String,Object> map);
+	Integer saveByTarPath(String tarPath) throws Exception;
 }

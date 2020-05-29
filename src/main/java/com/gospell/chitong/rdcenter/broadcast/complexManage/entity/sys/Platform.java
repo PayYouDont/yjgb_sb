@@ -3,7 +3,6 @@ package com.gospell.chitong.rdcenter.broadcast.complexManage.entity.sys;
 import com.gospell.chitong.rdcenter.broadcast.commonManage.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -32,6 +31,18 @@ public class Platform extends BaseEntity {
     private String lat;
     //经度
     private String lng;
+    //平台资源编码后10位编码
+    private String EBRPSLastCode;
+    //适配器资源编码后10位编码
+    private String EBRASLastCode;
+    //终端资源编码后10位编码
+    private String EBRDTLastCode;
+    //传输设备资源编码后10位编码
+    private String EBRBSSLastCode;
+    //上级平台地址
+    private String superiorUrl;
+    //上级平台区域编码
+    private String superAreaCode;
     //坐标
     @Transient
     private String coordinate;

@@ -47,12 +47,11 @@ public class HeartJob implements Job{
 		EBD_ConnectionCheck check = new EBD_ConnectionCheck();
 		check.init();
 		try {
-			String result = TarUtil.sendEBDToSuperior (check);
+            EBD_EBDResponse response = TarUtil.sendEBDToSuperior (check);
+            if(response==null){
+                return;
+            }
 			if(!flag) {
-				EBD_EBDResponse response = TarUtil.getEBDResponse(result);
-				if(response==null){
-				    return;
-                }
 				String resultCode = response.getEBD().getEBDResponse().getResultCode();
 				if(EBD_EBDResponse.SUCCESS.equals(resultCode)) {
 					EBD_EBRPSInfo info = new EBD_EBRPSInfo(server);

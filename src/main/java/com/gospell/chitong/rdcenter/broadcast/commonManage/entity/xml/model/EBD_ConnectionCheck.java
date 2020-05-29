@@ -14,6 +14,7 @@ import com.gospell.chitong.rdcenter.broadcast.complexManage.config.ApplicationCo
 import com.gospell.chitong.rdcenter.broadcast.util.DateUtils;
 import com.gospell.chitong.rdcenter.broadcast.util.HttpClientUtil;
 import com.gospell.chitong.rdcenter.broadcast.util.JsonUtil;
+import com.gospell.chitong.rdcenter.broadcast.util.LoggerUtil;
 import lombok.EqualsAndHashCode;
 
 import java.util.*;
@@ -85,7 +86,7 @@ public class EBD_ConnectionCheck implements EBD{
         ServerProperties serverProperties = ApplicationContextRegister.getBean (ServerProperties.class);
         String result = HttpClientUtil.sendPostDataByJson(serverProperties.getCmdChannel (), json,"utf-8");
         if(result!=null){
-            System.out.println (result);
+            LoggerUtil.print (this.getClass (),result);
         }
     }
 }
